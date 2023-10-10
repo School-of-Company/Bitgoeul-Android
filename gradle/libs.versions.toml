@@ -1,12 +1,14 @@
 [versions]
 #Define Versions
-androidGradlePlugin = "8.1.1"
-androidxActivity = "1.7.2"
+androidGradlePlugin = "8.1.2"
+androidxActivity = "1.8.0-alpha06"
 androidxAppCompat = "1.5.1"
 androidxBrowser = "1.4.0"
 androidxComposeBom = "2023.09.00"
 androidxComposeCompiler = "1.5.3"
+androidxComposeRuntime = "1.3.3"
 androidxComposeRuntimeTracing = "1.0.0-alpha03"
+androidxComposeUi = "1.3.3"
 androidxCore = "1.9.0"
 androidxCoreSplashscreen = "1.0.0"
 androidxDataStore = "1.0.0"
@@ -18,6 +20,7 @@ androidxTestCore = "1.5.0"
 androidxTestExt = "1.1.4"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.1"
+androidx-test-ext-junit = "1.1.5"
 androidxWindowManager = "1.0.0"
 coil = "2.2.2"
 firebaseBom = "31.2.0"
@@ -28,20 +31,19 @@ gson = "2.9.0"
 hilt = "2.47"
 hiltExt = "1.0.0"
 junit4 = "4.13.2"
+junit = "4.13.2"
 kotlin = "1.9.10"
 kotlinxCoroutines = "1.6.4"
 kotlinxDateTime = "0.4.0"
 kotlinxSerializationJson = "1.5.1"
 ksp = "1.9.10-1.0.13"
 lint = "31.0.2"
+material = "1.0.1"
 okhttp = "4.10.0"
+org-jetbrains-kotlin-android = "1.8.10"
 retrofit = "2.9.0"
 retrofitKotlinxSerializableJson = "1.0.0"
 room = "2.5.2"
-org-jetbrains-kotlin-android = "1.8.10"
-junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
-material = "1.9.0"
 
 [libraries]
 #Define Library
@@ -52,14 +54,14 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 androidx-compose-material-iconExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
-androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
-androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material" }
+androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "androidxComposeRuntime" }
+androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "androidxComposeRuntime" }
 androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "androidxComposeRuntimeTracing" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxComposeUi" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "androidxComposeUi" }
+androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util", version.ref = "androidxComposeUi" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
@@ -115,3 +117,12 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+
+[bundles]
+#Define Bundles
+kotlinx-coroutines = ["kotlinx-coroutines-android", "kotlinx-coroutines-guava", "kotlinx-coroutines-test"]
+hilt = ["hilt-android", "hilt-android-testing", "hilt-compiler", "hilt-ext-compiler", "hilt-ext-work"]
+compose = ["androidx-activity-compose", "androidx-navigation-compose", "androidx-compose-bom", "coil-kt-compose",
+    "androidx-hilt-navigation-compose", "androidx-compose-material3", "androidx-compose-material3-windowSizeClass",
+    "androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-ui-tooling", "androidx-compose-ui-tooling-preview", "androidx-compose-ui-util", "androidx-compose-runtime",
+    "androidx-compose-runtime-livedata", "androidx-compose-runtime-tracing"]
