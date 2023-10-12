@@ -36,5 +36,20 @@ gradlePlugin {
             id = "bitgoeul.android.lint"
             implementationClass = "com.msg.convention.AndroidLintConventionPlugin"
         }
+
+        register("androidCore") {
+            id = "bitgoeul.android.core"
+            implementationClass = "com.msg.convention.AndroidCoreConventionPlugin"
+        }
+
+        register("androidCompose") {
+            id = "bitgoeul.android.compose"
+            implementationClass = "com.msg.convention.AndroidComposeConventionPlugin"
+        }
+
+        register("jvmLibrary") {
+            id = "bitgoeul.jvm.library"
+            implementationClass = "com.msg.convention.JvmLibraryConventionPlugin"
+        }
     }
 }
