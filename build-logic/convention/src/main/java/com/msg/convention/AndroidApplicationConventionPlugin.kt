@@ -41,7 +41,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 }
 
                 composeOptions {
-                    kotlinCompilerExtensionVersion = "1.5.3"
+                    kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
                 }
 
                 dependencies {

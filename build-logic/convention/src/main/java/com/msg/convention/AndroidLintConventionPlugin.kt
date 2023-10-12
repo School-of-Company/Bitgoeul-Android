@@ -15,7 +15,7 @@ class AndroidLintConventionPlugin : Plugin<Project> {
                     configure<ApplicationExtension> { lint(Lint::configure) }
 
                 pluginManager.hasPlugin("com.android.library") ->
-                    configure<ApplicationExtension> { lint(Lint::configure) }
+                    configure<LibraryExtension> { lint(Lint::configure) }
 
                 else -> {
                     pluginManager.apply("com.android.lint")
