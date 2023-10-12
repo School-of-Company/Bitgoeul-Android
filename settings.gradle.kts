@@ -19,7 +19,7 @@ rootProject.name = "Bitgoeul-Android"
 include(":app")
 include(":core:network")
 include(":core:data")
-include(":core:database")
+include(":core:datastore")
 include(":core:design-system")
 include(":core:domain")
 include(":core:model")
