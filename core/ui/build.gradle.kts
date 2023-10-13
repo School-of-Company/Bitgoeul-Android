@@ -9,6 +9,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:design-system"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+
     implementation(libs.androidx.activity.compose)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
