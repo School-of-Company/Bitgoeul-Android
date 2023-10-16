@@ -13,3 +13,8 @@ android {
         }
     }
 }
+
+dependencies {
+    implementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext)
+}
