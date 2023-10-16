@@ -29,3 +29,6 @@ jobs:
       
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Create LOCAL_PROPERTIES
+      run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
