@@ -17,3 +17,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Bitgoeul-Android"
 include(":app")
+include(":core:network")
+include(":core:data")
+include(":core:datastore")
+include(":core:design-system")
+include(":core:domain")
+include(":core:model")
+include(":core:ui")
