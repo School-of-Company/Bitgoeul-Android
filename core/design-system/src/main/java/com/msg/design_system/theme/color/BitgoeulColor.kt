@@ -2,7 +2,7 @@ package com.msg.design_system.theme.color
 
 import androidx.compose.ui.graphics.Color
 
-object Color : ColorTheme() {
+object BitgoeulColor : ColorTheme() {
     override val P1 = Color(0xFF072036)
     override val P2 = Color(0xFF0E3B63)
     override val P3 = Color(0xFF14568F)
