@@ -7,7 +7,7 @@ object BitgoeulColor : ColorTheme() {
     override val P2 = Color(0xFF0E3B63)
     override val P3 = Color(0xFF14568F)
     override val P4 = Color(0xFF1A71BC)
-    override val P5 = Color(0xFF288BE1)
+    override val P5 = Color(0xFF288BE1) //Main color
     override val P6 = Color(0xFF55A3E7)
     override val P7 = Color(0xFF82BBEE)
     override val P8 = Color(0xFFAED3F4)
@@ -17,7 +17,7 @@ object BitgoeulColor : ColorTheme() {
     override val S2 = Color(0xFF147572)
     override val S3 = Color(0xFF1CA19D)
     override val S4 = Color(0xFF23CDC7)
-    override val S5 = Color(0xFF45DFDA)
+    override val S5 = Color(0xFF45DFDA) //Sub color
     override val S6 = Color(0xFF6FE6E2)
     override val S7 = Color(0xFF9BEEEB)
     override val S8 = Color(0xFFC6F5F4)
@@ -27,7 +27,7 @@ object BitgoeulColor : ColorTheme() {
     override val E2 = Color(0xFF751418)
     override val E3 = Color(0xFFA11C20)
     override val E4 = Color(0xFFCD2329)
-    override val E5 = Color(0xFFDF454A)
+    override val E5 = Color(0xFFDF454A) // Error color
     override val E6 = Color(0xFFE66F73)
     override val E7 = Color(0xFFEE9B9E)
     override val E8 = Color(0xFFF5C6C8)
