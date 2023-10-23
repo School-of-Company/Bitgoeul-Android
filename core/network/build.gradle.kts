@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.retrofit.gson.converter)
 }
 fun getApiKey(propertyKey: String): String {
     val propFile = rootProject.file("./local.properties")
