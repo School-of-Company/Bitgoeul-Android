@@ -51,5 +51,10 @@ gradlePlugin {
             id = "bitgoeul.jvm.library"
             implementationClass = "com.msg.convention.JvmLibraryConventionPlugin"
         }
+
+        register("androidFeature") {
+            id = "bitgoeul.android.feature"
+            implementationClass = "com.msg.convention.AndroidFeatureConventionPlugin"
+        }
     }
 }
