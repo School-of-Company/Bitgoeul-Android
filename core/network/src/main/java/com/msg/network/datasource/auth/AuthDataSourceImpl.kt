@@ -13,10 +13,10 @@ import javax.inject.Inject
 class AuthDataSourceImpl @Inject constructor(
     private val authAPI: AuthAPI
 ) : AuthDataSource {
-    override suspend fun login(loginRequest: LoginRequest): Flow<AuthTokenModel> = flow {
+    override suspend fun login(body: LoginRequest): Flow<AuthTokenModel> = flow {
         emit(
             BitgoeulApiHandler<AuthTokenModel>()
-                .httpRequest { authAPI.login(loginRequest = loginRequest) }
+                .httpRequest { authAPI.login(body = body) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)

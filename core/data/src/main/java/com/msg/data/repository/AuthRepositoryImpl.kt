@@ -13,7 +13,7 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
     override suspend fun login(body: LoginRequest): Flow<AuthTokenModel> {
         return authDataSource.login(
-            loginRequest = body
+            body = body
         )
     }
 
