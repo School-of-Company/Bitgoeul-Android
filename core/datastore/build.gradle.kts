@@ -6,7 +6,25 @@ plugins {
 }
 
 android {
-    namespace = "com.msg.database"
+    namespace = "com.msg.datastore"
+}
+
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
 
 dependencies {

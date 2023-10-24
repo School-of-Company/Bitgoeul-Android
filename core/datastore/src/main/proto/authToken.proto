@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.msg.datastore";
+option java_multiple_files = true;
+
+message AuthToken {
+  string accessToken = 1;
+  string accessExp = 2;
+  string refreshToken = 3;
+  string refreshExp = 4;
+}
