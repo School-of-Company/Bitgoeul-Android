@@ -21,6 +21,7 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(project(":core:datastore"))
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
