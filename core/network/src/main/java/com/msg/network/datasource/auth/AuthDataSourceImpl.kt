@@ -2,6 +2,7 @@ package com.msg.network.datasource.auth
 
 import com.msg.model.remote.AuthTokenModel
 import com.msg.model.remote.request.LoginRequest
+import com.msg.model.remote.request.SignUpJobClubTeacherRequest
 import com.msg.model.remote.request.SignUpStudentRequest
 import com.msg.network.api.AuthAPI
 import com.msg.network.util.BitgoeulApiHandler
@@ -26,6 +27,14 @@ class AuthDataSourceImpl @Inject constructor(
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpStudent(body = body) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { authAPI.signUpJobClubTeacher(body = body) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
