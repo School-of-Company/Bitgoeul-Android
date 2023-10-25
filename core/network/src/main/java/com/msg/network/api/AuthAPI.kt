@@ -8,6 +8,7 @@ import com.msg.model.remote.request.SignUpJobClubTeacherRequest
 import com.msg.model.remote.request.SignUpProfessorRequest
 import com.msg.model.remote.request.SignUpStudentRequest
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.POST
 
 interface AuthAPI {
@@ -40,4 +41,7 @@ interface AuthAPI {
     suspend fun signUpCompanyInstructor(
         @Body body: SignUpCompanyInstructorRequest
     )
+
+    @DELETE("auth")
+    suspend fun logout()
 }
