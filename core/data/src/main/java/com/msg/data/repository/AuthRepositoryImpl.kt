@@ -3,6 +3,7 @@ package com.msg.data.repository
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.model.remote.AuthTokenModel
 import com.msg.model.remote.request.LoginRequest
+import com.msg.model.remote.request.SignUpGovernmentRequest
 import com.msg.model.remote.request.SignUpJobClubTeacherRequest
 import com.msg.model.remote.request.SignUpProfessorRequest
 import com.msg.model.remote.request.SignUpStudentRequest
@@ -43,6 +44,12 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit> {
         return authDataSource.signUpProfessor(
+            body = body
+        )
+    }
+
+    override suspend fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit> {
+        return authDataSource.signUpGovernment(
             body = body
         )
     }
