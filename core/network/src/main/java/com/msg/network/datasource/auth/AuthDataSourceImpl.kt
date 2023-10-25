@@ -66,4 +66,12 @@ class AuthDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun logout(): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { authAPI.logout() }
+                .sendRequest()
+        )
+    }
 }

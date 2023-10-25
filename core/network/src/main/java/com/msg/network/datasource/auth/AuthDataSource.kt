@@ -16,4 +16,5 @@ interface AuthDataSource {
     suspend fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit>
     suspend fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit>
     suspend fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit>
+    suspend fun logout(): Flow<Unit>
 }
