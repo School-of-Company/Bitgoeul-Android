@@ -1,5 +1,6 @@
 package com.msg.design_system.component.textfield
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -61,8 +62,7 @@ fun EmailTextField(
                         color = when {
                             isDisabled -> colors.G1
                             isError -> colors.E5
-                            text.isNotEmpty() && !isFocused.value -> colors.BLACK
-                            text.isEmpty() && !isFocused.value -> colors.G1
+                            text.isNotEmpty() -> colors.G1
                             isFocused.value -> colors.P5
                             else -> colors.G1
                         },
@@ -70,7 +70,10 @@ fun EmailTextField(
                     )
                     .onFocusChanged {
                         isFocused.value = it.isFocused
-                    },
+                    }
+                    .background(
+                        color = if (isDisabled) colors.G9 else Color.Transparent
+                    ),
                 textStyle = typography.bodySmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     placeholderColor = colors.G2,
@@ -80,6 +83,7 @@ fun EmailTextField(
                     disabledTextColor = colors.G1,
                     cursorColor = colors.P5
                 ),
+                enabled = !isDisabled,
                 placeholder = {
                     Text(text = placeholder, style = typography.bodySmall)
                 },
@@ -152,11 +156,17 @@ fun PasswordTextField(
                         color = when {
                             isDisabled -> colors.G1
                             isError -> colors.E5
-                            text.isNotEmpty()&&!isFocused.value -> colors.BLACK
-                            text.isEmpty()&&!isFocused.value -> colors.G1
+                            text.isNotEmpty() -> colors.G1
                             isFocused.value -> colors.P5
                             else -> colors.G1
                         },
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .onFocusChanged {
+                        isFocused.value = it.isFocused
+                    }
+                    .background(
+                        color = if (isDisabled) colors.G9 else Color.Transparent,
                         shape = RoundedCornerShape(8.dp)
                     ),
                 textStyle = typography.bodySmall,
@@ -168,6 +178,7 @@ fun PasswordTextField(
                     disabledTextColor = colors.G1,
                     cursorColor = colors.P5
                 ),
+                enabled = !isDisabled,
                 visualTransformation = if (showPassword) {
                     VisualTransformation.None
                 } else {
@@ -262,6 +273,19 @@ fun TextFieldPre() {
             isLinked = true,
             linkText = "Sign Up",
             isDisabled = false
+        )
+
+        PasswordTextField(
+            modifier = Modifier
+                .width(320.dp)
+                .height(52.dp),
+            placeholder = "Put Password",
+            errorText = "Incorrect Password",
+            onValueChange = {},
+            onClickLink = {},
+            isError = false,
+            isLinked = false,
+            isDisabled = true
         )
     }
 }
