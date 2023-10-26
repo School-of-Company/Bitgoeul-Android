@@ -64,4 +64,8 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun logout(): Flow<Unit> {
         return authDataSource.logout()
     }
+
+    override suspend fun withdraw(): Flow<Unit> {
+        return authDataSource.withdraw()
+    }
 }
