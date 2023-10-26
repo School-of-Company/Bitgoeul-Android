@@ -44,4 +44,7 @@ interface AuthAPI {
 
     @DELETE("auth")
     suspend fun logout()
+
+    @DELETE("auth/withdraw")
+    suspend fun withdraw()
 }
