@@ -74,4 +74,12 @@ class AuthDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }
+
+    override suspend fun withdraw(): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { authAPI.withdraw() }
+                .sendRequest()
+        )
+    }
 }

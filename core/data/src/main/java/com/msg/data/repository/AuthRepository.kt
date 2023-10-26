@@ -18,4 +18,5 @@ interface AuthRepository {
     suspend fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit>
     suspend fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit>
     suspend fun logout(): Flow<Unit>
+    suspend fun withdraw(): Flow<Unit>
 }
