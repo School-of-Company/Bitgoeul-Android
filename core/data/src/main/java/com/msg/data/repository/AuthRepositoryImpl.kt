@@ -60,4 +60,8 @@ class AuthRepositoryImpl @Inject constructor(
             body = body
         )
     }
+
+    override suspend fun logout(): Flow<Unit> {
+        return authDataSource.logout()
+    }
 }
