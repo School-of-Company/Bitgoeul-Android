@@ -11,9 +11,9 @@ class LastPasswordVisibleVisualTransformation(
     private val isChanged: Boolean
 ) : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        val recentIsFocusedState: Boolean = if (isChanged) isFocused else !isFocused
+        val isFocusedAgainState: Boolean = if (isChanged) isFocused else !isFocused
         return TransformedText(
-            text = if (recentIsFocusedState) {
+            text = if (isFocusedAgainState) {
                 if (text.text.isNotEmpty()) {
                     AnnotatedString(mask.toString().repeat(text.text.length - 1) + text.text.last())
                 } else {
