@@ -24,3 +24,5 @@ include(":core:design-system")
 include(":core:domain")
 include(":core:ui")
 include(":core:model")
+
+include(":feature:login")
