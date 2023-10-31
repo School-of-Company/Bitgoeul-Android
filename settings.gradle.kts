@@ -25,5 +25,4 @@ include(":core:domain")
 include(":core:ui")
 include(":core:model")
 
-include(":feature:")
 include(":feature:login")
