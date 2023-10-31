@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,13 +23,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.icon.CancelIcon
 import com.msg.design_system.component.icon.SeeableIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,6 +138,7 @@ fun PasswordTextField(
     var showPassword by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
     val isFocused = remember { mutableStateOf(false) }
+    val isChanged = remember { mutableStateOf(false) }
     BitgoeulAndroidTheme { colors, typography ->
         Column {
             OutlinedTextField(
@@ -146,6 +146,7 @@ fun PasswordTextField(
                 onValueChange = {
                     text = it
                     onValueChange(it)
+                    isChanged.value = true
                 },
                 placeholder = {
                     Text(text = placeholder, style = typography.bodySmall)
@@ -164,6 +165,7 @@ fun PasswordTextField(
                     )
                     .onFocusChanged {
                         isFocused.value = it.isFocused
+                        if (it.isFocused) isChanged.value = false
                     }
                     .background(
                         color = if (isDisabled) colors.G9 else Color.Transparent,
@@ -182,7 +184,7 @@ fun PasswordTextField(
                 visualTransformation = if (showPassword) {
                     VisualTransformation.None
                 } else {
-                    PasswordVisualTransformation()
+                    LastPasswordVisibleVisualTransformation(isFocused = isFocused.value, isChanged = isChanged.value)
                 },
                 trailingIcon = {
                     if (showPassword) {
