@@ -36,13 +36,14 @@ import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 fun EmailTextField(
     modifier: Modifier,
     placeholder: String,
+    isReadOnly: Boolean = false,
+    isError: Boolean,
+    isLinked: Boolean,
+    isDisabled: Boolean,
     errorText: String,
     linkText: String? = null,
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
-    isError: Boolean,
-    isLinked: Boolean,
-    isDisabled: Boolean,
     onClickLink: () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
@@ -96,7 +97,8 @@ fun EmailTextField(
                     ) {
                         if (text.isNotEmpty()) CancelIcon()
                     }
-                }
+                },
+                readOnly = isReadOnly
             )
             if (isError||isLinked) {
                 val isAll: Boolean = isError&&isLinked
@@ -259,7 +261,8 @@ fun TextFieldPre() {
             onClickButton = {},
             isError = false,
             isLinked = false,
-            isDisabled = false
+            isDisabled = false,
+            isReadOnly = false
         ) {
         }
 

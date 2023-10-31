@@ -4,7 +4,7 @@ import com.msg.data.repository.AuthRepository
 import com.msg.model.remote.request.SignUpGovernmentRequest
 import javax.inject.Inject
 
-class SignUpGovernment @Inject constructor(
+class SignUpGovernmentUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(body: SignUpGovernmentRequest) = runCatching {
