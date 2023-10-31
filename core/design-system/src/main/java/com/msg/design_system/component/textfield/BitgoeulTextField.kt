@@ -87,6 +87,8 @@ fun EmailTextField(
                 placeholder = {
                     Text(text = placeholder, style = typography.bodySmall)
                 },
+                maxLines = 1,
+                singleLine = true,
                 trailingIcon = {
                     IconButton(
                         onClick = {
@@ -169,6 +171,8 @@ fun PasswordTextField(
                         color = if (isDisabled) colors.G9 else Color.Transparent,
                         shape = RoundedCornerShape(8.dp)
                     ),
+                maxLines = 1,
+                singleLine = true,
                 textStyle = typography.bodySmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     placeholderColor = colors.G2,
