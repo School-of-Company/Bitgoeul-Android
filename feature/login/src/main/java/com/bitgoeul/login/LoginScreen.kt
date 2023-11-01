@@ -1,6 +1,5 @@
 package com.bitgoeul.login
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,7 +32,7 @@ fun LoginScreen() {
     val isEmailErrorStatus = remember { mutableStateOf(false)}
     val isPasswordErrorStatus = remember { mutableStateOf(false)}
     val isErrorTextShow = remember { mutableStateOf(false) }
-    var isTextStatus: String = ""
+    var isTextStatus = ""
     BitgoeulAndroidTheme { color, type ->
         Box {
             Column(
