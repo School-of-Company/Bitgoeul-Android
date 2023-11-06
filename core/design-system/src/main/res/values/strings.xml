@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login">로그인</string>
+    <string name="project_name">빛고을\n직업교육\n혁신지구</string>
+    <string name="email">이메일</string>
+    <string name="error_text_email">이메일을 다시 한번 확인해주세요.</string>
+    <string name="password">비밀번호</string>
+    <string name="find_password">비밀번호 찾기</string>
+    <string name="forgot_password">비밀번호를 잊었나요?</string>
+    <string name="wrong_password">잘못된 비밀번호 입니다.</string>
+    <string name="sign_up">회원가입</string>
+</resources>
