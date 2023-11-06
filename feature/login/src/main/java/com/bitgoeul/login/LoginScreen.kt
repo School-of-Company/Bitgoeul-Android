@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
-import com.msg.design_system.component.textfield.EmailTextField
+import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.LinkText
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -63,7 +63,7 @@ fun LoginScreen() {
                         .fillMaxWidth()
                         .padding(horizontal = 28.dp),
                 ) {
-                    EmailTextField(
+                    DefaultTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(54.dp),

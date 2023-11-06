@@ -33,7 +33,7 @@ import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailTextField(
+fun DefaultTextField(
     modifier: Modifier,
     placeholder: String,
     isReadOnly: Boolean = false,
@@ -76,10 +76,12 @@ fun EmailTextField(
                     ),
                 textStyle = typography.bodySmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    placeholderColor = colors.G2,
+                    focusedPlaceholderColor = colors.G2,
+                    unfocusedPlaceholderColor = colors.G2,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    textColor = if (isError) colors.E5 else colors.BLACK,
+                    focusedTextColor = if (isError) colors.E5 else colors.BLACK,
+                    unfocusedTextColor = if (isError) colors.E5 else colors.BLACK,
                     disabledTextColor = colors.G1,
                     cursorColor = colors.P5
                 ),
@@ -90,14 +92,16 @@ fun EmailTextField(
                 maxLines = 1,
                 singleLine = true,
                 trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            text = ""
-                            onClickButton()
-                        },
-                        enabled = text.isNotEmpty()
-                    ) {
-                        if (text.isNotEmpty()) CancelIcon()
+                    if (isFocused.value) {
+                        IconButton(
+                            onClick = {
+                                text = ""
+                                onClickButton()
+                            },
+                            enabled = text.isNotEmpty()
+                        ) {
+                            if (text.isNotEmpty()) CancelIcon()
+                        }
                     }
                 },
                 readOnly = isReadOnly
@@ -179,10 +183,12 @@ fun PasswordTextField(
                 singleLine = true,
                 textStyle = typography.bodySmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    placeholderColor = colors.G2,
+                    focusedPlaceholderColor = colors.G2,
+                    unfocusedPlaceholderColor = colors.G2,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    textColor = if (isError) colors.E5 else colors.BLACK,
+                    focusedTextColor = if (isError) colors.E5 else colors.BLACK,
+                    unfocusedTextColor = if (isError) colors.E5 else colors.BLACK,
                     disabledTextColor = colors.G1,
                     cursorColor = colors.P5
                 ),
@@ -255,7 +261,7 @@ fun TextFieldPre() {
         modifier = Modifier,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        EmailTextField(
+        DefaultTextField(
             modifier = Modifier
                 .width(320.dp)
                 .height(52.dp),
