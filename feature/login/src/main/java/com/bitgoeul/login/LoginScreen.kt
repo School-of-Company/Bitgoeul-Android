@@ -19,6 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.bitgoeul.login.viewmodel.AuthViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
@@ -26,13 +29,17 @@ import com.msg.design_system.component.textfield.EmailTextField
 import com.msg.design_system.component.textfield.LinkText
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.request.LoginRequest
 
 @Composable
 fun LoginScreen() {
-    val isEmailErrorStatus = remember { mutableStateOf(false)}
-    val isPasswordErrorStatus = remember { mutableStateOf(false)}
+    val isEmailErrorStatus = remember { mutableStateOf(false) }
+    val isPasswordErrorStatus = remember { mutableStateOf(false) }
     val isErrorTextShow = remember { mutableStateOf(false) }
     var isTextStatus = ""
+    var emailState = remember { mutableStateOf("") }
+    val passwordState = remember { mutableStateOf("") }
+    val authViewModel: AuthViewModel = hiltViewModel()
     BitgoeulAndroidTheme { color, type ->
         Box {
             Column(
@@ -71,6 +78,7 @@ fun LoginScreen() {
                         errorText = stringResource(id = R.string.error_text_email),
                         onValueChange = {
                             isTextStatus = it
+                            emailState.value = it
                         },
                         isError = isEmailErrorStatus.value,
                         onClickButton = {
@@ -100,7 +108,9 @@ fun LoginScreen() {
                             .height(54.dp),
                         placeholder = stringResource(id = R.string.password),
                         errorText = stringResource(id = R.string.wrong_password),
-                        onValueChange = {},
+                        onValueChange = {
+                            passwordState.value = it
+                        },
                         onClickLink = {},
                         isError = isPasswordErrorStatus.value,
                         isLinked = true,
@@ -123,7 +133,7 @@ fun LoginScreen() {
                             .height(52.dp),
                         state = ButtonState.Disable,
                     ) {
-                        // Action
+                        authViewModel.login(body = LoginRequest(email = emailState.value, password = passwordState.value))
                     }
                 }
 
