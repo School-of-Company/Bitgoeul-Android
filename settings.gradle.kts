@@ -26,3 +26,4 @@ include(":core:ui")
 include(":core:model")
 
 include(":feature:login")
+include(":feature:sign-up")
