@@ -23,7 +23,7 @@ class AuthViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
     private val withdrawUseCase: WithdrawUseCase,
-) : ViewModel(){
+) : ViewModel() {
     private val _saveTokenRequest = MutableLiveData<Event<Nothing>>()
     val saveTokenRequest: LiveData<Event<Nothing>> get() = _saveTokenRequest
 
@@ -34,7 +34,7 @@ class AuthViewModel @Inject constructor(
         loginUseCase(
             body = body
         ).onSuccess {
-            it.catch {remoteError ->
+            it.catch { remoteError ->
                 _loginRequest.value = remoteError.errorHandling()
             }.collect { response ->
                 _loginRequest.value = Event.Success(data = response)
