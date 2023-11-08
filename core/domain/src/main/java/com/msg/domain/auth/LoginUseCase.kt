@@ -1,7 +1,7 @@
 package com.msg.domain.auth
 
 import com.msg.data.repository.AuthRepository
-import com.msg.model.remote.request.LoginRequest
+import com.msg.model.remote.request.auth.LoginRequest
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(

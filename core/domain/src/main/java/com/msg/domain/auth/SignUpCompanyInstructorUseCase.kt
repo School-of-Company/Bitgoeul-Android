@@ -1,7 +1,7 @@
 package com.msg.domain.auth
 
 import com.msg.data.repository.AuthRepository
-import com.msg.model.remote.request.SignUpCompanyInstructorRequest
+import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
 import javax.inject.Inject
 
 class SignUpCompanyInstructorUseCase @Inject constructor(
