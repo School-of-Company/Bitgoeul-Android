@@ -40,20 +40,23 @@ fun DefaultTextField(
     isError: Boolean,
     isLinked: Boolean,
     isDisabled: Boolean,
+    isReverseTrailingIcon: Boolean,
     errorText: String,
     linkText: String? = null,
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
-    onClickLink: () -> Unit
+    onClickLink: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
+    value: String? = null
 ) {
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(value ?: "") }
     val isFocused = remember { mutableStateOf(false) }
     BitgoeulAndroidTheme { colors, typography ->
         Column {
             OutlinedTextField(
                 value = text,
                 onValueChange = {
-                    text = it
+                    text = value ?: it
                     onValueChange(it)
                 },
                 modifier = modifier
@@ -70,6 +73,8 @@ fun DefaultTextField(
                     )
                     .onFocusChanged {
                         isFocused.value = it.isFocused
+                        if (it.isFocused && onClick != null) onClick()
+                        if (!it.isFocused && value != null) text = value
                     }
                     .background(
                         color = if (isDisabled) colors.G9 else Color.Transparent
@@ -92,15 +97,29 @@ fun DefaultTextField(
                 maxLines = 1,
                 singleLine = true,
                 trailingIcon = {
-                    if (isFocused.value) {
-                        IconButton(
-                            onClick = {
-                                text = ""
-                                onClickButton()
-                            },
-                            enabled = text.isNotEmpty()
-                        ) {
-                            if (text.isNotEmpty()) CancelIcon()
+                    if (!isReverseTrailingIcon) {
+                        if (isFocused.value) {
+                            IconButton(
+                                onClick = {
+                                    text = ""
+                                    onClickButton()
+                                },
+                                enabled = text.isNotEmpty()
+                            ) {
+                                if (text.isNotEmpty()) CancelIcon()
+                            }
+                        }
+                    } else {
+                        if (!isFocused.value) {
+                            IconButton(
+                                onClick = {
+                                    text = ""
+                                    onClickButton
+                                },
+                                enabled = text.isNotEmpty()
+                            ) {
+                                if (text.isNotEmpty()) CancelIcon()
+                            }
                         }
                     }
                 },
@@ -115,13 +134,17 @@ fun DefaultTextField(
                     if (isAll) {
                         ErrorText(text = errorText)
                         if (linkText != null) {
-                            LinkText(text = linkText, onClickLink = onClickLink)
+                            if (onClickLink != null) {
+                                LinkText(text = linkText, onClickLink = onClickLink)
+                            }
                         }
                     } else if (isError) {
                         ErrorText(text = errorText)
                     } else {
                         if (linkText != null) {
-                            LinkText(text = linkText, onClickLink = onClickLink)
+                            if (onClickLink != null) {
+                                LinkText(text = linkText, onClickLink = onClickLink)
+                            }
                         }
                     }
                 }
@@ -272,9 +295,10 @@ fun TextFieldPre() {
             isError = false,
             isLinked = false,
             isDisabled = false,
-            isReadOnly = false
-        ) {
-        }
+            isReadOnly = false,
+            isReverseTrailingIcon = false,
+            onClick = {}
+        )
 
         PasswordTextField(
             modifier = Modifier
