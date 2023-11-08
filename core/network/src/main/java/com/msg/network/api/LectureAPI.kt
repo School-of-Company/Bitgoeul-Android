@@ -21,4 +21,9 @@ interface LectureAPI {
     suspend fun getDetailLecture(
         @Path("id") id: UUID,
     )
+
+    @POST("/lecture/{id}")
+    suspend fun lectureApplication(
+        @Path("id") id: UUID,
+    )
 }
