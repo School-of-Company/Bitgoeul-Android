@@ -15,7 +15,7 @@ interface LectureAPI {
     )
 
     @GET("/lecture")
-    suspend fun getLectureList(): LectureListModel
+    suspend fun getLectureList(): List<LectureListModel>
 
     @GET("/lecture/{id}")
     suspend fun getDetailLecture(
