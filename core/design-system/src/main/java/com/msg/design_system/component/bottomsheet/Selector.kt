@@ -20,7 +20,7 @@ fun Selector(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    BitgoeulAndroidTheme { colors, typography ->
+    BitgoeulAndroidTheme { _, typography ->
         Box(
             modifier = Modifier
                 .fillMaxWidth()
