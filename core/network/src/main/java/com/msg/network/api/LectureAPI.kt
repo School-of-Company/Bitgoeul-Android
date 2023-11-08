@@ -3,6 +3,7 @@ package com.msg.network.api
 import com.msg.model.remote.model.LectureListModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -30,6 +31,11 @@ interface LectureAPI {
 
     @PATCH("/lecture/{id}/approve")
     suspend fun approvePendingLecture(
+        @Path("id") id: UUID,
+    )
+
+    @DELETE("/lecture/{id}/reject")
+    suspend fun rejectPendingLecture(
         @Path("id") id: UUID,
     )
 }
