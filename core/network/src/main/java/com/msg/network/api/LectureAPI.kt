@@ -11,7 +11,7 @@ import java.util.UUID
 interface LectureAPI {
     @POST("/lecture")
     suspend fun openLecture(
-        @Body openLectureRequest: OpenLectureRequest,
+        @Body body: OpenLectureRequest,
     )
 
     @GET("/lecture")
