@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bitgoeul.login.viewmodel.AuthViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
@@ -133,7 +132,12 @@ fun LoginScreen() {
                             .height(52.dp),
                         state = ButtonState.Disable,
                     ) {
-                        authViewModel.login(body = LoginRequest(email = emailState.value, password = passwordState.value))
+                        authViewModel.login(
+                            body = LoginRequest(
+                                email = emailState.value,
+                                password = passwordState.value
+                            )
+                        )
                     }
                 }
 
