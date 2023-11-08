@@ -1,6 +1,6 @@
 package com.msg.model.remote
 
-enum class HighSchool(school: String) {
+enum class HighSchool(val school: String) {
     GWANGJU_TECHNICAL_HIGH_SCHOOL("광주공업고등학교"),
     KUMPA_TECHNICAL_HIGH_SCHOOL("금파공업고등학교"),
     JEONNAM_TECHNICAL_HIGH_SCHOOL("전남공업고등학교"),
