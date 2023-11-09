@@ -11,30 +11,30 @@ import retrofit2.http.Path
 import java.util.UUID
 
 interface LectureAPI {
-    @POST("/lecture")
+    @POST("lecture")
     suspend fun openLecture(
         @Body body: OpenLectureRequest,
     )
 
-    @GET("/lecture")
+    @GET("lecture")
     suspend fun getLectureList(): List<LectureListModel>
 
-    @GET("/lecture/{id}")
+    @GET("lecture/{id}")
     suspend fun getDetailLecture(
         @Path("id") id: UUID,
     )
 
-    @POST("/lecture/{id}")
+    @POST("lecture/{id}")
     suspend fun lectureApplication(
         @Path("id") id: UUID,
     )
 
-    @PATCH("/lecture/{id}/approve")
+    @PATCH("lecture/{id}/approve")
     suspend fun approvePendingLecture(
         @Path("id") id: UUID,
     )
 
-    @DELETE("/lecture/{id}/reject")
+    @DELETE("lecture/{id}/reject")
     suspend fun rejectPendingLecture(
         @Path("id") id: UUID,
     )
