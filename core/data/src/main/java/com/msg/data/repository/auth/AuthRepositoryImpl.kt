@@ -1,4 +1,4 @@
-package com.msg.data.repository
+package com.msg.data.repository.auth
 
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.model.remote.model.AuthTokenModel

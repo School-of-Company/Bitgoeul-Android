@@ -1,4 +1,4 @@
-package com.msg.model.remote
+package com.msg.model.remote.enumdatatype
 
 enum class LectureType(lectureType: String) {
     MUTUAL_CREDIT_RECOGNITION_PROGRAM("상호학점인정교육과정"),

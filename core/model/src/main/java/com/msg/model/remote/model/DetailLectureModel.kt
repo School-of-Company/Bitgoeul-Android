@@ -1,7 +1,7 @@
 package com.msg.model.remote.model
 
-import com.msg.model.remote.LectureStatus
-import com.msg.model.remote.LectureType
+import com.msg.model.remote.enumdatatype.LectureStatus
+import com.msg.model.remote.enumdatatype.LectureType
 import java.util.UUID
 
 data class DetailLectureModel(

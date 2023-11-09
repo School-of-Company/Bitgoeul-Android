@@ -1,6 +1,6 @@
 package com.msg.model.remote.request.auth
 
-import com.msg.model.remote.HighSchool
+import com.msg.model.remote.enumdatatype.HighSchool
 
 data class SignUpProfessorRequest(
     val email: String,

@@ -1,7 +1,6 @@
 package com.msg.model.remote.request.lecture
 
-import com.msg.model.remote.LectureType
-import java.time.LocalDateTime
+import com.msg.model.remote.enumdatatype.LectureType
 
 
 data class OpenLectureRequest(

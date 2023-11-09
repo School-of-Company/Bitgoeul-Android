@@ -1,7 +1,7 @@
 package com.msg.data.di
 
-import com.msg.data.repository.AuthRepository
-import com.msg.data.repository.AuthRepositoryImpl
+import com.msg.data.repository.auth.AuthRepository
+import com.msg.data.repository.auth.AuthRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
