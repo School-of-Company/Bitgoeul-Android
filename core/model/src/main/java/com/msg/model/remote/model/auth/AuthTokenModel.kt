@@ -1,10 +1,9 @@
-package com.msg.model.remote
+package com.msg.model.remote.model.auth
 
-import kotlinx.datetime.LocalDateTime
 
 data class AuthTokenModel(
     val accessToken: String,
     val refreshToken: String,
     val accessExpiredAt: String,
-    val refreshExpiredAt: String
+    val refreshExpiredAt: String,
 )

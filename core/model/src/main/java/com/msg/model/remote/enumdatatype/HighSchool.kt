@@ -1,4 +1,4 @@
-package com.msg.model.remote
+package com.msg.model.remote.enumdatatype
 
 enum class HighSchool(school: String) {
     GWANGJU_TECHNICAL_HIGH_SCHOOL("광주공업고등학교"),

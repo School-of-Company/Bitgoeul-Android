@@ -3,6 +3,7 @@ package com.msg.network.di
 import android.util.Log
 import com.msg.network.BuildConfig
 import com.msg.network.api.AuthAPI
+import com.msg.network.api.LectureAPI
 import com.msg.network.util.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -58,4 +59,8 @@ object NetworkModule {
     @Provides
     fun provideAuthAPI(retrofit: Retrofit): AuthAPI =
         retrofit.create(AuthAPI::class.java)
+
+    @Provides
+    fun provideLectureAPI(retrofit: Retrofit): LectureAPI =
+        retrofit.create(LectureAPI::class.java)
 }
