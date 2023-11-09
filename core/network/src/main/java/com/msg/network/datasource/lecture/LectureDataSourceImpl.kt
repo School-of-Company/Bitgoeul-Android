@@ -1,6 +1,6 @@
 package com.msg.network.datasource.lecture
 
-import com.msg.model.remote.model.LectureListModel
+import com.msg.model.remote.model.lecture.LectureListModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.network.api.LectureAPI
 import com.msg.network.util.BitgoeulApiHandler

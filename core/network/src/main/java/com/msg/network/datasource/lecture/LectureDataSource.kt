@@ -1,6 +1,6 @@
 package com.msg.network.datasource.lecture
 
-import com.msg.model.remote.model.LectureListModel
+import com.msg.model.remote.model.lecture.LectureListModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID

@@ -1,4 +1,4 @@
-package com.msg.model.remote.model
+package com.msg.model.remote.model.auth
 
 
 data class AuthTokenModel(

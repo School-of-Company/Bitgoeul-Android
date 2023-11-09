@@ -1,6 +1,6 @@
 package com.msg.data.repository.auth
 
-import com.msg.model.remote.model.AuthTokenModel
+import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
 import com.msg.model.remote.request.auth.SignUpGovernmentRequest

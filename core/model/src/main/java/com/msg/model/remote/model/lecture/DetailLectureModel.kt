@@ -1,4 +1,4 @@
-package com.msg.model.remote.model
+package com.msg.model.remote.model.lecture
 
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType

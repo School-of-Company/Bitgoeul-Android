@@ -1,7 +1,7 @@
 package com.msg.domain.auth
 
 import com.msg.data.repository.auth.AuthRepository
-import com.msg.model.remote.model.AuthTokenModel
+import com.msg.model.remote.model.auth.AuthTokenModel
 import javax.inject.Inject
 
 class SaveTokenUseCase @Inject constructor(
