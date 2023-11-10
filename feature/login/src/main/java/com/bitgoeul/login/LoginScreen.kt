@@ -78,9 +78,10 @@ fun LoginScreen() {
                         },
                         isLinked = false,
                         isDisabled = false,
-                    ) {
-                        // Action
-                    }
+                        isReadOnly = false,
+                        isReverseTrailingIcon = false,
+                        value = isTextStatus
+                    )
                 }
 
                 if (isErrorTextShow.value) {
