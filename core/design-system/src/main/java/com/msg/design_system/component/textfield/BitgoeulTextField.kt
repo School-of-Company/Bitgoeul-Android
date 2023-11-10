@@ -1,5 +1,6 @@
 package com.msg.design_system.component.textfield
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,6 +40,7 @@ fun DefaultTextField(
     modifier: Modifier,
     placeholder: String,
     isReadOnly: Boolean = false,
+    isNumberOnly: Boolean = false,
     isError: Boolean,
     isLinked: Boolean,
     isDisabled: Boolean,
@@ -65,13 +69,14 @@ fun DefaultTextField(
                         color = when {
                             isDisabled -> colors.G1
                             isError -> colors.E5
-                            text.isNotEmpty() -> colors.G1
                             isFocused.value -> colors.P5
+                            text.isNotEmpty() -> colors.G1
                             else -> colors.G1
                         },
                         shape = RoundedCornerShape(8.dp)
                     )
                     .onFocusChanged {
+                        Log.d("TAG", it.isFocused.toString())
                         isFocused.value = it.isFocused
                         if (it.isFocused && onClick != null) onClick()
                         if (!it.isFocused && value != null) text = value
@@ -114,7 +119,7 @@ fun DefaultTextField(
                             IconButton(
                                 onClick = {
                                     text = ""
-                                    onClickButton
+                                    onClickButton()
                                 },
                                 enabled = text.isNotEmpty()
                             ) {
@@ -123,7 +128,8 @@ fun DefaultTextField(
                         }
                     }
                 },
-                readOnly = isReadOnly
+                readOnly = isReadOnly,
+                keyboardOptions = if (isNumberOnly) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions(autoCorrect = false)
             )
             if (isError||isLinked) {
                 val isAll: Boolean = isError&&isLinked
@@ -164,7 +170,8 @@ fun PasswordTextField(
     onClickLink: () -> Unit,
     isError: Boolean,
     isLinked: Boolean,
-    isDisabled: Boolean
+    isDisabled: Boolean,
+    onClick: (() -> Unit)? = null
 ) {
     var showPassword by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -196,6 +203,7 @@ fun PasswordTextField(
                     )
                     .onFocusChanged {
                         isFocused.value = it.isFocused
+                        if (it.isFocused && onClick != null) onClick()
                         if (it.isFocused) isChanged.value = false
                     }
                     .background(
