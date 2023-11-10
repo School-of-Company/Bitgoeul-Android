@@ -1,4 +1,4 @@
-package com.msg.model.remote
+package com.msg.model.remote.enumdatatype
 
 import com.msg.model.ui.*
 

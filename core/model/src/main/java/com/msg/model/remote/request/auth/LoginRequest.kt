@@ -1,4 +1,4 @@
-package com.msg.model.remote.request
+package com.msg.model.remote.request.auth
 
 data class LoginRequest(
     val email: String,

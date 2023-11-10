@@ -1,12 +1,12 @@
 package com.msg.network.datasource.auth
 
-import com.msg.model.remote.AuthTokenModel
-import com.msg.model.remote.request.LoginRequest
-import com.msg.model.remote.request.SignUpCompanyInstructorRequest
-import com.msg.model.remote.request.SignUpGovernmentRequest
-import com.msg.model.remote.request.SignUpJobClubTeacherRequest
-import com.msg.model.remote.request.SignUpProfessorRequest
-import com.msg.model.remote.request.SignUpStudentRequest
+import com.msg.model.remote.model.auth.AuthTokenModel
+import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
+import com.msg.model.remote.request.auth.SignUpGovernmentRequest
+import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
+import com.msg.model.remote.request.auth.SignUpProfessorRequest
+import com.msg.model.remote.request.auth.SignUpStudentRequest
 import kotlinx.coroutines.flow.Flow
 
 interface AuthDataSource {
