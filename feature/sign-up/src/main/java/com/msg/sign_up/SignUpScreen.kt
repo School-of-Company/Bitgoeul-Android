@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,10 +38,8 @@ import com.msg.sign_up.data.BelongList
 import com.msg.sign_up.data.HighSchoolList
 import com.msg.sign_up.data.OutsideJobList
 import com.msg.sign_up.data.SchoolJobList
-import com.msg.sign_up.util.searchBySchool
 import com.msg.sign_up.util.searchClubBySchool
 import com.msg.sign_up.util.searchingInList
-import kotlin.math.sign
 
 enum class SignUpState {
     Belong,
