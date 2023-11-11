@@ -9,4 +9,5 @@
     <string name="forgot_password">비밀번호를 잊었나요?</string>
     <string name="wrong_password">잘못된 비밀번호 입니다.</string>
     <string name="sign_up">회원가입</string>
+    <string name="lecture_list">강의 목록</string>
 </resources>
