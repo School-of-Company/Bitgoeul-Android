@@ -1,7 +1,5 @@
-package com.msg.lecture
+package com.msg.lecture.component
 
-import android.view.RoundedCorner
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,11 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -25,9 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.msg.design_system.R
 import androidx.compose.ui.unit.dp
@@ -88,7 +82,7 @@ fun LectureCard() {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심...",
+                        text = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심...", // 추후 넘어오는 리스폰스값으로 변경 예정
                         modifier = Modifier
                             .width(304.dp)
                             .height(44.dp),
@@ -100,7 +94,7 @@ fun LectureCard() {
 
                     Row {
                         Text(
-                            text = "2023.10.30 ~ 2023.10.31",
+                            text = "2023.10.30 ~ 2023.10.31", // 추후 넘어오는 리스폰스값으로 변경 예정
                             modifier = Modifier
                                 .width(154.dp)
                                 .height(20.dp),
@@ -140,7 +134,7 @@ fun LectureCard() {
 
                         ) {
                         Text(
-                            text = "상호학점인정교육과정",
+                            text = "상호학점인정교육과정", // 추후 넘어오는 리스폰스값으로 변경 예정
                             modifier = Modifier.height(20.dp),
                             color = color.G2,
                             style = type.labelMedium,
