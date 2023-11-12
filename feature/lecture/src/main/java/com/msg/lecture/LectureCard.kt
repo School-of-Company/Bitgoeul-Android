@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -39,11 +41,10 @@ fun LectureCard() {
 
             Card(
                 modifier = Modifier
-                    .width(304.dp)
-                    .height(204.dp),
+                    .wrapContentSize(),
                 colors = CardDefaults.cardColors(containerColor = color.WHITE)
             ) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -145,12 +146,10 @@ fun LectureCard() {
                             style = type.labelMedium,
                             fontSize = 14.sp
                         )
+
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
                 }
-
             }
         }
     }
