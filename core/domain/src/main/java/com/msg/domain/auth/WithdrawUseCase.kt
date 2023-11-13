@@ -1,6 +1,6 @@
 package com.msg.domain.auth
 
-import com.msg.data.repository.AuthRepository
+import com.msg.data.repository.auth.AuthRepository
 import javax.inject.Inject
 
 class WithdrawUseCase @Inject constructor(
