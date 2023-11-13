@@ -28,7 +28,7 @@ import com.msg.lecture.component.LectureCard
 
 
 @Composable
-fun MainLectureScreen() {
+fun LectureScreen() {
     BitgoeulAndroidTheme { colors, type ->
         Surface {
             Column(
@@ -88,6 +88,7 @@ fun MainLectureScreen() {
                                     .background(color = colors.G9)
                             )
                         }
+
                         Spacer(modifier = Modifier.height(12.dp))
 
                         LectureCard()
@@ -104,5 +105,5 @@ fun MainLectureScreen() {
 @Preview
 @Composable
 fun MainLecturePagePreview() {
-    MainLectureScreen()
+    LectureScreen()
 }
