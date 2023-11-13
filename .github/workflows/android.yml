@@ -41,7 +41,7 @@ jobs:
           ${{runner.os}}-gradle-
       
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build -i
 
     - name: Bitgouel Android CI Discord Notification
       uses: sarisia/actions-status-discord@v1
