@@ -28,7 +28,7 @@ import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.LinkText
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.request.LoginRequest
+import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
 fun LoginScreen() {
@@ -150,7 +150,7 @@ fun LoginScreen() {
                     style = type.labelMedium,
                     color = color.G1,
                     fontSize = 14.sp,
-                )
+                    )
 
                 Spacer(modifier = Modifier.height(2.dp))
 

@@ -1,0 +1,60 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.msg.lecture.test.lecture-mergeDebugAndroidTestResources-66:/values-mk/values-mk.xml",
+            "map": [
+                {
+                    "source": "/Users/chaejong-in/.gradle/caches/transforms-3/653f3d96d01a4983735239aeafe205f1/transformed/material3-1.0.1/res/values-mk/values-mk.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,131,204",
+                        "endColumns": "75,72,76",
+                        "endOffsets": "126,199,276"
+                    },
+                    "to": {
+                        "startLines": "4,7,9",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "299,574,732",
+                        "endColumns": "75,72,76",
+                        "endOffsets": "370,642,804"
+                    }
+                },
+                {
+                    "source": "/Users/chaejong-in/.gradle/caches/transforms-3/fe3c168fdd95236bd4821543c0eefd9b/transformed/ui-1.3.3/res/values-mk/values-mk.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,209,299,395,498,583,660,750,842,926,997,1067,1151,1240,1312,1383",
+                        "endColumns": "103,89,95,102,84,76,89,91,83,70,69,83,88,71,70,120",
+                        "endOffsets": "204,294,390,493,578,655,745,837,921,992,1062,1146,1235,1307,1378,1499"
+                    },
+                    "to": {
+                        "startLines": "2,3,5,6,8,10,11,12,13,14,15,16,17,18,20,21",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,209,375,471,647,809,886,976,1068,1152,1223,1293,1377,1466,1639,1710",
+                        "endColumns": "103,89,95,102,84,76,89,91,83,70,69,83,88,71,70,120",
+                        "endOffsets": "204,294,466,569,727,881,971,1063,1147,1218,1288,1372,1461,1533,1705,1826"
+                    }
+                },
+                {
+                    "source": "/Users/chaejong-in/.gradle/caches/transforms-3/2a626eb74a981b99d9378f26922f07ef/transformed/core-1.9.0/res/values-mk/values-mk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "19",
+                        "startColumns": "4",
+                        "startOffsets": "1538",
+                        "endColumns": "100",
+                        "endOffsets": "1634"
+                    }
+                }
+            ]
+        }
+    ]
+}

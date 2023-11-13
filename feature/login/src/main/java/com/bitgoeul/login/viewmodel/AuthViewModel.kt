@@ -10,8 +10,8 @@ import com.msg.domain.auth.LoginUseCase
 import com.msg.domain.auth.LogoutUseCase
 import com.msg.domain.auth.SaveTokenUseCase
 import com.msg.domain.auth.WithdrawUseCase
-import com.msg.model.remote.AuthTokenModel
-import com.msg.model.remote.request.LoginRequest
+import com.msg.model.remote.model.auth.AuthTokenModel
+import com.msg.model.remote.request.auth.LoginRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
