@@ -31,12 +31,21 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
-fun LoginScreen() {
+fun LoginRoute(
+    onSignUpClick: () -> Unit
+) {
+    LoginScreen(onSignUpClick = onSignUpClick)
+}
+
+@Composable
+fun LoginScreen(
+    onSignUpClick: () -> Unit
+) {
     val isEmailErrorStatus = remember { mutableStateOf(false) }
     val isPasswordErrorStatus = remember { mutableStateOf(false) }
     val isErrorTextShow = remember { mutableStateOf(false) }
     var isTextStatus = ""
-    var emailState = remember { mutableStateOf("") }
+    val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     val authViewModel: AuthViewModel = hiltViewModel()
     BitgoeulAndroidTheme { color, type ->
@@ -157,7 +166,7 @@ fun LoginScreen() {
                 LinkText(
                     text = stringResource(id = R.string.sign_up)
                 ) {
-                    // Action
+                    onSignUpClick()
                 }
             }
         }
@@ -167,5 +176,5 @@ fun LoginScreen() {
 @Preview
 @Composable
 fun preview() {
-    LoginScreen()
+    LoginScreen(onSignUpClick = {})
 }
