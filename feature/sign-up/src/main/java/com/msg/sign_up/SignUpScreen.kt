@@ -92,7 +92,16 @@ fun keyboardAsState(): State<Keyboard> {
 }
 
 @Composable
-fun SignUpScreen() {
+fun SignUpRoute(
+    onBackClick: () -> Unit
+) {
+    SignUpScreen(onBackClick = onBackClick)
+}
+
+@Composable
+fun SignUpScreen(
+    onBackClick: () -> Unit
+) {
     val focusManager = LocalFocusManager.current
 
     val signUpState = remember { mutableStateOf(Belong) }
@@ -170,9 +179,9 @@ fun SignUpScreen() {
                 Spacer(modifier = Modifier.height(20.dp))
                 GoBackTopBar(
                     icon = { GoBackIcon() },
-                    text = "돌아가기"
-                ) {
-                }
+                    text = "돌아가기",
+                    onClick = { onBackClick() }
+                )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -1072,5 +1081,5 @@ fun continueToNextField(
 @Preview
 @Composable
 fun SignUpScreenPre() {
-    SignUpScreen()
+    SignUpScreen(onBackClick = {})
 }
