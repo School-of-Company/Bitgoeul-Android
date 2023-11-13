@@ -2,6 +2,7 @@ package com.msg.data.repository.auth
 
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
 import com.msg.model.remote.request.auth.SignUpGovernmentRequest
 import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
@@ -17,6 +18,7 @@ interface AuthRepository {
     suspend fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit>
     suspend fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit>
     suspend fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit>
+    suspend fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit>
     suspend fun logout(): Flow<Unit>
     suspend fun withdraw(): Flow<Unit>
 }
