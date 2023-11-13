@@ -2,6 +2,7 @@ package com.msg.network.api
 
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
 import com.msg.model.remote.request.auth.SignUpGovernmentRequest
 import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
@@ -40,6 +41,11 @@ interface AuthAPI {
     @POST("auth/company-instructor")
     suspend fun signUpCompanyInstructor(
         @Body body: SignUpCompanyInstructorRequest
+    )
+
+    @POST("auth/bbozzak")
+    suspend fun signUpBbozzakTeacher(
+        @Body body: SignUpBbozzakTeacherRequest
     )
 
     @DELETE("auth")

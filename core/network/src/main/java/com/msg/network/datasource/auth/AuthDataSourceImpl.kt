@@ -2,6 +2,7 @@ package com.msg.network.datasource.auth
 
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
 import com.msg.model.remote.request.auth.SignUpGovernmentRequest
 import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
@@ -67,13 +68,21 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { authAPI.signUpBbozzakTeacher(body = body) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
     override suspend fun logout(): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.logout() }
                 .sendRequest()
         )
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun withdraw(): Flow<Unit> = flow {
         emit(
@@ -81,5 +90,5 @@ class AuthDataSourceImpl @Inject constructor(
                 .httpRequest { authAPI.withdraw() }
                 .sendRequest()
         )
-    }
+    }.flowOn(Dispatchers.IO)
 }
