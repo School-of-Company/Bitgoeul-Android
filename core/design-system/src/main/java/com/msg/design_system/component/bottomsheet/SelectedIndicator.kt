@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
-@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun SelectedIndicator(
     isSelected: Boolean,
@@ -29,13 +28,14 @@ fun SelectedIndicator(
     enabled: Boolean = true,
     onClick: (() -> Unit)?
 ) {
+    val interactionSource = remember { mutableStateOf(MutableInteractionSource()) }
     BitgoeulAndroidTheme { colors, _ ->
         Canvas(
             modifier = modifier
                 .width(24.dp)
                 .height(24.dp)
                 .clickable(
-                    interactionSource = MutableInteractionSource(),
+                    interactionSource = interactionSource.value,
                     indication = rememberRipple(bounded = false)
                 ) {
                     if (onClick != null && enabled) {
