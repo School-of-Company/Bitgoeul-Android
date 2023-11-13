@@ -1,5 +1,6 @@
 package com.msg.design_system.component.bottomsheet
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun SelectedIndicator(
     isSelected: Boolean,
