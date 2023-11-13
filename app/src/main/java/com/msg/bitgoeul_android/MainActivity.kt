@@ -16,13 +16,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            com.msg.design_system.theme.BitgoeulAndroidTheme { colors, typography ->
-                // A surface container using the 'background' color from the theme
+            BitgoeulAndroidTheme { colors, typography ->
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
                 }
             }
         }
@@ -40,7 +38,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    com.msg.design_system.theme.BitgoeulAndroidTheme { colors, typography ->
+    BitgoeulAndroidTheme { colors, typography ->
         Greeting("Android")
     }
 }
