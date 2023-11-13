@@ -1,5 +1,6 @@
 package com.msg.design_system.component.textfield
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,26 +36,31 @@ import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailTextField(
+fun DefaultTextField(
     modifier: Modifier,
     placeholder: String,
+    isReadOnly: Boolean = false,
+    isNumberOnly: Boolean = false,
+    isError: Boolean,
+    isLinked: Boolean,
+    isDisabled: Boolean,
+    isReverseTrailingIcon: Boolean,
     errorText: String,
     linkText: String? = null,
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
-    isError: Boolean,
-    isLinked: Boolean,
-    isDisabled: Boolean,
-    onClickLink: () -> Unit
+    onClickLink: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
+    value: String? = null
 ) {
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(value ?: "") }
     val isFocused = remember { mutableStateOf(false) }
     BitgoeulAndroidTheme { colors, typography ->
         Column {
             OutlinedTextField(
                 value = text,
                 onValueChange = {
-                    text = it
+                    text = value ?: it
                     onValueChange(it)
                 },
                 modifier = modifier
@@ -61,24 +69,29 @@ fun EmailTextField(
                         color = when {
                             isDisabled -> colors.G1
                             isError -> colors.E5
-                            text.isNotEmpty() -> colors.G1
                             isFocused.value -> colors.P5
+                            text.isNotEmpty() -> colors.G1
                             else -> colors.G1
                         },
                         shape = RoundedCornerShape(8.dp)
                     )
                     .onFocusChanged {
+                        Log.d("TAG", it.isFocused.toString())
                         isFocused.value = it.isFocused
+                        if (it.isFocused && onClick != null) onClick()
+                        if (!it.isFocused && value != null) text = value
                     }
                     .background(
                         color = if (isDisabled) colors.G9 else Color.Transparent
                     ),
                 textStyle = typography.bodySmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    placeholderColor = colors.G2,
+                    focusedPlaceholderColor = colors.G2,
+                    unfocusedPlaceholderColor = colors.G2,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    textColor = if (isError) colors.E5 else colors.BLACK,
+                    focusedTextColor = if (isError) colors.E5 else colors.BLACK,
+                    unfocusedTextColor = if (isError) colors.E5 else colors.BLACK,
                     disabledTextColor = colors.G1,
                     cursorColor = colors.P5
                 ),
@@ -89,16 +102,34 @@ fun EmailTextField(
                 maxLines = 1,
                 singleLine = true,
                 trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            text = ""
-                            onClickButton()
-                        },
-                        enabled = text.isNotEmpty()
-                    ) {
-                        if (text.isNotEmpty()) CancelIcon()
+                    if (!isReverseTrailingIcon) {
+                        if (isFocused.value) {
+                            IconButton(
+                                onClick = {
+                                    text = ""
+                                    onClickButton()
+                                },
+                                enabled = text.isNotEmpty()
+                            ) {
+                                if (text.isNotEmpty()) CancelIcon()
+                            }
+                        }
+                    } else {
+                        if (!isFocused.value) {
+                            IconButton(
+                                onClick = {
+                                    text = ""
+                                    onClickButton()
+                                },
+                                enabled = text.isNotEmpty()
+                            ) {
+                                if (text.isNotEmpty()) CancelIcon()
+                            }
+                        }
                     }
-                }
+                },
+                readOnly = isReadOnly,
+                keyboardOptions = if (isNumberOnly) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions(autoCorrect = false)
             )
             if (isError||isLinked) {
                 val isAll: Boolean = isError&&isLinked
@@ -109,13 +140,17 @@ fun EmailTextField(
                     if (isAll) {
                         ErrorText(text = errorText)
                         if (linkText != null) {
-                            LinkText(text = linkText, onClickLink = onClickLink)
+                            if (onClickLink != null) {
+                                LinkText(text = linkText, onClickLink = onClickLink)
+                            }
                         }
                     } else if (isError) {
                         ErrorText(text = errorText)
                     } else {
                         if (linkText != null) {
-                            LinkText(text = linkText, onClickLink = onClickLink)
+                            if (onClickLink != null) {
+                                LinkText(text = linkText, onClickLink = onClickLink)
+                            }
                         }
                     }
                 }
@@ -135,7 +170,8 @@ fun PasswordTextField(
     onClickLink: () -> Unit,
     isError: Boolean,
     isLinked: Boolean,
-    isDisabled: Boolean
+    isDisabled: Boolean,
+    onClick: (() -> Unit)? = null
 ) {
     var showPassword by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -167,6 +203,7 @@ fun PasswordTextField(
                     )
                     .onFocusChanged {
                         isFocused.value = it.isFocused
+                        if (it.isFocused && onClick != null) onClick()
                         if (it.isFocused) isChanged.value = false
                     }
                     .background(
@@ -177,10 +214,12 @@ fun PasswordTextField(
                 singleLine = true,
                 textStyle = typography.bodySmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    placeholderColor = colors.G2,
+                    focusedPlaceholderColor = colors.G2,
+                    unfocusedPlaceholderColor = colors.G2,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    textColor = if (isError) colors.E5 else colors.BLACK,
+                    focusedTextColor = if (isError) colors.E5 else colors.BLACK,
+                    unfocusedTextColor = if (isError) colors.E5 else colors.BLACK,
                     disabledTextColor = colors.G1,
                     cursorColor = colors.P5
                 ),
@@ -253,7 +292,7 @@ fun TextFieldPre() {
         modifier = Modifier,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        EmailTextField(
+        DefaultTextField(
             modifier = Modifier
                 .width(320.dp)
                 .height(52.dp),
@@ -263,9 +302,11 @@ fun TextFieldPre() {
             onClickButton = {},
             isError = false,
             isLinked = false,
-            isDisabled = false
-        ) {
-        }
+            isDisabled = false,
+            isReadOnly = false,
+            isReverseTrailingIcon = false,
+            onClick = {}
+        )
 
         PasswordTextField(
             modifier = Modifier

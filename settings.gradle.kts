@@ -27,3 +27,4 @@ include(":core:model")
 
 include(":feature:login")
 include(":feature:lecture")
+include(":feature:sign-up")
