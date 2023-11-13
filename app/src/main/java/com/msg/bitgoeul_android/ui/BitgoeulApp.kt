@@ -12,7 +12,7 @@ fun BitgoeulApp(
         windowSizeClass = windowSizeClass
     )
 ) {
-    BitgoeulAndroidTheme { colors, typography ->  
+    BitgoeulAndroidTheme { _, _ ->
         BitgoeulNavHost(appState = appState)
     }
 }
