@@ -1,6 +1,6 @@
 package com.msg.sign_up.data
 
-import com.msg.model.remote.HighSchool
+import com.msg.model.remote.enumdatatype.HighSchool
 
 val BelongList = listOf("학교", "외부")
 

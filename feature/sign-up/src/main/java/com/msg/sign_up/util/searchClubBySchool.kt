@@ -1,6 +1,6 @@
 package com.msg.sign_up.util
 
-import com.msg.model.remote.HighSchool
+import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.ui.DHSofFSClubList
 import com.msg.model.ui.GATClubList
 import com.msg.model.ui.GETHSClubList
