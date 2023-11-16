@@ -1,5 +1,7 @@
 package com.msg.network.di
 
+import com.msg.network.datasource.activity.ActivityDataSource
+import com.msg.network.datasource.activity.ActivityDataSourceImpl
 import com.msg.network.datasource.auth.AuthDataSource
 import com.msg.network.datasource.auth.AuthDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
@@ -21,4 +23,9 @@ abstract class DataSourceModule {
     abstract fun bindLectureDataSource(
         lectureDataSourceImpl: LectureDataSourceImpl
     ): LectureDataSource
+
+    @Binds
+    abstract fun bindActivityDataSource(
+        activityDataSourceImpl: ActivityDataSourceImpl
+    ): ActivityDataSource
 }
