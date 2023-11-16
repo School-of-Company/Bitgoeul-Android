@@ -13,9 +13,14 @@ interface ActivityAPI {
         @Body body: StudentActivityModel
     )
 
-    @PATCH("patch/{id}")
+    @PATCH("activity/{id}")
     suspend fun editStudentActivityInfo(
         @Path("id") id: UUID,
         @Body body: StudentActivityModel
+    )
+
+    @PATCH("activity/{id}/approve")
+    suspend fun approveStudentActivityInfo(
+        @Path("id") id: UUID
     )
 }
