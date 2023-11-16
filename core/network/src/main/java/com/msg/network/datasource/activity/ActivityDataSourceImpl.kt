@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.UUID
 import javax.inject.Inject
 
 class ActivityDataSourceImpl @Inject constructor(
@@ -16,6 +17,14 @@ class ActivityDataSourceImpl @Inject constructor(
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { activityAPI.addStudentActivityInfo(body = body) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun editStudentActivityInfo(id: UUID, body: StudentActivityModel): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { activityAPI.editStudentActivityInfo(id = id, body = body) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
