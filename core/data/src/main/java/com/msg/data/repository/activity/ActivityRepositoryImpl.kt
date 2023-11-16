@@ -3,6 +3,7 @@ package com.msg.data.repository.activity
 import com.msg.model.remote.model.activity.StudentActivityModel
 import com.msg.network.datasource.activity.ActivityDataSource
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 import javax.inject.Inject
 
 class ActivityRepositoryImpl @Inject constructor(
@@ -14,4 +15,10 @@ class ActivityRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun editStudentActivityInfo(id: UUID, body: StudentActivityModel): Flow<Unit> {
+        return activityDataSource.editStudentActivityInfo(
+            id = id,
+            body = body
+        )
+    }
 }
