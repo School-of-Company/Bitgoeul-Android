@@ -1,5 +1,7 @@
 package com.msg.data.di
 
+import com.msg.data.repository.activity.ActivityRepository
+import com.msg.data.repository.activity.ActivityRepositoryImpl
 import com.msg.data.repository.auth.AuthRepository
 import com.msg.data.repository.auth.AuthRepositoryImpl
 import com.msg.data.repository.lecture.LectureRepository
@@ -21,4 +23,9 @@ abstract class RepositoryModule {
     abstract fun bindLectureRepository(
         lectureRepositoryImpl: LectureRepositoryImpl
     ): LectureRepository
+
+    @Binds
+    abstract fun bindActivityRepository(
+        activityRepositoryImpl: ActivityRepositoryImpl
+    ): ActivityRepository
 }
