@@ -23,4 +23,9 @@ interface ActivityAPI {
     suspend fun approveStudentActivityInfo(
         @Path("id") id: UUID
     )
+
+    @PATCH("activity/{id}/reject")
+    suspend fun rejectStudentActivityInfo(
+        @Path("id") id: UUID
+    )
 }
