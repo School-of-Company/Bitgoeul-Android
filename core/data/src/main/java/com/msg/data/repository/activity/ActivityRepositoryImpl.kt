@@ -27,4 +27,10 @@ class ActivityRepositoryImpl @Inject constructor(
             id = id
         )
     }
+
+    override suspend fun rejectStudentActivityInfo(id: UUID): Flow<Unit> {
+        return activityDataSource.rejectStudentActivityInfo(
+            id = id
+        )
+    }
 }
