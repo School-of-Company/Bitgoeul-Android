@@ -10,4 +10,5 @@ interface ActivityRepository {
     suspend fun editStudentActivityInfo(id: UUID, body: StudentActivityModel): Flow<Unit>
     suspend fun approveStudentActivityInfo(id: UUID): Flow<Unit>
     suspend fun rejectStudentActivityInfo(id: UUID): Flow<Unit>
+    suspend fun deleteStudentActivityInfo(id: UUID): Flow<Unit>
 }

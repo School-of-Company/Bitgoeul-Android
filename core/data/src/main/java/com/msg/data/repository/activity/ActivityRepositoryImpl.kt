@@ -33,4 +33,10 @@ class ActivityRepositoryImpl @Inject constructor(
             id = id
         )
     }
+
+    override suspend fun deleteStudentActivityInfo(id: UUID): Flow<Unit> {
+        return activityDataSource.deleteStudentActivityInfo(
+            id = id
+        )
+    }
 }
