@@ -1,6 +1,7 @@
 package com.msg.data.repository.activity
 
 import com.msg.model.remote.model.activity.StudentActivityModel
+import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
 import com.msg.network.datasource.activity.ActivityDataSource
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -37,6 +38,18 @@ class ActivityRepositoryImpl @Inject constructor(
     override suspend fun deleteStudentActivityInfo(id: UUID): Flow<Unit> {
         return activityDataSource.deleteStudentActivityInfo(
             id = id
+        )
+    }
+
+    override suspend fun inquiryMyStudentActivityInfo(
+        page: Int,
+        size: Int,
+        sort: String
+    ): Flow<InquiryStudentActivityListResponse> {
+        return activityDataSource.inquiryMyStudentActivityInfoList(
+            page = page,
+            size = size,
+            sort = sort
         )
     }
 }
