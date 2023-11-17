@@ -2,6 +2,7 @@ package com.msg.network.api
 
 import com.msg.model.remote.model.activity.StudentActivityModel
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -24,8 +25,13 @@ interface ActivityAPI {
         @Path("id") id: UUID
     )
 
-    @PATCH("activity/{id}/reject")
+    @DELETE("activity/{id}/reject")
     suspend fun rejectStudentActivityInfo(
+        @Path("id") id: UUID
+    )
+
+    @DELETE("activity/{id}")
+    suspend fun deleteStudentActivityInfo(
         @Path("id") id: UUID
     )
 }
