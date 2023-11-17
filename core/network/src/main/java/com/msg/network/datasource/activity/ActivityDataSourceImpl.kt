@@ -1,6 +1,7 @@
 package com.msg.network.datasource.activity
 
 import com.msg.model.remote.model.activity.StudentActivityModel
+import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
 import com.msg.network.api.ActivityAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +50,18 @@ class ActivityDataSourceImpl @Inject constructor(
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { activityAPI.deleteStudentActivityInfo(id = id) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun inquiryMyStudentActivityInfoList(
+        page: Int,
+        size: Int,
+        sort: String
+    ): Flow<InquiryStudentActivityListResponse> = flow {
+        emit(
+            BitgoeulApiHandler<InquiryStudentActivityListResponse>()
+                .httpRequest { activityAPI.inquiryMyStudentActivityInfo(page = page, size = size, sort = sort) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
