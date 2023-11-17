@@ -12,5 +12,5 @@ interface ActivityRepository {
     suspend fun approveStudentActivityInfo(id: UUID): Flow<Unit>
     suspend fun rejectStudentActivityInfo(id: UUID): Flow<Unit>
     suspend fun deleteStudentActivityInfo(id: UUID): Flow<Unit>
-    suspend fun inquiryMyStudentActivityInfo(page: Int, size: Int, sort: String): Flow<InquiryStudentActivityListResponse>
+    suspend fun inquiryMyStudentActivityInfoList(page: Int, size: Int, sort: String): Flow<InquiryStudentActivityListResponse>
 }

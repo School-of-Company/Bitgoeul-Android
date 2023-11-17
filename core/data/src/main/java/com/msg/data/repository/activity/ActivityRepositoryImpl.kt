@@ -41,7 +41,7 @@ class ActivityRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun inquiryMyStudentActivityInfo(
+    override suspend fun inquiryMyStudentActivityInfoList(
         page: Int,
         size: Int,
         sort: String
