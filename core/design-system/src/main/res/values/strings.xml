@@ -14,4 +14,8 @@
     <string name="lecture_category">강의 유형</string>
     <string name="mutual_credit_recognition_curriculum">상호학점인정교육과정</string>
     <string name="university_visit_program">대학탐방프로그램</string>
+    <string name="lecture_status">강의 상태</string>
+    <string name="pend_approve_status">승인 대기 중</string>
+    <string name="approve_status">승인중</string>
+    <string name="apply">적용하기</string>
 </resources>

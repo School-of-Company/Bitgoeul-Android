@@ -8,7 +8,9 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.msg.design_system.R
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,7 +28,7 @@ fun ApproveStatusTag() {
                 .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
         ) {
             Text(
-                text = "승인됨",
+                text = stringResource(id = R.string.approve_status),
                 modifier = Modifier.height(20.dp),
                 color = colors.WHITE,
                 style = type.labelMedium,

@@ -9,9 +9,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.msg.design_system.R
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
@@ -26,7 +28,7 @@ fun PendApproveStatusTag() {
                 .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
         ) {
             Text(
-                text = "승인 대기 중",
+                text = stringResource(id = R.string.pend_approve_status),
                 modifier = Modifier.height(20.dp),
                 color = colors.WHITE,
                 style = type.labelMedium,

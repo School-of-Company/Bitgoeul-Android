@@ -1,9 +1,10 @@
 package com.msg.design_system.component.bottomsheet
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -12,15 +13,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.msg.design_system.R
+import com.msg.design_system.component.button.BitgoeulButton
+import com.msg.design_system.component.button.ButtonState
+import com.msg.design_system.component.checkbox.BitGoeulCheckBox
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,49 +67,187 @@ fun SelectorBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 fun LectureFilterBottomSheet(
     onQuit: () -> Unit,
+    isVisible: Boolean,
 ) {
-    BitgoeulAndroidTheme { colors, type ->
-        ModalBottomSheet(
-            onDismissRequest = {
-                onQuit()
-            },
-        ) {
-            Column(
-                modifier = Modifier.padding(horizontal = 28.dp)
+    // arrayList<Boolean> 고려
+    val isChecked = remember { mutableStateListOf(false, false, false, false) }
+
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    if (isVisible) {
+        BitgoeulAndroidTheme { colors, type ->
+            ModalBottomSheet(
+                onDismissRequest = {
+                    onQuit()
+                },
+                sheetState = bottomSheetState
             ) {
-                Text(
-                    text = stringResource(id = R.string.filter),
+                Column(
                     modifier = Modifier
-                        .width(35.dp)
-                        .height(26.dp),
-                    color = colors.BLACK,
-                    style = type.bodySmall,
-                    fontSize = 20.sp
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                Text(
-                    text = stringResource(id = R.string.lecture_category),
-                    modifier = Modifier
-                        .width(67.dp)
-                        .height(26.dp),
-                    color = colors.BLACK,
-                    style = type.bodyLarge,
-                    fontSize = 18.sp
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier.wrapContentSize()
+                        .padding(horizontal = 28.dp)
                 ) {
+                    Text(
+                        text = stringResource(id = R.string.filter),
+                        modifier = Modifier
+                            .width(35.dp)
+                            .height(26.dp),
+                        color = colors.BLACK,
+                        style = type.bodySmall,
+                        fontSize = 20.sp
+                    )
 
+                    Spacer(modifier = Modifier.height(18.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.lecture_category),
+                        modifier = Modifier
+                            .width(67.dp)
+                            .height(26.dp),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        fontSize = 18.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(vertical = 8.dp, horizontal = 13.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        BitGoeulCheckBox(
+                            checked = isChecked[0],
+                            onCheckedChange = { isChecked[0] = it },
+                            modifier = Modifier
+                                .width(24.dp)
+                                .height(24.dp),
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.mutual_credit_recognition_curriculum),
+                            modifier = Modifier
+                                .width(139.dp),
+                            color = colors.BLACK,
+                            style = type.bodySmall,
+                            fontSize = 16.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(vertical = 8.dp, horizontal = 13.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        BitGoeulCheckBox(
+                            checked = isChecked[1],
+                            onCheckedChange = { isChecked[1] = it },
+                            modifier = Modifier
+                                .width(24.dp)
+                                .height(24.dp),
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.university_visit_program),
+                            modifier = Modifier
+                                .width(111.dp),
+                            color = colors.BLACK,
+                            style = type.bodySmall,
+                            fontSize = 16.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.lecture_status),
+                        modifier = Modifier
+                            .width(67.dp)
+                            .height(26.dp),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        fontSize = 18.sp
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(vertical = 8.dp, horizontal = 13.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        BitGoeulCheckBox(
+                            checked = isChecked[2],
+                            onCheckedChange = { isChecked[2] = it },
+                            modifier = Modifier
+                                .width(24.dp)
+                                .height(24.dp),
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.pend_approve_status),
+                            modifier = Modifier
+                                .width(78.dp),
+                            color = colors.BLACK,
+                            style = type.bodySmall,
+                            fontSize = 16.sp
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(vertical = 8.dp, horizontal = 13.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        BitGoeulCheckBox(
+                            checked = isChecked[3],
+                            onCheckedChange = { isChecked[3] = it },
+                            modifier = Modifier
+                                .width(24.dp)
+                                .height(24.dp),
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.approve_status),
+                            modifier = Modifier
+                                .width(42.dp),
+                            color = colors.BLACK,
+                            style = type.bodySmall,
+                            fontSize = 16.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    BitgoeulButton(
+                        text = stringResource(id = R.string.apply),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        state = ButtonState.Enable
+                    ) {
+                        // 클릭시 필터 적용 시키기
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .height(38.dp)
+                            .fillMaxWidth()
+                    )
                 }
             }
         }
     }
 }
+
 
 @Preview
 @Composable
@@ -124,6 +268,7 @@ fun BottomSheetPre() {
 //    }
 
     LectureFilterBottomSheet(
-        onQuit = {}
+        onQuit = {},
+        isVisible = true
     )
 }

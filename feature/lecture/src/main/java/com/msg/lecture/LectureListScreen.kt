@@ -2,6 +2,7 @@ package com.msg.lecture
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,15 +27,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
+import com.msg.design_system.component.bottomsheet.LectureFilterBottomSheet
 import com.msg.lecture.component.LectureCard
 
 
 @Composable
-fun LectureScreen() {
+fun LectureListScreen() {
+    var isFilterBottomSheetVisible = remember { mutableStateOf(false) }
+
     BitgoeulAndroidTheme { colors, type ->
+
         Surface {
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .background(color = colors.WHITE),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -69,7 +77,11 @@ fun LectureScreen() {
                     Image(
                         painterResource(id = R.drawable.ic_filter),
                         contentDescription = null,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier
+                            .padding(top = 4.dp)
+                            .clickable {
+                                isFilterBottomSheetVisible.value = true
+                            }
                     )
                 }
 
@@ -79,7 +91,7 @@ fun LectureScreen() {
                         .fillMaxHeight()
                         .padding(start = 28.dp, end = 28.dp, top = 40.dp)
                 ) {
-                    items(30){
+                    items(30) {
                         Column {
                             Spacer(
                                 modifier = Modifier
@@ -97,6 +109,10 @@ fun LectureScreen() {
 
                     }
                 }
+                LectureFilterBottomSheet(
+                    onQuit = { isFilterBottomSheetVisible.value = false },
+                    isVisible = isFilterBottomSheetVisible.value
+                )
             }
         }
     }
@@ -105,5 +121,5 @@ fun LectureScreen() {
 @Preview
 @Composable
 fun MainLecturePagePreview() {
-    LectureScreen()
+    LectureListScreen()
 }
