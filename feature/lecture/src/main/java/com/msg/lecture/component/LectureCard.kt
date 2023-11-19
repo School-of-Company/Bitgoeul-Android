@@ -50,7 +50,6 @@ fun LectureCard() {
                             .height(22.dp),
                         color = color.BLACK,
                         style = type.bodySmall,
-                        fontSize = 16.sp
                     )
 
                     Text(
@@ -60,7 +59,6 @@ fun LectureCard() {
                             .height(22.dp),
                         color = color.G1,
                         style = type.bodySmall,
-                        fontSize = 16.sp
                     )
                 }
 
@@ -76,7 +74,6 @@ fun LectureCard() {
                             .height(26.dp),
                         color = color.BLACK,
                         style = type.bodyLarge,
-                        fontSize = 18.sp
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -88,7 +85,6 @@ fun LectureCard() {
                             .height(44.dp),
                         color = color.G2,
                         style = type.bodySmall,
-                        fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
@@ -100,7 +96,6 @@ fun LectureCard() {
                                 .height(20.dp),
                             color = color.G1,
                             style = type.labelMedium,
-                            fontSize = 14.sp
                         )
 
                         Image(
@@ -117,7 +112,6 @@ fun LectureCard() {
                                 .height(20.dp),
                             color = color.G1,
                             style = type.labelMedium,
-                            fontSize = 14.sp
                         )
                     }
 
@@ -138,7 +132,6 @@ fun LectureCard() {
                             modifier = Modifier.height(20.dp),
                             color = color.G2,
                             style = type.labelMedium,
-                            fontSize = 14.sp
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
