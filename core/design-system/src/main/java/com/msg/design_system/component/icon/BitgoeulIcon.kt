@@ -51,7 +51,7 @@ fun FilterIcon(
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_filter),
-        contentDescription = "apply filter icon",
+        contentDescription = "Apply filter icon",
         modifier = modifier
             .width(24.dp)
             .height(24.dp)
@@ -64,7 +64,20 @@ fun PlusIcon(
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_plus_button),
-        contentDescription = "plus icon",
+        contentDescription = "Plus icon",
+        modifier = modifier
+            .width(24.dp)
+            .height(24.dp)
+    )
+}
+
+@Composable
+fun LectureBackIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_lecture_back),
+        contentDescription = "Go to previous lecture page",
         modifier = modifier
             .width(24.dp)
             .height(24.dp)
