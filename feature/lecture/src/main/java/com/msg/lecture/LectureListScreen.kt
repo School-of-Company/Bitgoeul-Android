@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.bottomsheet.LectureFilterBottomSheet
+import com.msg.design_system.component.icon.FilterIcon
+import com.msg.design_system.component.icon.PlusIcon
 import com.msg.lecture.component.LectureCard
 
 
@@ -36,7 +38,6 @@ fun LectureListScreen() {
     var isFilterBottomSheetVisible = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, type ->
-
         Surface {
             Column(
                 modifier = Modifier
@@ -66,17 +67,14 @@ fun LectureListScreen() {
 
                     Spacer(modifier = Modifier.width(135.dp))
 
-                    Image(
-                        painterResource(id = R.drawable.ic_plus_button),
-                        contentDescription = null,
+                    PlusIcon(
                         modifier = Modifier.padding(top = 4.dp)
                     )
 
                     Spacer(modifier = Modifier.width(24.dp))
 
-                    Image(
-                        painterResource(id = R.drawable.ic_filter),
-                        contentDescription = null,
+
+                    FilterIcon(
                         modifier = Modifier
                             .padding(top = 4.dp)
                             .clickable {
