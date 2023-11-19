@@ -70,16 +70,3 @@ fun PlusIcon(
             .height(24.dp)
     )
 }
-
-@Composable
-fun LectureBackIcon(
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        painter = painterResource(id = R.drawable.ic_lecture_back),
-        contentDescription = "Go to previous lecture page",
-        modifier = modifier
-            .width(24.dp)
-            .height(24.dp)
-    )
-}
