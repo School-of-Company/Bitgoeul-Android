@@ -13,4 +13,5 @@ interface ActivityDataSource {
     suspend fun deleteStudentActivityInfo(id: UUID): Flow<Unit>
     suspend fun inquiryMyStudentActivityInfoList(page: Int, size: Int, sort: String): Flow<InquiryStudentActivityListResponse>
     suspend fun inquiryStudentActivityInfoList(page: Int, size: Int, sort: String, id: UUID): Flow<InquiryStudentActivityListResponse>
+    suspend fun inquiryEntireStudentActivityInfoList(page: Int, size: Int, sort: String): Flow<InquiryStudentActivityListResponse>
 }
