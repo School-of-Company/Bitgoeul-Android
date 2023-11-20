@@ -83,6 +83,7 @@ fun LectureCard() {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     ContentDescriptionText(
+                        maxLines = 2,
                         text = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심장이 박주홍 강민수 두근두근 연애" // 추후 넘어오는 리스폰스값으로 변경 예정
                     )
 

@@ -10,6 +10,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun ContentDescriptionText(
+    maxLines: Int,
     text: String,
     modifier : Modifier = Modifier,
 ) {
@@ -21,7 +22,7 @@ fun ContentDescriptionText(
                 .wrapContentHeight(),
             color = colors.G2,
             style = type.bodySmall,
-            maxLines = 2,
+            maxLines = maxLines,
             overflow = TextOverflow.Ellipsis
         )
     }
