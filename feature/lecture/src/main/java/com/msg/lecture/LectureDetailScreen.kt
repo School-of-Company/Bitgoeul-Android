@@ -54,20 +54,18 @@ fun LectureDetailScreen(
 
                 LectureDetailContent()
 
-                Box(
-                    modifier = Modifier.wrapContentSize()
-                        .padding(horizontal = 24.dp)
-                ) {
-                    BitgoeulButton(
-                        text = "수강 신청하기",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(52.dp)
-                            .align(Alignment.BottomCenter)
-                    ) {
+            }
 
-                    }
-                }
+            BitgoeulButton(
+                text = "수강 신청하기",
+                modifier = Modifier
+                    .padding(bottom = 40.dp)
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 24.dp)
+            ) {
+
             }
         }
     }
@@ -187,9 +185,6 @@ fun LectureDetailContent() {
                 style = type.bodySmall
             )
         }
-
-        Spacer(modifier = Modifier.height(40.dp))
-
     }
 }
 
