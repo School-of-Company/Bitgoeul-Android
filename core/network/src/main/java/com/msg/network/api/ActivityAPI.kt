@@ -1,11 +1,14 @@
 package com.msg.network.api
 
 import com.msg.model.remote.model.activity.StudentActivityModel
+import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import java.util.UUID
 
 interface ActivityAPI {
@@ -34,4 +37,11 @@ interface ActivityAPI {
     suspend fun deleteStudentActivityInfo(
         @Path("id") id: UUID
     )
+
+    @GET("activity/my")
+    suspend fun inquiryMyStudentActivityInfo(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String
+    ): InquiryStudentActivityListResponse
 }
