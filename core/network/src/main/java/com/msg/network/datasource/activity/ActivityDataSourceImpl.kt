@@ -1,6 +1,7 @@
 package com.msg.network.datasource.activity
 
 import com.msg.model.remote.model.activity.StudentActivityModel
+import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
 import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
 import com.msg.network.api.ActivityAPI
 import com.msg.network.util.BitgoeulApiHandler
@@ -87,6 +88,14 @@ class ActivityDataSourceImpl @Inject constructor(
         emit(
             BitgoeulApiHandler<InquiryStudentActivityListResponse>()
                 .httpRequest { activityAPI.inquiryEntireStudentActivityInfoList(page = page, size = size, sort = sort) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun inquiryDetailStudentActivityInfo(id: UUID): Flow<InquiryDetailStudentActivityInfoResponse> = flow {
+        emit(
+            BitgoeulApiHandler<InquiryDetailStudentActivityInfoResponse>()
+                .httpRequest { activityAPI.inquiryDetailStudentActivityInfo(id = id) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
