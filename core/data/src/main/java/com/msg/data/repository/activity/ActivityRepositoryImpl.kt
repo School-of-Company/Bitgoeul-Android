@@ -52,4 +52,18 @@ class ActivityRepositoryImpl @Inject constructor(
             sort = sort
         )
     }
+
+    override suspend fun inquiryStudentActivityInfoList(
+        page: Int,
+        size: Int,
+        sort: String,
+        id: UUID
+    ): Flow<InquiryStudentActivityListResponse> {
+        return activityDataSource.inquiryStudentActivityInfoList(
+            page = page,
+            size = size,
+            sort = sort,
+            id = id
+        )
+    }
 }
