@@ -1,5 +1,6 @@
 package com.msg.data.repository.activity
 
+import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import com.msg.model.remote.model.activity.StudentActivityModel
 import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
 import com.msg.network.datasource.activity.ActivityDataSource
@@ -64,6 +65,18 @@ class ActivityRepositoryImpl @Inject constructor(
             size = size,
             sort = sort,
             id = id
+        )
+    }
+
+    override suspend fun inquiryEntireStudentActivityInfoList(
+        page: Int,
+        size: Int,
+        sort: String
+    ): Flow<InquiryStudentActivityListResponse> {
+        return activityDataSource.inquiryEntireStudentActivityInfoList(
+            page = page,
+            size = size,
+            sort = sort
         )
     }
 }

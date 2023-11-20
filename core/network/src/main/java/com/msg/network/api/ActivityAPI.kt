@@ -52,4 +52,11 @@ interface ActivityAPI {
         @Query("sort") sort: String,
         @Path("student_id") id: UUID
     ): InquiryStudentActivityListResponse
+
+    @GET("activity")
+    suspend fun inquiryEntireStudentActivityInfoList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String
+    ): InquiryStudentActivityListResponse
 }
