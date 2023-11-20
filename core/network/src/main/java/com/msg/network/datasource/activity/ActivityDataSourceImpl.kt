@@ -61,7 +61,20 @@ class ActivityDataSourceImpl @Inject constructor(
     ): Flow<InquiryStudentActivityListResponse> = flow {
         emit(
             BitgoeulApiHandler<InquiryStudentActivityListResponse>()
-                .httpRequest { activityAPI.inquiryMyStudentActivityInfo(page = page, size = size, sort = sort) }
+                .httpRequest { activityAPI.inquiryMyStudentActivityInfoList(page = page, size = size, sort = sort) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun inquiryStudentActivityInfoList(
+        page: Int,
+        size: Int,
+        sort: String,
+        id: UUID
+    ): Flow<InquiryStudentActivityListResponse> = flow {
+        emit(
+            BitgoeulApiHandler<InquiryStudentActivityListResponse>()
+                .httpRequest { activityAPI.inquiryStudentActivityInfoList(page = page, size = size, sort = sort, id = id) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
