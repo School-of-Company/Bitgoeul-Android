@@ -65,7 +65,6 @@ fun LectureDetailScreen(
                     .align(Alignment.BottomCenter)
                     .padding(horizontal = 24.dp)
             ) {
-
             }
         }
     }

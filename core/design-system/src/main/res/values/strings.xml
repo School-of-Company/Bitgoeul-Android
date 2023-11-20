@@ -18,4 +18,8 @@
     <string name="pend_approve_status">승인 대기 중</string>
     <string name="approve_status">승인중</string>
     <string name="apply">적용하기</string>
+    <string name="cancel">취소</string>
+    <string name="application">신청</string>
+    <string name="approve">승인</string>
+
 </resources>

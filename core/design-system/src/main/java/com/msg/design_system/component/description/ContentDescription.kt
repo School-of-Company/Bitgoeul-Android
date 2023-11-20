@@ -1,4 +1,4 @@
-package com.msg.lecture.component
+package com.msg.design_system.component.description
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight

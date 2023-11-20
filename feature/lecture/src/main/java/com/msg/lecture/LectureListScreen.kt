@@ -69,7 +69,6 @@ fun LectureListScreen() {
 
                     Spacer(modifier = Modifier.width(24.dp))
 
-
                     FilterIcon(
                         modifier = Modifier
                             .padding(top = 4.dp)
@@ -79,11 +78,13 @@ fun LectureListScreen() {
                     )
                 }
 
+                Spacer(modifier = Modifier.height(40.dp))
+
                 LazyColumn(
                     modifier = Modifier
+                        .padding(horizontal = 28.dp)
                         .fillMaxWidth()
                         .fillMaxHeight()
-                        .padding(start = 28.dp, end = 28.dp, top = 40.dp)
                 ) {
                     items(30) {
                         Column {
