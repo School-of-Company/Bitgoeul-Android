@@ -2,6 +2,7 @@ package com.msg.data.repository.activity
 
 import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import com.msg.model.remote.model.activity.StudentActivityModel
+import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
 import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
 import com.msg.network.datasource.activity.ActivityDataSource
 import kotlinx.coroutines.flow.Flow
@@ -77,6 +78,12 @@ class ActivityRepositoryImpl @Inject constructor(
             page = page,
             size = size,
             sort = sort
+        )
+    }
+
+    override suspend fun inquiryDetailStudentActivityInfo(id: UUID): Flow<InquiryDetailStudentActivityInfoResponse> {
+        return activityDataSource.inquiryDetailStudentActivityInfo(
+            id = id
         )
     }
 }
