@@ -61,7 +61,7 @@ class ActivityDataSourceImpl @Inject constructor(
     ): Flow<InquiryStudentActivityListResponse> = flow {
         emit(
             BitgoeulApiHandler<InquiryStudentActivityListResponse>()
-                .httpRequest { activityAPI.inquiryMyStudentActivityInfoList(page = page, size = size, sort = sort) }
+                .httpRequest { activityAPI.inquiryMyStudentActivityInfo(page = page, size = size, sort = sort) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)

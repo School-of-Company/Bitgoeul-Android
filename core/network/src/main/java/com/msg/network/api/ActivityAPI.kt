@@ -39,17 +39,9 @@ interface ActivityAPI {
     )
 
     @GET("activity/my")
-    suspend fun inquiryMyStudentActivityInfoList(
+    suspend fun inquiryMyStudentActivityInfo(
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sort") sort: String
-    ): InquiryStudentActivityListResponse
-
-    @GET("activity/{student_id}")
-    suspend fun inquiryStudentActivityInfoList(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("sort") sort: String,
-        @Path("student_id") id: UUID
     ): InquiryStudentActivityListResponse
 }
