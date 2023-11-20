@@ -3,26 +3,36 @@ package com.msg.design_system.component.button
 import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.msg.design_system.R
+import com.msg.design_system.component.icon.MainColorSettingIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.Vibration
 import com.msg.design_system.util.vibe
@@ -33,7 +43,7 @@ fun BitgoeulButton(
     modifier: Modifier = Modifier,
     text: String,
     state: ButtonState = ButtonState.Enable,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
 
@@ -43,7 +53,7 @@ fun BitgoeulButton(
         val isActiveDisableAnimationRight = remember { mutableStateOf(false) }
 
         val enabledState: (buttonState: ButtonState) -> Boolean = {
-            when(it) {
+            when (it) {
                 ButtonState.Enable -> true
                 ButtonState.Disable -> false
             }
@@ -82,16 +92,18 @@ fun BitgoeulButton(
         Button(
             modifier = modifier
                 .pointerInteropFilter {
-                    when(it.action) {
+                    when (it.action) {
                         MotionEvent.ACTION_DOWN -> {
                             onTouched(enabledState(state))
                             true
                         }
+
                         else -> {
                             true
                         }
                     }
-                }.offset(
+                }
+                .offset(
                     (disableAnimationLeftValue.value * 10 + disableAnimationRightValue.value * 10).dp,
                     0.dp
                 ),
@@ -110,6 +122,34 @@ fun BitgoeulButton(
             Text(
                 text = text,
                 style = typography.bodyLarge
+            )
+        }
+    }
+}
+
+@Composable
+fun LectureDetailSettingButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    BitgoeulAndroidTheme { colors, type ->
+        OutlinedButton(
+            modifier = modifier.border(BorderStroke(1.dp, color = colors.P5)),
+            onClick = onClick,
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = colors.WHITE,
+                contentColor = colors.P5,
+            ),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            MainColorSettingIcon()
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = stringResource(id = R.string.lecture_detail_setting),
+                color = colors.P5,
+                style = type.bodyLarge
             )
         }
     }
@@ -140,6 +180,13 @@ fun BitgoeulButtonPre() {
         ) {
 
         }
+
+        LectureDetailSettingButton(
+            modifier = Modifier
+                .width(319.dp)
+                .height(52.dp),
+            onClick = {}
+        )
 
     }
 }

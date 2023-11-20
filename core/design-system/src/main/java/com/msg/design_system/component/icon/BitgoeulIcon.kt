@@ -70,3 +70,16 @@ fun PlusIcon(
             .height(24.dp)
     )
 }
+
+@Composable
+fun MainColorSettingIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_main_color_setting),
+        contentDescription = "Main Color Setting Icon",
+        modifier = modifier
+            .width(24.dp)
+            .height(24.dp)
+    )
+}
