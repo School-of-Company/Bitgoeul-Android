@@ -107,7 +107,7 @@ fun ApplicationReject(
                                         )
                                     )
                                     .background(
-                                        color = colors.P5
+                                        color = colors.E5
                                     )
                                     .weight(1f)
                             ) {
@@ -118,7 +118,7 @@ fun ApplicationReject(
                                         .clickable {
                                             onQuit()
                                         },
-                                    text = stringResource(id = R.string.application),
+                                    text = stringResource(id = R.string.reject),
                                     color = colors.WHITE,
                                     style = type.bodySmall
                                 )

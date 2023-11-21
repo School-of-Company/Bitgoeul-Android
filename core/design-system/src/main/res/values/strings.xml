@@ -22,4 +22,5 @@
     <string name="application">신청</string>
     <string name="approve">승인</string>
     <string name="lecture_detail_setting">강의 세부 설정</string>
+    <string name="reject">거부</string>
 </resources>
