@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,10 +34,7 @@ fun LectureApplicationDialog(
     isVisible: Boolean,
     onQuit: () -> Unit,
 ) {
-
-    var isDialogVisible = remember { isVisible }
-
-    if (isDialogVisible) {
+    if (isVisible) {
         BitgoeulAndroidTheme { colors, type ->
             Dialog(onDismissRequest = { onQuit() }) {
                 Box(
@@ -91,7 +89,7 @@ fun LectureApplicationDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            isDialogVisible = !isDialogVisible
+                                            onQuit()
                                         },
                                     text = stringResource(id = R.string.cancel),
                                     color = colors.WHITE,
@@ -119,7 +117,7 @@ fun LectureApplicationDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            isDialogVisible = !isDialogVisible
+                                            onQuit()
                                         },
                                     text = stringResource(id = R.string.application),
                                     color = colors.WHITE,

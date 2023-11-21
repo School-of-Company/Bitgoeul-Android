@@ -34,9 +34,7 @@ fun BitgoeulApproveDialog(
     isVisible: Boolean,
     onQuit: () -> Unit,
 ) {
-    var isDialogVisible = remember { isVisible }
-
-    if (isDialogVisible) {
+    if (isVisible) {
         Dialog(onDismissRequest = { onQuit() }) {
             BitgoeulAndroidTheme { colors, type ->
                 Box(
@@ -91,7 +89,7 @@ fun BitgoeulApproveDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            isDialogVisible = !isDialogVisible
+                                            onQuit()
                                         },
                                     text = stringResource(id = R.string.cancel),
                                     color = colors.WHITE,
@@ -118,7 +116,7 @@ fun BitgoeulApproveDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            isDialogVisible = !isDialogVisible
+                                            onQuit()
                                         },
                                     text = stringResource(id = R.string.approve),
                                     color = colors.WHITE,

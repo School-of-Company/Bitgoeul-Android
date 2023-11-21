@@ -33,10 +33,7 @@ fun ApplicationReject(
     isVisible: Boolean,
     onQuit: () -> Unit,
 ) {
-
-    var isDialogVisible = remember { isVisible }
-
-    if (isDialogVisible) {
+    if (isVisible) {
         BitgoeulAndroidTheme { colors, type ->
             Dialog(onDismissRequest = { onQuit() }) {
                 Box(
@@ -91,7 +88,7 @@ fun ApplicationReject(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            isDialogVisible = !isDialogVisible
+                                            onQuit()
                                         },
                                     text = stringResource(id = R.string.cancel),
                                     color = colors.WHITE,
@@ -119,7 +116,7 @@ fun ApplicationReject(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            isDialogVisible = !isDialogVisible
+                                            onQuit()
                                         },
                                     text = stringResource(id = R.string.application),
                                     color = colors.WHITE,
