@@ -73,7 +73,7 @@ fun LectureListScreen() {
                         modifier = Modifier
                             .padding(top = 4.dp)
                             .clickable {
-                                isFilterBottomSheetVisible.value = true
+                                isFilterBottomSheetVisible.value = !isFilterBottomSheetVisible.value
                             }
                     )
                 }

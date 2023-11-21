@@ -16,6 +16,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.button.BitgoeulButton
+import com.msg.design_system.component.button.ButtonState
+import com.msg.design_system.component.dialog.LectureApplicationDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -31,7 +35,9 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun LectureDetailScreen(
     onBackClick: () -> Unit,
 ) {
+
     val scrollState = rememberScrollState()
+    var isDialogVisible = remember { mutableStateOf(false) }
     BitgoeulAndroidTheme { colors, type ->
         Box(
             modifier = Modifier
@@ -63,9 +69,15 @@ fun LectureDetailScreen(
                     .fillMaxWidth()
                     .height(52.dp)
                     .align(Alignment.BottomCenter)
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = 24.dp),
             ) {
+                isDialogVisible.value = !isDialogVisible.value
             }
+
+            LectureApplicationDialog(
+                content = "님;나이;ㅁ나ㅣ;ㅇ민;아ㅣ;ㅁ나ㅣ;임니;", // 임의로 정한것임 추후 Detail 조회시 넘어오는 Content Text 값으로 로직 추가 예정
+                isVisible = isDialogVisible.value
+            )
         }
     }
 }
