@@ -76,7 +76,8 @@ fun LectureDetailScreen(
 
             LectureApplicationDialog(
                 content = "님;나이;ㅁ나ㅣ;ㅇ민;아ㅣ;ㅁ나ㅣ;임니;", // 임의로 정한것임 추후 Detail 조회시 넘어오는 Content Text 값으로 로직 추가 예정
-                isVisible = isDialogVisible.value
+                isVisible = isDialogVisible.value,
+                onQuit = { isDialogVisible.value = false }
             )
         }
     }
