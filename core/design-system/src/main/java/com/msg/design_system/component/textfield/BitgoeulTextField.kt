@@ -322,6 +322,51 @@ fun InputTitleTextField(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InputMainContentTextField(
+    modifier: Modifier,
+    placeholder: String,
+    maxTextLength: Int,
+    onValueChange: (String) -> Unit,
+    onClickButton: () -> Unit,
+    onClick: (() -> Unit)? = null,
+) {
+    var text by remember { mutableStateOf("") }
+
+    BitgoeulAndroidTheme { colors, type ->
+        Column(
+            modifier = modifier.background(color = Color.Transparent),
+        ) {
+            TextField(
+                value = text,
+                onValueChange = {
+                    if (it.length <= maxTextLength) {
+                        text = it
+                        onValueChange(it)
+                    }
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(color = Color.Transparent),
+                placeholder = {
+                    Text(text = placeholder, style = type.bodySmall, color = colors.G1)
+                },
+                textStyle = type.bodySmall.copy(color = colors.BLACK),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    cursorColor = colors.P5
+                ),
+            )
+        }
+    }
+}
+
 @Composable
 fun ErrorText(
     text: String,
