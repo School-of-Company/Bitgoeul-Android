@@ -1,6 +1,5 @@
 package com.msg.data.repository.activity
 
-import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import com.msg.model.remote.model.activity.StudentActivityModel
 import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
 import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
