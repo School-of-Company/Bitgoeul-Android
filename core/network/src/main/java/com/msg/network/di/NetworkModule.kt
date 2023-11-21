@@ -5,6 +5,7 @@ import com.msg.network.BuildConfig
 import com.msg.network.api.ActivityAPI
 import com.msg.network.api.AuthAPI
 import com.msg.network.api.LectureAPI
+import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -68,4 +70,8 @@ object NetworkModule {
     @Provides
     fun provideActivityAPI(retrofit: Retrofit): ActivityAPI =
         retrofit.create(ActivityAPI::class.java)
+
+    @Provides
+    fun provideUserAPI(retrofit: Retrofit): UserAPI =
+        retrofit.create(UserAPI::class.java)
 }
