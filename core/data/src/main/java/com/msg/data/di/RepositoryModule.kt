@@ -6,6 +6,8 @@ import com.msg.data.repository.auth.AuthRepository
 import com.msg.data.repository.auth.AuthRepositoryImpl
 import com.msg.data.repository.lecture.LectureRepository
 import com.msg.data.repository.lecture.LectureRepositoryImpl
+import com.msg.data.repository.user.UserRepository
+import com.msg.data.repository.user.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,4 +30,9 @@ abstract class RepositoryModule {
     abstract fun bindActivityRepository(
         activityRepositoryImpl: ActivityRepositoryImpl
     ): ActivityRepository
+
+    @Binds
+    abstract fun bindUserRepository(
+        userRepositoryImpl: UserRepositoryImpl
+    ): UserRepository
 }
