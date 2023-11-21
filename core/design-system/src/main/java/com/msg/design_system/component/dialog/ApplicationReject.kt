@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,13 +65,23 @@ fun ApplicationReject(
                 ) {
                     Box(
                         modifier = modifier
+                            .clip(
+                                MaterialTheme.shapes.medium.copy(
+                                    bottomStart = CornerSize(8.dp),
+                                    bottomEnd = CornerSize(0.dp),
+                                    topStart = CornerSize(0.dp),
+                                    topEnd = CornerSize(0.dp)
+                                )
+                            )
                             .background(
                                 color = colors.G2
                             )
                             .weight(1f)
                     ) {
                         Text(
-                            modifier = modifier.align(Alignment.Center),
+                            modifier = modifier
+                                .align(Alignment.Center)
+                                .padding(vertical = 13.dp),
                             text = stringResource(id = R.string.cancel),
                             color = colors.WHITE,
                             style = type.bodySmall
@@ -79,13 +90,23 @@ fun ApplicationReject(
 
                     Box(
                         modifier = modifier
+                            .clip(
+                                MaterialTheme.shapes.medium.copy(
+                                    bottomStart = CornerSize(0.dp),
+                                    bottomEnd = CornerSize(8.dp),
+                                    topStart = CornerSize(0.dp),
+                                    topEnd = CornerSize(0.dp)
+                                )
+                            )
                             .background(
                                 color = colors.P5
                             )
                             .weight(1f)
                     ) {
                         Text(
-                            modifier = modifier.align(Alignment.Center),
+                            modifier = modifier
+                                .align(Alignment.Center)
+                                .padding(vertical = 13.dp),
                             text = stringResource(id = R.string.application),
                             color = colors.WHITE,
                             style = type.bodySmall
