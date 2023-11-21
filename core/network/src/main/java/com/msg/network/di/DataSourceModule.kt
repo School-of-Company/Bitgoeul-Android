@@ -6,6 +6,8 @@ import com.msg.network.datasource.auth.AuthDataSource
 import com.msg.network.datasource.auth.AuthDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
 import com.msg.network.datasource.lecture.LectureDataSourceImpl
+import com.msg.network.datasource.user.UserDataSource
+import com.msg.network.datasource.user.UserDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,4 +30,9 @@ abstract class DataSourceModule {
     abstract fun bindActivityDataSource(
         activityDataSourceImpl: ActivityDataSourceImpl
     ): ActivityDataSource
+
+    @Binds
+    abstract fun bindUserDataSource(
+        userDataSourceImpl: UserDataSourceImpl
+    ): UserDataSource
 }
