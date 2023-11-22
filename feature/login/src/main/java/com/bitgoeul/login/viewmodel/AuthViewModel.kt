@@ -51,4 +51,9 @@ class AuthViewModel @Inject constructor(
             _loginRequest.value = it.errorHandling()
         }
     }
+
+    fun setLoginData(email: String, password: String) {
+        _email.value = email
+        _password.value = password
+    }
 }
