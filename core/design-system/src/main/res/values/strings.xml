@@ -33,4 +33,7 @@
     <string name="select_credits_awarded">수여 학점 선택</string>
     <string name="maximum_number_students">최대 수강 인원</string>
     <string name="enter_maximum_number_students">최대 수강 인원 입력</string>
+    <string name="application_done">수강 신청 완료</string>
+    <string name="application_reject">신청 거부</string>
+    <string name="application_approve">신청 승인</string>
 </resources>

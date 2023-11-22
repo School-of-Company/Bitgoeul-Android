@@ -1,6 +1,7 @@
 package com.msg.lecture
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,11 +27,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.button.BitgoeulButton
-import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.dialog.LectureApplicationDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.design_system.R
 
 @Composable
 fun LectureDetailScreen(
@@ -37,6 +39,7 @@ fun LectureDetailScreen(
 ) {
     val scrollState = rememberScrollState()
     var isDialogVisible = remember { mutableStateOf(false) }
+
     BitgoeulAndroidTheme { colors, type ->
         Box(
             modifier = Modifier
@@ -96,7 +99,7 @@ fun LectureDetailContent() {
                 modifier = Modifier
                     .width(133.dp)
                     .height(20.dp),
-                text = "#" + stringResource(id = com.msg.design_system.R.string.mutual_credit_recognition_curriculum), // 서버 리스폰스로 변경 예정
+                text = "#" + stringResource(id = R.string.mutual_credit_recognition_curriculum), // 서버 리스폰스로 변경 예정
                 color = colors.P3,
                 style = type.labelMedium,
             )
@@ -195,6 +198,54 @@ fun LectureDetailContent() {
                 color = colors.BLACK,
                 style = type.bodySmall
             )
+        }
+    }
+}
+
+@Composable
+fun ApplicationRequestButton(
+    modifier: Modifier = Modifier,
+) {
+    BitgoeulAndroidTheme { colors, type ->
+        Row {
+            Box(
+                modifier = modifier
+                    .background(
+                        color = colors.E5,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(vertical = 12.dp, horizontal = 32.dp)
+                    .clickable {
+
+                    },
+            ) {
+                Text(
+                    text = stringResource(id = R.string.application_reject),
+                    color = colors.WHITE,
+                    style = type.bodyLarge
+                )
+
+            }
+
+            Spacer(modifier = modifier.width(8.dp))
+            Box(
+                modifier = modifier
+                    .background(
+                        color = colors.P5,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(vertical = 12.dp, horizontal = 32.dp)
+                    .clickable {
+
+                    },
+            ) {
+                Text(
+                    text = stringResource(id = R.string.application_approve),
+                    color = colors.WHITE,
+                    style = type.bodyLarge
+                )
+
+            }
         }
     }
 }

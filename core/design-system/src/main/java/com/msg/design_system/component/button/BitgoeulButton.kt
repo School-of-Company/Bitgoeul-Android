@@ -140,7 +140,7 @@ fun LectureDetailSettingButton(
                 containerColor = colors.WHITE,
                 contentColor = colors.P5,
             ),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         ) {
             MainColorSettingIcon()
 
@@ -155,11 +155,36 @@ fun LectureDetailSettingButton(
     }
 }
 
+@Composable
+fun ApplicationDoneButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    BitgoeulAndroidTheme { colors, type ->
+        OutlinedButton(
+            modifier = modifier.border(BorderStroke(1.dp, color = colors.P5)),
+            onClick = onClick,
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = colors.WHITE,
+                contentColor = colors.P5,
+            ),
+            shape = RoundedCornerShape(8.dp),
+        ) {
+
+            Text(
+                text = stringResource(id = R.string.application_done),
+                color = colors.P5,
+                style = type.bodyLarge
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 fun BitgoeulButtonPre() {
     Column(
-        modifier = Modifier.height(200.dp),
+        modifier = Modifier.height(300.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         BitgoeulButton(
@@ -188,5 +213,11 @@ fun BitgoeulButtonPre() {
             onClick = {}
         )
 
+        ApplicationDoneButton(
+            modifier = Modifier
+                .width(319.dp)
+                .height(52.dp),
+            onClick = {}
+        )
     }
 }
