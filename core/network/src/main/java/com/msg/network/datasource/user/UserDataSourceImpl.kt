@@ -1,0 +1,22 @@
+package com.msg.network.datasource.user
+
+import com.msg.model.remote.request.user.ChangePasswordRequest
+import com.msg.network.api.UserAPI
+import com.msg.network.util.BitgoeulApiHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+
+class UserDataSourceImpl @Inject constructor(
+    private val userAPI: UserAPI
+) : UserDataSource {
+    override suspend fun changePassword(body: ChangePasswordRequest): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { userAPI.changePassword(body = body) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+}
