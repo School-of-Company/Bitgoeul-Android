@@ -23,4 +23,14 @@
     <string name="approve">승인</string>
     <string name="lecture_detail_setting">강의 세부 설정</string>
     <string name="reject">거부</string>
+    <string name="application_start_date">신청 시작일</string>
+    <string name="start_time">시작 시간</string>
+    <string name="application_deadline_date">신청 마감일</string>
+    <string name="deadeline_time">마감 시간</string>
+    <string name="start_semester_date">개강일</string>
+    <string name="start_semester_time">개강 시간</string>
+    <string name="credits_awarded">수여 학점</string>
+    <string name="select_credits_awarded">수여 학점 선택</string>
+    <string name="maximum_number_students">최대 수강 인원</string>
+    <string name="enter_maximum_number_students">최대 수강 인원 입력</string>
 </resources>

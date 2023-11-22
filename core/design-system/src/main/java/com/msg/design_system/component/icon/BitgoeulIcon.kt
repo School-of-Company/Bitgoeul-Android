@@ -96,3 +96,16 @@ fun CloseIcon(
             .height(24.dp)
     )
 }
+
+@Composable
+fun PickerArrowIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_picker_arrow),
+        contentDescription = "Show Picker Bottom Sheet Icon",
+        modifier = modifier
+            .width(24.dp)
+            .height(24.dp)
+    )
+}
