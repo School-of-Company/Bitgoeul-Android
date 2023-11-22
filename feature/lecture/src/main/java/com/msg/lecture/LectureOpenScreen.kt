@@ -41,7 +41,6 @@ fun LectureOpenScreen(
                 modifier = Modifier
                     .background(color = colors.WHITE)
                     .verticalScroll(scrollState)
-                    .padding(horizontal = 24.dp),
             ) {
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -100,7 +99,9 @@ fun LectureOpenScreenContent() {
             modifier = Modifier
                 .background(color = colors.WHITE)
                 .wrapContentSize()
-        ) {
+                .padding(horizontal = 24.dp),
+
+            ) {
             InputTitleTextField(
                 modifier = Modifier
                     .fillMaxWidth()

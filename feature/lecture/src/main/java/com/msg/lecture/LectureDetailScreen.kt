@@ -33,7 +33,6 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.dialog.ApplicationApproveDialog
-import com.msg.design_system.component.dialog.ApplicationReject
 import com.msg.design_system.component.dialog.ApplicationRejectDialog
 
 @Composable
