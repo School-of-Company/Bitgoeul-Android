@@ -26,7 +26,7 @@ import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun ApplicationReject(
+fun ApplicationRejectDialog(
     modifier: Modifier = Modifier,
     content: String,
     isVisible: Boolean,

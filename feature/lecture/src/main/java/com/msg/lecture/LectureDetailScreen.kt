@@ -32,7 +32,9 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
+import com.msg.design_system.component.dialog.ApplicationApproveDialog
 import com.msg.design_system.component.dialog.ApplicationReject
+import com.msg.design_system.component.dialog.ApplicationRejectDialog
 
 @Composable
 fun LectureDetailScreen(
@@ -207,7 +209,7 @@ fun LectureDetailContent() {
 fun ApplicationRequestButton(
     modifier: Modifier = Modifier,
 ) {
-    val isDialogVisible = remember { mutableStateOf(false)}
+    val isDialogVisible = remember { mutableStateOf(false) }
     BitgoeulAndroidTheme { colors, type ->
         Row {
             Box(
@@ -227,10 +229,12 @@ fun ApplicationRequestButton(
                     style = type.bodyLarge
                 )
 
-                ApplicationReject(
+                ApplicationRejectDialog(
                     isVisible = isDialogVisible.value,
                     content = "askdl;asd",
-                    onQuit = { },
+                    onQuit = {
+                        isDialogVisible.value = !isDialogVisible.value
+                    },
                 )
             }
 
@@ -243,7 +247,7 @@ fun ApplicationRequestButton(
                     )
                     .padding(vertical = 12.dp, horizontal = 32.dp)
                     .clickable {
-
+                        isDialogVisible.value = !isDialogVisible.value
                     },
             ) {
                 Text(
@@ -252,6 +256,13 @@ fun ApplicationRequestButton(
                     style = type.bodyLarge
                 )
 
+                ApplicationApproveDialog(
+                    isVisible = isDialogVisible.value,
+                    content = "askdl;asd",
+                    onQuit = {
+                        isDialogVisible.value = !isDialogVisible.value
+                    },
+                )
             }
         }
     }
