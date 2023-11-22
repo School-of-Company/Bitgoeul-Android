@@ -32,6 +32,7 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
+import com.msg.design_system.component.dialog.ApplicationReject
 
 @Composable
 fun LectureDetailScreen(
@@ -206,6 +207,7 @@ fun LectureDetailContent() {
 fun ApplicationRequestButton(
     modifier: Modifier = Modifier,
 ) {
+    val isDialogVisible = remember { mutableStateOf(false)}
     BitgoeulAndroidTheme { colors, type ->
         Row {
             Box(
@@ -216,7 +218,7 @@ fun ApplicationRequestButton(
                     )
                     .padding(vertical = 12.dp, horizontal = 32.dp)
                     .clickable {
-
+                        isDialogVisible.value = !isDialogVisible.value
                     },
             ) {
                 Text(
@@ -225,6 +227,11 @@ fun ApplicationRequestButton(
                     style = type.bodyLarge
                 )
 
+                ApplicationReject(
+                    isVisible = isDialogVisible.value,
+                    content = "askdl;asd",
+                    onQuit = { },
+                )
             }
 
             Spacer(modifier = modifier.width(8.dp))
