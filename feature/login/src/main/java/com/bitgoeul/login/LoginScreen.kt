@@ -73,9 +73,7 @@ fun LoginScreen(
                 ) {
                     Spacer(modifier = Modifier.width(28.dp))
                     Text(
-                        modifier = Modifier
-                            .width(104.dp)
-                            .height(108.dp),
+                        modifier = Modifier,
                         text = stringResource(id = R.string.project_name),
                         color = color.BLACK,
                         style = type.titleLarge,
