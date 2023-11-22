@@ -1,7 +1,6 @@
 package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -154,7 +153,6 @@ fun LoginScreen(
                             .height(52.dp),
                         state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
                         onClick = {
-                            Log.d("TAG", "here")
                             saveLoginData(emailState.value, passwordState.value)
                             onLoginClick()
                         }
