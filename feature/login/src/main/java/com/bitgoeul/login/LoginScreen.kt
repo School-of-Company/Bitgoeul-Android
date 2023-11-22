@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,14 +35,23 @@ import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
 fun LoginRoute(
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
-    LoginScreen(onSignUpClick = onSignUpClick)
+    LoginScreen(
+        onSignUpClick = onSignUpClick,
+        onLoginClick = { viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value)) },
+        saveLoginData = { email, password ->
+            viewModel.setLoginData(email = email, password = password)
+        }
+    )
 }
 
 @Composable
 fun LoginScreen(
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    onLoginClick: () -> Unit = {},
+    saveLoginData: (String, String) -> Unit = { _,_ -> }
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
@@ -50,7 +60,6 @@ fun LoginScreen(
     var isTextStatus = ""
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
-    val authViewModel: AuthViewModel = hiltViewModel()
     BitgoeulAndroidTheme { color, type ->
         Box {
             Column(
@@ -98,8 +107,7 @@ fun LoginScreen(
                         isLinked = false,
                         isDisabled = false,
                         isReadOnly = false,
-                        isReverseTrailingIcon = false,
-                        value = isTextStatus
+                        isReverseTrailingIcon = false
                     )
                 }
 
@@ -145,12 +153,8 @@ fun LoginScreen(
                             .height(52.dp),
                         state = ButtonState.Disable,
                     ) {
-                        authViewModel.login(
-                            body = LoginRequest(
-                                email = emailState.value,
-                                password = passwordState.value
-                            )
-                        )
+                        saveLoginData(emailState.value, passwordState.value)
+                        onLoginClick()
                     }
                 }
 

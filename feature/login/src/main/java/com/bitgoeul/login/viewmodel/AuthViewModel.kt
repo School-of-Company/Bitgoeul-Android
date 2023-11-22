@@ -1,5 +1,7 @@
 package com.bitgoeul.login.viewmodel
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,6 +32,12 @@ class AuthViewModel @Inject constructor(
     private val _loginRequest = MutableLiveData<Event<AuthTokenModel>>()
     val loginRequest: LiveData<Event<AuthTokenModel>> get() = _loginRequest
 
+    private val _email = mutableStateOf("")
+    val email: State<String> = _email
+
+    private val _password = mutableStateOf("")
+    val password: State<String> = _password
+
     fun login(body: LoginRequest) = viewModelScope.launch {
         loginUseCase(
             body = body
@@ -42,5 +50,10 @@ class AuthViewModel @Inject constructor(
         }.onFailure {
             _loginRequest.value = it.errorHandling()
         }
+    }
+
+    fun setLoginData(email: String, password: String) {
+        _email.value = email
+        _password.value = password
     }
 }
