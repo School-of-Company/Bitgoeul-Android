@@ -34,14 +34,19 @@ import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
 fun LoginRoute(
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
-    LoginScreen(onSignUpClick = onSignUpClick)
+    LoginScreen(
+        onSignUpClick = onSignUpClick,
+        onLoginClick = { viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value)) }
+    )
 }
 
 @Composable
 fun LoginScreen(
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    onLoginClick: () -> Unit = {}
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
@@ -50,7 +55,6 @@ fun LoginScreen(
     var isTextStatus = ""
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
-    val authViewModel: AuthViewModel = hiltViewModel()
     BitgoeulAndroidTheme { color, type ->
         Box {
             Column(
@@ -98,8 +102,7 @@ fun LoginScreen(
                         isLinked = false,
                         isDisabled = false,
                         isReadOnly = false,
-                        isReverseTrailingIcon = false,
-                        value = isTextStatus
+                        isReverseTrailingIcon = false
                     )
                 }
 
@@ -145,12 +148,7 @@ fun LoginScreen(
                             .height(52.dp),
                         state = ButtonState.Disable,
                     ) {
-                        authViewModel.login(
-                            body = LoginRequest(
-                                email = emailState.value,
-                                password = passwordState.value
-                            )
-                        )
+                        onLoginClick()
                     }
                 }
 
