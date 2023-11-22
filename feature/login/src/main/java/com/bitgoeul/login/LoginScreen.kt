@@ -1,5 +1,6 @@
 package com.bitgoeul.login
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,26 +30,36 @@ import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.LinkText
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.design_system.util.LockScreenOrientation
 import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
 fun LoginRoute(
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
-    LoginScreen(onSignUpClick = onSignUpClick)
+    LoginScreen(
+        onSignUpClick = onSignUpClick,
+        onLoginClick = { viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value)) },
+        saveLoginData = { email, password ->
+            viewModel.setLoginData(email = email, password = password)
+        }
+    )
 }
 
 @Composable
 fun LoginScreen(
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    onLoginClick: () -> Unit = {},
+    saveLoginData: (String, String) -> Unit = { _,_ -> }
 ) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
     val isPasswordErrorStatus = remember { mutableStateOf(false) }
     val isErrorTextShow = remember { mutableStateOf(false) }
     var isTextStatus = ""
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
-    val authViewModel: AuthViewModel = hiltViewModel()
     BitgoeulAndroidTheme { color, type ->
         Box {
             Column(
@@ -61,9 +73,7 @@ fun LoginScreen(
                 ) {
                     Spacer(modifier = Modifier.width(28.dp))
                     Text(
-                        modifier = Modifier
-                            .width(104.dp)
-                            .height(108.dp),
+                        modifier = Modifier,
                         text = stringResource(id = R.string.project_name),
                         color = color.BLACK,
                         style = type.titleLarge,
@@ -95,8 +105,7 @@ fun LoginScreen(
                         isLinked = false,
                         isDisabled = false,
                         isReadOnly = false,
-                        isReverseTrailingIcon = false,
-                        value = isTextStatus
+                        isReverseTrailingIcon = false
                     )
                 }
 
@@ -142,12 +151,8 @@ fun LoginScreen(
                             .height(52.dp),
                         state = ButtonState.Disable,
                     ) {
-                        authViewModel.login(
-                            body = LoginRequest(
-                                email = emailState.value,
-                                password = passwordState.value
-                            )
-                        )
+                        saveLoginData(emailState.value, passwordState.value)
+                        onLoginClick()
                     }
                 }
 

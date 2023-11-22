@@ -1,5 +1,6 @@
 package com.msg.sign_up
 
+import android.content.pm.ActivityInfo
 import android.graphics.Rect
 import android.util.Log
 import android.view.ViewTreeObserver
@@ -32,6 +33,7 @@ import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.design_system.util.LockScreenOrientation
 import com.msg.sign_up.SignUpState.*
 import com.msg.sign_up.component.SignUpBottomSheet
 import com.msg.sign_up.data.BelongList
@@ -102,6 +104,7 @@ fun SignUpRoute(
 fun SignUpScreen(
     onBackClick: () -> Unit
 ) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val focusManager = LocalFocusManager.current
 
     val signUpState = remember { mutableStateOf(Belong) }
