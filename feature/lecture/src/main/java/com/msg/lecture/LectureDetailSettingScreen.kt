@@ -70,6 +70,7 @@ fun LectureDetailSettingScreen() {
 
             }
 
+
             BitgoeulButton(
                 text = stringResource(id = R.string.apply),
                 modifier = Modifier
@@ -284,6 +285,7 @@ fun LectureDetailSettingScreenContent() {
                 )
             }
 
+            Spacer(modifier = Modifier.height(165.dp))
         }
     }
 }
