@@ -1,5 +1,6 @@
 package com.bitgoeul.login
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.LinkText
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.design_system.util.LockScreenOrientation
 import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
@@ -41,6 +43,7 @@ fun LoginRoute(
 fun LoginScreen(
     onSignUpClick: () -> Unit
 ) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
     val isPasswordErrorStatus = remember { mutableStateOf(false) }
     val isErrorTextShow = remember { mutableStateOf(false) }
