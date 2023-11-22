@@ -57,26 +57,38 @@ fun LectureOpenScreen(
                 LectureOpenScreenContent()
             }
 
-            LectureDetailSettingButton(
+            Spacer(
                 modifier = Modifier
-                    .padding(bottom = 40.dp)
-                    .fillMaxWidth()
-                    .height(52.dp)
                     .align(Alignment.BottomCenter)
-                    .padding(horizontal = 24.dp),
-            ) {
-            }
+                    .padding(bottom = 176.dp)
+                    .padding(horizontal = 24.dp)
+                    .height(1.dp)
+                    .fillMaxWidth()
+                    .background(color = colors.G9)
+                )
 
-            BitgoeulButton(
-                text = "강의 개설 신청",
-                modifier = Modifier
-                    .padding(top = 8.dp, bottom = 40.dp)
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 24.dp),
-            ) {
-            }
+            Spacer(modifier = Modifier.height(24.dp))
+                LectureDetailSettingButton(
+                    modifier = Modifier
+                        .padding(bottom = 100.dp)
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .height(52.dp)
+                        .padding(horizontal = 24.dp),
+
+                    ) {
+                }
+
+                BitgoeulButton(
+                    text = "강의 개설 신청",
+                    modifier = Modifier
+                        .padding(bottom = 40.dp)
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .height(52.dp)
+                        .padding(horizontal = 24.dp),
+                ) {
+                }
         }
     }
 }
@@ -108,8 +120,6 @@ fun LectureOpenScreenContent() {
                     .fillMaxWidth()
                     .background(color = colors.G9)
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
 
             InputMainContentTextField(
                 modifier = Modifier
