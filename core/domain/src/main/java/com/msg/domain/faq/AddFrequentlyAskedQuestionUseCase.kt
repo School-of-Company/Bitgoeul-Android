@@ -7,7 +7,7 @@ import javax.inject.Inject
 class AddFrequentlyAskedQuestionUseCase @Inject constructor(
     private val faqRepository: FaqRepository
 ){
-    suspend operator fun invoke(body: AddFrequentlyAskedQuestionsRequest) = kotlin.runCatching {
+    suspend operator fun invoke(body: AddFrequentlyAskedQuestionsRequest) = runCatching {
         faqRepository.addFrequentlyAskedQuestions(body = body)
     }
 }
