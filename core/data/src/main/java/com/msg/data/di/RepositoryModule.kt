@@ -4,6 +4,8 @@ import com.msg.data.repository.activity.ActivityRepository
 import com.msg.data.repository.activity.ActivityRepositoryImpl
 import com.msg.data.repository.auth.AuthRepository
 import com.msg.data.repository.auth.AuthRepositoryImpl
+import com.msg.data.repository.faq.FaqRepository
+import com.msg.data.repository.faq.FaqRepositoryImpl
 import com.msg.data.repository.lecture.LectureRepository
 import com.msg.data.repository.lecture.LectureRepositoryImpl
 import com.msg.data.repository.user.UserRepository
@@ -35,4 +37,9 @@ abstract class RepositoryModule {
     abstract fun bindUserRepository(
         userRepositoryImpl: UserRepositoryImpl
     ): UserRepository
+
+    @Binds
+    abstract fun bindFaqRepository(
+        faqRepositoryImpl: FaqRepositoryImpl
+    ): FaqRepository
 }
