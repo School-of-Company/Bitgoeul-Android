@@ -31,6 +31,8 @@ import com.msg.design_system.component.textfield.LinkText
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
+import com.msg.design_system.util.checkEmailRegex
+import com.msg.design_system.util.checkPasswordRegex
 import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
@@ -149,11 +151,12 @@ fun LoginScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(52.dp),
-                        state = ButtonState.Disable,
-                    ) {
-                        saveLoginData(emailState.value, passwordState.value)
-                        onLoginClick()
-                    }
+                        state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
+                        onClick = {
+                            saveLoginData(emailState.value, passwordState.value)
+                            onLoginClick()
+                        }
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))

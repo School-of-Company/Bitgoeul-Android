@@ -1,6 +1,5 @@
 package com.msg.design_system.component.textfield
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -82,7 +81,6 @@ fun DefaultTextField(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .onFocusChanged {
-                        Log.d("TAG", it.isFocused.toString())
                         isFocused.value = it.isFocused
                         if (it.isFocused && onClick != null) onClick()
                         if (!it.isFocused && value != null) text = value

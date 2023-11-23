@@ -1,8 +1,9 @@
 package com.msg.network.util
 
 import kotlinx.datetime.LocalDateTime
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.toLocalDateTime
+import java.text.SimpleDateFormat
 
 fun Any?.toLocalDateTime(): LocalDateTime {
-    return LocalDateTime.parse(toString())
+    return SimpleDateFormat("yyyy-MM-d'T'HH:mm:ss").format(this).toLocalDateTime()
 }

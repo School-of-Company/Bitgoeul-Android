@@ -90,25 +90,8 @@ fun BitgoeulButton(
         }
 
         Button(
-            modifier = modifier
-                .pointerInteropFilter {
-                    when (it.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            onTouched(enabledState(state))
-                            true
-                        }
-
-                        else -> {
-                            true
-                        }
-                    }
-                }
-                .offset(
-                    (disableAnimationLeftValue.value * 10 + disableAnimationRightValue.value * 10).dp,
-                    0.dp
-                ),
+            modifier = modifier,
             interactionSource = interactionSource,
-            onClick = onClick,
             enabled = enabledState(state),
             colors = ButtonDefaults.buttonColors(
                 containerColor = colors.P5,
@@ -116,6 +99,7 @@ fun BitgoeulButton(
                 disabledContainerColor = colors.G1,
                 disabledContentColor = colors.G2,
             ),
+            onClick = onClick,
             contentPadding = PaddingValues(vertical = 12.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
