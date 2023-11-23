@@ -42,7 +42,7 @@ fun GoBackTopBar(
                 icon()
             }
             Spacer(
-                modifier = modifier.width(4.dp)
+                modifier = modifier.width(7.dp)
             )
             Text(
                 modifier = modifier
