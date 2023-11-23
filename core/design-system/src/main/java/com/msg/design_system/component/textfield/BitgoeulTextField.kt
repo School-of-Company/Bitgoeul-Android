@@ -4,18 +4,23 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,7 +57,7 @@ fun DefaultTextField(
     onClickButton: () -> Unit,
     onClickLink: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
-    value: String? = null
+    value: String? = null,
 ) {
     var text by remember { mutableStateOf(value ?: "") }
     val isFocused = remember { mutableStateOf(false) }
@@ -129,10 +135,12 @@ fun DefaultTextField(
                     }
                 },
                 readOnly = isReadOnly,
-                keyboardOptions = if (isNumberOnly) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions(autoCorrect = false)
+                keyboardOptions = if (isNumberOnly) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions(
+                    autoCorrect = false
+                )
             )
-            if (isError||isLinked) {
-                val isAll: Boolean = isError&&isLinked
+            if (isError || isLinked) {
+                val isAll: Boolean = isError && isLinked
                 Row(
                     modifier = modifier.padding(4.dp),
                     horizontalArrangement = if (isAll) Arrangement.SpaceBetween else if (isError) Arrangement.Start else Arrangement.End
@@ -171,7 +179,7 @@ fun PasswordTextField(
     isError: Boolean,
     isLinked: Boolean,
     isDisabled: Boolean,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     var showPassword by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -227,7 +235,10 @@ fun PasswordTextField(
                 visualTransformation = if (showPassword) {
                     VisualTransformation.None
                 } else {
-                    LastPasswordVisibleVisualTransformation(isFocused = isFocused.value, isChanged = isChanged.value)
+                    LastPasswordVisibleVisualTransformation(
+                        isFocused = isFocused.value,
+                        isChanged = isChanged.value
+                    )
                 },
                 trailingIcon = {
                     if (showPassword) {
@@ -265,9 +276,100 @@ fun PasswordTextField(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InputTitleTextField(
+    modifier: Modifier,
+    placeholder: String,
+    maxTextLength: Int,
+    onValueChange: (String) -> Unit,
+    onClickButton: () -> Unit,
+    onClick: (() -> Unit)? = null,
+) {
+    var text by remember { mutableStateOf("") }
+
+    BitgoeulAndroidTheme { colors, type ->
+        Column(
+            modifier = modifier.background(color = Color.Transparent),
+        ) {
+            TextField(
+                value = text,
+                onValueChange = {
+                    if (it.length <= maxTextLength) {
+                        text = it
+                        onValueChange(it)
+                    }
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(color = Color.Transparent),
+                placeholder = {
+                    Text(text = placeholder, style = type.titleSmall, color = colors.G1)
+                },
+                textStyle = type.titleSmall.copy(color = colors.BLACK),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    cursorColor = colors.P5
+                ),
+            )
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InputMainContentTextField(
+    modifier: Modifier,
+    placeholder: String,
+    maxTextLength: Int,
+    onValueChange: (String) -> Unit,
+    onClickButton: () -> Unit,
+    onClick: (() -> Unit)? = null,
+) {
+    var text by remember { mutableStateOf("") }
+
+    BitgoeulAndroidTheme { colors, type ->
+        Column(
+            modifier = modifier.background(color = Color.Transparent),
+        ) {
+            TextField(
+                value = text,
+                onValueChange = {
+                    if (it.length <= maxTextLength) {
+                        text = it
+                        onValueChange(it)
+                    }
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(color = Color.Transparent),
+                placeholder = {
+                    Text(text = placeholder, style = type.bodySmall, color = colors.G1)
+                },
+                textStyle = type.bodySmall.copy(color = colors.BLACK),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    cursorColor = colors.P5
+                ),
+            )
+        }
+    }
+}
+
 @Composable
 fun ErrorText(
-    text: String
+    text: String,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Text(text = text, color = colors.E5, style = typography.labelMedium)
@@ -277,10 +379,15 @@ fun ErrorText(
 @Composable
 fun LinkText(
     text: String,
-    onClickLink: () -> Unit
+    onClickLink: () -> Unit,
 ) {
-    BitgoeulAndroidTheme { colors, typography ->  
-        Text(modifier = Modifier.clickable(enabled = true, onClick = onClickLink),text = text, color = colors.P5, style = typography.labelMedium)
+    BitgoeulAndroidTheme { colors, typography ->
+        Text(
+            modifier = Modifier.clickable(enabled = true, onClick = onClickLink),
+            text = text,
+            color = colors.P5,
+            style = typography.labelMedium
+        )
     }
 }
 
@@ -333,6 +440,17 @@ fun TextFieldPre() {
             isError = false,
             isLinked = false,
             isDisabled = true
+        )
+
+        InputTitleTextField(
+            modifier = Modifier
+                .width(304.dp)
+                .wrapContentHeight(),
+            placeholder = "강의 제목 (100자 이내)",
+            onClick = {},
+            onClickButton = {},
+            onValueChange = {},
+            maxTextLength = 100
         )
     }
 }
