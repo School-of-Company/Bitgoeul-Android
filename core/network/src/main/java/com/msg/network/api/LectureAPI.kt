@@ -2,6 +2,7 @@ package com.msg.network.api
 
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.LectureListResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -17,7 +18,7 @@ interface LectureAPI {
     )
 
     @GET("lecture")
-    suspend fun getLectureList(): List<LectureListModel>
+    suspend fun getLectureList(): List<LectureListResponse>
 
     @GET("lecture/{id}")
     suspend fun getDetailLecture(
