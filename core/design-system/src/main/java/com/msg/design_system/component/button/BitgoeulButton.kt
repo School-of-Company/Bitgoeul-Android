@@ -1,20 +1,16 @@
 package com.msg.design_system.component.button
 
 import android.util.Log
-import android.view.MotionEvent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -25,8 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
@@ -112,28 +106,31 @@ fun BitgoeulButton(
 }
 
 @Composable
-fun LectureDetailSettingButton(
+fun DetailSettingButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    type: String,
+    onClick: () -> Unit
 ) {
-    BitgoeulAndroidTheme { colors, type ->
+    BitgoeulAndroidTheme { colors, typography ->
         OutlinedButton(
-            modifier = modifier.border(BorderStroke(1.dp, color = colors.P5)),
+            border = BorderStroke(1.dp, colors.P5),
+            modifier = modifier,
             onClick = onClick,
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = colors.WHITE,
                 contentColor = colors.P5,
             ),
             shape = RoundedCornerShape(8.dp),
+            contentPadding = PaddingValues(vertical = 12.dp)
         ) {
             MainColorSettingIcon()
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
-                text = stringResource(id = R.string.lecture_detail_setting),
+                text = stringResource(id = if (type == "강의") R.string.lecture_detail_setting else R.string.activity_detail_setting),
                 color = colors.P5,
-                style = type.bodyLarge
+                style = typography.bodyLarge
             )
         }
     }
@@ -146,8 +143,9 @@ fun ApplicationDoneButton(
 ) {
     BitgoeulAndroidTheme { colors, type ->
         OutlinedButton(
-            modifier = modifier.border(BorderStroke(1.dp, color = colors.P5)),
+            modifier = modifier,
             onClick = onClick,
+            border = BorderStroke(1.dp, color = colors.P5),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = colors.WHITE,
                 contentColor = colors.P5,
@@ -190,11 +188,12 @@ fun BitgoeulButtonPre() {
 
         }
 
-        LectureDetailSettingButton(
+        DetailSettingButton(
             modifier = Modifier
                 .width(319.dp)
                 .height(52.dp),
-            onClick = {}
+            onClick = {},
+            type = "강의"
         )
 
         ApplicationDoneButton(

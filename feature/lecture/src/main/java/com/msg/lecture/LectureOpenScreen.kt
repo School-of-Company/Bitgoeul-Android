@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.button.BitgoeulButton
-import com.msg.design_system.component.button.LectureDetailSettingButton
+import com.msg.design_system.component.button.DetailSettingButton
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.textfield.InputMainContentTextField
 import com.msg.design_system.component.textfield.InputTitleTextField
@@ -67,16 +67,15 @@ fun LectureOpenScreen(
                 )
 
             Spacer(modifier = Modifier.height(24.dp))
-                LectureDetailSettingButton(
+                DetailSettingButton(
                     modifier = Modifier
                         .padding(bottom = 100.dp)
                         .align(Alignment.BottomCenter)
                         .fillMaxWidth()
                         .height(52.dp)
                         .padding(horizontal = 24.dp),
-
-                    ) {
-                }
+                    type = "강의"
+                    ) {}
 
                 BitgoeulButton(
                     text = "강의 개설 신청",
