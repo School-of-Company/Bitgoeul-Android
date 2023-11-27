@@ -1,6 +1,5 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.model.lecture.LectureListModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import kotlinx.coroutines.flow.Flow
