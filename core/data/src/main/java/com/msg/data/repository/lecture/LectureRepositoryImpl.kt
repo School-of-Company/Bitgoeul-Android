@@ -2,6 +2,7 @@ package com.msg.data.repository.lecture
 
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.network.datasource.lecture.LectureDataSource
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -16,7 +17,7 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getLectureList(): Flow<List<LectureListModel>> {
+    override suspend fun getLectureList(): Flow<List<LectureListResponse>> {
         return lectureDataSource.getLectureList()
     }
 
