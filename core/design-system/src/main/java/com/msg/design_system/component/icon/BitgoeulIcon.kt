@@ -100,9 +100,10 @@ fun CloseIcon(
 @Composable
 fun PickerArrowIcon(
     modifier: Modifier = Modifier,
+    isSelected: Boolean
 ) {
     Image(
-        painter = painterResource(id = R.drawable.ic_picker_arrow),
+        painter = painterResource(id = if (isSelected) R.drawable.ic_picker_arrow_selected else R.drawable.ic_picker_arrow),
         contentDescription = "Show Picker Bottom Sheet Icon",
         modifier = modifier
             .width(24.dp)

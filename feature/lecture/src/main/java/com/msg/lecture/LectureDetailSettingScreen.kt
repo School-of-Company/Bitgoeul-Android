@@ -314,7 +314,7 @@ fun Picker(
                 style = type.bodySmall,
             )
 
-            PickerArrowIcon()
+            PickerArrowIcon(isSelected = false)
         }
     }
 }
