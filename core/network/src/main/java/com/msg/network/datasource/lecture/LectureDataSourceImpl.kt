@@ -1,7 +1,8 @@
 package com.msg.network.datasource.lecture
 
-import com.msg.model.remote.model.lecture.LectureListModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
+import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.network.api.LectureAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
@@ -22,17 +23,17 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getLectureList(): Flow<List<LectureListModel>> = flow {
+    override suspend fun getLectureList(): Flow<List<LectureListResponse>> = flow {
         emit(
-            BitgoeulApiHandler<List<LectureListModel>>()
+            BitgoeulApiHandler<List<LectureListResponse>>()
                 .httpRequest { lectureAPI.getLectureList() }
                 .sendRequest()
         )
     }
 
-    override suspend fun getDetailLecture(id: UUID): Flow<Unit> = flow {
+    override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> = flow {
         emit(
-            BitgoeulApiHandler<Unit>()
+            BitgoeulApiHandler<DetailLectureResponse>()
                 .httpRequest { lectureAPI.getDetailLecture(id = id) }
                 .sendRequest()
         )
