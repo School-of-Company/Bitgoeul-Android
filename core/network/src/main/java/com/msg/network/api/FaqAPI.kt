@@ -19,6 +19,7 @@ interface FaqAPI {
     suspend fun getFrequentlyAskedQuestionsDetail(
         @Path("id") id: UUID,
     ): GetFrequentlyAskedQuestionDetailResponse
+
     @GET("FAQ")
     suspend fun getFrequentlyAskedQuestionsList(): List<FrequentlyAskedQuestionsListResponse>
 }
