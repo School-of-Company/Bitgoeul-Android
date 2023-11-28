@@ -124,7 +124,7 @@ fun AddActivityScreen() {
                         text = "강의 개설 신청",
                         state = if (title.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
                     ) {
-
+                        
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
