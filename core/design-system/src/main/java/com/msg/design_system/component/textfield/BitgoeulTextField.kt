@@ -405,31 +405,22 @@ fun PickerTextField(
 
             PickerArrowIcon(isSelected = isFocused.value)
 
-            when (isDatePicker) {
-                true -> {
-                    if (isFocused.value) {
-                        DatePickerBottomSheet {
-                            isFocused.value = false
-                            onQuit(it)
-                        }
-                    }
+            if (isFocused.value && isDatePicker) {
+                DatePickerBottomSheet {
+                    isFocused.value = false
+                    onQuit(it)
                 }
-                false -> {
-                    if (isFocused.value) {
-                        SelectorBottomSheet(
-                            list = list,
-                            selectedItem = selectedItem,
-                            itemChange = onItemChange,
-                            onQuit = {
-                                isFocused.value = false
-                            },
-                            firstItem = {}
-                        )
-                    }
-                }
+            } else if (isFocused.value) {
+                SelectorBottomSheet(
+                    list = list,
+                    selectedItem = selectedItem,
+                    itemChange = onItemChange,
+                    onQuit = {
+                        isFocused.value = false
+                    },
+                    firstItem = {}
+                )
             }
-
-
 
 
         }

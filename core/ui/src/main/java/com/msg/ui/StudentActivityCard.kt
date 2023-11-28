@@ -49,8 +49,7 @@ fun StudentActivityCard(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                )
-                {
+                ) {
                     Text(
                         text = data.title,
                         style = typography.bodyLarge,
