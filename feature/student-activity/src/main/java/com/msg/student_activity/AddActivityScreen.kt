@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.button.DetailSettingButton
+import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -34,6 +35,8 @@ fun AddActivityScreen() {
 
     val title = remember { mutableStateOf("") }
     val content = remember { mutableStateOf("") }
+
+    val isDialogVisible = remember { mutableStateOf(false) }
 
     val maxTitleLength = 100
     val maxContentLength = 1000
@@ -124,10 +127,17 @@ fun AddActivityScreen() {
                         text = "강의 개설 신청",
                         state = if (title.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
                     ) {
-                        
+                        isDialogVisible.value = true
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
+                PositiveActionDialog(
+                    title = "활동 추가하시겠습니까?",
+                    positiveAction = "신청",
+                    content = title.value,
+                    isVisible = isDialogVisible.value,
+                    onQuit = { isDialogVisible.value = false }
+                )
             }
         }
     }
