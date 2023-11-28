@@ -31,7 +31,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.Vibration
 import com.msg.design_system.util.vibe
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BitgoeulButton(
     modifier: Modifier = Modifier,
@@ -43,8 +42,8 @@ fun BitgoeulButton(
 
         val interactionSource = remember { MutableInteractionSource() }
 
-        val isActiveDisableAnimationLeft = remember { mutableStateOf(false) }
-        val isActiveDisableAnimationRight = remember { mutableStateOf(false) }
+//        val isActiveDisableAnimationLeft = remember { mutableStateOf(false) }
+//        val isActiveDisableAnimationRight = remember { mutableStateOf(false) }
 
         val enabledState: (buttonState: ButtonState) -> Boolean = {
             when (it) {
@@ -53,35 +52,35 @@ fun BitgoeulButton(
             }
         }
 
-        val context = LocalContext.current
+//        val context = LocalContext.current
 
-        val disableAnimationLeftValue = animateFloatAsState(
-            targetValue = if (isActiveDisableAnimationLeft.value) 0.2f else 0f,
-            visibilityThreshold = 0.15f, label = "disableAnimationLeftValue"
-        ) {
-            if (it == 0.2f) {
-                Log.d("Here", "Here")
-                isActiveDisableAnimationLeft.value = false
-            } else if (it == 0f) {
-                isActiveDisableAnimationRight.value = true
-            }
-        }
-
-        val disableAnimationRightValue = animateFloatAsState(
-            targetValue = if (isActiveDisableAnimationRight.value) -0.2f else 0f,
-            visibilityThreshold = 0.1f, label = "disableAnimationRightValue"
-        ) {
-            if (it == -0.2f) {
-                isActiveDisableAnimationRight.value = false
-            }
-        }
-
-        val onTouched: (isDisabled: Boolean) -> Unit = {
-            if (!it) {
-                isActiveDisableAnimationLeft.value = true
-                context.vibe(Vibration.WARNING)
-            }
-        }
+//        val disableAnimationLeftValue = animateFloatAsState(
+//            targetValue = if (isActiveDisableAnimationLeft.value) 0.2f else 0f,
+//            visibilityThreshold = 0.15f, label = "disableAnimationLeftValue"
+//        ) {
+//            if (it == 0.2f) {
+//                Log.d("Here", "Here")
+//                isActiveDisableAnimationLeft.value = false
+//            } else if (it == 0f) {
+//                isActiveDisableAnimationRight.value = true
+//            }
+//        }
+//
+//        val disableAnimationRightValue = animateFloatAsState(
+//            targetValue = if (isActiveDisableAnimationRight.value) -0.2f else 0f,
+//            visibilityThreshold = 0.1f, label = "disableAnimationRightValue"
+//        ) {
+//            if (it == -0.2f) {
+//                isActiveDisableAnimationRight.value = false
+//            }
+//        }
+//
+//        val onTouched: (isDisabled: Boolean) -> Unit = {
+//            if (!it) {
+//                isActiveDisableAnimationLeft.value = true
+//                context.vibe(Vibration.WARNING)
+//            }
+//        }
 
         Button(
             modifier = modifier,
@@ -130,6 +129,46 @@ fun DetailSettingButton(
             Text(
                 text = stringResource(id = if (type == "강의") R.string.lecture_detail_setting else R.string.activity_detail_setting),
                 color = colors.P5,
+                style = typography.bodyLarge
+            )
+        }
+    }
+}
+
+@Composable
+fun NegativeBitgoeulButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    state: ButtonState = ButtonState.Enable,
+    onClick: () -> Unit
+) {
+    BitgoeulAndroidTheme { colors, typography ->
+
+        val interactionSource = remember { MutableInteractionSource() }
+
+        val enabledState: (buttonState: ButtonState) -> Boolean = {
+            when (it) {
+                ButtonState.Enable -> true
+                ButtonState.Disable -> false
+            }
+        }
+
+        Button(
+            modifier = modifier,
+            interactionSource = interactionSource,
+            enabled = enabledState(state),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colors.E5,
+                contentColor = colors.WHITE,
+                disabledContainerColor = colors.G1,
+                disabledContentColor = colors.G2,
+            ),
+            onClick = onClick,
+            contentPadding = PaddingValues(vertical = 12.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text(
+                text = text,
                 style = typography.bodyLarge
             )
         }
