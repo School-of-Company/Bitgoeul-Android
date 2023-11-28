@@ -34,12 +34,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.msg.design_system.component.bottomsheet.DatePickerBottomSheet
 import com.msg.design_system.component.bottomsheet.SelectorBottomSheet
 import com.msg.design_system.component.icon.CancelIcon
 import com.msg.design_system.component.icon.PickerArrowIcon
 import com.msg.design_system.component.icon.SeeableIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -373,7 +375,9 @@ fun PickerTextField(
     text: String,
     list: List<String>,
     selectedItem: String,
-    onItemChange: (item: String) -> Unit
+    onItemChange: (item: String) -> Unit,
+    isDatePicker: Boolean = false,
+    onQuit: (LocalDate?) -> Unit = {}
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -385,7 +389,10 @@ fun PickerTextField(
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(vertical = 15.dp, horizontal = 20.dp)
-                .clickable {
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
                     isFocused.value = true
                 },
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -398,17 +405,33 @@ fun PickerTextField(
 
             PickerArrowIcon(isSelected = isFocused.value)
 
-            if (isFocused.value) {
-                SelectorBottomSheet(
-                    list = list,
-                    selectedItem = selectedItem,
-                    itemChange = onItemChange,
-                    onQuit = {
-                        isFocused.value = false
-                    },
-                    firstItem = {}
-                )
+            when (isDatePicker) {
+                true -> {
+                    if (isFocused.value) {
+                        DatePickerBottomSheet {
+                            isFocused.value = false
+                            onQuit(it)
+                        }
+                    }
+                }
+                false -> {
+                    if (isFocused.value) {
+                        SelectorBottomSheet(
+                            list = list,
+                            selectedItem = selectedItem,
+                            itemChange = onItemChange,
+                            onQuit = {
+                                isFocused.value = false
+                            },
+                            firstItem = {}
+                        )
+                    }
+                }
             }
+
+
+
+
         }
     }
 }
