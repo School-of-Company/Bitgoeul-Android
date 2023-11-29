@@ -6,4 +6,6 @@ import java.util.UUID
 
 interface CertificationRepository {
     suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>>
+    suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>>
+
 }

@@ -9,8 +9,12 @@ import javax.inject.Inject
 class CertificationRepositoryImpl @Inject constructor(
     private val certificationDataSource: CertificationDataSource
 ) : CertificationRepository {
-    override suspend fun getCertificationList(studentId: UUID): Flow<List<CertificationListResponse>> {
-        return certificationDataSource.getCertificationList(studentId = studentId)
+    override suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>> {
+        return certificationDataSource.getCertificationListForTeacher(studentId = studentId)
+    }
+
+    override suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>> {
+        return certificationDataSource.getCertificationListForStudent()
     }
 
 }
