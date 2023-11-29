@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -34,6 +38,9 @@ import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.checkbox.BitGoeulCheckBox
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -314,6 +321,41 @@ fun CalenderBottomSheet() {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerBottomSheet(
+    onQuit: (LocalDate?) -> Unit
+) {
+    val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
+        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+            return utcTimeMillis <= System.currentTimeMillis()
+        }
+    })
+    val selectedDate = datePickerState.selectedDateMillis?.convertMillisToDate()
+
+    BitgoeulAndroidTheme { colors, typography ->
+        ModalBottomSheet(
+            onDismissRequest = { onQuit(selectedDate) }
+        ) {
+            DatePicker(
+                state = datePickerState,
+                colors = DatePickerDefaults.colors(
+                    containerColor = colors.WHITE,
+                    selectedDayContainerColor = colors.P5,
+                    selectedYearContainerColor = colors.P5,
+                    todayDateBorderColor = colors.P5,
+                    todayContentColor = colors.P5
+                ),
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+fun Long.convertMillisToDate(): LocalDate {
+    return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
+}
+
 @Preview
 @Composable
 fun BottomSheetPre() {
@@ -341,4 +383,8 @@ fun BottomSheetPre() {
         onQuit = {},
         isVisible = true,
     )
+
+    DatePickerBottomSheet {
+
+    }
 }

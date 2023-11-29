@@ -1,20 +1,16 @@
 package com.msg.design_system.component.button
 
 import android.util.Log
-import android.view.MotionEvent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -25,8 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
@@ -37,7 +31,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.Vibration
 import com.msg.design_system.util.vibe
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BitgoeulButton(
     modifier: Modifier = Modifier,
@@ -49,8 +42,8 @@ fun BitgoeulButton(
 
         val interactionSource = remember { MutableInteractionSource() }
 
-        val isActiveDisableAnimationLeft = remember { mutableStateOf(false) }
-        val isActiveDisableAnimationRight = remember { mutableStateOf(false) }
+//        val isActiveDisableAnimationLeft = remember { mutableStateOf(false) }
+//        val isActiveDisableAnimationRight = remember { mutableStateOf(false) }
 
         val enabledState: (buttonState: ButtonState) -> Boolean = {
             when (it) {
@@ -59,35 +52,35 @@ fun BitgoeulButton(
             }
         }
 
-        val context = LocalContext.current
+//        val context = LocalContext.current
 
-        val disableAnimationLeftValue = animateFloatAsState(
-            targetValue = if (isActiveDisableAnimationLeft.value) 0.2f else 0f,
-            visibilityThreshold = 0.15f, label = "disableAnimationLeftValue"
-        ) {
-            if (it == 0.2f) {
-                Log.d("Here", "Here")
-                isActiveDisableAnimationLeft.value = false
-            } else if (it == 0f) {
-                isActiveDisableAnimationRight.value = true
-            }
-        }
-
-        val disableAnimationRightValue = animateFloatAsState(
-            targetValue = if (isActiveDisableAnimationRight.value) -0.2f else 0f,
-            visibilityThreshold = 0.1f, label = "disableAnimationRightValue"
-        ) {
-            if (it == -0.2f) {
-                isActiveDisableAnimationRight.value = false
-            }
-        }
-
-        val onTouched: (isDisabled: Boolean) -> Unit = {
-            if (!it) {
-                isActiveDisableAnimationLeft.value = true
-                context.vibe(Vibration.WARNING)
-            }
-        }
+//        val disableAnimationLeftValue = animateFloatAsState(
+//            targetValue = if (isActiveDisableAnimationLeft.value) 0.2f else 0f,
+//            visibilityThreshold = 0.15f, label = "disableAnimationLeftValue"
+//        ) {
+//            if (it == 0.2f) {
+//                Log.d("Here", "Here")
+//                isActiveDisableAnimationLeft.value = false
+//            } else if (it == 0f) {
+//                isActiveDisableAnimationRight.value = true
+//            }
+//        }
+//
+//        val disableAnimationRightValue = animateFloatAsState(
+//            targetValue = if (isActiveDisableAnimationRight.value) -0.2f else 0f,
+//            visibilityThreshold = 0.1f, label = "disableAnimationRightValue"
+//        ) {
+//            if (it == -0.2f) {
+//                isActiveDisableAnimationRight.value = false
+//            }
+//        }
+//
+//        val onTouched: (isDisabled: Boolean) -> Unit = {
+//            if (!it) {
+//                isActiveDisableAnimationLeft.value = true
+//                context.vibe(Vibration.WARNING)
+//            }
+//        }
 
         Button(
             modifier = modifier,
@@ -112,28 +105,71 @@ fun BitgoeulButton(
 }
 
 @Composable
-fun LectureDetailSettingButton(
+fun DetailSettingButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    type: String,
+    onClick: () -> Unit
 ) {
-    BitgoeulAndroidTheme { colors, type ->
+    BitgoeulAndroidTheme { colors, typography ->
         OutlinedButton(
-            modifier = modifier.border(BorderStroke(1.dp, color = colors.P5)),
+            border = BorderStroke(1.dp, colors.P5),
+            modifier = modifier,
             onClick = onClick,
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = colors.WHITE,
                 contentColor = colors.P5,
             ),
             shape = RoundedCornerShape(8.dp),
+            contentPadding = PaddingValues(vertical = 12.dp)
         ) {
             MainColorSettingIcon()
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
-                text = stringResource(id = R.string.lecture_detail_setting),
+                text = stringResource(id = if (type == "강의") R.string.lecture_detail_setting else R.string.activity_detail_setting),
                 color = colors.P5,
-                style = type.bodyLarge
+                style = typography.bodyLarge
+            )
+        }
+    }
+}
+
+@Composable
+fun NegativeBitgoeulButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    state: ButtonState = ButtonState.Enable,
+    onClick: () -> Unit
+) {
+    BitgoeulAndroidTheme { colors, typography ->
+
+        val interactionSource = remember { MutableInteractionSource() }
+
+        val enabledState: (buttonState: ButtonState) -> Boolean = {
+            when (it) {
+                ButtonState.Enable -> true
+                ButtonState.Disable -> false
+            }
+        }
+
+        Button(
+            modifier = modifier,
+            interactionSource = interactionSource,
+            enabled = enabledState(state),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colors.E5,
+                contentColor = colors.WHITE,
+                disabledContainerColor = colors.G1,
+                disabledContentColor = colors.G2,
+            ),
+            onClick = onClick,
+            contentPadding = PaddingValues(vertical = 12.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text(
+                text = text,
+                style = typography.bodyLarge
             )
         }
     }
@@ -146,8 +182,9 @@ fun ApplicationDoneButton(
 ) {
     BitgoeulAndroidTheme { colors, type ->
         OutlinedButton(
-            modifier = modifier.border(BorderStroke(1.dp, color = colors.P5)),
+            modifier = modifier,
             onClick = onClick,
+            border = BorderStroke(1.dp, color = colors.P5),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = colors.WHITE,
                 contentColor = colors.P5,
@@ -190,11 +227,12 @@ fun BitgoeulButtonPre() {
 
         }
 
-        LectureDetailSettingButton(
+        DetailSettingButton(
             modifier = Modifier
                 .width(319.dp)
                 .height(52.dp),
-            onClick = {}
+            onClick = {},
+            type = "강의"
         )
 
         ApplicationDoneButton(

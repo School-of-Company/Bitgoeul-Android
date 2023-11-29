@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -26,15 +27,17 @@ import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun ApplicationRejectDialog(
+fun PositiveActionDialog(
     modifier: Modifier = Modifier,
+    title: String,
+    positiveAction: String,
     content: String,
     isVisible: Boolean,
     onQuit: () -> Unit,
 ) {
     if (isVisible) {
-        BitgoeulAndroidTheme { colors, type ->
-            Dialog(onDismissRequest = { onQuit() }) {
+        Dialog(onDismissRequest = { onQuit() }) {
+            BitgoeulAndroidTheme { colors, type ->
                 Box(
                     modifier = modifier
                         .background(
@@ -48,7 +51,7 @@ fun ApplicationRejectDialog(
                     Column {
                         Text(
                             modifier = modifier.align(Alignment.CenterHorizontally),
-                            text = "신청 거부하시겠습니까?",
+                            text = title,
                             color = colors.BLACK,
                             style = type.bodyLarge,
                             fontSize = 18.sp
@@ -94,7 +97,6 @@ fun ApplicationRejectDialog(
                                     style = type.bodySmall
                                 )
                             }
-
                             Box(
                                 modifier = modifier
                                     .clip(
@@ -106,9 +108,9 @@ fun ApplicationRejectDialog(
                                         )
                                     )
                                     .background(
-                                        color = colors.E5
+                                        color = colors.P5
                                     )
-                                    .weight(1f)
+                                    .weight(1f),
                             ) {
                                 Text(
                                     modifier = modifier
@@ -117,9 +119,9 @@ fun ApplicationRejectDialog(
                                         .clickable {
                                             onQuit()
                                         },
-                                    text = stringResource(id = R.string.reject),
+                                    text = positiveAction,
                                     color = colors.WHITE,
-                                    style = type.bodySmall
+                                    style = type.bodySmall,
                                 )
                             }
                         }
@@ -128,4 +130,16 @@ fun ApplicationRejectDialog(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun BitgoeulApproveDialogPre() {
+    PositiveActionDialog(
+        title = "신청 승인하시겠습니까?",
+        content = "국가는 국민 모두의 생산 및 생활의 기반이 되는 국토의 효율적이고 균형있는 이용·개발과 보전을 위하여 법률이 정하는 바에 의하여 그에 관한 필요 김하온 박주홍 강민수 이동욱 정찬교 이정우 김새미 서주미 정윤서 ",
+        isVisible = true,
+        onQuit = {},
+        positiveAction = "승인"
+    )
 }

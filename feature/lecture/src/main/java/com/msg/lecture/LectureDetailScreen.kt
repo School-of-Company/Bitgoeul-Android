@@ -32,8 +32,8 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
-import com.msg.design_system.component.dialog.ApplicationApproveDialog
-import com.msg.design_system.component.dialog.ApplicationRejectDialog
+import com.msg.design_system.component.dialog.PositiveActionDialog
+import com.msg.design_system.component.dialog.NegativeActionDialog
 
 @Composable
 fun LectureDetailScreen(
@@ -228,7 +228,9 @@ fun ApplicationRequestButton(
                     style = type.bodyLarge
                 )
 
-                ApplicationRejectDialog(
+                NegativeActionDialog(
+                    title = "신청 거부하시겠습니까?",
+                    negativeAction = "거부",
                     isVisible = isDialogVisible.value,
                     content = "askdl;asd",
                     onQuit = {
@@ -255,9 +257,11 @@ fun ApplicationRequestButton(
                     style = type.bodyLarge
                 )
 
-                ApplicationApproveDialog(
+                PositiveActionDialog(
+                    title = "신청 승인하시겠습니까?",
                     isVisible = isDialogVisible.value,
                     content = "askdl;asd",
+                    positiveAction = "승신",
                     onQuit = {
                         isDialogVisible.value = !isDialogVisible.value
                     },
