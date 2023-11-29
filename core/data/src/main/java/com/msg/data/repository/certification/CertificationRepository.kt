@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface CertificationRepository {
-    suspend fun getCertificationList(studentId: UUID): Flow<List<CertificationListResponse>>
+    suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>>
 }

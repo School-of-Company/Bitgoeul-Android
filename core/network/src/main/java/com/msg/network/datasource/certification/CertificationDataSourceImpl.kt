@@ -11,11 +11,11 @@ import javax.inject.Inject
 class CertificationDataSourceImpl @Inject constructor(
     private val certificationAPI: CertificationAPI,
 ) : CertificationDataSource {
-    override suspend fun getCertificationList(studentId: UUID): Flow<List<CertificationListResponse>> =
+    override suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>> =
         flow {
             emit(
                 BitgoeulApiHandler<List<CertificationListResponse>>()
-                    .httpRequest { certificationAPI.getCertificationList(studentId = studentId) }
+                    .httpRequest { certificationAPI.getCertificationListForTeacher(studentId = studentId) }
                     .sendRequest()
             )
         }

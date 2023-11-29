@@ -7,7 +7,7 @@ import java.util.UUID
 
 interface CertificationAPI {
     @GET("certification/{student_id}")
-    suspend fun getCertificationList(
+    suspend fun getCertificationListForTeacher(
         @Path("student_id") studentId: UUID
     ): List<CertificationListResponse>
 }
