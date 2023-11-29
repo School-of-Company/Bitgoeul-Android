@@ -7,7 +7,7 @@ import javax.inject.Inject
 class OpenLectureUseCase @Inject constructor(
     private val lectureRepository: LectureRepository,
 ) {
-    suspend operator fun invoke(body: OpenLectureRequest) = kotlin.runCatching {
+    suspend operator fun invoke(body: OpenLectureRequest) = runCatching {
         lectureRepository.openLecture(body = body)
     }
 }
