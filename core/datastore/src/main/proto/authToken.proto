@@ -8,4 +8,5 @@ message AuthToken {
   string accessExp = 2;
   string refreshToken = 3;
   string refreshExp = 4;
+  string authority = 5;
 }

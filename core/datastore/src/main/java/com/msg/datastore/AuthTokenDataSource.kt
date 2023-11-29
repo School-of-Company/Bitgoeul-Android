@@ -1,6 +1,7 @@
 package com.msg.datastore
 
 import androidx.datastore.core.DataStore
+import com.msg.model.remote.enumdatatype.Authority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -52,6 +53,18 @@ class AuthTokenDataSource @Inject constructor(
         authToken.updateData {
             it.toBuilder()
                 .setRefreshToken(refreshTokenExp)
+                .build()
+        }
+    }
+
+    suspend fun getAuthority(): Flow<String> = authToken.data.map {
+        it.authority ?: ""
+    }
+
+    suspend fun setAuthority(authority: Authority) {
+        authToken.updateData {
+            it.toBuilder()
+                .setAuthority(authority.toString())
                 .build()
         }
     }
