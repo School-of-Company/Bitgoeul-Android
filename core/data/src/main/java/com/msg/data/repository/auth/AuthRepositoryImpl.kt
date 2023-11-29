@@ -29,6 +29,7 @@ class AuthRepositoryImpl @Inject constructor(
             localDataSource.setAccessTokenExp(it.accessExpiredAt)
             localDataSource.setRefreshToken(it.refreshToken)
             localDataSource.setRefreshTokenExp(it.refreshExpiredAt)
+            localDataSource.setAuthority(it.authority)
         }
     }
 
