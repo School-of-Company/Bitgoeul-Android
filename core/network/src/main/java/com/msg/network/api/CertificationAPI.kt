@@ -10,4 +10,7 @@ interface CertificationAPI {
     suspend fun getCertificationListForTeacher(
         @Path("student_id") studentId: UUID
     ): List<CertificationListResponse>
+
+    @GET("certification")
+    suspend fun getCertificationListForStudent(): List<CertificationListResponse>
 }
