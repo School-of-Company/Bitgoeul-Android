@@ -8,6 +8,6 @@ class GetDetailCertificationListUseCase @Inject constructor(
     private val certificationRepository: CertificationRepository
 ) {
     suspend operator fun invoke(studentId: UUID) = runCatching {
-        certificationRepository.getDetailCertificationList(studentId = studentId)
+        certificationRepository.getCertificationList(studentId = studentId)
     }
 }
