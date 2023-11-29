@@ -1,4 +1,4 @@
-package com.msg.domain.lecture
+package com.msg.domain.certification
 
 import com.msg.data.repository.certification.CertificationRepository
 import java.util.UUID
