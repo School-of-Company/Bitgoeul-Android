@@ -19,4 +19,13 @@ class CertificationDataSourceImpl @Inject constructor(
                     .sendRequest()
             )
         }
+
+    override suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>> =
+        flow {
+            emit(
+                BitgoeulApiHandler<List<CertificationListResponse>>()
+                    .httpRequest { certificationAPI.getCertificationListForStudent() }
+                    .sendRequest()
+            )
+        }
 }
