@@ -7,7 +7,7 @@ import javax.inject.Inject
 class ApprovePendingLectureUseCase @Inject constructor(
     private val lectureRepository: LectureRepository
 ) {
-    suspend operator fun invoke(id: UUID) = kotlin.runCatching {
+    suspend operator fun invoke(id: UUID) = runCatching {
         lectureRepository.approvePendingLecture(id = id)
     }
 }

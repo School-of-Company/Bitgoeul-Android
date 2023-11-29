@@ -6,7 +6,7 @@ import javax.inject.Inject
 class GetLectureListUseCase @Inject constructor(
     private val lectureRepository: LectureRepository
 ) {
-    suspend operator fun invoke() = kotlin.runCatching {
+    suspend operator fun invoke() = runCatching {
         lectureRepository.getLectureList()
     }
 }

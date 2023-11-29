@@ -7,7 +7,7 @@ import javax.inject.Inject
 class LectureApplicationUseCase @Inject constructor(
     private val lectureRepository: LectureRepository
 ) {
-    suspend operator fun invoke(id: UUID) = kotlin.runCatching {
+    suspend operator fun invoke(id: UUID) = runCatching {
         lectureRepository.lectureApplication(id = id)
     }
 }
