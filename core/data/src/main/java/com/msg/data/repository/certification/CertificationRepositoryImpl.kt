@@ -1,5 +1,6 @@
 package com.msg.data.repository.certification
 
+import com.msg.model.remote.request.certification.WriteCertificationRequest
 import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.network.datasource.certification.CertificationDataSource
 import kotlinx.coroutines.flow.Flow
@@ -7,7 +8,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 class CertificationRepositoryImpl @Inject constructor(
-    private val certificationDataSource: CertificationDataSource
+    private val certificationDataSource: CertificationDataSource,
 ) : CertificationRepository {
     override suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>> {
         return certificationDataSource.getCertificationListForTeacher(studentId = studentId)
@@ -15,6 +16,12 @@ class CertificationRepositoryImpl @Inject constructor(
 
     override suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>> {
         return certificationDataSource.getCertificationListForStudent()
+    }
+
+    override suspend fun wrtieCertification(body: WriteCertificationRequest): Flow<Unit> {
+        return certificationDataSource.writeCertification(
+            body = body
+        )
     }
 
 }
