@@ -1,7 +1,6 @@
 package com.msg.network.datasource.certification
 
-import com.msg.model.remote.response.certification.DetailCertificationResponse
-import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.network.api.CertificationAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.flow.Flow
@@ -12,11 +11,20 @@ import javax.inject.Inject
 class CertificationDataSourceImpl @Inject constructor(
     private val certificationAPI: CertificationAPI,
 ) : CertificationDataSource {
-    override suspend fun getCertificationList(studentId: UUID): Flow<List<DetailCertificationResponse>> =
+    override suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>> =
         flow {
             emit(
-                BitgoeulApiHandler<List<DetailCertificationResponse>>()
-                    .httpRequest { certificationAPI.getCertificationList(studentId = studentId) }
+                BitgoeulApiHandler<List<CertificationListResponse>>()
+                    .httpRequest { certificationAPI.getCertificationListForTeacher(studentId = studentId) }
+                    .sendRequest()
+            )
+        }
+
+    override suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>> =
+        flow {
+            emit(
+                BitgoeulApiHandler<List<CertificationListResponse>>()
+                    .httpRequest { certificationAPI.getCertificationListForStudent() }
                     .sendRequest()
             )
         }
