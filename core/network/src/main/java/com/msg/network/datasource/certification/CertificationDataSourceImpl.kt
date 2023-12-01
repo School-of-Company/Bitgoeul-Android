@@ -1,5 +1,6 @@
 package com.msg.network.datasource.certification
 
+import com.msg.model.remote.request.certification.WriteCertificationRequest
 import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.network.api.CertificationAPI
 import com.msg.network.util.BitgoeulApiHandler
@@ -28,4 +29,12 @@ class CertificationDataSourceImpl @Inject constructor(
                     .sendRequest()
             )
         }
+
+    override suspend fun writeCertification(body: WriteCertificationRequest): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { certificationAPI.writeCertification(body = body) }
+                .sendRequest()
+        )
+    }
 }
