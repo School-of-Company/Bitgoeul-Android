@@ -47,10 +47,14 @@ class CertificationDataSourceImpl @Inject constructor(
     ): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
-                .httpRequest { certificationAPI.editCertification(studentId = studentId, id = id, body = body) }
+                .httpRequest {
+                    certificationAPI.editCertification(
+                        studentId = studentId,
+                        id = id,
+                        body = body
+                    )
+                }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
-    }
-
 }
