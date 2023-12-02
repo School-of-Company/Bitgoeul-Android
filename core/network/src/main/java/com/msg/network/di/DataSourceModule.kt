@@ -6,6 +6,8 @@ import com.msg.network.datasource.auth.AuthDataSource
 import com.msg.network.datasource.auth.AuthDataSourceImpl
 import com.msg.network.datasource.certification.CertificationDataSource
 import com.msg.network.datasource.certification.CertificationDataSourceImpl
+import com.msg.network.datasource.club.ClubDataSource
+import com.msg.network.datasource.club.ClubDataSourceImpl
 import com.msg.network.datasource.faq.FaqDataSource
 import com.msg.network.datasource.faq.FaqDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
@@ -49,4 +51,9 @@ abstract class DataSourceModule {
     abstract fun bindCertificationDataSource(
         certificationDataSourceImpl: CertificationDataSourceImpl
     ): CertificationDataSource
+
+    @Binds
+    abstract fun bindClubDataSource(
+        clubDataSourceImpl: ClubDataSourceImpl
+    ): ClubDataSource
 }
