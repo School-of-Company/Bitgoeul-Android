@@ -6,6 +6,8 @@ import com.msg.data.repository.auth.AuthRepository
 import com.msg.data.repository.auth.AuthRepositoryImpl
 import com.msg.data.repository.certification.CertificationRepository
 import com.msg.data.repository.certification.CertificationRepositoryImpl
+import com.msg.data.repository.club.ClubRepository
+import com.msg.data.repository.club.ClubRepositoryImpl
 import com.msg.data.repository.faq.FaqRepository
 import com.msg.data.repository.faq.FaqRepositoryImpl
 import com.msg.data.repository.lecture.LectureRepository
@@ -49,4 +51,9 @@ abstract class RepositoryModule {
     abstract fun bindCertificationRepository(
         certificationRepositoryImpl: CertificationRepositoryImpl
     ): CertificationRepository
+
+    @Binds
+    abstract fun bindClubRepository(
+        clubRepositoryImpl: ClubRepositoryImpl
+    ): ClubRepository
 }
