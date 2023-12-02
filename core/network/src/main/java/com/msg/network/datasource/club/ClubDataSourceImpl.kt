@@ -19,5 +19,5 @@ class ClubDataSourceImpl @Inject constructor(
                 .httpRequest { clubAPI.getClubList(highSchool = highSchool) }
                 .sendRequest()
         )
-    }.flowOn(Dispatchers.IO)
+    }
 }
