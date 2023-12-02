@@ -9,4 +9,5 @@ interface CertificationDataSource {
     suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>>
     suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>>
     suspend fun writeCertification(body: WriteCertificationRequest): Flow<Unit>
+    suspend fun editCertification(studentId: UUID, id: UUID, body: WriteCertificationRequest): Flow<Unit>
 }

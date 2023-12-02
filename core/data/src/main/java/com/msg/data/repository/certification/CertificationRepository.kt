@@ -8,5 +8,6 @@ import java.util.UUID
 interface CertificationRepository {
     suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>>
     suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>>
-    suspend fun wrtieCertification(body: WriteCertificationRequest): Flow<Unit>
+    suspend fun writeCertification(body: WriteCertificationRequest): Flow<Unit>
+    suspend fun editCertification(studentId: UUID, id: UUID, body: WriteCertificationRequest): Flow<Unit>
 }
