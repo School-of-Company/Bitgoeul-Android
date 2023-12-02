@@ -18,8 +18,20 @@ class CertificationRepositoryImpl @Inject constructor(
         return certificationDataSource.getCertificationListForStudent()
     }
 
-    override suspend fun wrtieCertification(body: WriteCertificationRequest): Flow<Unit> {
+    override suspend fun writeCertification(body: WriteCertificationRequest): Flow<Unit> {
         return certificationDataSource.writeCertification(
+            body = body
+        )
+    }
+
+    override suspend fun editCertification(
+        studentId: UUID,
+        id: UUID,
+        body: WriteCertificationRequest,
+    ): Flow<Unit> {
+        return certificationDataSource.editCertification(
+            studentId = studentId,
+            id = id,
             body = body
         )
     }

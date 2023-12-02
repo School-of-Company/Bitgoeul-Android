@@ -4,6 +4,7 @@ import com.msg.model.remote.request.certification.WriteCertificationRequest
 import com.msg.model.remote.response.certification.CertificationListResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import java.util.UUID
@@ -20,5 +21,12 @@ interface CertificationAPI {
     @POST("certification/")
     suspend fun writeCertification(
         @Body body: WriteCertificationRequest,
+    )
+
+    @PATCH("certification/{student_id}/{id}")
+    suspend fun editCertification(
+        @Path("student_id") studentId: UUID,
+        @Path("id") id: UUID,
+        @Body body: WriteCertificationRequest
     )
 }

@@ -4,8 +4,10 @@ import com.msg.model.remote.request.certification.WriteCertificationRequest
 import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.network.api.CertificationAPI
 import com.msg.network.util.BitgoeulApiHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import java.util.UUID
 import javax.inject.Inject
 
@@ -36,5 +38,23 @@ class CertificationDataSourceImpl @Inject constructor(
                 .httpRequest { certificationAPI.writeCertification(body = body) }
                 .sendRequest()
         )
-    }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun editCertification(
+        studentId: UUID,
+        id: UUID,
+        body: WriteCertificationRequest,
+    ): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest {
+                    certificationAPI.editCertification(
+                        studentId = studentId,
+                        id = id,
+                        body = body
+                    )
+                }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }
