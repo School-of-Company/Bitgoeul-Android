@@ -5,6 +5,7 @@ import com.msg.network.BuildConfig
 import com.msg.network.api.ActivityAPI
 import com.msg.network.api.AuthAPI
 import com.msg.network.api.CertificationAPI
+import com.msg.network.api.ClubAPI
 import com.msg.network.api.FaqAPI
 import com.msg.network.api.LectureAPI
 import com.msg.network.api.UserAPI
@@ -84,4 +85,8 @@ object NetworkModule {
     @Provides
     fun provideCertificationAPI(retrofit: Retrofit): CertificationAPI =
         retrofit.create(CertificationAPI::class.java)
+
+    @Provides
+    fun provideClubAPI(retrofit: Retrofit): ClubAPI =
+        retrofit.create(ClubAPI::class.java)
  }
