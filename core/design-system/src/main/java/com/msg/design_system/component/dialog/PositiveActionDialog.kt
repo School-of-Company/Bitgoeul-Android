@@ -34,6 +34,7 @@ fun PositiveActionDialog(
     content: String,
     isVisible: Boolean,
     onQuit: () -> Unit,
+    onActionClicked: () -> Unit
 ) {
     if (isVisible) {
         Dialog(onDismissRequest = { onQuit() }) {
@@ -117,7 +118,7 @@ fun PositiveActionDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            onQuit()
+                                            onActionClicked()
                                         },
                                     text = positiveAction,
                                     color = colors.WHITE,
@@ -140,6 +141,7 @@ fun BitgoeulApproveDialogPre() {
         content = "국가는 국민 모두의 생산 및 생활의 기반이 되는 국토의 효율적이고 균형있는 이용·개발과 보전을 위하여 법률이 정하는 바에 의하여 그에 관한 필요 김하온 박주홍 강민수 이동욱 정찬교 이정우 김새미 서주미 정윤서 ",
         isVisible = true,
         onQuit = {},
-        positiveAction = "승인"
+        positiveAction = "승인",
+        onActionClicked = {}
     )
 }

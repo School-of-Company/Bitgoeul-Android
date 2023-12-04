@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":core:design-system"))
     implementation(project(":feature:login"))
     implementation(project(":feature:sign-up"))
+    implementation(project(":feature:student-activity"))
     implementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
 }

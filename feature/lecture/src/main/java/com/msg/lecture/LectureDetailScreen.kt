@@ -236,6 +236,7 @@ fun ApplicationRequestButton(
                     onQuit = {
                         isDialogVisible.value = !isDialogVisible.value
                     },
+                    onActionClicked = {}
                 )
             }
 
@@ -265,6 +266,7 @@ fun ApplicationRequestButton(
                     onQuit = {
                         isDialogVisible.value = !isDialogVisible.value
                     },
+                    onActionClicked = {}
                 )
             }
         }
