@@ -1,6 +1,7 @@
 package com.msg.network.datasource.club
 
 import com.msg.model.remote.enumdatatype.HighSchool
+import com.msg.model.remote.response.club.ClubDetailResponse
 import com.msg.model.remote.response.club.ClubListResponse
 import com.msg.network.api.ClubAPI
 import com.msg.network.util.BitgoeulApiHandler
@@ -15,6 +16,14 @@ class ClubDataSourceImpl @Inject constructor(
         emit(
             BitgoeulApiHandler<List<ClubListResponse>>()
                 .httpRequest { clubAPI.getClubList(highSchool = highSchool) }
+                .sendRequest()
+        )
+    }
+
+    override suspend fun getClubDetail(id: Long): Flow<ClubDetailResponse> = flow {
+        emit(
+            BitgoeulApiHandler<ClubDetailResponse>()
+                .httpRequest { clubAPI.getClubDetail(id = id) }
                 .sendRequest()
         )
     }
