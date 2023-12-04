@@ -9,7 +9,7 @@ import javax.inject.Inject
 class AuthTokenDataSource @Inject constructor(
     private val authToken: DataStore<AuthToken>
 ) {
-    suspend fun getAccessToken(): Flow<String> = authToken.data.map {
+    fun getAccessToken(): Flow<String> = authToken.data.map {
         it.accessToken ?: ""
     }
 
@@ -21,7 +21,7 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    suspend fun getAccessTokenExp(): Flow<String> = authToken.data.map {
+    fun getAccessTokenExp(): Flow<String> = authToken.data.map {
         it.accessExp ?: ""
     }
 
@@ -33,7 +33,7 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    suspend fun getRefreshToken(): Flow<String> = authToken.data.map {
+    fun getRefreshToken(): Flow<String> = authToken.data.map {
         it.refreshToken ?: ""
     }
 
@@ -45,7 +45,7 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    suspend fun getRefreshTokenExp(): Flow<String> = authToken.data.map {
+    fun getRefreshTokenExp(): Flow<String> = authToken.data.map {
         it.refreshExp ?: ""
     }
 
@@ -57,7 +57,7 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    suspend fun getAuthority(): Flow<String> = authToken.data.map {
+    fun getAuthority(): Flow<String> = authToken.data.map {
         it.authority ?: ""
     }
 
