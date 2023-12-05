@@ -12,26 +12,52 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.textfield.PickerTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.ui.util.toKoreanFormat
+import java.time.LocalDate
+
+@Composable
+fun ActivityDetailSettingRoute(
+    onCloseClick: () -> Unit,
+    onApplyClicked: () -> Unit,
+    viewModel: StudentActivityViewModel = hiltViewModel()
+) {
+    ActivityDetailSettingScreen(
+        onCloseClick = onCloseClick,
+        onApplyClicked = { activityDate, credit ->
+            viewModel.activityDate.value = activityDate
+            viewModel.credit.intValue = credit
+            onApplyClicked()
+        },
+        savedCreditPoint = viewModel.credit.intValue,
+        savedActivityDate = viewModel.activityDate.value
+    )
+}
 
 @Composable
 fun ActivityDetailSettingScreen(
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
+    onApplyClicked: (LocalDate, Int) -> Unit,
+    savedCreditPoint: Int,
+    savedActivityDate: LocalDate?
 ) {
     val creditList = listOf("1점", "2점")
 
-    val creditPoint = remember { mutableStateOf("") }
-    val activityDate = remember { mutableStateOf("") }
+    val creditPointForShow = remember { mutableStateOf("{$savedCreditPoint}점") }
+    val creditPoint = remember { mutableIntStateOf(if (creditPointForShow.value == "1점") 1 else if (creditPointForShow.value == "2점") 2 else 0) }
+    val activityDateForShow = remember { mutableStateOf(savedActivityDate?.toKoreanFormat() ?: "") }
+    val activityDate = remember { mutableStateOf(savedActivityDate) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -65,16 +91,17 @@ fun ActivityDetailSettingScreen(
             Spacer(modifier = Modifier.height(8.dp))
             PickerTextField(
                 modifier = Modifier.fillMaxWidth(),
-                text = activityDate.value.ifEmpty { "활동 날짜 선택" },
+                text = activityDateForShow.value.ifEmpty { "활동 날짜 선택" },
                 list = listOf(),
-                selectedItem = activityDate.value,
+                selectedItem = activityDateForShow.value,
                 onItemChange = {
-                    if (activityDate.value != it) activityDate.value = it else activityDate.value = ""
+                    if (activityDateForShow.value != it) activityDateForShow.value = it else activityDateForShow.value = ""
                 },
                 isDatePicker = true,
                 onQuit = {
                     if (it != null) {
-                        activityDate.value = it.toKoreanFormat()
+                        activityDateForShow.value = it.toKoreanFormat()
+                        activityDate.value = it
                     }
                 }
             )
@@ -87,11 +114,11 @@ fun ActivityDetailSettingScreen(
             Spacer(modifier = Modifier.height(8.dp))
             PickerTextField(
                 modifier = Modifier.fillMaxWidth(),
-                text = creditPoint.value.ifEmpty { "수여 학점 선택" },
+                text = creditPointForShow.value.ifEmpty { "수여 학점 선택" },
                 list = creditList,
-                selectedItem = creditPoint.value,
+                selectedItem = creditPointForShow.value,
                 onItemChange = {
-                    if (creditPoint.value != it) creditPoint.value = it else creditPoint.value = ""
+                    if (creditPointForShow.value != it) creditPointForShow.value = it else creditPointForShow.value = ""
                 }
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -99,7 +126,7 @@ fun ActivityDetailSettingScreen(
                 modifier = Modifier.fillMaxWidth(),
                 text = "적용하기"
             ) {
-
+                activityDate.value?.let { onApplyClicked(it, creditPoint.value) }
             }
             Spacer(modifier = Modifier.height(14.dp))
         }
@@ -110,6 +137,9 @@ fun ActivityDetailSettingScreen(
 @Composable
 fun ActivityDetailSettingScreenPre() {
     ActivityDetailSettingScreen(
-        onCloseClick = {}
+        onCloseClick = {},
+        onApplyClicked = {_, _ ->},
+        savedActivityDate = LocalDate.now(),
+        savedCreditPoint = 0
     )
 }
