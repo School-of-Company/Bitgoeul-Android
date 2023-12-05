@@ -36,6 +36,7 @@ import java.time.LocalDate
 fun AddActivityRoute(
     onActionClicked: () -> Unit,
     onSettingClicked: () -> Unit,
+    onBackClicked: () -> Unit,
     viewModel: StudentActivityViewModel = hiltViewModel()
 ) {
     AddActivityScreen(
@@ -53,6 +54,7 @@ fun AddActivityRoute(
             viewModel.content.value = content
             onSettingClicked()
         },
+        onBackClicked = onBackClicked,
         savedTitle = viewModel.title.value,
         savedContent = viewModel.content.value,
         detailState = viewModel.detailState.value
@@ -63,6 +65,7 @@ fun AddActivityRoute(
 fun AddActivityScreen(
     onActionClicked: () -> Unit,
     onSettingClicked: (title: String, content: String) -> Unit,
+    onBackClicked: () -> Unit,
     savedTitle: String,
     savedContent: String,
     detailState: Boolean
@@ -92,7 +95,7 @@ fun AddActivityScreen(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
-
+                    onBackClicked()
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Column(
@@ -187,6 +190,7 @@ fun AddActivityScreenPre() {
         onSettingClicked = {_, _ ->},
         savedTitle = "",
         savedContent = "",
-        detailState = false
+        detailState = false,
+        onBackClicked = {}
     )
 }

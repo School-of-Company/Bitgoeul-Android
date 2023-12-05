@@ -47,6 +47,7 @@ import java.util.UUID
 fun ActivityDetailRoute(
     onActionEnd: () -> Unit,
     onEditClicked: () -> Unit,
+    onBackClicked: () -> Unit,
     viewModel: StudentActivityViewModel = hiltViewModel()
 ) {
     val role = viewModel.role
@@ -67,7 +68,8 @@ fun ActivityDetailRoute(
         onRejectClicked = { viewModel.rejectActivityInfo(it) },
         onApproveClicked = { viewModel.approveActivityInfo(it) },
         onActionEnd = onActionEnd,
-        onEditClicked = onEditClicked
+        onEditClicked = onEditClicked,
+        onBackClicked = onBackClicked
     )
 }
 
@@ -94,7 +96,8 @@ fun ActivityDetailScreen(
     onRejectClicked: (UUID) -> Unit,
     onApproveClicked: (UUID) -> Unit,
     onActionEnd: () -> Unit,
-    onEditClicked: () -> Unit
+    onEditClicked: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -115,7 +118,7 @@ fun ActivityDetailScreen(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
-
+                    onBackClicked()
                 }
                 Column(
                     modifier = Modifier
@@ -279,6 +282,7 @@ fun ActivityDetailScreenPre() {
         onDeleteClicked = {},
         onApproveClicked = {},
         onActionEnd = {},
-        onEditClicked = {}
+        onEditClicked = {},
+        onBackClicked = {}
     )
 }

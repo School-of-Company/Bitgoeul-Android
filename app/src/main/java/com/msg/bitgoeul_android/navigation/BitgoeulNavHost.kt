@@ -37,15 +37,18 @@ fun BitgoeulNavHost(
         )
         studentActivityScreen(
             onAddClick = navController::navigateToAddActivity,
-            onItemClick = navController::navigateToStudentDetailActivity
+            onItemClick = navController::navigateToStudentDetailActivity,
+            onBackClicked = navController::popBackStack
         )
         studentDetailActivityScreen(
             onActionEnd = navController::popBackStack,
-            onEditClicked = navController::navigateToAddActivity
+            onEditClicked = navController::navigateToAddActivity,
+            onBackClicked = navController::popBackStack
         )
         studentAddActivityScreen(
             onActionClicked = navController::popBackStack,
-            onSettingClicked = navController::navigateToDetailSettingActivity
+            onSettingClicked = navController::navigateToDetailSettingActivity,
+            onBackClicked = navController::popBackStack
         )
         studentDetailSettingActivityScreen(
             onCloseClick = navController::popBackStack,

@@ -34,6 +34,7 @@ import java.util.UUID
 fun StudentActivityRoute(
     onAddClicked: () -> Unit,
     onItemClicked: () -> Unit,
+    onBackClicked: () -> Unit,
     viewModel: StudentActivityViewModel = hiltViewModel(),
     id: UUID? = null
 ) {
@@ -60,6 +61,7 @@ fun StudentActivityRoute(
             onItemClicked()
             viewModel.selectedActivityId.value = it
         },
+        onBackClicked = onBackClicked,
         role = role
     )
 }
@@ -84,6 +86,7 @@ fun StudentActivityScreen(
     data: List<InquiryStudentActivityModel>? = null,
     onAddClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
+    onBackClicked: () -> Unit,
     role: Authority,
 ) {
     BitgoeulAndroidTheme { colors, typography ->  
@@ -101,7 +104,7 @@ fun StudentActivityScreen(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
-
+                    onBackClicked()
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Column (
@@ -141,6 +144,7 @@ fun StudentActivityScreenPre() {
     StudentActivityScreen(
         onAddClicked = {},
         onItemClicked = {},
-        role = Authority.ROLE_STUDENT
+        role = Authority.ROLE_STUDENT,
+        onBackClicked = {}
     )
 }

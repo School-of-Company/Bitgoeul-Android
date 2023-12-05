@@ -20,11 +20,12 @@ fun NavController.navigateToStudentActivity(navOptions: NavOptions? = null) {
     this.navigate(studentActivityRoute, navOptions)
 }
 
-fun NavGraphBuilder.studentActivityScreen(onAddClick: () -> Unit, onItemClick: () -> Unit, id: UUID? = null) {
+fun NavGraphBuilder.studentActivityScreen(onAddClick: () -> Unit, onItemClick: () -> Unit, onBackClicked: () -> Unit, id: UUID? = null) {
     composable(route = studentActivityRoute) {
         StudentActivityRoute(
             onAddClicked = onAddClick,
             onItemClicked = onItemClick,
+            onBackClicked = onBackClicked,
             id = id
         )
     }
@@ -34,11 +35,12 @@ fun NavController.navigateToStudentDetailActivity(navOptions: NavOptions? = null
     this.navigate(studentActivityDetailRoute, navOptions)
 }
 
-fun NavGraphBuilder.studentDetailActivityScreen(onActionEnd: () -> Unit, onEditClicked: () -> Unit) {
+fun NavGraphBuilder.studentDetailActivityScreen(onActionEnd: () -> Unit, onEditClicked: () -> Unit, onBackClicked: () -> Unit) {
     composable(route = studentActivityDetailRoute) {
         ActivityDetailRoute(
             onActionEnd = onActionEnd,
-            onEditClicked = onEditClicked
+            onEditClicked = onEditClicked,
+            onBackClicked = onBackClicked
         )
     }
 }
@@ -47,11 +49,12 @@ fun NavController.navigateToAddActivity(navOptions: NavOptions? = null) {
     this.navigate(studentActivityAddRoute, navOptions)
 }
 
-fun NavGraphBuilder.studentAddActivityScreen(onActionClicked: () -> Unit, onSettingClicked: () -> Unit) {
+fun NavGraphBuilder.studentAddActivityScreen(onActionClicked: () -> Unit, onSettingClicked: () -> Unit, onBackClicked: () -> Unit) {
     composable(route = studentActivityAddRoute) {
         AddActivityRoute(
             onActionClicked = onActionClicked,
-            onSettingClicked = onSettingClicked
+            onSettingClicked = onSettingClicked,
+            onBackClicked = onBackClicked
         )
     }
 }
