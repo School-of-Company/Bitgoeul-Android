@@ -1,6 +1,7 @@
 package com.msg.network.datasource.user
 
 import com.msg.model.remote.request.user.ChangePasswordRequest
+import com.msg.model.remote.response.user.InquiryMyPageResponse
 import com.msg.network.api.UserAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
@@ -19,4 +20,12 @@ class UserDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun inquiryMyPage(): Flow<InquiryMyPageResponse> = flow {
+        emit(
+            BitgoeulApiHandler<InquiryMyPageResponse>()
+                .httpRequest { userAPI.inquiryMyPage() }
+                .sendRequest()
+        )
+    }
 }
