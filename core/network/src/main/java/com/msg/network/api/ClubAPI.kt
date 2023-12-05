@@ -3,6 +3,7 @@ package com.msg.network.api
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.response.club.ClubDetailResponse
 import com.msg.model.remote.response.club.ClubListResponse
+import com.msg.model.remote.response.club.StudentBelongClubResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,4 +18,9 @@ interface ClubAPI {
     suspend fun getClubDetail(
         @Path("id") id: Long,
     ): ClubDetailResponse
+
+    @GET("club/{id}/member")
+    suspend fun getStudentBelongClubList(
+        @Path("id") id: Long,
+    ): List<StudentBelongClubResponse>
 }
