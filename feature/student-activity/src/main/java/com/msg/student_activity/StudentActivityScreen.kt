@@ -13,23 +13,81 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
+import com.msg.student_activity.util.Event
 import com.msg.ui.StudentActivityList
 import java.util.UUID
 
 @Composable
-fun StudentActivityScreen(
-    data: InquiryStudentActivityListResponse? = null,
+fun StudentActivityRoute(
     onAddClicked: () -> Unit,
-    onItemClicked: (UUID) -> Unit
+    onItemClicked: () -> Unit,
+    onBackClicked: () -> Unit,
+    viewModel: StudentActivityViewModel = hiltViewModel(),
+    id: UUID? = null
+) {
+    val role = viewModel.role
+    viewModel.inquiryStudentActivityList(
+        role = role,
+        page = 1,
+        size = 20,
+        sort = "",
+        id = id
+    )
+    LaunchedEffect(true) {
+        getActivityList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.studentActivityList.addAll(it)
+            }
+        )
+    }
+    StudentActivityScreen(
+        data = viewModel.studentActivityList,
+        onAddClicked = onAddClicked,
+        onItemClicked = {
+            onItemClicked()
+            viewModel.selectedActivityId.value = it
+        },
+        onBackClicked = onBackClicked,
+        role = role
+    )
+}
+
+suspend fun getActivityList(
+    viewModel: StudentActivityViewModel,
+    onSuccess: (data: List<InquiryStudentActivityModel>) -> Unit
+) {
+    viewModel.getStudentActivityListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!.content)
+            }
+
+            else -> {}
+        }
+    }
+}
+
+@Composable
+fun StudentActivityScreen(
+    data: List<InquiryStudentActivityModel>? = null,
+    onAddClicked: () -> Unit,
+    onItemClicked: (UUID) -> Unit,
+    onBackClicked: () -> Unit,
+    role: Authority,
 ) {
     BitgoeulAndroidTheme { colors, typography ->  
         Surface(
@@ -46,7 +104,7 @@ fun StudentActivityScreen(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
-
+                    onBackClicked()
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Column (
@@ -68,7 +126,11 @@ fun StudentActivityScreen(
                         )
                     }
                     if (data != null) {
-                        StudentActivityList(data = data.content, onClick = onItemClicked)
+                        StudentActivityList(
+                            data = data,
+                            onClick = onItemClicked,
+                            role = role
+                        )
                     }
                 }
             }
@@ -81,6 +143,8 @@ fun StudentActivityScreen(
 fun StudentActivityScreenPre() {
     StudentActivityScreen(
         onAddClicked = {},
-        onItemClicked = {}
+        onItemClicked = {},
+        role = Authority.ROLE_STUDENT,
+        onBackClicked = {}
     )
 }

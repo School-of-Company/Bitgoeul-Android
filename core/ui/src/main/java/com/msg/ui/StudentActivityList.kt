@@ -7,15 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import java.util.UUID
 
 @Composable
 fun StudentActivityList(
     data: List<InquiryStudentActivityModel>,
-    onClick: (UUID) -> Unit
+    onClick: (UUID) -> Unit,
+    role: Authority
 ) {
-    BitgoeulAndroidTheme { colors, typography ->
+    BitgoeulAndroidTheme { _, _ ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -23,7 +25,8 @@ fun StudentActivityList(
             items(data.size) {
                 StudentActivityCard(
                     data = data[it],
-                    onClick = onClick
+                    onClick = onClick,
+                    role = role
                 )
             }
         }

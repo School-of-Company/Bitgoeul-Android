@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.NegativeBitgoeulButton
 import com.msg.design_system.component.dialog.NegativeActionDialog
@@ -34,6 +36,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
+import com.msg.student_activity.util.Event
 import com.msg.ui.util.toDotFormat
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDate
@@ -41,9 +44,60 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Composable
+fun ActivityDetailRoute(
+    onActionEnd: () -> Unit,
+    onEditClicked: () -> Unit,
+    onBackClicked: () -> Unit,
+    viewModel: StudentActivityViewModel = hiltViewModel()
+) {
+    val role = viewModel.role
+    val id = viewModel.selectedActivityId.value
+    viewModel.inquiryDetailStudentActivity(id = id)
+    LaunchedEffect(true) {
+        getActivityData(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.studentDetailActivityData.value = it
+            }
+        )
+    }
+    ActivityDetailScreen(
+        data = viewModel.studentDetailActivityData.value,
+        role = role,
+        onDeleteClicked = { viewModel.deleteActivityInfo(it) },
+        onRejectClicked = { viewModel.rejectActivityInfo(it) },
+        onApproveClicked = { viewModel.approveActivityInfo(it) },
+        onActionEnd = onActionEnd,
+        onEditClicked = onEditClicked,
+        onBackClicked = onBackClicked
+    )
+}
+
+suspend fun getActivityData(
+    viewModel: StudentActivityViewModel,
+    onSuccess: (data: InquiryDetailStudentActivityInfoResponse) -> Unit
+) {
+    viewModel.getDetailStudentActivityResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+
+            else -> {}
+        }
+    }
+}
+
+@Composable
 fun ActivityDetailScreen(
     data: InquiryDetailStudentActivityInfoResponse,
-    role: Authority = Authority.ROLE_USER
+    role: Authority = Authority.ROLE_USER,
+    onDeleteClicked: (UUID) -> Unit,
+    onRejectClicked: (UUID) -> Unit,
+    onApproveClicked: (UUID) -> Unit,
+    onActionEnd: () -> Unit,
+    onEditClicked: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -64,7 +118,7 @@ fun ActivityDetailScreen(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
-
+                    onBackClicked()
                 }
                 Column(
                     modifier = Modifier
@@ -167,7 +221,7 @@ fun ActivityDetailScreen(
                             modifier = Modifier.fillMaxWidth(),
                             text = "활동 수정"
                         ) {
-
+                            onEditClicked()
                         }
                     }
                     Row(
@@ -185,11 +239,15 @@ fun ActivityDetailScreen(
             }
         }
         NegativeActionDialog(
-            title = if (whichNegative.value == "delete") "활동 삭제하시겠습니까?" else "활동 거부하시겠습니까?",
-            negativeAction = if (whichNegative.value == "delete") "삭제" else "거부",
+            title = if (role == Authority.ROLE_STUDENT) "활동 삭제하시겠습니까?" else "활동 거부하시겠습니까?",
+            negativeAction = if (role == Authority.ROLE_STUDENT) "삭제" else "거부",
             content = data.title,
             isVisible = isNegativeDialogShow.value,
-            onQuit = { isNegativeDialogShow.value = false }
+            onQuit = { isNegativeDialogShow.value = false },
+            onActionClicked = {
+                if (role == Authority.ROLE_STUDENT) onDeleteClicked(data.id) else onRejectClicked(data.id)
+                onActionEnd()
+            }
         )
 
         PositiveActionDialog(
@@ -197,7 +255,11 @@ fun ActivityDetailScreen(
             positiveAction = "승인",
             content = data.title,
             isVisible = isPositiveDialogShow.value,
-            onQuit = { isPositiveDialogShow.value = false }
+            onQuit = { isPositiveDialogShow.value = false },
+            onActionClicked = {
+                onApproveClicked(data.id)
+                onActionEnd()
+            }
         )
     }
 }
@@ -215,6 +277,12 @@ fun ActivityDetailScreenPre() {
             modifiedAt = LocalDateTime.now(),
             approveState = ApproveStatus.PENDING
         ),
-        role = Authority.ROLE_STUDENT
+        role = Authority.ROLE_STUDENT,
+        onRejectClicked = {},
+        onDeleteClicked = {},
+        onApproveClicked = {},
+        onActionEnd = {},
+        onEditClicked = {},
+        onBackClicked = {}
     )
 }

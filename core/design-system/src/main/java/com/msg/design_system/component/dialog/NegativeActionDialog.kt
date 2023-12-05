@@ -33,6 +33,7 @@ fun NegativeActionDialog(
     content: String,
     isVisible: Boolean,
     onQuit: () -> Unit,
+    onActionClicked: () -> Unit
 ) {
     if (isVisible) {
         BitgoeulAndroidTheme { colors, type ->
@@ -117,7 +118,7 @@ fun NegativeActionDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            onQuit()
+                                            onActionClicked()
                                         },
                                     text = negativeAction,
                                     color = colors.WHITE,

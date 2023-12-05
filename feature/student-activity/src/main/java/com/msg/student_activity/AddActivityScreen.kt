@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.button.DetailSettingButton
@@ -29,12 +30,49 @@ import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import java.time.LocalDate
 
 @Composable
-fun AddActivityScreen() {
+fun AddActivityRoute(
+    onActionClicked: () -> Unit,
+    onSettingClicked: () -> Unit,
+    onBackClicked: () -> Unit,
+    viewModel: StudentActivityViewModel = hiltViewModel()
+) {
+    AddActivityScreen(
+        onActionClicked = {
+            onActionClicked()
+            viewModel.addActivityInfo(
+                title = viewModel.title.value,
+                content = viewModel.content.value,
+                credit = viewModel.credit.intValue,
+                activityDate = viewModel.activityDate.value ?: LocalDate.now()
+            )
+        },
+        onSettingClicked = { title, content ->
+            viewModel.title.value = title
+            viewModel.content.value = content
+            onSettingClicked()
+        },
+        onBackClicked = onBackClicked,
+        savedTitle = viewModel.title.value,
+        savedContent = viewModel.content.value,
+        detailState = viewModel.detailState.value
+    )
+}
 
-    val title = remember { mutableStateOf("") }
-    val content = remember { mutableStateOf("") }
+@Composable
+fun AddActivityScreen(
+    onActionClicked: () -> Unit,
+    onSettingClicked: (title: String, content: String) -> Unit,
+    onBackClicked: () -> Unit,
+    savedTitle: String,
+    savedContent: String,
+    detailState: Boolean
+) {
+
+    val title = remember { mutableStateOf(savedTitle) }
+    val content = remember { mutableStateOf(savedContent) }
 
     val isDialogVisible = remember { mutableStateOf(false) }
 
@@ -57,7 +95,7 @@ fun AddActivityScreen() {
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
-
+                    onBackClicked()
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Column(
@@ -119,13 +157,13 @@ fun AddActivityScreen() {
                             .fillMaxWidth(),
                         type = "활동"
                     ) {
-
+                        onSettingClicked(title.value, content.value)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     BitgoeulButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "강의 개설 신청",
-                        state = if (title.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
+                        text = "활동 추가",
+                        state = if (title.value.isNotEmpty() && content.value.isNotEmpty() && detailState) ButtonState.Enable else ButtonState.Disable
                     ) {
                         isDialogVisible.value = true
                     }
@@ -136,7 +174,8 @@ fun AddActivityScreen() {
                     positiveAction = "신청",
                     content = title.value,
                     isVisible = isDialogVisible.value,
-                    onQuit = { isDialogVisible.value = false }
+                    onQuit = { isDialogVisible.value = false },
+                    onActionClicked = onActionClicked
                 )
             }
         }
@@ -146,5 +185,12 @@ fun AddActivityScreen() {
 @Preview
 @Composable
 fun AddActivityScreenPre() {
-    AddActivityScreen()
+    AddActivityScreen(
+        onActionClicked = {},
+        onSettingClicked = {_, _ ->},
+        savedTitle = "",
+        savedContent = "",
+        detailState = false,
+        onBackClicked = {}
+    )
 }
