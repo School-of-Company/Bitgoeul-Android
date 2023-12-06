@@ -2,6 +2,8 @@ package com.msg.network.di
 
 import com.msg.network.datasource.activity.ActivityDataSource
 import com.msg.network.datasource.activity.ActivityDataSourceImpl
+import com.msg.network.datasource.admin.AdminDataSource
+import com.msg.network.datasource.admin.AdminDataSourceImpl
 import com.msg.network.datasource.auth.AuthDataSource
 import com.msg.network.datasource.auth.AuthDataSourceImpl
 import com.msg.network.datasource.certification.CertificationDataSource
@@ -56,4 +58,9 @@ abstract class DataSourceModule {
     abstract fun bindClubDataSource(
         clubDataSourceImpl: ClubDataSourceImpl
     ): ClubDataSource
+
+    @Binds
+    abstract fun bindAdminDataSource(
+        adminDataSourceImpl: AdminDataSourceImpl
+    ): AdminDataSource
 }
