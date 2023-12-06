@@ -1,5 +1,7 @@
 package com.msg.network.datasource.lecture
 
+import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -23,10 +25,10 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getLectureList(): Flow<List<LectureListResponse>> = flow {
+    override suspend fun getLectureList(page: Int, size: Int, status: ApproveStatus, type: LectureType): Flow<List<LectureListResponse>> = flow {
         emit(
             BitgoeulApiHandler<List<LectureListResponse>>()
-                .httpRequest { lectureAPI.getLectureList() }
+                .httpRequest { lectureAPI.getLectureList(page = page, size = size, status = status, type = type) }
                 .sendRequest()
         )
     }
