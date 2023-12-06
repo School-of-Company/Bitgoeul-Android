@@ -1,5 +1,7 @@
 package com.msg.data.repository.lecture
 
+import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -17,8 +19,8 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getLectureList(): Flow<List<LectureListResponse>> {
-        return lectureDataSource.getLectureList()
+    override suspend fun getLectureList(page: Int, size: Int, status: ApproveStatus, type: LectureType): Flow<List<LectureListResponse>> {
+        return lectureDataSource.getLectureList(page = page, size = size, status = status, type = type)
     }
 
     override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> {
