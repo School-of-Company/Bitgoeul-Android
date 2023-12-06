@@ -1,6 +1,6 @@
 package com.msg.model.remote.response.admin
 
-import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.ApproveStatus
 import java.util.UUID
 
 data class UseListContentResponse(
@@ -18,9 +18,4 @@ enum class UseListAuthority {
     GOVEMMENT,
     COMPANY_INSTRUCDOR,
     BBOZZAK_TEACHER
-}
-
-enum class ApproveStatus {
-    PENDING,
-    CREATED
 }
