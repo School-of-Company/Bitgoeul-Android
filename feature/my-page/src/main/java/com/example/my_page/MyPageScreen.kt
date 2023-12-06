@@ -9,12 +9,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.my_page.component.AccountInfoView
 import com.example.my_page.component.AccountSettingView
 import com.example.my_page.component.MyInfoView
+import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.response.user.InquiryMyPageResponse
@@ -27,6 +31,8 @@ fun MyPageScreen(
     data: InquiryMyPageResponse,
     modifier: Modifier = Modifier
 ) {
+    val showDialog = remember { mutableStateOf(false) }
+
     BitgoeulAndroidTheme { colors, typography ->
         Column(
             modifier = modifier
@@ -56,9 +62,20 @@ fun MyPageScreen(
                 modifier = modifier,
                 onPasswordChangeClicked = onPasswordChangeClicked,
                 onLogOutClicked = onLogOutClicked,
-                onWithdrawClicked = onWithdrawClicked
+                onWithdrawClicked = {
+                    showDialog.value = true
+                }
             )
             Spacer(modifier = modifier.height(24.dp))
+        }
+        NegativeActionDialog(
+            title = "회원 탈퇴하시겠습니까?",
+            negativeAction = "탈퇴",
+            content = "회원 탈퇴하면 계정을 복구할 수 없으며,\n회원가입을 다시 진행해야 합니다!",
+            isVisible = showDialog.value,
+            onQuit = { showDialog.value = false }
+        ) {
+            onWithdrawClicked()
         }
     }
 }
