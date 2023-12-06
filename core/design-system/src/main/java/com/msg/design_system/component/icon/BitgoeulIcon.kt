@@ -110,3 +110,14 @@ fun PickerArrowIcon(
             .height(24.dp)
     )
 }
+
+@Composable
+fun SuccessIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_success),
+        contentDescription = "Success Icon",
+        modifier = modifier
+    )
+}
