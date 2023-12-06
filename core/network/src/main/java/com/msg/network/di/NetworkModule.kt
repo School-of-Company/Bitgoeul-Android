@@ -3,6 +3,7 @@ package com.msg.network.di
 import android.util.Log
 import com.msg.network.BuildConfig
 import com.msg.network.api.ActivityAPI
+import com.msg.network.api.AdminAPI
 import com.msg.network.api.AuthAPI
 import com.msg.network.api.CertificationAPI
 import com.msg.network.api.ClubAPI
@@ -89,4 +90,8 @@ object NetworkModule {
     @Provides
     fun provideClubAPI(retrofit: Retrofit): ClubAPI =
         retrofit.create(ClubAPI::class.java)
+
+    @Provides
+    fun provideAdminAPI(retrofit: Retrofit): AdminAPI =
+        retrofit.create(AdminAPI::class.java)
  }
