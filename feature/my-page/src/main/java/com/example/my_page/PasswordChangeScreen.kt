@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.screen.SuccessScreen
@@ -24,9 +25,29 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.checkPasswordRegex
 
 @Composable
+fun PasswordChangeRoute(
+    onSuccessScreenButtonClicked: () -> Unit,
+    onBackClicked: () -> Unit,
+    viewModel: MyPageViewModel = hiltViewModel()
+) {
+    PasswordChangeScreen(
+        onPasswordChangeClicked = { currentPassword, newPassword ->
+            viewModel.changePassword(
+                currentPassword = currentPassword,
+                newPassword = newPassword
+            )
+        },
+        onSuccessScreenButtonClicked = onSuccessScreenButtonClicked,
+        onBackClicked = onBackClicked
+    )
+}
+
+@Composable
 fun PasswordChangeScreen(
     modifier: Modifier = Modifier,
-    onSuccessScreenButtonClicked: () -> Unit
+    onPasswordChangeClicked: (currentPassword: String, newPassword: String) -> Unit,
+    onSuccessScreenButtonClicked: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
     val currentPassword = remember { mutableStateOf("") }
     val newPassword = remember { mutableStateOf("") }
@@ -51,7 +72,7 @@ fun PasswordChangeScreen(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
-
+                    onBackClicked()
                 }
                 Spacer(modifier = modifier.height(16.dp))
                 Column(
@@ -111,6 +132,7 @@ fun PasswordChangeScreen(
                             .padding(horizontal = 28.dp),
                         text = "변경하기"
                     ) {
+                        onPasswordChangeClicked(currentPassword.value, newPassword.value)
                         showSuccessScreen.value = true
                     }
                     Spacer(modifier = modifier.height(56.dp))
@@ -134,6 +156,8 @@ fun PasswordChangeScreen(
 @Composable
 fun PasswordChangeScreenPre() {
     PasswordChangeScreen(
-        onSuccessScreenButtonClicked = {}
+        onSuccessScreenButtonClicked = {},
+        onPasswordChangeClicked = {_, _ ->},
+        onBackClicked = {}
     )
 }

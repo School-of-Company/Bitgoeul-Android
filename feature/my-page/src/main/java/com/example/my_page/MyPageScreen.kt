@@ -9,19 +9,63 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.my_page.component.AccountInfoView
 import com.example.my_page.component.AccountSettingView
 import com.example.my_page.component.MyInfoView
+import com.example.my_page.util.Event
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.response.user.InquiryMyPageResponse
+
+@Composable
+fun MyPageRoute(
+    onPasswordChangeClicked: () -> Unit,
+    onWithdrawClicked: () -> Unit,
+    viewModel: MyPageViewModel = hiltViewModel()
+) {
+    viewModel.inquiryMyPage()
+    LaunchedEffect(true) {
+        getMyPageData(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.myPageData.value = it
+            }
+        )
+    }
+    MyPageScreen(
+        onPasswordChangeClicked = onPasswordChangeClicked,
+        onLogOutClicked = {
+            viewModel.logout()
+        },
+        onWithdrawClicked = {
+            viewModel.withdraw()
+            onWithdrawClicked()
+        },
+        data = viewModel.myPageData.value
+    )
+}
+
+suspend fun getMyPageData(
+    viewModel: MyPageViewModel,
+    onSuccess: (data: InquiryMyPageResponse) -> Unit
+) {
+    viewModel.getMyPageResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
 
 @Composable
 fun MyPageScreen(

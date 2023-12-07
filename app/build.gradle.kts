@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":feature:login"))
     implementation(project(":feature:sign-up"))
     implementation(project(":feature:student-activity"))
+    implementation(project(":feature:my-page"))
     implementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
 }
