@@ -5,6 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.bitgoeul.login.navigation.loginRoute
 import com.bitgoeul.login.navigation.loginScreen
+import com.bitgoeul.login.navigation.navigateToLogin
+import com.example.my_page.navigation.changePasswordScreen
+import com.example.my_page.navigation.myPageScreen
+import com.example.my_page.navigation.navigateToMyPage
+import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
 import com.msg.sign_up.navigation.signUpScreen
@@ -53,6 +58,14 @@ fun BitgoeulNavHost(
         studentDetailSettingActivityScreen(
             onCloseClick = navController::popBackStack,
             onApplyClicked = navController::popBackStack
+        )
+        myPageScreen(
+            onPasswordChangeClicked = navController::navigateToPasswordChange,
+            onWithdrawClicked = navController::navigateToLogin
+        )
+        changePasswordScreen(
+            onSuccessScreenButtonClicked = navController::navigateToMyPage,
+            onBackClicked = navController::popBackStack
         )
     }
 }
