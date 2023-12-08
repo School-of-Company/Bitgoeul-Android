@@ -1,6 +1,8 @@
 package com.msg.lecture.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.msg.lecture.util.Event
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.domain.lecture.ApprovePendingLectureUseCase
@@ -9,11 +11,16 @@ import com.msg.domain.lecture.GetLectureListUseCase
 import com.msg.domain.lecture.LectureApplicationUseCase
 import com.msg.domain.lecture.OpenLectureUseCase
 import com.msg.domain.lecture.RejectPendingLectureUseCase
+import com.msg.lecture.util.errorHandling
+import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LectureViewModel @Inject constructor(
@@ -25,9 +32,10 @@ class LectureViewModel @Inject constructor(
     private val rejectPendingLectureUseCase: RejectPendingLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
+
     val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
-    private val _getLectureListResponse = MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
+    private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
     private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
@@ -45,4 +53,50 @@ class LectureViewModel @Inject constructor(
     private val _lectureApplicationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val lectureApplicationResponse = _lectureApplicationResponse.asStateFlow()
 
+    var lectureList = mutableStateListOf<LectureListResponse>()
+        private set
+
+    fun getLectureList(
+        role: Authority,
+        page: Int,
+        size: Int,
+        status: ApproveStatus,
+        type: LectureType,
+    ) = viewModelScope.launch {
+        when (role) {
+            Authority.ROLE_ADMIN -> {
+                getLectureListUseCase(
+                    page = page,
+                    size = size,
+                    status = status,
+                    type = type
+                ).onSuccess {
+                    it.catch { remoteError ->
+                        _getLectureListResponse.value = remoteError.errorHandling()
+                    }.collect { response ->
+                        _getLectureListResponse.value = Event.Success(data = response)
+                    }
+                }.onFailure { error ->
+                    _getLectureListResponse.value = error.errorHandling()
+                }
+            }
+
+            else -> {
+                getLectureListUseCase(
+                    page = page,
+                    size = size,
+                    status = status,
+                    type = type
+                ).onSuccess {
+                    it.catch {remoteError ->
+                        _getLectureListResponse.value = remoteError.errorHandling()
+                    }.collect { response ->
+                        _getLectureListResponse.value = Event.Success(data = response)
+                    }
+                }.onFailure { error ->
+                    _getLectureListResponse.value = error.errorHandling()
+                }
+            }
+        }
+    }
 }
