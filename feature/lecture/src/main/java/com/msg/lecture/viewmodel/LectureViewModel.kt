@@ -20,7 +20,9 @@ import com.msg.model.remote.response.lecture.LectureListResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 class LectureViewModel @Inject constructor(
@@ -35,10 +37,12 @@ class LectureViewModel @Inject constructor(
 
     val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
-    private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
+    private val _getLectureListResponse =
+        MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse =
+        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -88,7 +92,7 @@ class LectureViewModel @Inject constructor(
                     status = status,
                     type = type
                 ).onSuccess {
-                    it.catch {remoteError ->
+                    it.catch { remoteError ->
                         _getLectureListResponse.value = remoteError.errorHandling()
                     }.collect { response ->
                         _getLectureListResponse.value = Event.Success(data = response)
@@ -97,6 +101,20 @@ class LectureViewModel @Inject constructor(
                     _getLectureListResponse.value = error.errorHandling()
                 }
             }
+        }
+    }
+
+    fun getDetailLecture(
+        id: UUID,
+    ) = viewModelScope.launch {
+        getDetailLectureUseCase(id = id).onSuccess {
+            it.catch { remoteError ->
+                _getDetailLectureResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getDetailLectureResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getDetailLectureResponse.value = error.errorHandling()
         }
     }
 }
