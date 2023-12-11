@@ -1,6 +1,5 @@
 package com.example.main
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -19,26 +18,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.main.component.BitgoeulInfoCardView
-import com.example.main.component.ClubInfoCardView
 import com.example.main.component.ClubInfoCardViewList
 import com.example.main.component.HighSchoolCardView
+import com.example.main.banner.FutureTransportBanner
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.ui.DevicePreviews
 
 @Composable
-fun MainPage(
+fun MainPageScreen(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
     val highSchoolScrollState = rememberScrollState()
-    val clubScrollState = rememberScrollState()
-    
+
     val highSchoolDoingList = listOf("교육과정 운영", "진로 지도", "학생 관리")
     val collegeDoingList = listOf("기업 연계 교육", "심화 교육", "후학습 지원")
     val enterpriseDoingList = listOf("현장 맞춤형 교육", "현장 실습", "고졸 채용")
@@ -56,11 +55,13 @@ fun MainPage(
                     .verticalScroll(scrollState)
                     .background(color = colors.WHITE)
             ) {
-                Image(
+                AsyncImage(
                     modifier = modifier
                         .height(332.dp)
                         .fillMaxWidth(),
-                    painter = painterResource(id = R.mipmap.banner_main),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(R.mipmap.banner_main)
+                        .build(),
                     contentDescription = "Banner image of main page",
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.BottomCenter
@@ -137,16 +138,13 @@ fun MainPage(
                         style = typography.labelMedium,
                         color = colors.G1
                     )
+                    Spacer(modifier = modifier.height(16.dp))
                     ClubInfoCardViewList(
                         modifier = modifier,
                         data = ClubInfoList
                     )
-                    Row(
-                        modifier = modifier.horizontalScroll(clubScrollState)
-                    ) {
-
-                    }
                 }
+                FutureTransportBanner()
             }
         }
     }
@@ -154,6 +152,6 @@ fun MainPage(
 
 @DevicePreviews
 @Composable
-fun MainPagePre() {
-    MainPage()
+fun MainPageScreenPre() {
+    MainPageScreen()
 }
