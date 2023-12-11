@@ -15,6 +15,7 @@ import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -115,6 +118,38 @@ class LectureViewModel @Inject constructor(
             }
         }.onFailure { error ->
             _getDetailLectureResponse.value = error.errorHandling()
+        }
+    }
+
+    fun openLecture(
+        name: String,
+        content: String,
+        startDate: LocalDateTime,
+        endDate: LocalDateTime,
+        completeDate: LocalDateTime,
+        lectureType: LectureType,
+        credit: Int,
+        maxRegisteredUser: Int,
+    ) = viewModelScope.launch {
+        openLectureUseCase(
+            OpenLectureRequest(
+                name = name,
+                content = content,
+                startDate = startDate,
+                endDate = endDate,
+                completeDate = completeDate,
+                lectureType = lectureType,
+                credit = credit,
+                maxRegisteredUser = maxRegisteredUser
+            )
+        ).onSuccess {
+            it.catch { remoteError ->
+                _openLectureResponse.value = remoteError.errorHandling()
+            }.collect {
+                _openLectureResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _openLectureResponse.value = error.errorHandling()
         }
     }
 }
