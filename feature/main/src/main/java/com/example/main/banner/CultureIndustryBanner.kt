@@ -38,7 +38,8 @@ fun CultureIndustryBanner(
                     radius = 15.dp
                 ),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(R.mipmap.bg_culture_industry),
+                    .data(R.mipmap.bg_culture_industry)
+                    .build(),
                 contentDescription = "Blurred Image",
                 contentScale = ContentScale.Crop
             )
