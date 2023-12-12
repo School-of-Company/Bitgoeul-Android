@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.main.component.AutoSchoolClubGridView
 import com.example.main.component.SchoolClubGridView
 import com.msg.design_system.R
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -56,35 +57,34 @@ fun FutureTransportBanner(
                     style = typography.titleMedium,
                     color = colors.WHITE
                 )
-                SchoolClubGridView(
+                AutoSchoolClubGridView(
                     school = "광주공업고등학교",
-                    rows = 3,
-                    rowItems = listOf(listOf("SMART JOB PROJECT"), listOf("나의 미래는 내가 주인공이다!"), listOf("설비의 달인", "특수용접 화이팅"))
+                    rowItems = listOf(
+                        "SMART JOB PROJECT",
+                        "나의 미래는 내가 주인공이다!",
+                        "설비의 달인",
+                        "특수용접 화이팅!"
+                    )
                 )
-                SchoolClubGridView(
+                AutoSchoolClubGridView(
                     school = "광주전자공업고등학교",
-                    rows = 1,
-                    rowItems = listOf(listOf("감성기계", "열정 그 자체"))
+                    rowItems = listOf("감성기계", "열정 그 자체")
                 )
-                SchoolClubGridView(
+                AutoSchoolClubGridView(
                     school = "금파공업고등학교",
-                    rows = 1,
-                    rowItems = listOf(listOf("레프리"))
+                    rowItems = listOf("레프리")
                 )
-                SchoolClubGridView(
+                AutoSchoolClubGridView(
                     school = "동일미래과학고등학교",
-                    rows = 1,
-                    rowItems = listOf(listOf("놀GO잡GO"))
+                    rowItems = listOf("놀GO잡GO")
                 )
-                SchoolClubGridView(
+                AutoSchoolClubGridView(
                     school = "숭의과학기술고등학교",
-                    rows = 1,
-                    rowItems = listOf(listOf("서전트스나이퍼", "카-페인팅"))
+                    rowItems = listOf("서전트스나이퍼", "카-페인팅")
                 )
-                SchoolClubGridView(
+                AutoSchoolClubGridView(
                     school = "전남공업고등학교",
-                    rows = 1,
-                    rowItems = listOf(listOf("진짜기계", "핫앤쿨"))
+                    rowItems = listOf("진짜기계", "핫앤쿨")
                 )
             }
         }
