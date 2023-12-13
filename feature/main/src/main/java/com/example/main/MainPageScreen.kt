@@ -24,11 +24,18 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.main.component.BitgoeulInfoCardView
 import com.example.main.component.ClubInfoCardViewList
+import com.example.main.component.CollegeCardViewList
 import com.example.main.component.HighSchoolCardView
-import com.example.main.banner.FutureTransportBanner
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
+import com.example.main.component.HorizontalInfiniteLoopPager
 import com.msg.model.remote.enumdatatype.HighSchool
+import com.msg.model.ui.CSTCollegeData
+import com.msg.model.ui.DKCollegeData
+import com.msg.model.ui.HNCollegeData
+import com.msg.model.ui.NBCollegeData
+import com.msg.model.ui.SWCollegeData
+import com.msg.model.ui.SYCollegeData
 import com.msg.ui.DevicePreviews
 
 @Composable
@@ -44,6 +51,14 @@ fun MainPageScreen(
     val governmentDoingList = listOf("산업 인력 분석", "특화프로그램 운영", "고졸채용네트워크 구축")
 
     val highSchoolList = HighSchool.values()
+    val collegeList = listOf(
+        SWCollegeData,
+        HNCollegeData,
+        CSTCollegeData,
+        DKCollegeData,
+        SYCollegeData,
+        NBCollegeData
+    )
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
@@ -144,7 +159,27 @@ fun MainPageScreen(
                         data = ClubInfoList
                     )
                 }
-                FutureTransportBanner()
+                HorizontalInfiniteLoopPager(
+                    bannerType = "Club",
+                    list = listOf(
+                        "Future",
+                        "Energy",
+                        "MedicalHealth",
+                        "AI",
+                        "CultureIndustry"
+                    )
+                )
+                Column(
+                    modifier = modifier.padding(horizontal = 28.dp)
+                ) {
+                    Spacer(modifier = modifier.height(64.dp))
+                    Text(
+                        text = "연계 대학 소개",
+                        style = typography.titleMedium,
+                        color = colors.BLACK
+                    )
+                    CollegeCardViewList(data = collegeList)
+                }
             }
         }
     }
