@@ -35,9 +35,9 @@ object BitgoeulColor : ColorTheme() {
 
     override val BLACK = Color(0xFF000000)
     override val G1 = Color(0xFFB8B8B8)
-    override val G2 = Color(0xFF6B6B6B)
+    override val G2 = Color(0xFF9E9E9E)
     override val G3 = Color(0xFF525252)
-    override val G4 = Color(0xFF9E9E9E)
+    override val G4 = Color(0xFF6B6B6B)
     override val G5 = Color(0xFF858585)
     override val G6 = Color(0xFF383838)
     override val G7 = Color(0xFFD1D1D1)
