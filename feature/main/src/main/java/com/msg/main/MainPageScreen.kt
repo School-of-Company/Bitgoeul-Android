@@ -1,4 +1,4 @@
-package com.example.main
+package com.msg.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -22,13 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.main.component.BitgoeulInfoCardView
-import com.example.main.component.ClubInfoCardViewList
-import com.example.main.component.CollegeCardViewList
-import com.example.main.component.HighSchoolCardView
+import com.msg.main.component.BitgoeulInfoCardView
+import com.msg.main.component.ClubInfoCardViewList
+import com.msg.main.component.CollegeCardViewList
+import com.msg.main.component.HighSchoolCardView
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
-import com.example.main.component.HorizontalInfiniteLoopPager
+import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData
@@ -178,8 +178,35 @@ fun MainPageScreen(
                         style = typography.titleMedium,
                         color = colors.BLACK
                     )
+                    Text(
+                        text = "Sample Text",
+                        style = typography.labelMedium,
+                        color = colors.G1
+                    )
                     CollegeCardViewList(data = collegeList)
+                    Spacer(modifier = modifier.height(64.dp))
+                    Text(
+                        text = "참여 기업 소개",
+                        style = typography.titleMedium,
+                        color = colors.BLACK
+                    )
+                    Text(
+                        text = "Sample Text",
+                        style = typography.labelMedium,
+                        color = colors.G1
+                    )
+                    Spacer(modifier = modifier.height(24.dp))
                 }
+                HorizontalInfiniteLoopPager(
+                    bannerType = "Industry",
+                    list = listOf(
+                        "Future",
+                        "Energy",
+                        "MedicalHealth",
+                        "AI",
+                        "CultureIndustry"
+                    )
+                )
             }
         }
     }

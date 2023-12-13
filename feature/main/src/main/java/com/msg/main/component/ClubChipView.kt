@@ -1,4 +1,4 @@
-package com.example.main.component
+package com.msg.main.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding

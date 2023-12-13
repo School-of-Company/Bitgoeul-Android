@@ -1,6 +1,5 @@
-package com.example.main.banner
+package com.msg.main.banner.club
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,27 +17,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.main.component.AutoSchoolClubGridView
+import com.msg.main.component.AutoSchoolClubGridView
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 
 @Composable
-fun CultureIndustryBanner(
+fun AiFusionAndIntegrationClubBanner(
     modifier: Modifier = Modifier
 ) {
-    BitgoeulAndroidTheme { colors, typography ->  
+    BitgoeulAndroidTheme { colors, typography ->
         Surface(
             modifier = modifier
                 .height(1200.dp)
                 .fillMaxWidth()
-                .background(colors.BLACK)
+                .background(color = colors.BLACK)
         ) {
             AsyncImage(
-                modifier = modifier.blur(
-                    radius = 15.dp
-                ),
+                modifier = modifier.blur(15.dp),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(R.mipmap.bg_culture_industry)
+                    .data(R.mipmap.bg_ai)
                     .build(),
                 contentDescription = "Blurred Image",
                 contentScale = ContentScale.Crop
@@ -51,41 +48,29 @@ fun CultureIndustryBanner(
                 Spacer(modifier = modifier.height(96.dp))
                 Text(
                     modifier = modifier.align(Alignment.CenterHorizontally),
-                    text = "문화산업",
+                    text = "AI 융•복합",
                     style = typography.titleMedium,
                     color = colors.WHITE
                 )
                 AutoSchoolClubGridView(
                     school = "광주공업고등학교",
-                    rowItems = listOf("건축연구소")
+                    rowItems = listOf("Civil 마스터")
                 )
                 AutoSchoolClubGridView(
-                    school = "광주여자상업고등학교",
-                    rowItems = listOf("금융실무", "소개팅", "취사모")
-                )
-                AutoSchoolClubGridView(
-                    school = "광주자연과학고등학교",
-                    rowItems = listOf("DCT", "뉴 쿡", "우아행", "베이커리 카페 CEO")
-                )
-                AutoSchoolClubGridView(
-                    school = "광주전자공업고등학교",
-                    rowItems = listOf("\"M lab\" = 메이커 연구소")
+                    school = "광주소프트웨어마이스터고등학교",
+                    rowItems = listOf("dev_GSM")
                 )
                 AutoSchoolClubGridView(
                     school = "금파공업고등학교",
-                    rowItems = listOf("금호로80 베이커리")
+                    rowItems = listOf("다이나믹(Dynamic)")
                 )
                 AutoSchoolClubGridView(
-                    school = "송원여자상업고등학교",
-                    rowItems = listOf("클로즈업")
-                )
-                AutoSchoolClubGridView(
-                    school = "숭의과학기술고등학교",
-                    rowItems = listOf("내빵네빵", "카페바리", "쿠킹마스터즈")
+                    school = "숭의과학기술학교",
+                    rowItems = listOf("비상", "캐치어드론")
                 )
                 AutoSchoolClubGridView(
                     school = "전남공업고등학교",
-                    rowItems = listOf("그린라이트")
+                    rowItems = listOf("스카이드론")
                 )
             }
         }

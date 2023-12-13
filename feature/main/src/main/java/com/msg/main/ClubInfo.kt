@@ -1,4 +1,4 @@
-package com.example.main
+package com.msg.main
 
 import com.msg.model.ui.ClubInfoData
 

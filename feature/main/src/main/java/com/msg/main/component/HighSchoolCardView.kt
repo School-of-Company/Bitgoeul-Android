@@ -1,4 +1,4 @@
-package com.example.main.component
+package com.msg.main.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

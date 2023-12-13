@@ -1,4 +1,4 @@
-package com.example.main.component
+package com.msg.main.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
