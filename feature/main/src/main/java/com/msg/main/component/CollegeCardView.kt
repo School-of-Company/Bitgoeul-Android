@@ -1,4 +1,4 @@
-package com.example.main.component
+package com.msg.main.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.ui.CollegeData
@@ -25,7 +27,11 @@ fun CollegeCardView(
     BitgoeulAndroidTheme { colors, typography ->
         Card(
             modifier = modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Transparent,
+                contentColor = Color.Transparent
+            )
         ) {
             Spacer(modifier = modifier.height(24.dp))
             Text(

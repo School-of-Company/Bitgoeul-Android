@@ -1,4 +1,4 @@
-package com.example.main.component
+package com.msg.main.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,6 +50,30 @@ fun AutoSchoolClubGridView(
             }
         }
 
+    }
+}
+
+
+@Composable
+fun AutoIndustryGridView(
+    rowItems: List<String>,
+) {
+    val actualItems = rowItems.getActualList()
+
+    Column {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            for (element in actualItems) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    element.forEach {
+                        ClubChipView(clubName = it)
+                    }
+                }
+            }
+        }
     }
 }
 

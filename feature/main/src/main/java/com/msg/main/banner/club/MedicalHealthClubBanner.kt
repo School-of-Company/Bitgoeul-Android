@@ -1,4 +1,4 @@
-package com.example.main.banner
+package com.msg.main.banner.club
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,12 +17,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.main.component.AutoSchoolClubGridView
+import com.msg.main.component.AutoSchoolClubGridView
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 
 @Composable
-fun EnergyIndustryBanner(
+fun MedicalHealthClubBanner(
     modifier: Modifier = Modifier
 ) {
     BitgoeulAndroidTheme { colors, typography ->
@@ -35,7 +35,7 @@ fun EnergyIndustryBanner(
             AsyncImage(
                 modifier = modifier.blur(15.dp),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(R.mipmap.bg_energy)
+                    .data(R.mipmap.bg_medical_health)
                     .build(),
                 contentDescription = "Blurred Image",
                 contentScale = ContentScale.Crop
@@ -48,37 +48,33 @@ fun EnergyIndustryBanner(
                 Spacer(modifier = modifier.height(96.dp))
                 Text(
                     modifier = modifier.align(Alignment.CenterHorizontally),
-                    text = "에너지산업",
+                    text = "의료•헬스케어",
                     style = typography.titleMedium,
                     color = colors.WHITE
                 )
                 AutoSchoolClubGridView(
-                    school = "광주공업고등학교",
-                    rowItems = listOf("전기가 미래다", "전자 어벤져", "전자 히어로스")
-                )
-                AutoSchoolClubGridView(
-                    school = "광주자동화설비마이스터고등학교",
-                    rowItems = listOf("HMI 동아리", "마취제", "빛go job go", "취업진로 동아리")
-                )
-                AutoSchoolClubGridView(
                     school = "광주전자공업고등학교",
-                    rowItems = listOf("ACT", "ECT", "Tesla")
+                    rowItems = listOf("발자국")
                 )
                 AutoSchoolClubGridView(
                     school = "금파공업고등학교",
-                    rowItems = listOf("블라썸(blossom)", "유선통신", "전기꿈나무")
+                    rowItems = listOf("어썸(awesome)")
                 )
                 AutoSchoolClubGridView(
                     school = "동일미래과학고등학교",
-                    rowItems = listOf("믿고잡고")
+                    rowItems = listOf("따고잡고", "쓰고잡고", "하고잡고")
+                )
+                AutoSchoolClubGridView(
+                    school = "송원여자상업고등학교",
+                    rowItems = listOf("건강지킴이", "미용서비스", "뷰티아트")
                 )
                 AutoSchoolClubGridView(
                     school = "숭의과학기술고등학교",
-                    rowItems = listOf("드림온", "볼트와암페어")
+                    rowItems = listOf("크로스핏마스터")
                 )
                 AutoSchoolClubGridView(
-                    school = "전남공업고등학교",
-                    rowItems = listOf("에너지지키미")
+                    school = "전남공업고",
+                    rowItems = listOf("라온하제")
                 )
             }
         }
