@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.R
@@ -119,5 +120,55 @@ fun SuccessIcon(
         painter = painterResource(id = R.drawable.ic_success),
         contentDescription = "Success Icon",
         modifier = modifier
+    )
+}
+
+@Composable
+fun MedicalIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_medical),
+        contentDescription = "Medical government logo",
+        modifier = modifier,
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun AiIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_ai),
+        contentDescription = "Ai government logo",
+        modifier = modifier
+            .height(28.dp),
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun EnergyIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_energy),
+        contentDescription = "Energy government logo",
+        modifier = modifier
+            .height(28.dp),
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun FutureTransportIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_future),
+        contentDescription = "FutureTransport logo",
+        modifier = modifier
+            .height(28.dp)
     )
 }
