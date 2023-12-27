@@ -28,6 +28,7 @@ import com.msg.main.component.CollegeCardViewList
 import com.msg.main.component.HighSchoolCardView
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
+import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.ui.CSTCollegeData
@@ -205,6 +206,29 @@ fun MainPageScreen(
                         "MedicalHealth",
                         "AI",
                         "CultureIndustry"
+                    )
+                )
+                Spacer(modifier = modifier.height(64.dp))
+                Text(
+                    modifier = modifier.padding(horizontal = 28.dp),
+                    text = "유관기관 소개",
+                    style = typography.titleMedium,
+                    color = colors.BLACK
+                )
+                Text(
+                    modifier = modifier.padding(horizontal = 28.dp),
+                    text = "#혁신지구와_함께하는",
+                    style = typography.labelMedium,
+                    color = colors.G1
+                )
+                Spacer(modifier = modifier.height(24.dp))
+                HorizontalInfiniteBannerLoopPager(
+                    list = listOf(
+                        "Medical",
+                        "AI",
+                        "Culture",
+                        "Energy",
+                        "FutureTransport"
                     )
                 )
             }
