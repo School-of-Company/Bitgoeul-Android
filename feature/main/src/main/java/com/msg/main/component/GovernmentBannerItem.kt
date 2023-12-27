@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -76,6 +77,9 @@ fun GovernmentBannerItem(
             }
         }
         Column(
+            modifier = modifier
+                .width(200.dp)
+                .height(200.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -117,5 +121,5 @@ data class UiData(
 @Preview
 @Composable
 fun GovernmentBannerItemPre() {
-    GovernmentBannerItem(field = "AI")
+    GovernmentBannerItem(field = "Medical")
 }
