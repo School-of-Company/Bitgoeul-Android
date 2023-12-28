@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import com.msg.design_system.component.pager.PagerIndicator
 import com.msg.main.banner.club.*
 import com.msg.main.banner.industry.*
@@ -82,7 +83,6 @@ fun HorizontalInfiniteBannerLoopPager(
 ) {
 
     val size = 0.2f
-    val secondSize = 0.5f
     var initialPage = Int.MAX_VALUE / 2
     while (initialPage % list.size != 0) {
         initialPage++
@@ -112,6 +112,11 @@ fun HorizontalInfiniteBannerLoopPager(
                                 ).absoluteValue
                         scaleX = 1f - (size * pageOffset)
                         scaleY = 1f - (size * pageOffset)
+                        alpha = lerp(
+                            start = 0.5f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
                     },
                 field = list[it % list.size]
             )
