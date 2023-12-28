@@ -28,6 +28,8 @@ import com.msg.main.component.CollegeCardViewList
 import com.msg.main.component.HighSchoolCardView
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
+import com.msg.design_system.component.icon.GwangjuIcon
+import com.msg.design_system.component.icon.OfficeOfEducationIcon
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.model.remote.enumdatatype.HighSchool
@@ -231,6 +233,25 @@ fun MainPageScreen(
                         "FutureTransport"
                     )
                 )
+                Spacer(modifier = modifier.height(120.dp))
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = colors.P2)
+                        .padding(horizontal = 28.dp)
+                ) {
+                    Spacer(modifier = modifier.height(40.dp))
+                    GwangjuIcon()
+                    Spacer(modifier = modifier.height(16.dp))
+                    OfficeOfEducationIcon()
+                    Spacer(modifier = modifier.height(16.dp))
+                    Text(
+                        text = "©2023 [Copyright Holder] All Rights Reserved.",
+                        style = typography.labelMedium,
+                        color = colors.WHITE
+                    )
+                    Spacer(modifier = modifier.height(40.dp))
+                }
             }
         }
     }
