@@ -9,6 +9,7 @@ import com.msg.network.api.CertificationAPI
 import com.msg.network.api.ClubAPI
 import com.msg.network.api.FaqAPI
 import com.msg.network.api.LectureAPI
+import com.msg.network.api.PostAPI
 import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
 import dagger.Module
@@ -94,4 +95,8 @@ object NetworkModule {
     @Provides
     fun provideAdminAPI(retrofit: Retrofit): AdminAPI =
         retrofit.create(AdminAPI::class.java)
+
+    @Provides
+    fun providePostAPI(retrofit: Retrofit): PostAPI =
+        retrofit.create(PostAPI::class.java)
  }
