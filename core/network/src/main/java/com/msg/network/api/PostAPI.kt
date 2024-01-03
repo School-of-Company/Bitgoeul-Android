@@ -37,4 +37,9 @@ interface PostAPI {
         @Path("id") id: UUID,
         @Body body: WritePostRequest
     )
+
+    @DELETE("post/{id}")
+    suspend fun deletePost(
+        @Path("id") id: UUID
+    )
 }
