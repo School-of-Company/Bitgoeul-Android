@@ -4,4 +4,7 @@ import com.msg.model.remote.request.post.WritePostRequest
 import retrofit2.http.Body
 
 interface PostAPI {
+    suspend fun sendPost(
+        @Body body: WritePostRequest
+    )
 }
