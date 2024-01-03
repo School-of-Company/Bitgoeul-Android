@@ -13,11 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.R
-import com.msg.design_system.component.icon.BoardIcon
-import com.msg.design_system.component.icon.ClubIcon
-import com.msg.design_system.component.icon.HomeIcon
-import com.msg.design_system.component.icon.LectureIcon
-import com.msg.design_system.component.icon.MyIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.theme.color.BitgoeulColor
 
@@ -45,7 +40,7 @@ fun RowScope.BitgoeulNavigationBarItem(
             unselectedIconColor = BitgoeulColor.G1,
             selectedTextColor = BitgoeulColor.P5,
             unselectedTextColor = BitgoeulColor.G1,
-            indicatorColor = Color.Transparent
+            indicatorColor = BitgoeulColor.WHITE
         )
     )
 }
