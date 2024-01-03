@@ -5,7 +5,9 @@ import com.msg.model.remote.request.post.WritePostRequest
 import com.msg.model.remote.response.post.GetDetailPostResponse
 import com.msg.model.remote.response.post.GetPostListResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -29,4 +31,10 @@ interface PostAPI {
     suspend fun getDetailPost(
         @Path("id") id: UUID
     ): GetDetailPostResponse
+
+    @PATCH("post/{id}")
+    suspend fun editPost(
+        @Path("id") id: UUID,
+        @Body body: WritePostRequest
+    )
 }
