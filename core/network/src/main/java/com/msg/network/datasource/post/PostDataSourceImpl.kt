@@ -2,6 +2,7 @@ package com.msg.network.datasource.post
 
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.request.post.WritePostRequest
+import com.msg.model.remote.response.post.GetDetailPostResponse
 import com.msg.model.remote.response.post.GetPostListResponse
 import com.msg.network.api.PostAPI
 import com.msg.network.util.BitgoeulApiHandler
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.UUID
 import javax.inject.Inject
 
 class PostDataSourceImpl @Inject constructor(
@@ -32,6 +34,14 @@ class PostDataSourceImpl @Inject constructor(
                         page = page
                     )
                 }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> = flow {
+        emit(
+            BitgoeulApiHandler<GetDetailPostResponse>()
+                .httpRequest { postAPI.getDetailPost(id = id) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
