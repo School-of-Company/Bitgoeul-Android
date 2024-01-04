@@ -11,4 +11,5 @@ interface PostDataSource {
     suspend fun sendPost(body: WritePostRequest): Flow<Unit>
     suspend fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListResponse>
     suspend fun getDetailPost(id: UUID): Flow<GetDetailPostResponse>
+    suspend fun editPost(id: UUID, body: WritePostRequest): Flow<Unit>
 }
