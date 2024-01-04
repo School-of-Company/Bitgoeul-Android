@@ -58,4 +58,12 @@ class PostDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun deletePost(id: UUID): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { postAPI.deletePost(id = id) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }
