@@ -45,4 +45,17 @@ class PostDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest {
+                    postAPI.editPost(
+                        id = id,
+                        body = body
+                    )
+                }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }
