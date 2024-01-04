@@ -14,6 +14,7 @@ import com.msg.network.datasource.faq.FaqDataSource
 import com.msg.network.datasource.faq.FaqDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
 import com.msg.network.datasource.lecture.LectureDataSourceImpl
+import com.msg.network.datasource.post.PostDataSourceImpl
 import com.msg.network.datasource.user.UserDataSource
 import com.msg.network.datasource.user.UserDataSourceImpl
 import dagger.Binds
@@ -63,4 +64,9 @@ abstract class DataSourceModule {
     abstract fun bindAdminDataSource(
         adminDataSourceImpl: AdminDataSourceImpl
     ): AdminDataSource
+
+    @Binds
+    abstract fun bindPostDataSource(
+        postDataSourceImpl: PostDataSourceImpl
+    ): PostDataSourceImpl
 }
