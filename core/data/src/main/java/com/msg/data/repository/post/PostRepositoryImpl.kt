@@ -38,4 +38,8 @@ class PostRepositoryImpl @Inject constructor(
             body = body
         )
     }
+
+    override suspend fun deletePost(id: UUID): Flow<Unit> {
+        return postDataSource.deletePost(id = id)
+    }
 }
