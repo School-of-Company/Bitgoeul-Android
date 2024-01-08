@@ -31,4 +31,11 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> {
         return postDataSource.getDetailPost(id = id)
     }
+
+    override suspend fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> {
+        return postDataSource.editPost(
+            id = id,
+            body = body
+        )
+    }
 }
