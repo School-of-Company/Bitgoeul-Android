@@ -14,6 +14,8 @@ import com.msg.data.repository.faq.FaqRepository
 import com.msg.data.repository.faq.FaqRepositoryImpl
 import com.msg.data.repository.lecture.LectureRepository
 import com.msg.data.repository.lecture.LectureRepositoryImpl
+import com.msg.data.repository.post.PostRepository
+import com.msg.data.repository.post.PostRepositoryImpl
 import com.msg.data.repository.user.UserRepository
 import com.msg.data.repository.user.UserRepositoryImpl
 import dagger.Binds
@@ -63,4 +65,9 @@ abstract class RepositoryModule {
     abstract fun bindAdminRepository(
         adminRepositoryImpl: AdminRepositoryImpl
     ): AdminRepository
+
+    @Binds
+    abstract fun bindPostRepository(
+        postRepositoryImpl: PostRepositoryImpl
+    ): PostRepository
 }
