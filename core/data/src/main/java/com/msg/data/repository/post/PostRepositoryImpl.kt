@@ -2,9 +2,11 @@ package com.msg.data.repository.post
 
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.request.post.WritePostRequest
+import com.msg.model.remote.response.post.GetDetailPostResponse
 import com.msg.model.remote.response.post.GetPostListResponse
 import com.msg.network.datasource.post.PostDataSource
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
@@ -24,5 +26,9 @@ class PostRepositoryImpl @Inject constructor(
             page = page,
             size = size
         )
+    }
+
+    override suspend fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> {
+        return postDataSource.getDetailPost(id = id)
     }
 }
