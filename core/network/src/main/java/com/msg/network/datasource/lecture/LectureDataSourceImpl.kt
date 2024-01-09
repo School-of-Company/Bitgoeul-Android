@@ -31,7 +31,7 @@ class LectureDataSourceImpl @Inject constructor(
                 .httpRequest { lectureAPI.getLectureList(page = page, size = size, status = status, type = type) }
                 .sendRequest()
         )
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> = flow {
         emit(
