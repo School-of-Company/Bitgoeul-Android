@@ -210,3 +210,11 @@ fun OfficeOfEducationIcon(
         contentDescription = "Gwangju Metropolitan office of education logo"
     )
 }
+
+@Composable
+fun KebabIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_kebab),
+        contentDescription = "Kebab Icon"
+    )
+}
