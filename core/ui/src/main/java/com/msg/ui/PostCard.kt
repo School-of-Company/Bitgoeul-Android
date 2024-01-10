@@ -26,7 +26,7 @@ import java.util.UUID
 @Composable
 fun PostCard(
     modifier: Modifier,
-    onItemClicked: () -> Unit,
+    onItemClicked: (UUID) -> Unit,
     onKebabClicked: () -> Unit,
     data: PostModel
 ) {
@@ -38,7 +38,9 @@ fun PostCard(
             shape = RectangleShape,
             modifier = modifier
                 .fillMaxWidth()
-                .clickable(onClick = onItemClicked),
+                .clickable(
+                    onClick = { onItemClicked(data.id) }
+                ),
         ) {
             Spacer(modifier = modifier.height(8.dp))
             Row(
