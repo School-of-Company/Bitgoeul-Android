@@ -30,7 +30,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun LectureCard() {
     BitgoeulAndroidTheme { color, type ->
         Surface {
-
             Card(
                 modifier = Modifier
                     .wrapContentSize(),

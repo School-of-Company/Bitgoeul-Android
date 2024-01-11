@@ -29,6 +29,12 @@ import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.lecture.component.LectureCard
 
+@Composable
+fun LectureListRoute(
+
+) {
+
+}
 
 @Composable
 fun LectureListScreen() {

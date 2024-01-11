@@ -172,7 +172,6 @@ fun LectureDetailSettingScreenContent() {
                     text = stringResource(id = R.string.application_start_date)
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
 
                 Picker(
                     modifier = Modifier.weight(1f),
