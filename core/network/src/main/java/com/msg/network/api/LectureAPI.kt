@@ -1,5 +1,7 @@
 package com.msg.network.api
 
+import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -9,6 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import java.util.UUID
 
 interface LectureAPI {
@@ -18,7 +21,12 @@ interface LectureAPI {
     )
 
     @GET("lecture")
-    suspend fun getLectureList(): List<LectureListResponse>
+    suspend fun getLectureList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("status") status: ApproveStatus,
+        @Query("type") type: LectureType
+    ): List<LectureListResponse>
 
     @GET("lecture/{id}")
     suspend fun getDetailLecture(
