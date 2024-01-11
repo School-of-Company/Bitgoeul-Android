@@ -43,20 +43,11 @@ fun PostCard(
                 ),
         ) {
             Spacer(modifier = modifier.height(8.dp))
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = data.title,
-                    style = typography.bodyLarge,
-                    color = colors.BLACK
-                )
-                IconButton(
-                    onClick = onKebabClicked,
-                    content = { KebabIcon() }
-                )
-            }
+            Text(
+                text = data.title,
+                style = typography.bodyLarge,
+                color = colors.BLACK
+            )
             Spacer(
                 modifier = modifier.height(12.dp)
             )

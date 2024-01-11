@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
@@ -21,7 +22,9 @@ fun PostList(
     onKebabClicked: () -> Unit
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 28.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(data.posts.size) {
@@ -31,13 +34,12 @@ fun PostList(
                 onKebabClicked = onKebabClicked,
                 data = data.posts[it]
             )
-            if (it != data.posts.lastIndex) {
-                Spacer(modifier = modifier.height(12.dp))
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = BitgoeulColor.G9
-                )
-            }
+            Spacer(modifier = modifier.height(12.dp))
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = BitgoeulColor.G9
+            )
+            Spacer(modifier = modifier.height(12.dp))
         }
     }
 }
