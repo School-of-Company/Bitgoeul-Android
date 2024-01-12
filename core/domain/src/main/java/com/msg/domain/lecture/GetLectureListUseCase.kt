@@ -8,8 +8,7 @@ import javax.inject.Inject
 class GetLectureListUseCase @Inject constructor(
     private val lectureRepository: LectureRepository,
 ) {
-    suspend operator fun invoke(page: Int, size: Int, status: ApproveStatus, type: LectureType) =
-        runCatching {
+    suspend operator fun invoke(page: Int, size: Int, status: ApproveStatus, type: LectureType) = runCatching {
             lectureRepository.getLectureList(page = page, size = size, status = status, type = type)
         }
 }
