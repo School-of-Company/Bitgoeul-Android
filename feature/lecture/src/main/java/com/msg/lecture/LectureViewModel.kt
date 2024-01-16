@@ -1,5 +1,7 @@
 package com.msg.lecture
 
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -54,13 +56,16 @@ class LectureViewModel @Inject constructor(
     private val _rejectPendingLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val rejectPendingLectureResponse = _rejectPendingLectureResponse.asStateFlow()
 
+    var lectureList = mutableStateListOf<LectureListResponse>()
+        private set
+
     var lectureDetailData = mutableStateOf(
         DetailLectureResponse(
             id = UUID.randomUUID(),
             name = "",
             startDate = LocalDateTime.now(),
             endDate = LocalDateTime.now(),
-            completeDate =  LocalDateTime.now(),
+            completeDate = LocalDateTime.now(),
             lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
             lectureStatus = LectureStatus.OPEN,
             headCount = 0,
@@ -69,6 +74,37 @@ class LectureViewModel @Inject constructor(
             credit = 0
         )
     )
+        private set
+
+
+    var selectedLectureId = mutableStateOf<UUID>(UUID.randomUUID())
+        private set
+
+    var name = mutableStateOf("")
+        private set
+
+    var content = mutableStateOf("")
+        private set
+
+    var lecturer = mutableStateOf("")
+        private set
+
+    var credit = mutableIntStateOf(0)
+        private set
+
+    var headCount = mutableIntStateOf(0)
+        private set
+
+    var maxRegisteredUser = mutableIntStateOf(0)
+        private set
+
+    var completeDate = mutableStateOf<LocalDateTime?>(null)
+        private set
+
+    var startDate = mutableStateOf<LocalDateTime?>(null)
+        private set
+
+    var endDate = mutableStateOf<LocalDateTime?>(null)
         private set
 
     fun getLectureList(
