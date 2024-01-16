@@ -76,7 +76,6 @@ class LectureViewModel @Inject constructor(
     )
         private set
 
-
     var selectedLectureId = mutableStateOf<UUID>(UUID.randomUUID())
         private set
 
@@ -105,6 +104,9 @@ class LectureViewModel @Inject constructor(
         private set
 
     var endDate = mutableStateOf<LocalDateTime?>(null)
+        private set
+
+    var status = mutableStateOf<ApproveStatus>(ApproveStatus.PENDING)
         private set
 
     fun getLectureList(
@@ -232,5 +234,4 @@ class LectureViewModel @Inject constructor(
             _rejectPendingLectureResponse.value = error.errorHandling()
         }
     }
-
 }
