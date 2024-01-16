@@ -140,5 +140,20 @@ class LectureViewModel @Inject constructor(
         }
     }
 
+    fun rejectPendingLecture(
+        id: UUID
+    ) = viewModelScope.launch {
+        rejectPendingLectureUseCase(
+            id = id
+        ).onSuccess {
+            it.catch { remoteError ->
+                _rejectPendingLectureResponse.value = remoteError.errorHandling()
+            }.collect {
+                _rejectPendingLectureResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _rejectPendingLectureResponse.value = error.errorHandling()
+        }
+    }
 
 }
