@@ -14,6 +14,7 @@ import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
+import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,6 +37,9 @@ class LectureViewModel @Inject constructor(
 
     private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
+
+    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val openLectureResponse = _openLectureResponse.asStateFlow()
@@ -89,6 +93,22 @@ class LectureViewModel @Inject constructor(
             }
 
             else -> {}
+        }
+    }
+
+    fun getDetailLecture(
+        id: UUID
+    ) = viewModelScope.launch {
+        getDetailLectureUseCase(
+            id = id
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getDetailLectureResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getDetailLectureResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getDetailLectureResponse.value = error.errorHandling()
         }
     }
 
