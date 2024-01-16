@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,22 +23,84 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.bottomsheet.LectureFilterBottomSheet
 import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.lecture.component.LectureCard
+import com.msg.lecture.util.Event
+import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.response.lecture.LectureListResponse
+import java.util.UUID
 
 @Composable
 fun LectureListRoute(
-
+    onOpenClicked: () -> Unit,
+    onItemClicked: () -> Unit,
+    onBackClicked: () -> Unit,
+    viewModel: LectureViewModel = hiltViewModel(),
+    id: UUID? = null,
+    status: ApproveStatus,
+    type: LectureType
 ) {
-
+    val role = viewModel.role
+    viewModel.getLectureList(
+        role = role,
+        page = 1,
+        size = 10,
+        status = status,
+        type = type
+    )
+    LaunchedEffect(true) {
+        getLectureList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.lectureList.addAll(it)
+            }
+        )
+    }
+    LectureListScreen(
+        data = viewModel.lectureList,
+        onOpenClicked = onOpenClicked,
+        onItemClicked = {
+            onItemClicked()
+            viewModel.selectedLectureId.value = it
+        },
+        onBackClicked = onBackClicked,
+        role = role,
+        status = status,
+        type =  type
+    )
 }
 
+suspend fun getLectureList(
+    viewModel: LectureViewModel,
+    onSuccess: (data: List<LectureListResponse>) -> Unit
+) {
+    viewModel.getLectureListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!.toList())
+            }
+
+            else -> {}
+        }
+    }
+}
 @Composable
-fun LectureListScreen() {
+fun LectureListScreen(
+    data: List<LectureListResponse>? = null,
+    onOpenClicked: () -> Unit,
+    onItemClicked: (UUID) -> Unit,
+    onBackClicked: () -> Unit,
+    role: Authority,
+    status: ApproveStatus,
+    type: LectureType,
+) {
     var isFilterBottomSheetVisible = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, type ->
@@ -122,5 +185,12 @@ fun LectureListScreen() {
 @Preview
 @Composable
 fun LectureListPagePreview() {
-    LectureListScreen()
+    LectureListScreen(
+        onBackClicked = {},
+        onItemClicked = {},
+        onOpenClicked = {},
+        role = Authority.ROLE_STUDENT,
+        type = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
+        status = ApproveStatus.APPROVED
+    )
 }
