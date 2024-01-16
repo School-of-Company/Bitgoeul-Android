@@ -13,11 +13,14 @@ import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.LectureListResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class LectureViewModel @Inject constructor(
@@ -30,13 +33,20 @@ class LectureViewModel @Inject constructor(
 ) : ViewModel() {
     val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
-    private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
+    private val _getLectureListResponse =
+        MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _createLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val createLectureResponse = _getLectureListResponse.asStateFlow()
+    private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val openLectureResponse = _openLectureResponse.asStateFlow()
 
-    fun getLectureList(role: Authority, page: Int, size: Int, status: ApproveStatus, type: LectureType, ) = viewModelScope.launch {
+    fun getLectureList(
+        role: Authority,
+        page: Int,
+        size: Int,
+        status: ApproveStatus,
+        type: LectureType,
+    ) = viewModelScope.launch {
         when (role) {
             Authority.ROLE_USER -> {
                 getLectureListUseCase(
@@ -76,8 +86,36 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun createLecture() {
-
+    fun openLecture(
+        name: String,
+        content: String,
+        startDate: LocalDateTime,
+        endDate: LocalDateTime,
+        completeDate: LocalDateTime,
+        lectureType: LectureType,
+        credit: Int,
+        maxRegisteredUser: Int,
+    ) = viewModelScope.launch {
+        openLectureUseCase(
+            OpenLectureRequest(
+                name = name,
+                content = content,
+                startDate = startDate,
+                endDate = endDate,
+                completeDate = completeDate,
+                lectureType = lectureType,
+                credit = credit,
+                maxRegisteredUser = maxRegisteredUser
+            )
+        ).onSuccess {
+            it.catch { remoteError ->
+                _openLectureResponse.value = remoteError.errorHandling()
+            }.collect {
+                _openLectureResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _openLectureResponse.value = error.errorHandling()
+        }
     }
 
 }
