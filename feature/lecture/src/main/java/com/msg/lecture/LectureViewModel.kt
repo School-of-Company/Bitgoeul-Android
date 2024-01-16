@@ -1,5 +1,6 @@
 package com.msg.lecture
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
@@ -12,6 +13,7 @@ import com.msg.lecture.util.Event
 import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -35,10 +37,12 @@ class LectureViewModel @Inject constructor(
 ) : ViewModel() {
     val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
-    private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
+    private val _getLectureListResponse =
+        MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse =
+        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -49,6 +53,23 @@ class LectureViewModel @Inject constructor(
 
     private val _rejectPendingLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val rejectPendingLectureResponse = _rejectPendingLectureResponse.asStateFlow()
+
+    var lectureDetailData = mutableStateOf(
+        DetailLectureResponse(
+            id = UUID.randomUUID(),
+            name = "",
+            startDate = LocalDateTime.now(),
+            endDate = LocalDateTime.now(),
+            completeDate =  LocalDateTime.now(),
+            lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+            lectureStatus = LectureStatus.OPEN,
+            headCount = 0,
+            maxRegisteredUser = 0,
+            lecturer = "",
+            credit = 0
+        )
+    )
+        private set
 
     fun getLectureList(
         role: Authority,
@@ -97,7 +118,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun getDetailLecture(
-        id: UUID
+        id: UUID,
     ) = viewModelScope.launch {
         getDetailLectureUseCase(
             id = id
@@ -145,7 +166,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun approvePendingLecture(
-        id: UUID
+        id: UUID,
     ) = viewModelScope.launch {
         approvePendingLectureUseCase(
             id = id
@@ -161,7 +182,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun rejectPendingLecture(
-        id: UUID
+        id: UUID,
     ) = viewModelScope.launch {
         rejectPendingLectureUseCase(
             id = id
