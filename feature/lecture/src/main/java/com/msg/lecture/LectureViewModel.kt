@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.util.UUID
 import javax.inject.Inject
 
 class LectureViewModel @Inject constructor(
@@ -33,12 +34,17 @@ class LectureViewModel @Inject constructor(
 ) : ViewModel() {
     val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
-    private val _getLectureListResponse =
-        MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
+    private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val openLectureResponse = _openLectureResponse.asStateFlow()
+
+    private val _approvePendingLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val approvePendingLectureResponse = _approvePendingLectureResponse.asStateFlow()
+
+    private val _rejectPendingLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val rejectPendingLectureResponse = _rejectPendingLectureResponse.asStateFlow()
 
     fun getLectureList(
         role: Authority,
@@ -117,5 +123,22 @@ class LectureViewModel @Inject constructor(
             _openLectureResponse.value = error.errorHandling()
         }
     }
+
+    fun approvePendingLecture(
+        id: UUID
+    ) = viewModelScope.launch {
+        approvePendingLectureUseCase(
+            id = id
+        ).onSuccess {
+            it.catch { remoteError ->
+                _approvePendingLectureResponse.value = remoteError.errorHandling()
+            }.collect {
+                _approvePendingLectureResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _approvePendingLectureResponse.value = error.errorHandling()
+        }
+    }
+
 
 }
