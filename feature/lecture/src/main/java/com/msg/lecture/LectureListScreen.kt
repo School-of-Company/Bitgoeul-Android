@@ -29,7 +29,7 @@ import com.msg.design_system.R
 import com.msg.design_system.component.bottomsheet.LectureFilterBottomSheet
 import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.PlusIcon
-import com.msg.lecture.component.LectureCard
+import com.msg.lecture.component.LectureList
 import com.msg.lecture.util.Event
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
@@ -103,7 +103,7 @@ fun LectureListScreen(
 ) {
     var isFilterBottomSheetVisible = remember { mutableStateOf(false) }
 
-    BitgoeulAndroidTheme { colors, type ->
+    BitgoeulAndroidTheme { colors, typography ->
         Surface {
             Column(
                 modifier = Modifier
@@ -127,7 +127,7 @@ fun LectureListScreen(
                             .height(31.dp),
                         text = stringResource(id = R.string.lecture_list),
                         color = colors.BLACK,
-                        style = type.titleMedium,
+                        style = typography.titleMedium,
                     )
 
                     Spacer(modifier = Modifier.width(135.dp))
@@ -148,30 +148,15 @@ fun LectureListScreen(
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
+                if (data != null) {
+                    LectureList(
+                        data = data,
+                        onClick = onItemClicked,
+                        role = role,
+                        status = status,
+                        type = type
+                    )
 
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(horizontal = 28.dp)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-                    items(30) {
-                        Column {
-                            Spacer(
-                                modifier = Modifier
-                                    .height(1.dp)
-                                    .fillMaxWidth()
-                                    .background(color = colors.G9)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        LectureCard()
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                    }
                 }
                 LectureFilterBottomSheet(
                     onQuit = { isFilterBottomSheetVisible.value = false },
