@@ -23,8 +23,8 @@ fun LectureList(
     data: List<LectureListResponse>?,
     onClick: (UUID) -> Unit,
     role: Authority,
-    status: ApproveStatus,
-    type: LectureType
+    status: ApproveStatus?,
+    type: LectureType?
 ) {
     BitgoeulAndroidTheme { colors, _ ->
         LazyColumn(

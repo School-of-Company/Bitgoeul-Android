@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,8 +45,8 @@ fun LectureListRoute(
     onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(),
     id: UUID? = null,
-    status: ApproveStatus,
-    type: LectureType
+    status: ApproveStatus? = null,
+    type: LectureType? = null
 ) {
     val role = viewModel.role
     viewModel.getLectureList(
@@ -98,8 +99,8 @@ fun LectureListScreen(
     onItemClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit,
     role: Authority,
-    status: ApproveStatus,
-    type: LectureType,
+    status: ApproveStatus?,
+    type: LectureType?,
 ) {
     var isFilterBottomSheetVisible = remember { mutableStateOf(false) }
 
@@ -132,8 +133,10 @@ fun LectureListScreen(
 
                     Spacer(modifier = Modifier.width(135.dp))
 
-                    PlusIcon(
-                        modifier = Modifier.padding(top = 4.dp)
+                    IconButton(
+                        onClick = onOpenClicked,
+                        modifier = Modifier.padding(top = 4.dp),
+                        content = { PlusIcon() }
                     )
 
                     Spacer(modifier = Modifier.width(24.dp))
@@ -148,6 +151,7 @@ fun LectureListScreen(
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
+
                 if (data != null) {
                     LectureList(
                         data = data,
@@ -156,12 +160,13 @@ fun LectureListScreen(
                         status = status,
                         type = type
                     )
-
                 }
+
                 LectureFilterBottomSheet(
                     onQuit = { isFilterBottomSheetVisible.value = false },
                     isVisible = isFilterBottomSheetVisible.value
                 )
+
             }
         }
     }
