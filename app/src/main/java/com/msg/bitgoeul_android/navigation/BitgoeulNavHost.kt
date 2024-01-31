@@ -22,7 +22,7 @@ import com.msg.student_activity.navigation.studentDetailSettingActivityScreen
 fun BitgoeulNavHost(
     appState: BitgoeulAppState,
     modifier: Modifier = Modifier,
-    startDestination: String = lectureListRoute
+    startDestination: String = loginRoute
 ) {
     val navController = appState.navController
     NavHost(
