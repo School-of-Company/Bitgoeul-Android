@@ -90,6 +90,7 @@ suspend fun getLectureList(
         }
     }
 }
+
 @Composable
 fun LectureListScreen(
     data: List<LectureListResponse>? = null,

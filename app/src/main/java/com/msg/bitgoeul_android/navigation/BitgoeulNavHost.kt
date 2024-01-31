@@ -7,6 +7,7 @@ import com.bitgoeul.login.navigation.loginRoute
 import com.bitgoeul.login.navigation.loginScreen
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.lecture.navigation.lectureListRoute
 import com.msg.lecture.navigation.lectureListScreen
 import com.msg.sign_up.navigation.signUpScreen
 import com.msg.student_activity.navigation.navigateToAddActivity
@@ -21,7 +22,7 @@ import com.msg.student_activity.navigation.studentDetailSettingActivityScreen
 fun BitgoeulNavHost(
     appState: BitgoeulAppState,
     modifier: Modifier = Modifier,
-    startDestination: String = loginRoute
+    startDestination: String = lectureListRoute
 ) {
     val navController = appState.navController
     NavHost(

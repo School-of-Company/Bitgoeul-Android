@@ -20,6 +20,7 @@ import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -29,6 +30,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
+@HiltViewModel
 class LectureViewModel @Inject constructor(
     private val getLectureListUseCase: GetLectureListUseCase,
     private val getDetailLectureUseCase: GetDetailLectureUseCase,
@@ -37,14 +39,12 @@ class LectureViewModel @Inject constructor(
     private val rejectPendingLectureUseCase: RejectPendingLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
-    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
+    val role = Authority.ROLE_ADMIN //Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
-    private val _getLectureListResponse =
-        MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
+    private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse =
-        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -68,8 +68,10 @@ class LectureViewModel @Inject constructor(
             completeDate = LocalDateTime.now(),
             lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
             lectureStatus = LectureStatus.OPEN,
+            approveStatus = ApproveStatus.PENDING,
             headCount = 0,
             maxRegisteredUser = 0,
+            isRegistered = true,
             lecturer = "",
             credit = 0
         )
@@ -113,13 +115,12 @@ class LectureViewModel @Inject constructor(
         role: Authority,
         page: Int,
         size: Int,
-        status: ApproveStatus? = null,
-        type: LectureType? = null,
+        status: ApproveStatus,
+        type: LectureType,
     ) = viewModelScope.launch {
         when (role) {
             Authority.ROLE_USER -> {
                 if (status != null && type != null) {
-
                     getLectureListUseCase(
                         page = page,
                         size = size,

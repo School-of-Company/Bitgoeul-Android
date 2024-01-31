@@ -67,7 +67,7 @@ fun LectureCard(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = data.completeDate.replace("-", ".").substring(0, 10),
+                        text = data.completeDate.toString().replace("-", ".").substring(0, 10),
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
@@ -105,7 +105,7 @@ fun LectureCard(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "${data.startDate.replace("-", ".").substring(0, 10)} ~ ${data.endDate.replace("-", ".").substring(0, 10)}",
+                            text = "${data.startDate.toString().replace("-", ".").substring(0, 10)} ~ ${data.endDate.toString().replace("-", ".").substring(0, 10)}",
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
@@ -165,9 +165,9 @@ fun LectureCardPre() {
             id = UUID.randomUUID(),
             name = "유저 리서치 - 사용자 경험 개선하기",
             content = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심장이 박주홍 강민수 두근두근 연애",
-            startDate = LocalDateTime.now().toString().replace("-", ".").substring(0, 10),
-            endDate = LocalDateTime.now().toString().replace("-", ".").substring(0, 10),
-            completeDate = LocalDateTime.now().toString().replace("-", ".").substring(0, 10),
+            startDate = LocalDateTime.now(),
+            endDate = LocalDateTime.now(),
+            completeDate = LocalDateTime.now(),
             lectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
             approveStatus = ApproveStatus.APPROVED,
             lectureStatus = LectureStatus.OPEN,

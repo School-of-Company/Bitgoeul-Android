@@ -16,6 +16,7 @@ android {
 
 dependencies {
     implementation(project(":core:design-system"))
+    implementation(project(":core:model"))
     implementation(project(":feature:login"))
     implementation(project(":feature:sign-up"))
     implementation(project(":feature:student-activity"))
