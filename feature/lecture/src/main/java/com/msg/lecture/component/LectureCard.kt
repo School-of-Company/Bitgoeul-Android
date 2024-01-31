@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.msg.design_system.R
 import androidx.compose.ui.unit.dp
@@ -37,7 +39,7 @@ import java.util.UUID
 fun LectureCard(
     data: LectureListResponse,
     onClick: (UUID) -> Unit,
-    role: Authority = Authority.ROLE_STUDENT,
+    role: Authority = Authority.ROLE_USER,
     status: ApproveStatus = ApproveStatus.APPROVED,
     type: LectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
 ) {
@@ -62,6 +64,8 @@ fun LectureCard(
                         style = type.bodySmall,
                     )
 
+                    Spacer(modifier = Modifier.width(8.dp))
+
                     Text(
                         text = data.completeDate,
                         modifier = Modifier
@@ -78,12 +82,14 @@ fun LectureCard(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
-                        text = data.name,  // 추후 넘어오는 리스폰스값으로 변경 예정
+                        text = data.name,
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
                         color = color.BLACK,
                         style = type.bodyLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -116,7 +122,7 @@ fun LectureCard(
                         )
 
                         Text(
-                            text = "${data.headCount}/${data.maxRegisteredUser}",
+                            text = "${data.headCount}/${data.maxRegisteredUser}명",
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
@@ -127,9 +133,22 @@ fun LectureCard(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    LectureCategoryTag(
-                        text = if (data.lectureType == LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM) "상호학점인정교육과정" else "대학탐방프로그램"
-                    )
+                    Row {
+                        LectureCategoryTag(
+                            text = if (data.lectureType == LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM) "상호학점인정교육과정" else "대학탐방프로그램"
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        if (role == Authority.ROLE_ADMIN) {
+                            if (status == ApproveStatus.APPROVED) {
+                                ApproveStatusTag()
+                            } else if (status == ApproveStatus.PENDING) {
+                                PendApproveStatusTag()
+                            }
+                        }
+                    }
+
 
                     Spacer(modifier = Modifier.height(8.dp))
                 }

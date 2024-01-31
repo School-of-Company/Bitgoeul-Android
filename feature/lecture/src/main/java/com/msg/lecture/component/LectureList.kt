@@ -23,8 +23,8 @@ fun LectureList(
     data: List<LectureListResponse>?,
     onClick: (UUID) -> Unit,
     role: Authority,
-    status: ApproveStatus?,
-    type: LectureType?
+    status: ApproveStatus,
+    type: LectureType
 ) {
     BitgoeulAndroidTheme { colors, _ ->
         LazyColumn(
@@ -46,7 +46,13 @@ fun LectureList(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    LectureCard()
+                    LectureCard(
+                        data = data[it],
+                        onClick = onClick,
+                        role = role,
+                        status = status,
+                        type = type
+                    )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
