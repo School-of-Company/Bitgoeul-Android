@@ -67,7 +67,7 @@ fun LectureCard(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = data.completeDate,
+                        text = data.completeDate.replace("-", ".").substring(0, 10),
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
@@ -105,7 +105,7 @@ fun LectureCard(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "${data.startDate} ~ ${data.endDate}",
+                            text = "${data.startDate.replace("-", ".").substring(0, 10)} ~ ${data.endDate.replace("-", ".").substring(0, 10)}",
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
