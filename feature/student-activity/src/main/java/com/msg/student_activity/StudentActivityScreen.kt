@@ -25,7 +25,6 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.model.activity.InquiryStudentActivityModel
-import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
 import com.msg.student_activity.util.Event
 import com.msg.ui.StudentActivityList
 import java.util.UUID

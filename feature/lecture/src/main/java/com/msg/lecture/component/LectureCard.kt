@@ -25,9 +25,22 @@ import com.msg.design_system.R
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.LectureStatus
+import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.response.lecture.LectureListResponse
+import java.time.LocalDateTime
+import java.util.UUID
 
 @Composable
-fun LectureCard() {
+fun LectureCard(
+    data: LectureListResponse,
+    onClick: (UUID) -> Unit,
+    role: Authority = Authority.ROLE_STUDENT,
+    status: ApproveStatus = ApproveStatus.APPROVED,
+    type: LectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
+) {
     BitgoeulAndroidTheme { color, type ->
         Surface {
             Card(
@@ -41,7 +54,7 @@ fun LectureCard() {
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(
-                        text = "정찬우 교수", // 추후 넘어오는 리스폰스값으로 변경 예정
+                        text = data.lecturer + " 교수",
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
@@ -50,7 +63,7 @@ fun LectureCard() {
                     )
 
                     Text(
-                        text = "2023.11.10", // 추후 넘어오는 리스폰스값으로 변경 예정
+                        text = data.completeDate,
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
@@ -65,7 +78,7 @@ fun LectureCard() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
-                        text = "유저 리서치 - 사용자 경험 개선하기",  // 추후 넘어오는 리스폰스값으로 변경 예정
+                        text = data.name,  // 추후 넘어오는 리스폰스값으로 변경 예정
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
@@ -77,7 +90,7 @@ fun LectureCard() {
 
                     ContentDescriptionText(
                         maxLines = 2,
-                        text = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심장이 박주홍 강민수 두근두근 연애" // 추후 넘어오는 리스폰스값으로 변경 예정
+                        text = data.content
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -86,7 +99,7 @@ fun LectureCard() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "2023.10.30 ~ 2023.10.31", // 추후 넘어오는 리스폰스값으로 변경 예정
+                            text = "${data.startDate} ~ ${data.endDate}",
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
@@ -103,7 +116,7 @@ fun LectureCard() {
                         )
 
                         Text(
-                            text = "50/100명",
+                            text = "${data.headCount}/${data.maxRegisteredUser}",
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
@@ -115,7 +128,7 @@ fun LectureCard() {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     LectureCategoryTag(
-                        text = stringResource(id = R.string.mutual_credit_recognition_curriculum) // 추후 넘어오는 리스폰스값으로 변경 예정
+                        text = if (data.lectureType == LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM) "상호학점인정교육과정" else "대학탐방프로그램"
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -128,5 +141,21 @@ fun LectureCard() {
 @Preview
 @Composable
 fun LectureCardPre() {
-    LectureCard()
+    LectureCard(
+        data = LectureListResponse(
+            id = UUID.randomUUID(),
+            name = "유저 리서치 - 사용자 경험 개선하기",
+            content = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심장이 박주홍 강민수 두근두근 연애",
+            startDate = LocalDateTime.now().toString().replace("-", ".").substring(0, 10),
+            endDate = LocalDateTime.now().toString().replace("-", ".").substring(0, 10),
+            completeDate = LocalDateTime.now().toString().replace("-", ".").substring(0, 10),
+            lectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
+            approveStatus = ApproveStatus.APPROVED,
+            lectureStatus = LectureStatus.OPEN,
+            headCount = 50,
+            maxRegisteredUser = 100,
+            lecturer = "정찬우"
+        ),
+        onClick = {}
+    )
 }
