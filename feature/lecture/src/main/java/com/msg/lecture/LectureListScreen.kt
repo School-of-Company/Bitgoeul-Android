@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,7 +42,6 @@ fun LectureListRoute(
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(),
-    id: UUID? = null,
     status: ApproveStatus,
     type: LectureType,
 ) {
@@ -141,28 +138,27 @@ fun LectureListScreen(
                             modifier = Modifier.padding(top = 4.dp),
                             content = { PlusIcon() }
                         )
+
+                        Spacer(modifier = Modifier.width(24.dp))
+
                     }
-
-                    Spacer(modifier = Modifier.width(24.dp))
-
                     FilterIcon(
                         modifier = Modifier
-                            .padding(top = 4.dp)
+                            .padding(end = 8.dp)
                             .clickable {
                                 isFilterBottomSheetVisible.value = !isFilterBottomSheetVisible.value
                             }
                     )
-
-                    Text(
-                        text = "필터",
-                        color = colors.G1,
-                        style = typography.bodySmall,
-                    )
-
+                    if (role != Authority.ROLE_PROFESSOR || role != Authority.ROLE_GOVERNMENT || role != Authority.ROLE_COMPANY_INSTRUCTOR) {
+                        Text(
+                            text = "필터",
+                            color = colors.G1,
+                            style = typography.bodySmall,
+                        )
+                    }
                     Spacer(modifier = Modifier.width(28.dp))
 
                 }
-
                 Spacer(modifier = Modifier.height(40.dp))
 
                 if (data != null) {

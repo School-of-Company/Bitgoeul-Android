@@ -19,7 +19,6 @@ fun NavGraphBuilder.lectureListScreen(
     onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,
-    id: UUID? = null,
     status: ApproveStatus = ApproveStatus.APPROVED,
     type: LectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
 ) {
@@ -28,7 +27,6 @@ fun NavGraphBuilder.lectureListScreen(
             onOpenClicked = onOpenClicked,
             onItemClicked = onItemClicked,
             onBackClicked = onBackClicked,
-            id = id,
             status = status,
             type = type
         )
