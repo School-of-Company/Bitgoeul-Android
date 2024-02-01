@@ -39,7 +39,7 @@ class LectureViewModel @Inject constructor(
     private val rejectPendingLectureUseCase: RejectPendingLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
-    val role = Authority.ROLE_ADMIN //Authority.valueOf(authTokenDataSource.getAuthority().toString())
+    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
     private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()

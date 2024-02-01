@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,7 +46,7 @@ fun LectureListRoute(
     viewModel: LectureViewModel = hiltViewModel(),
     id: UUID? = null,
     status: ApproveStatus,
-    type: LectureType
+    type: LectureType,
 ) {
     val role = viewModel.role
     viewModel.getLectureList(
@@ -72,13 +74,13 @@ fun LectureListRoute(
         onBackClicked = onBackClicked,
         role = role,
         status = status,
-        type =  type
+        type = type
     )
 }
 
 suspend fun getLectureList(
     viewModel: LectureViewModel,
-    onSuccess: (data: List<LectureListResponse>) -> Unit
+    onSuccess: (data: List<LectureListResponse>) -> Unit,
 ) {
     viewModel.getLectureListResponse.collect { response ->
         when (response) {
@@ -116,7 +118,8 @@ fun LectureListScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(35.dp)
+                        .height(35.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     Spacer(modifier = Modifier.width(28.dp))
@@ -130,13 +133,15 @@ fun LectureListScreen(
                         style = typography.titleMedium,
                     )
 
-                    Spacer(modifier = Modifier.width(135.dp))
+                    Spacer(modifier = Modifier.weight(1f))
 
-                    IconButton(
-                        onClick = onOpenClicked,
-                        modifier = Modifier.padding(top = 4.dp),
-                        content = { PlusIcon() }
-                    )
+                    if (role == Authority.ROLE_PROFESSOR || role == Authority.ROLE_GOVERNMENT || role == Authority.ROLE_COMPANY_INSTRUCTOR) {
+                        IconButton(
+                            onClick = onOpenClicked,
+                            modifier = Modifier.padding(top = 4.dp),
+                            content = { PlusIcon() }
+                        )
+                    }
 
                     Spacer(modifier = Modifier.width(24.dp))
 
@@ -147,6 +152,15 @@ fun LectureListScreen(
                                 isFilterBottomSheetVisible.value = !isFilterBottomSheetVisible.value
                             }
                     )
+
+                    Text(
+                        text = "필터",
+                        color = colors.G1,
+                        style = typography.bodySmall,
+                    )
+
+                    Spacer(modifier = Modifier.width(28.dp))
+
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
