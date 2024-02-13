@@ -1,7 +1,7 @@
 package com.msg.model.remote.model.auth
 
 import com.msg.model.remote.enumdatatype.Authority
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 
 data class AuthTokenModel(
