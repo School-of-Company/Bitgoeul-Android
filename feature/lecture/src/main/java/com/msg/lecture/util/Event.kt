@@ -1,15 +1,9 @@
 package com.msg.lecture.util
 
-<<<<<<< HEAD
-//추후 리팩토링을 통해 다른 모듈? 혹은 패키지로 이동 예정
-sealed class Event<out T>(
-    val data: T? = null
-=======
 
 //추후 리팩토링을 통해 다른 모듈? 혹은 패키지로 이동 예정
 sealed class Event<out T>(
     val data: T? = null,
->>>>>>> 8751c3f9e0738aa7bd07d4176a4d202d41215349
 ) {
 
     object Loading : Event<Nothing>()
