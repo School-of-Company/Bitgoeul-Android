@@ -1,10 +1,16 @@
 package com.msg.design_system.component.icon
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.R
@@ -119,5 +125,88 @@ fun SuccessIcon(
         painter = painterResource(id = R.drawable.ic_success),
         contentDescription = "Success Icon",
         modifier = modifier
+    )
+}
+
+@Composable
+fun MedicalIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_medical),
+        contentDescription = "Medical government logo",
+        modifier = modifier,
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun AiIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_ai),
+        contentDescription = "Ai government logo",
+        modifier = modifier
+            .height(28.dp),
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun EnergyIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_energy),
+        contentDescription = "Energy government logo",
+        modifier = modifier
+            .height(28.dp),
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun FutureTransportIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.mipmap.ic_banner_future),
+        contentDescription = "FutureTransport logo",
+        modifier = modifier
+            .height(28.dp)
+    )
+}
+
+@Composable
+fun GwangjuIcon(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            modifier = modifier
+                .width(48.dp)
+                .height(48.dp),
+            painter = painterResource(id = R.mipmap.ic_banner_gwangju),
+            contentDescription = "Icon of Gwangju",
+            colorFilter = ColorFilter.tint(color = Color(0xffF2F2F2))
+        )
+        Spacer(modifier = modifier.width(16.dp))
+        Image(
+            painter = painterResource(id = R.drawable.text_gwangju),
+            contentDescription = "광주광역시"
+        )
+    }
+}
+
+@Composable
+fun OfficeOfEducationIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_banner_education),
+        contentDescription = "Gwangju Metropolitan office of education logo"
     )
 }

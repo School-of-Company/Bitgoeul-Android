@@ -30,6 +30,7 @@ protobuf {
 dependencies {
     implementation(project(":core:model"))
 
+    implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.dataStore.core)
     implementation(libs.protobuf.kotlin.lite)
 }

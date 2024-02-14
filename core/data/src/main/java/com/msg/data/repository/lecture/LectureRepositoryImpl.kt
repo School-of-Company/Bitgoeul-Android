@@ -19,6 +19,7 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
+<<<<<<< HEAD
     override suspend fun getLectureList(
         page: Int,
         size: Int,
@@ -31,6 +32,10 @@ class LectureRepositoryImpl @Inject constructor(
             status = status,
             type = type
         )
+=======
+    override suspend fun getLectureList(page: Int, size: Int, status: ApproveStatus, type: LectureType): Flow<List<LectureListResponse>> {
+        return lectureDataSource.getLectureList(page = page, size = size, status = status, type = type)
+>>>>>>> 8751c3f9e0738aa7bd07d4176a4d202d41215349
     }
 
     override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> {

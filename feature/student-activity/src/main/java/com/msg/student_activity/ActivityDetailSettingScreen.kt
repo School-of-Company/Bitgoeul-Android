@@ -24,6 +24,7 @@ import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.textfield.PickerTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.student_activity.viewmodel.StudentActivityViewModel
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDate
 

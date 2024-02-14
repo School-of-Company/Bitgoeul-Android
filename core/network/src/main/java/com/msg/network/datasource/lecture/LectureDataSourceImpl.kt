@@ -25,6 +25,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
+<<<<<<< HEAD
     override suspend fun getLectureList(
         page: Int,
         size: Int,
@@ -41,9 +42,15 @@ class LectureDataSourceImpl @Inject constructor(
                         type = type
                     )
                 }
+=======
+    override suspend fun getLectureList(page: Int, size: Int, status: ApproveStatus, type: LectureType): Flow<List<LectureListResponse>> = flow {
+        emit(
+            BitgoeulApiHandler<List<LectureListResponse>>()
+                .httpRequest { lectureAPI.getLectureList(page = page, size = size, status = status, type = type) }
+>>>>>>> 8751c3f9e0738aa7bd07d4176a4d202d41215349
                 .sendRequest()
         )
-    }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> = flow {
         emit(

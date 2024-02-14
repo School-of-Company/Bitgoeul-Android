@@ -10,16 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +27,7 @@ import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.student_activity.viewmodel.StudentActivityViewModel
 import java.time.LocalDate
 
 @Composable

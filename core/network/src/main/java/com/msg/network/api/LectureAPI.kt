@@ -25,7 +25,11 @@ interface LectureAPI {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("status") status: ApproveStatus,
+<<<<<<< HEAD
         @Query("type") type: LectureType
+=======
+        @Query("type") type: LectureType,
+>>>>>>> 8751c3f9e0738aa7bd07d4176a4d202d41215349
     ): List<LectureListResponse>
 
     @GET("lecture/{id}")

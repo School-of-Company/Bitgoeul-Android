@@ -1,6 +1,9 @@
 package com.msg.lecture.util
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8751c3f9e0738aa7bd07d4176a4d202d41215349
 import android.util.Log
 import com.msg.domain.exception.*
 //추후 리팩토링을 통해 다른 모듈? 패키지로 이동 예정

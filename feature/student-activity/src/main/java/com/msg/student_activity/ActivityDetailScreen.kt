@@ -37,6 +37,7 @@ import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
 import com.msg.student_activity.util.Event
+import com.msg.student_activity.viewmodel.StudentActivityViewModel
 import com.msg.ui.util.toDotFormat
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDate
