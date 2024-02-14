@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import com.msg.model.remote.enumdatatype.Authority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.datetime.LocalDateTime
 import javax.inject.Inject
 
 class AuthTokenDataSource @Inject constructor(
@@ -21,14 +23,15 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    fun getAccessTokenExp(): Flow<String> = authToken.data.map {
-        it.accessExp ?: ""
+    fun getAccessTokenExp(): Flow<LocalDateTime> = authToken.data.mapNotNull { it.accessExp }.map { accessExp ->
+        LocalDateTime.parse(accessExp)
     }
 
-    suspend fun setAccessTokenExp(accessTokenExp: String) {
+
+    suspend fun setAccessTokenExp(accessTokenExp: LocalDateTime) {
         authToken.updateData {
             it.toBuilder()
-                .setAccessExp(accessTokenExp)
+                .setAccessExp(accessTokenExp.toString())
                 .build()
         }
     }
@@ -45,14 +48,15 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    fun getRefreshTokenExp(): Flow<String> = authToken.data.map {
-        it.refreshExp ?: ""
+    fun getRefreshTokenExp(): Flow<LocalDateTime> = authToken.data.mapNotNull { it.refreshExp }.map { refreshExp ->
+        LocalDateTime.parse(refreshExp)
     }
 
-    suspend fun setRefreshTokenExp(refreshTokenExp: String) {
+
+    suspend fun setRefreshTokenExp(refreshTokenExp: LocalDateTime) {
         authToken.updateData {
             it.toBuilder()
-                .setRefreshToken(refreshTokenExp)
+                .setRefreshExp(refreshTokenExp.toString())
                 .build()
         }
     }
