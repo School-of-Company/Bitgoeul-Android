@@ -52,6 +52,16 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun saveTokenData(data: AuthTokenModel) = viewModelScope.launch {
+        saveTokenUseCase(
+            data = data
+        ).onSuccess {
+            _saveTokenRequest.value = Event.Success()
+        }.onFailure {
+            _saveTokenRequest.value = it.errorHandling()
+        }
+    }
+
     fun setLoginData(email: String, password: String) {
         _email.value = email
         _password.value = password
