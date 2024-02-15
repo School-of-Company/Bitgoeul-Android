@@ -44,7 +44,7 @@ fun LoginRoute(
     LoginScreen(
         onSignUpClick = onSignUpClick,
         onLoginClick = { viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value)) },
-        saveLoginData = { email, password ->
+        setLoginData = { email, password ->
             viewModel.setLoginData(email = email, password = password)
         }
     )
@@ -54,7 +54,7 @@ fun LoginRoute(
 fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
-    saveLoginData: (String, String) -> Unit = { _,_ -> }
+    setLoginData: (String, String) -> Unit = { _,_ -> }
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
@@ -154,7 +154,7 @@ fun LoginScreen(
                             .height(52.dp),
                         state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
                         onClick = {
-                            saveLoginData(emailState.value, passwordState.value)
+                            setLoginData(emailState.value, passwordState.value)
                             onLoginClick()
                         }
                     )
