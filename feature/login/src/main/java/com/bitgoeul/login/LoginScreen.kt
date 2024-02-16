@@ -1,6 +1,7 @@
 package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,11 +44,16 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun LoginRoute(
     onSignUpClick: () -> Unit,
-    viewModel: AuthViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     LoginScreen(
         onSignUpClick = onSignUpClick,
-        onLoginClick = { viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value)) },
+        onLoginClick = {
+            viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
+            observeLoginEvent(lifecycleOwner = lifecycleOwner, viewModel = viewModel)
+        },
         setLoginData = { email, password ->
             viewModel.setLoginData(email = email, password = password)
         }
@@ -56,11 +62,12 @@ fun LoginRoute(
 
 fun observeLoginEvent(
     viewModel: AuthViewModel,
-    lifecycleOwner: LifecycleOwner
+    lifecycleOwner: LifecycleOwner,
 ) {
-    viewModel.loginRequest.observe(lifecycleOwner) { event ->
+    viewModel.saveTokenRequest.observe(lifecycleOwner) { event ->
         when (event) {
             is Event.Success -> {
+                Log.e("토큰 저장", "실행")
                 viewModel.saveTokenData(event.data!!)
             }
 
@@ -74,7 +81,7 @@ fun observeLoginEvent(
 fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
-    setLoginData: (String, String) -> Unit = { _,_ -> }
+    setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
@@ -188,7 +195,7 @@ fun LoginScreen(
                     style = type.labelMedium,
                     color = color.G1,
                     fontSize = 14.sp,
-                    )
+                )
 
                 Spacer(modifier = Modifier.height(2.dp))
 

@@ -25,12 +25,12 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveToken(data: AuthTokenModel) {
-        data.let {
-            localDataSource.setAccessToken(it.accessToken)
-            localDataSource.setAccessTokenExp(it.accessExpiredAt)
-            localDataSource.setRefreshToken(it.refreshToken)
-            localDataSource.setRefreshTokenExp(it.refreshExpiredAt)
-            localDataSource.setAuthority(it.authority)
+        data.let { loginResponse ->
+            localDataSource.setAccessToken(loginResponse.accessToken)
+            localDataSource.setAccessTokenExp(loginResponse.accessExpiredAt)
+            localDataSource.setRefreshToken(loginResponse.refreshToken)
+            localDataSource.setRefreshTokenExp(loginResponse.refreshExpiredAt)
+            localDataSource.setAuthority(loginResponse.authority)
         }
     }
 
