@@ -64,18 +64,29 @@ fun observeLoginEvent(
     viewModel: AuthViewModel,
     lifecycleOwner: LifecycleOwner,
 ) {
-    viewModel.saveTokenRequest.observe(lifecycleOwner) { event ->
+    viewModel.loginRequest.observe(lifecycleOwner) { event ->
+        Log.e("event", event.toString())
         when (event) {
             is Event.Success -> {
                 Log.e("토큰 저장", "실행")
-                viewModel.saveTokenData(event.data!!)
+                val data = event.data
+                if (data != null && data.accessToken.isNotEmpty()) {
+                    Log.e("토큰 저장", "토큰 저장 성공: $data")
+                    viewModel.saveTokenData(data)
+                } else {
+                    Log.e("토큰 저장 실패", "토큰이 유효하지 않습니다.")
+                }
             }
-
-            else -> {}
+            is Event.UnKnown -> {
+                Log.e("Unknown Event", "Unknown 이벤트가 발생했습니다.")
+            }
+            else -> {
+                Log.e("토큰 저장 실패", "이벤트 타입이 올바르지 않습니다.")
+            }
         }
-
     }
 }
+
 
 @Composable
 fun LoginScreen(

@@ -13,6 +13,7 @@ import com.msg.network.datasource.auth.AuthDataSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toLocalDateTime
 
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
@@ -27,9 +28,9 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun saveToken(data: AuthTokenModel) {
         data.let { loginResponse ->
             localDataSource.setAccessToken(loginResponse.accessToken)
-            localDataSource.setAccessTokenExp(loginResponse.accessExpiredAt)
+            localDataSource.setAccessTokenExp(loginResponse.accessExpiredAt.toLocalDateTime())
             localDataSource.setRefreshToken(loginResponse.refreshToken)
-            localDataSource.setRefreshTokenExp(loginResponse.refreshExpiredAt)
+            localDataSource.setRefreshTokenExp(loginResponse.refreshExpiredAt.toLocalDateTime())
             localDataSource.setAuthority(loginResponse.authority)
         }
     }

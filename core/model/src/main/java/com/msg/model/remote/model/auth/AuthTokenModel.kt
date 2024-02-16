@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDateTime
 data class AuthTokenModel(
     val accessToken: String,
     val refreshToken: String,
-    val accessExpiredAt: LocalDateTime,
-    val refreshExpiredAt: LocalDateTime,
+    val accessExpiredAt: String,
+    val refreshExpiredAt: String,
     val authority: Authority
 )
