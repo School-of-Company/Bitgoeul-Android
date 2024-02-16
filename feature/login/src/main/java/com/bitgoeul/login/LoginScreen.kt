@@ -18,12 +18,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
 import com.bitgoeul.login.viewmodel.AuthViewModel
+import com.bitgoeul.login.viewmodel.util.Event
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
@@ -35,6 +38,7 @@ import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
 import com.msg.model.remote.request.auth.LoginRequest
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun LoginRoute(
@@ -48,6 +52,22 @@ fun LoginRoute(
             viewModel.setLoginData(email = email, password = password)
         }
     )
+}
+
+fun observeLoginEvent(
+    viewModel: AuthViewModel,
+    lifecycleOwner: LifecycleOwner
+) {
+    viewModel.loginRequest.observe(lifecycleOwner) { event ->
+        when (event) {
+            is Event.Success -> {
+                viewModel.saveTokenData(event.data!!)
+            }
+
+            else -> {}
+        }
+
+    }
 }
 
 @Composable
