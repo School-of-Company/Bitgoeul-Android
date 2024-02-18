@@ -50,7 +50,6 @@ fun LectureListRoute(
         role = role,
         page = 1,
         size = 10,
-        status = status,
         type = type
     )
     LaunchedEffect(true) {

@@ -15,7 +15,6 @@ data class LectureListResponse(
     val completeDate: LocalDateTime,
     val lectureType: LectureType,
     val lectureStatus: LectureStatus,
-    val approveStatus: ApproveStatus,
     val headCount: Int,
     val maxRegisteredUser: Int,
     val lecturer: String,
