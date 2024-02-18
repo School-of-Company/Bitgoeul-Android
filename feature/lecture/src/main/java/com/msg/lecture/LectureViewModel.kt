@@ -115,7 +115,6 @@ class LectureViewModel @Inject constructor(
         role: Authority,
         page: Int,
         size: Int,
-        status: ApproveStatus,
         type: LectureType,
     ) = viewModelScope.launch {
         when (role) {
@@ -124,7 +123,6 @@ class LectureViewModel @Inject constructor(
                     getLectureListUseCase(
                         page = page,
                         size = size,
-                        status = status,
                         type = type
                     ).onSuccess {
                         it.catch { remoteError ->
@@ -143,7 +141,6 @@ class LectureViewModel @Inject constructor(
                     getLectureListUseCase(
                         page = page,
                         size = size,
-                        status = status,
                         type = type
                     ).onSuccess {
                         it.catch { remoteError ->
