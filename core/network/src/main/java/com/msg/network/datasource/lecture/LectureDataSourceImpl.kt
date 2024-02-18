@@ -28,7 +28,6 @@ class LectureDataSourceImpl @Inject constructor(
     override suspend fun getLectureList(
         page: Int,
         size: Int,
-        status: ApproveStatus,
         type: LectureType,
     ): Flow<List<LectureListResponse>> = flow {
         emit(
@@ -37,7 +36,6 @@ class LectureDataSourceImpl @Inject constructor(
                     lectureAPI.getLectureList(
                         page = page,
                         size = size,
-                        status = status,
                         type = type
                     )
                 }

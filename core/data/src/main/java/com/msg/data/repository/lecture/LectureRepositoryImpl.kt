@@ -22,13 +22,11 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun getLectureList(
         page: Int,
         size: Int,
-        status: ApproveStatus,
         type: LectureType,
     ): Flow<List<LectureListResponse>> {
         return lectureDataSource.getLectureList(
             page = page,
             size = size,
-            status = status,
             type = type
         )
     }

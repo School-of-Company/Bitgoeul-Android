@@ -13,6 +13,7 @@ import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
 import com.msg.lecture.navigation.lectureListScreen
+import com.msg.lecture.navigation.navigateToLecture
 import com.msg.sign_up.navigation.signUpScreen
 import com.msg.student_activity.navigation.navigateToAddActivity
 import com.msg.student_activity.navigation.navigateToDetailSettingActivity
@@ -35,7 +36,7 @@ fun BitgoeulNavHost(
         modifier = modifier
     ) {
         loginScreen(
-            onSignUpClick = navController::navigateToSignUp
+            onSignUpClick = navController::navigateToLecture
         )
         signUpScreen(
             onBackClick = navController::popBackStack

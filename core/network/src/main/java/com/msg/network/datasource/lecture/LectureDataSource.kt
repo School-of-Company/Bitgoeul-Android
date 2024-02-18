@@ -10,7 +10,7 @@ import java.util.UUID
 
 interface LectureDataSource {
     suspend fun openLecture(body: OpenLectureRequest): Flow<Unit>
-    suspend fun getLectureList(page: Int, size: Int, status: ApproveStatus, type: LectureType, ): Flow<List<LectureListResponse>>
+    suspend fun getLectureList(page: Int, size: Int, type: LectureType): Flow<List<LectureListResponse>>
     suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
     suspend fun lectureApplication(id: UUID): Flow<Unit>
     suspend fun approvePendingLecture(id: UUID): Flow<Unit>

@@ -24,7 +24,6 @@ interface LectureAPI {
     suspend fun getLectureList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("status") status: ApproveStatus,
         @Query("type") type: LectureType
     ): List<LectureListResponse>
 
