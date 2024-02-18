@@ -1,6 +1,7 @@
 package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,12 +19,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
 import com.bitgoeul.login.viewmodel.AuthViewModel
+import com.bitgoeul.login.viewmodel.util.Event
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
@@ -35,26 +39,60 @@ import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
 import com.msg.model.remote.request.auth.LoginRequest
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun LoginRoute(
     onSignUpClick: () -> Unit,
-    viewModel: AuthViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     LoginScreen(
         onSignUpClick = onSignUpClick,
-        onLoginClick = { viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value)) },
-        saveLoginData = { email, password ->
+        onLoginClick = {
+            viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
+            observeLoginEvent(lifecycleOwner = lifecycleOwner, viewModel = viewModel)
+        },
+        setLoginData = { email, password ->
             viewModel.setLoginData(email = email, password = password)
         }
     )
 }
 
+fun observeLoginEvent(
+    viewModel: AuthViewModel,
+    lifecycleOwner: LifecycleOwner,
+) {
+    viewModel.loginRequest.observe(lifecycleOwner) { event ->
+        Log.e("event", event.toString())
+        when (event) {
+            is Event.Success -> {
+                Log.e("토큰 저장", "실행")
+                val data = event.data
+                if (data != null && data.accessToken.isNotEmpty()) {
+                    Log.e("토큰 저장", "토큰 저장 성공: $data")
+                    viewModel.saveTokenData(data)
+                } else {
+                    Log.e("토큰 저장 실패", "토큰이 유효하지 않습니다.")
+                }
+            }
+            is Event.UnKnown -> {
+                Log.e("Unknown Event", "Unknown 이벤트가 발생했습니다.")
+            }
+            else -> {
+                Log.e("토큰 저장 실패", "이벤트 타입이 올바르지 않습니다.")
+            }
+        }
+    }
+}
+
+
 @Composable
 fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
-    saveLoginData: (String, String) -> Unit = { _,_ -> }
+    setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
@@ -154,7 +192,7 @@ fun LoginScreen(
                             .height(52.dp),
                         state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
                         onClick = {
-                            saveLoginData(emailState.value, passwordState.value)
+                            setLoginData(emailState.value, passwordState.value)
                             onLoginClick()
                         }
                     )
@@ -168,7 +206,7 @@ fun LoginScreen(
                     style = type.labelMedium,
                     color = color.G1,
                     fontSize = 14.sp,
-                    )
+                )
 
                 Spacer(modifier = Modifier.height(2.dp))
 

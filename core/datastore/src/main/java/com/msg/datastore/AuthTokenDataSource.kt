@@ -9,7 +9,7 @@ import kotlinx.datetime.LocalDateTime
 import javax.inject.Inject
 
 class AuthTokenDataSource @Inject constructor(
-    private val authToken: DataStore<AuthToken>
+    private val authToken: DataStore<AuthToken>,
 ) {
     fun getAccessToken(): Flow<String> = authToken.data.map {
         it.accessToken ?: ""
@@ -23,9 +23,10 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    fun getAccessTokenExp(): Flow<LocalDateTime> = authToken.data.mapNotNull { it.accessExp }.map { accessExp ->
-        LocalDateTime.parse(accessExp)
-    }
+    fun getAccessTokenExp(): Flow<LocalDateTime> =
+        authToken.data.mapNotNull { it.accessExp }.map { accessExp ->
+            LocalDateTime.parse(accessExp)
+        }
 
 
     suspend fun setAccessTokenExp(accessTokenExp: LocalDateTime) {
@@ -48,9 +49,10 @@ class AuthTokenDataSource @Inject constructor(
         }
     }
 
-    fun getRefreshTokenExp(): Flow<LocalDateTime> = authToken.data.mapNotNull { it.refreshExp }.map { refreshExp ->
-        LocalDateTime.parse(refreshExp)
-    }
+    fun getRefreshTokenExp(): Flow<LocalDateTime> =
+        authToken.data.mapNotNull { it.refreshExp }.map { refreshExp ->
+            LocalDateTime.parse(refreshExp)
+        }
 
 
     suspend fun setRefreshTokenExp(refreshTokenExp: LocalDateTime) {
