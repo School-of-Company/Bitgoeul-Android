@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ㅇDataSourceModule {
+object DataSourceModule {
     @Provides
     @Singleton
     fun provideAuthTokenDataStore(

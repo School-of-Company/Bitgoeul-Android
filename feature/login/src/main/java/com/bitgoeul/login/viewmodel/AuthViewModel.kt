@@ -1,5 +1,6 @@
 package com.bitgoeul.login.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -43,12 +44,23 @@ class AuthViewModel @Inject constructor(
             body = body
         ).onSuccess {
             it.catch { remoteError ->
+                Log.e("viewModel Login 함수 구문  remoteError Catch 실행", "as")
                 _loginRequest.value = remoteError.errorHandling()
             }.collect { response ->
                 _loginRequest.value = Event.Success(data = response)
             }
         }.onFailure {
             _loginRequest.value = it.errorHandling()
+        }
+    }
+
+    fun saveTokenData(data: AuthTokenModel) = viewModelScope.launch {
+        saveTokenUseCase(
+            data = data
+        ).onSuccess {
+            _saveTokenRequest.value = Event.Success()
+        }.onFailure {
+            _saveTokenRequest.value = it.errorHandling()
         }
     }
 
