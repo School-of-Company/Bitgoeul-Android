@@ -12,6 +12,7 @@ import com.msg.domain.lecture.GetLectureListUseCase
 import com.msg.domain.lecture.OpenLectureUseCase
 import com.msg.domain.lecture.RejectPendingLectureUseCase
 import com.msg.lecture.util.Event
+import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
@@ -237,8 +238,4 @@ class LectureViewModel @Inject constructor(
             _rejectPendingLectureResponse.value = error.errorHandling()
         }
     }
-}
-
-suspend fun Authority.Companion.authorityOf(authority: Flow<Authority>): Authority {
-    return authority.firstOrNull() ?: Authority.ROLE_USER
 }
