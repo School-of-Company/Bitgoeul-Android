@@ -138,15 +138,7 @@ fun LectureCard(
                             text = if (data.lectureType == LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM) "상호학점인정교육과정" else "대학탐방프로그램"
                         )
 
-                        Spacer(modifier = Modifier.width(8.dp))
 
-                        if (role == Authority.ROLE_ADMIN) {
-                            if (status == ApproveStatus.APPROVED) {
-                                ApproveStatusTag()
-                            } else if (status == ApproveStatus.PENDING) {
-                                PendApproveStatusTag()
-                            }
-                        }
                     }
 
 
@@ -169,7 +161,6 @@ fun LectureCardPre() {
             endDate = LocalDateTime.now(),
             completeDate = LocalDateTime.now(),
             lectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
-            approveStatus = ApproveStatus.APPROVED,
             lectureStatus = LectureStatus.OPEN,
             headCount = 50,
             maxRegisteredUser = 100,

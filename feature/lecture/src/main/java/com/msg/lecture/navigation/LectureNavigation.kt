@@ -19,7 +19,6 @@ fun NavGraphBuilder.lectureListScreen(
     onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,
-    status: ApproveStatus = ApproveStatus.APPROVED,
     type: LectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
 ) {
     composable(route = lectureListRoute) {
@@ -27,7 +26,6 @@ fun NavGraphBuilder.lectureListScreen(
             onOpenClicked = onOpenClicked,
             onItemClicked = onItemClicked,
             onBackClicked = onBackClicked,
-            status = status,
             type = type
         )
     }

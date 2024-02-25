@@ -21,10 +21,12 @@ import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.UUID
@@ -39,7 +41,9 @@ class LectureViewModel @Inject constructor(
     private val rejectPendingLectureUseCase: RejectPendingLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
-    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
+    suspend fun getRole(): Authority {
+        return Authority.authorityOf(authTokenDataSource.getAuthority())
+    }
 
     private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
@@ -68,7 +72,6 @@ class LectureViewModel @Inject constructor(
             completeDate = LocalDateTime.now(),
             lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
             lectureStatus = LectureStatus.OPEN,
-            approveStatus = ApproveStatus.PENDING,
             headCount = 0,
             maxRegisteredUser = 0,
             isRegistered = true,
@@ -108,9 +111,6 @@ class LectureViewModel @Inject constructor(
     var endDate = mutableStateOf<LocalDateTime?>(null)
         private set
 
-    var status = mutableStateOf<ApproveStatus>(ApproveStatus.PENDING)
-        private set
-
     fun getLectureList(
         role: Authority,
         page: Int,
@@ -119,7 +119,7 @@ class LectureViewModel @Inject constructor(
     ) = viewModelScope.launch {
         when (role) {
             Authority.ROLE_USER -> {
-                if (status != null && type != null) {
+                if (type != null) {
                     getLectureListUseCase(
                         page = page,
                         size = size,
@@ -137,7 +137,7 @@ class LectureViewModel @Inject constructor(
             }
 
             Authority.ROLE_ADMIN -> {
-                if (status != null && type != null) {
+                if (type != null) {
                     getLectureListUseCase(
                         page = page,
                         size = size,
@@ -237,4 +237,8 @@ class LectureViewModel @Inject constructor(
             _rejectPendingLectureResponse.value = error.errorHandling()
         }
     }
+}
+
+suspend fun Authority.Companion.authorityOf(authority: Flow<Authority>): Authority {
+    return authority.firstOrNull() ?: Authority.ROLE_USER
 }

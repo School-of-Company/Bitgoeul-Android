@@ -64,8 +64,8 @@ class AuthTokenDataSource @Inject constructor(
     }
 
     fun getAuthority(): Flow<Authority> = authToken.data.mapNotNull { data ->
-        data.authority?.let { authorityString ->
-            when (authorityString) {
+        data.authority?.let { authority ->
+            when (authority) {
                 "ROLE_USER" -> Authority.ROLE_USER
                 "ROLE_ADMIN" -> Authority.ROLE_ADMIN
                 "ROLE_STUDENT" -> Authority.ROLE_STUDENT

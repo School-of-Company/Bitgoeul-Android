@@ -8,5 +8,7 @@ enum class Authority {
     ROLE_BBOZZAK,
     ROLE_PROFESSOR,
     ROLE_COMPANY_INSTRUCTOR,
-    ROLE_GOVERNMENT
+    ROLE_GOVERNMENT;
+
+    companion object
 }

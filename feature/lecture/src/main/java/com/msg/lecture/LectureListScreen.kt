@@ -1,5 +1,6 @@
 package com.msg.lecture
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -42,12 +43,16 @@ fun LectureListRoute(
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(),
-    status: ApproveStatus,
     type: LectureType,
 ) {
-    val role = viewModel.role
+    var role = remember { mutableStateOf(Authority.ROLE_USER) }
+    LaunchedEffect(true) {
+        role.value = viewModel.getRole()
+    }
+
+    Log.e("authority", role.value.toString())
     viewModel.getLectureList(
-        role = role,
+        role = role.value,
         page = 1,
         size = 10,
         type = type
@@ -68,8 +73,7 @@ fun LectureListRoute(
             viewModel.selectedLectureId.value = it
         },
         onBackClicked = onBackClicked,
-        role = role,
-        status = status,
+        role = role.value,
         type = type
     )
 }
@@ -96,7 +100,6 @@ fun LectureListScreen(
     onItemClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit,
     role: Authority,
-    status: ApproveStatus,
     type: LectureType,
 ) {
     var isFilterBottomSheetVisible = remember { mutableStateOf(false) }
@@ -165,7 +168,6 @@ fun LectureListScreen(
                         data = data,
                         onClick = onItemClicked,
                         role = role,
-                        status = status,
                         type = type
                     )
                 }
@@ -189,6 +191,5 @@ fun LectureListPagePreview() {
         onOpenClicked = {},
         role = Authority.ROLE_STUDENT,
         type = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
-        status = ApproveStatus.APPROVED
     )
 }

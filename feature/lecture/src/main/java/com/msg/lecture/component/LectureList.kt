@@ -23,7 +23,6 @@ fun LectureList(
     data: List<LectureListResponse>?,
     onClick: (UUID) -> Unit,
     role: Authority,
-    status: ApproveStatus,
     type: LectureType
 ) {
     BitgoeulAndroidTheme { colors, _ ->
@@ -50,7 +49,6 @@ fun LectureList(
                         data = data[it],
                         onClick = onClick,
                         role = role,
-                        status = status,
                         type = type
                     )
 
