@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.msg.lecture"
 }
+
+dependencies {
+    implementation(libs.kotlinx.datetime)
+}

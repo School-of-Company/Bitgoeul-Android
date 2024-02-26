@@ -1,8 +1,18 @@
 package com.msg.network.util
 
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toLocalDateTime
-import java.text.SimpleDateFormat
-fun Any?.toLocalDateTime(): LocalDateTime {
-    return SimpleDateFormat("yyyy-MM-d'T'HH:mm:ss").format(this).toLocalDateTime()
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+
+fun Any?.toLocalDateTime(): LocalDateTime? {
+    val dateString = this?.toString()
+    if (dateString != null) {
+        return try {
+            LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-d'T'HH:mm:ss"))
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
+        }
+    }
+    return null
 }

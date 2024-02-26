@@ -1,9 +1,8 @@
 package com.msg.model.remote.response.lecture
 
-import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 import java.util.UUID
 
 data class LectureListResponse(

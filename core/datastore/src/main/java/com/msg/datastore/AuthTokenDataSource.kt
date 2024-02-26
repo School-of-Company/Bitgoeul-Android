@@ -29,10 +29,10 @@ class AuthTokenDataSource @Inject constructor(
         }
 
 
-    suspend fun setAccessTokenExp(accessTokenExp: LocalDateTime) {
+    suspend fun setAccessTokenExp(accessTokenExp: String) {
         authToken.updateData {
             it.toBuilder()
-                .setAccessExp(accessTokenExp.toString())
+                .setAccessExp(accessTokenExp)
                 .build()
         }
     }
@@ -55,10 +55,10 @@ class AuthTokenDataSource @Inject constructor(
         }
 
 
-    suspend fun setRefreshTokenExp(refreshTokenExp: LocalDateTime) {
+    suspend fun setRefreshTokenExp(refreshTokenExp: String) {
         authToken.updateData {
             it.toBuilder()
-                .setRefreshExp(refreshTokenExp.toString())
+                .setRefreshExp(refreshTokenExp)
                 .build()
         }
     }

@@ -20,19 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.msg.design_system.R
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
-import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.LectureListResponse
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Composable
@@ -67,7 +63,7 @@ fun LectureCard(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = data.completeDate.toString().replace("-", ".").substring(0, 10),
+                        text = "${data.completeDate.toString().replace("-", ".").substring(0, 10)}",
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
@@ -147,25 +143,4 @@ fun LectureCard(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun LectureCardPre() {
-    LectureCard(
-        data = LectureListResponse(
-            id = UUID.randomUUID(),
-            name = "유저 리서치 - 사용자 경험 개선하기",
-            content = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심장이 박주홍 강민수 두근두근 연애",
-            startDate = LocalDateTime.now(),
-            endDate = LocalDateTime.now(),
-            completeDate = LocalDateTime.now(),
-            lectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
-            lectureStatus = LectureStatus.OPEN,
-            headCount = 50,
-            maxRegisteredUser = 100,
-            lecturer = "정찬우"
-        ),
-        onClick = {}
-    )
 }

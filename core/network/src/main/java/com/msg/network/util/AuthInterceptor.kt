@@ -40,30 +40,34 @@ class AuthInterceptor @Inject constructor(
                 return@runBlocking
             }
 
-            if (currentTime.isAfter(refreshTime.toLocalDateTime())) {
-                throw NeedLoginException()
+            if (currentTime != null) {
+                if (currentTime.isAfter(refreshTime.toLocalDateTime())) {
+                    throw NeedLoginException()
+                }
             }
 
             //Re Issue Access Token
-            if (currentTime.isAfter(accessTime.toLocalDateTime())) {
-                val client = OkHttpClient()
-                val refreshRequest = Request.Builder()
-                    .url(BuildConfig.BASE_URL + "auth")
-                    .patch(chain.request().body ?: RequestBody.Companion.create(null, byteArrayOf()))
-                    .addHeader(
-                        "RefreshToken",
-                        dataSource.getRefreshToken().toString()
-                    )
-                    .build()
-                val jsonParser = JsonParser()
-                val response = client.newCall(refreshRequest).execute()
-                if (response.isSuccessful) {
-                    val token = jsonParser.parse(response.body!!.string()) as JsonObject
-                    dataSource.setAccessToken(token["accessToken"].toString())
-                    dataSource.setAccessTokenExp(token["accessExpiration"].toLocalDateTime())
-                    dataSource.setRefreshToken(token["refreshToken"].toString())
-                    dataSource.setRefreshTokenExp(token["refreshExpiration"].toLocalDateTime())
-                } else throw NeedLoginException()
+            if (currentTime != null) {
+                if (currentTime.isAfter(accessTime.toLocalDateTime())) {
+                    val client = OkHttpClient()
+                    val refreshRequest = Request.Builder()
+                        .url(BuildConfig.BASE_URL + "auth")
+                        .patch(chain.request().body ?: RequestBody.Companion.create(null, byteArrayOf()))
+                        .addHeader(
+                            "RefreshToken",
+                            dataSource.getRefreshToken().toString()
+                        )
+                        .build()
+                    val jsonParser = JsonParser()
+                    val response = client.newCall(refreshRequest).execute()
+                    if (response.isSuccessful) {
+                        val token = jsonParser.parse(response.body!!.string()) as JsonObject
+                        dataSource.setAccessToken(token["accessToken"].toString())
+                        dataSource.setAccessTokenExp(token["accessExpiration"].toString())
+                        dataSource.setRefreshToken(token["refreshToken"].toString())
+                        dataSource.setRefreshTokenExp(token["refreshExpiration"].toString())
+                    } else throw NeedLoginException()
+                }
             }
             val accessToken = dataSource.getAccessToken()
             val refreshToken = dataSource.getRefreshToken()
