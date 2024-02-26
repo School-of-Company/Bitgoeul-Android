@@ -45,9 +45,9 @@ import java.util.UUID
 fun PostDetailScreen(
     modifier: Modifier = Modifier,
     data: GetDetailPostResponse,
+    id: UUID,
     role: Authority = Authority.ROLE_USER,
     onDeleteClicked: (UUID) -> Unit,
-    onActionEnd: () -> Unit,
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
@@ -113,7 +113,7 @@ fun PostDetailScreen(
                             color = colors.G1
                         )
                     }
-                    Spacer(modifier = modifier.height(40.dp))
+                    Spacer(modifier = modifier.height(80.dp))
                 }
             }
             Row(
@@ -152,9 +152,7 @@ fun PostDetailScreen(
                 content = data.title,
                 isVisible = isDialogShow.value,
                 onQuit = { isDialogShow.value = false },
-                onActionClicked = {
-                    onActionEnd()
-                }
+                onActionClicked = { onDeleteClicked(id) }
             )
         }
     }
@@ -175,7 +173,7 @@ fun PostDetailScreenPre() {
             )
         ),
         onDeleteClicked = {},
-        onActionEnd = {},
-        onEditClicked = {}
+        onEditClicked = {},
+        id = UUID.randomUUID()
     ) {}
 }
