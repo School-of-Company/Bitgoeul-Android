@@ -5,6 +5,7 @@ import com.google.gson.JsonParser
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.network.BuildConfig
 import com.msg.network.exception.NeedLoginException
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDateTime
 import okhttp3.Interceptor
@@ -69,8 +70,8 @@ class AuthInterceptor @Inject constructor(
                     } else throw NeedLoginException()
                 }
             }
-            val accessToken = dataSource.getAccessToken()
-            val refreshToken = dataSource.getRefreshToken()
+            val accessToken = dataSource.getAccessToken().first()
+            val refreshToken = dataSource.getRefreshToken().first()
             if (method == "DELETE") {
                 builder.addHeader("RefreshToken", "Bearer $refreshToken")
             }
