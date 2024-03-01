@@ -155,7 +155,23 @@ class LectureViewModel @Inject constructor(
                 }
             }
 
-            else -> {}
+            else -> {
+                if (type != null) {
+                    getLectureListUseCase(
+                        page = page,
+                        size = size,
+                        type = type
+                    ).onSuccess {
+                        it.catch { remoteError ->
+                            _getLectureListResponse.value = remoteError.errorHandling()
+                        }.collect { response ->
+                            _getLectureListResponse.value = Event.Success(data = response)
+                        }
+                    }.onFailure { error ->
+                        _getLectureListResponse.value = error.errorHandling()
+                    }
+                }
+            }
         }
     }
 
