@@ -31,7 +31,7 @@ import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.lecture.component.LectureList
 import com.msg.lecture.util.Event
-import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -53,7 +53,7 @@ fun LectureListRoute(
     Log.e("authority", role.value.toString())
     viewModel.getLectureList(
         role = role.value,
-        page = 1,
+        page = 0,
         size = 10,
         type = type
     )
@@ -66,7 +66,7 @@ fun LectureListRoute(
         )
     }
     LectureListScreen(
-        data = viewModel.lectureList,
+        data = viewModel.lectureList.toList(),
         onOpenClicked = onOpenClicked,
         onItemClicked = {
             onItemClicked()

@@ -1,5 +1,6 @@
-package com.msg.lecture
+package com.msg.lecture.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,6 @@ import com.msg.domain.lecture.RejectPendingLectureUseCase
 import com.msg.lecture.util.Event
 import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
-import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
@@ -22,12 +22,9 @@ import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.UUID
