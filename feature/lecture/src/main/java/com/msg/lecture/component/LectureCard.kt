@@ -1,5 +1,6 @@
 package com.msg.lecture.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,10 +37,10 @@ fun LectureCard(
     data: LectureListResponse,
     onClick: (UUID) -> Unit,
     role: Authority = Authority.ROLE_USER,
-    status: ApproveStatus = ApproveStatus.APPROVED,
     type: LectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
 ) {
     BitgoeulAndroidTheme { color, type ->
+        Log.e("data", data.toString())
         Surface {
             Card(
                 modifier = Modifier
@@ -133,8 +134,6 @@ fun LectureCard(
                         LectureCategoryTag(
                             text = if (data.lectureType == LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM) "상호학점인정교육과정" else "대학탐방프로그램"
                         )
-
-
                     }
 
 

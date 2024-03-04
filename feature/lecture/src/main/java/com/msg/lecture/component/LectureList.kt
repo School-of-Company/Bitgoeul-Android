@@ -1,5 +1,6 @@
 package com.msg.lecture.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ fun LectureList(
                 .fillMaxHeight()
         ) {
             if (data != null) {
+                Log.e("data", data.toString())
                 items(data.size) {
                     Column {
                         Spacer(

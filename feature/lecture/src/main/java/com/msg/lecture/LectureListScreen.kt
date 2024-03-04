@@ -66,7 +66,7 @@ fun LectureListRoute(
         )
     }
     LectureListScreen(
-        data = viewModel.lectureList.toList(),
+        data = viewModel.lectureList,
         onOpenClicked = onOpenClicked,
         onItemClicked = {
             onItemClicked()
@@ -85,7 +85,7 @@ suspend fun getLectureList(
     viewModel.getLectureListResponse.collect { response ->
         when (response) {
             is Event.Success -> {
-                onSuccess(response.data!!.toList())
+                onSuccess(response.data!!)
             }
 
             else -> {}
@@ -164,6 +164,7 @@ fun LectureListScreen(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 if (data != null) {
+                    Log.e("data", data.toString())
                     LectureList(
                         data = data,
                         onClick = onItemClicked,
