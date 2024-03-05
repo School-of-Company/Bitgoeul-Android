@@ -5,9 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.msg.lecture.LectureListRoute
-import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.LectureType
-import java.util.UUID
 
 const val lectureListRoute = "lecture_list_route"
 
@@ -26,7 +25,7 @@ fun NavGraphBuilder.lectureListScreen(
             onOpenClicked = onOpenClicked,
             onItemClicked = onItemClicked,
             onBackClicked = onBackClicked,
-            type = type
+            type = type,
         )
     }
 }

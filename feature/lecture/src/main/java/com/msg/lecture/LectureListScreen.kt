@@ -58,6 +58,7 @@ fun LectureListRoute(
         type = type
     )
     LaunchedEffect(true) {
+        Log.e("getLectureList LaunchedEffect 실행", "실행")
         getLectureList(
             viewModel = viewModel,
             onSuccess = {
@@ -83,6 +84,7 @@ suspend fun getLectureList(
     onSuccess: (data: List<LectureListResponse>) -> Unit,
 ) {
     viewModel.getLectureListResponse.collect { response ->
+        Log.e("response", response.toString())
         when (response) {
             is Event.Success -> {
                 onSuccess(response.data!!)
@@ -164,7 +166,6 @@ fun LectureListScreen(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 if (data != null) {
-                    Log.e("data", data.toString())
                     LectureList(
                         data = data,
                         onClick = onItemClicked,

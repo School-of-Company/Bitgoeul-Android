@@ -83,7 +83,7 @@ fun LectureFilterBottomSheet(
     isVisible: Boolean,
 ) {
     // arrayList<Boolean> 고려
-    val isChecked = remember { mutableStateListOf(false, false, false, false) }
+    val isChecked = remember { mutableStateListOf(false, false) }
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
