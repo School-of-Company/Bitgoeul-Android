@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -35,7 +35,7 @@ fun LectureList(
         ) {
             if (data != null) {
                 Log.e("data", data.toString())
-                items(data.size) {
+                items(data) { item ->
                     Column {
                         Spacer(
                             modifier = Modifier
@@ -48,15 +48,15 @@ fun LectureList(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     LectureCard(
-                        data = data[it],
+                        data = item,
                         onClick = onClick,
                         role = role,
                         type = type
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
-
                 }
+
             }
         }
     }

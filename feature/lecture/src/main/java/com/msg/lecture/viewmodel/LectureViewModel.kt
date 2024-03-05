@@ -43,10 +43,12 @@ class LectureViewModel @Inject constructor(
         return Authority.authorityOf(authTokenDataSource.getAuthority())
     }
 
-    private val _getLectureListResponse = MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
+    private val _getLectureListResponse =
+        MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse =
+        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -110,64 +112,23 @@ class LectureViewModel @Inject constructor(
         private set
 
     fun getLectureList(
-        role: Authority,
         page: Int,
         size: Int,
         type: LectureType,
     ) = viewModelScope.launch {
-        when (role) {
-            Authority.ROLE_USER -> {
-                if (type != null) {
-                    getLectureListUseCase(
-                        page = page,
-                        size = size,
-                        type = type
-                    ).onSuccess {
-                        it.catch { remoteError ->
-                            _getLectureListResponse.value = remoteError.errorHandling()
-                        }.collect { response ->
-                            _getLectureListResponse.value = Event.Success(data = response)
-                        }
-                    }.onFailure { error ->
-                        _getLectureListResponse.value = error.errorHandling()
-                    }
+        if (type != null) {
+            getLectureListUseCase(
+                page = page,
+                size = size,
+                type = type
+            ).onSuccess {
+                it.catch { remoteError ->
+                    _getLectureListResponse.value = remoteError.errorHandling()
+                }.collect { response ->
+                    _getLectureListResponse.value = Event.Success(data = response)
                 }
-            }
-
-            Authority.ROLE_ADMIN -> {
-                if (type != null) {
-                    getLectureListUseCase(
-                        page = page,
-                        size = size,
-                        type = type
-                    ).onSuccess {
-                        it.catch { remoteError ->
-                            _getLectureListResponse.value = remoteError.errorHandling()
-                        }.collect { response ->
-                            _getLectureListResponse.value = Event.Success(data = response)
-                        }
-                    }.onFailure { error ->
-                        _getLectureListResponse.value = error.errorHandling()
-                    }
-                }
-            }
-
-            else -> {
-                if (type != null) {
-                    getLectureListUseCase(
-                        page = page,
-                        size = size,
-                        type = type
-                    ).onSuccess {
-                        it.catch { remoteError ->
-                            _getLectureListResponse.value = remoteError.errorHandling()
-                        }.collect { response ->
-                            _getLectureListResponse.value = Event.Success(data = response)
-                        }
-                    }.onFailure { error ->
-                        _getLectureListResponse.value = error.errorHandling()
-                    }
-                }
+            }.onFailure { error ->
+                _getLectureListResponse.value = error.errorHandling()
             }
         }
     }

@@ -46,18 +46,13 @@ fun LectureListRoute(
     type: LectureType,
 ) {
     var role = remember { mutableStateOf(Authority.ROLE_USER) }
-    LaunchedEffect(true) {
-        role.value = viewModel.getRole()
-    }
 
-    Log.e("authority", role.value.toString())
-    viewModel.getLectureList(
-        role = role.value,
-        page = 0,
-        size = 10,
-        type = type
-    )
     LaunchedEffect(true) {
+        viewModel.getLectureList(
+            page = 0,
+            size = 10,
+            type = type
+        )
         Log.e("getLectureList LaunchedEffect 실행", "실행")
         getLectureList(
             viewModel = viewModel,
@@ -84,7 +79,6 @@ suspend fun getLectureList(
     onSuccess: (data: List<LectureListResponse>) -> Unit,
 ) {
     viewModel.getLectureListResponse.collect { response ->
-        Log.e("response", response.toString())
         when (response) {
             is Event.Success -> {
                 onSuccess(response.data!!)
@@ -92,6 +86,7 @@ suspend fun getLectureList(
 
             else -> {}
         }
+        Log.e("response", response.toString())
     }
 }
 
