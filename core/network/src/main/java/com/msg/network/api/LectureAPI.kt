@@ -1,6 +1,5 @@
 package com.msg.network.api
 
-import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -25,7 +24,7 @@ interface LectureAPI {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("type") type: LectureType
-    ): List<LectureListResponse>
+    ): LectureListResponse
 
     @GET("lecture/{id}")
     suspend fun getDetailLecture(

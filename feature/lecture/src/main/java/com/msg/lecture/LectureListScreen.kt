@@ -48,6 +48,7 @@ fun LectureListRoute(
     var role = remember { mutableStateOf(Authority.ROLE_USER) }
 
     LaunchedEffect(true) {
+        role.value = viewModel.getRole()
         viewModel.getLectureList(
             page = 0,
             size = 10,
@@ -57,12 +58,12 @@ fun LectureListRoute(
         getLectureList(
             viewModel = viewModel,
             onSuccess = {
-                viewModel.lectureList.addAll(it)
+                viewModel.lectureList.value
             }
         )
     }
     LectureListScreen(
-        data = viewModel.lectureList,
+        data = viewModel.lectureList.value,
         onOpenClicked = onOpenClicked,
         onItemClicked = {
             onItemClicked()
@@ -76,7 +77,7 @@ fun LectureListRoute(
 
 suspend fun getLectureList(
     viewModel: LectureViewModel,
-    onSuccess: (data: List<LectureListResponse>) -> Unit,
+    onSuccess: (data: LectureListResponse) -> Unit,
 ) {
     viewModel.getLectureListResponse.collect { response ->
         when (response) {
@@ -86,13 +87,12 @@ suspend fun getLectureList(
 
             else -> {}
         }
-        Log.e("response", response.toString())
     }
 }
 
 @Composable
 fun LectureListScreen(
-    data: List<LectureListResponse>? = null,
+    data: LectureListResponse? = null,
     onOpenClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit,
@@ -162,7 +162,7 @@ fun LectureListScreen(
 
                 if (data != null) {
                     LectureList(
-                        data = data,
+                        data = data.content,
                         onClick = onItemClicked,
                         role = role,
                         type = type

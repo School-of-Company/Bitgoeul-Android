@@ -1,6 +1,5 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -23,7 +22,7 @@ class LectureRepositoryImpl @Inject constructor(
         page: Int,
         size: Int,
         type: LectureType,
-    ): Flow<List<LectureListResponse>> {
+    ): Flow<LectureListResponse> {
         return lectureDataSource.getLectureList(
             page = page,
             size = size,

@@ -6,15 +6,19 @@ import kotlinx.datetime.LocalDateTime
 import java.util.UUID
 
 data class LectureListResponse(
-    val id: UUID,
-    val name: String,
-    val content: String,
-    val startDate: LocalDateTime,
-    val endDate: LocalDateTime,
-    val completeDate: LocalDateTime,
-    val lectureType: LectureType,
-    val lectureStatus: LectureStatus,
-    val headCount: Int,
-    val maxRegisteredUser: Int,
-    val lecturer: String,
-)
+   val content: List<ContentArray>
+) {
+    data class ContentArray(
+        val id: UUID,
+        val name: String,
+        val content: String,
+        val startDate: LocalDateTime,
+        val endDate: LocalDateTime,
+        val completeDate: LocalDateTime,
+        val lectureType: LectureType,
+        val lectureStatus: LectureStatus,
+        val headCount: Int,
+        val maxRegisteredUser: Int,
+        val lecturer: String,
+    )
+}

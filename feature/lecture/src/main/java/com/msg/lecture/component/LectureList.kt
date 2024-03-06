@@ -21,7 +21,7 @@ import java.util.UUID
 
 @Composable
 fun LectureList(
-    data: List<LectureListResponse>?,
+    data: List<LectureListResponse.ContentArray>?,
     onClick: (UUID) -> Unit,
     role: Authority,
     type: LectureType

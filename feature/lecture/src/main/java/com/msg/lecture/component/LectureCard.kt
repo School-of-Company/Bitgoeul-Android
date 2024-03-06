@@ -26,7 +26,6 @@ import com.msg.design_system.R
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -34,7 +33,7 @@ import java.util.UUID
 
 @Composable
 fun LectureCard(
-    data: LectureListResponse,
+    data: LectureListResponse.ContentArray,
     onClick: (UUID) -> Unit,
     role: Authority = Authority.ROLE_USER,
     type: LectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,

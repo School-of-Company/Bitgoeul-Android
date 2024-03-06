@@ -2,7 +2,6 @@ package com.msg.lecture.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +25,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -39,12 +41,14 @@ class LectureViewModel @Inject constructor(
     private val rejectPendingLectureUseCase: RejectPendingLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
+    private val current = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+
     suspend fun getRole(): Authority {
         return Authority.authorityOf(authTokenDataSource.getAuthority())
     }
 
     private val _getLectureListResponse =
-        MutableStateFlow<Event<List<LectureListResponse>>>(Event.Loading)
+        MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
     private val _getDetailLectureResponse =
@@ -60,16 +64,34 @@ class LectureViewModel @Inject constructor(
     private val _rejectPendingLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val rejectPendingLectureResponse = _rejectPendingLectureResponse.asStateFlow()
 
-    var lectureList = mutableStateListOf<LectureListResponse>()
+    var lectureList = mutableStateOf(
+        LectureListResponse(
+            content = listOf(LectureListResponse.ContentArray(
+                id = UUID.randomUUID(),
+                name = "",
+                content = "",
+                startDate = current,
+                endDate = current,
+                completeDate = current,
+                lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+                lectureStatus = LectureStatus.OPEN,
+                headCount = 0,
+                maxRegisteredUser = 0,
+                lecturer = ""
+            )
+        )
+    )
+    )
+
         private set
 
     var lectureDetailData = mutableStateOf(
         DetailLectureResponse(
             id = UUID.randomUUID(),
             name = "",
-            startDate = LocalDateTime.now(),
-            endDate = LocalDateTime.now(),
-            completeDate = LocalDateTime.now(),
+            startDate = current,
+            endDate = current,
+            completeDate = current,
             lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
             lectureStatus = LectureStatus.OPEN,
             headCount = 0,
@@ -116,20 +138,19 @@ class LectureViewModel @Inject constructor(
         size: Int,
         type: LectureType,
     ) = viewModelScope.launch {
-        if (type != null) {
-            getLectureListUseCase(
-                page = page,
-                size = size,
-                type = type
-            ).onSuccess {
-                it.catch { remoteError ->
-                    _getLectureListResponse.value = remoteError.errorHandling()
-                }.collect { response ->
-                    _getLectureListResponse.value = Event.Success(data = response)
-                }
-            }.onFailure { error ->
-                _getLectureListResponse.value = error.errorHandling()
+        getLectureListUseCase(
+            page = page,
+            size = size,
+            type = type
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getLectureListResponse.value = remoteError.errorHandling()
+                Log.e("remoteError", remoteError.toString())
+            }.collect { response ->
+                _getLectureListResponse.value = Event.Success(data = response)
             }
+        }.onFailure { error ->
+            _getLectureListResponse.value = error.errorHandling()
         }
     }
 
