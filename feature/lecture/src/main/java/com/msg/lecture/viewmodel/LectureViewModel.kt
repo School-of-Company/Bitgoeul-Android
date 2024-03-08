@@ -18,8 +18,10 @@ import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
+import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.Lectures
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,6 +31,8 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.UUID
 import javax.inject.Inject
 
@@ -47,12 +51,10 @@ class LectureViewModel @Inject constructor(
         return Authority.authorityOf(authTokenDataSource.getAuthority())
     }
 
-    private val _getLectureListResponse =
-        MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
+    private val _getLectureListResponse = MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse =
-        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -66,23 +68,25 @@ class LectureViewModel @Inject constructor(
 
     var lectureList = mutableStateOf(
         LectureListResponse(
-            content = listOf(LectureListResponse.ContentArray(
-                id = UUID.randomUUID(),
-                name = "",
-                content = "",
-                startDate = current,
-                endDate = current,
-                completeDate = current,
-                lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
-                lectureStatus = LectureStatus.OPEN,
-                headCount = 0,
-                maxRegisteredUser = 0,
-                lecturer = ""
+            lectures = Lectures(
+                content = listOf(
+                    ContentArray(
+                        id = UUID.randomUUID(),
+                        name = "",
+                        content = "",
+                        startDate = current.toString(),
+                        endDate = current.toString(),
+                        completeDate = current.toString(),
+                        lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+                        lectureStatus = LectureStatus.OPEN,
+                        headCount = 0,
+                        maxRegisteredUser = 0,
+                        lecturer = ""
+                    )
+                )
             )
         )
     )
-    )
-
         private set
 
     var lectureDetailData = mutableStateOf(
@@ -148,6 +152,7 @@ class LectureViewModel @Inject constructor(
                 Log.e("remoteError", remoteError.toString())
             }.collect { response ->
                 _getLectureListResponse.value = Event.Success(data = response)
+                Log.e("viewModel 단 response", response.toString())
             }
         }.onFailure { error ->
             _getLectureListResponse.value = error.errorHandling()

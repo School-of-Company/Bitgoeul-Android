@@ -16,12 +16,14 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.Lectures
 import java.util.UUID
 
 @Composable
 fun LectureList(
-    data: List<LectureListResponse.ContentArray>?,
+    data: List<ContentArray>?,
     onClick: (UUID) -> Unit,
     role: Authority,
     type: LectureType

@@ -30,27 +30,27 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-        override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> {
-            return lectureDataSource.getDetailLecture(
-                id = id
-            )
-        }
-
-        override suspend fun lectureApplication(id: UUID): Flow<Unit> {
-            return lectureDataSource.lectureApplication(
-                id = id
-            )
-        }
-
-        override suspend fun approvePendingLecture(id: UUID): Flow<Unit> {
-            return lectureDataSource.approvePendingLecture(
-                id = id
-            )
-        }
-
-        override suspend fun rejectPendingLecture(id: UUID): Flow<Unit> {
-            return lectureDataSource.rejectPendingLecture(
-                id = id
-            )
-        }
+    override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> {
+        return lectureDataSource.getDetailLecture(
+            id = id
+        )
     }
+
+    override suspend fun lectureApplication(id: UUID): Flow<Unit> {
+        return lectureDataSource.lectureApplication(
+            id = id
+        )
+    }
+
+    override suspend fun approvePendingLecture(id: UUID): Flow<Unit> {
+        return lectureDataSource.approvePendingLecture(
+            id = id
+        )
+    }
+
+    override suspend fun rejectPendingLecture(id: UUID): Flow<Unit> {
+        return lectureDataSource.rejectPendingLecture(
+            id = id
+        )
+    }
+}

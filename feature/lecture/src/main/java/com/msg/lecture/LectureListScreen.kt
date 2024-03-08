@@ -57,8 +57,8 @@ fun LectureListRoute(
         Log.e("getLectureList LaunchedEffect 실행", "실행")
         getLectureList(
             viewModel = viewModel,
-            onSuccess = {
-                viewModel.lectureList.value
+            onSuccess = { response ->
+                viewModel.lectureList.value = response
             }
         )
     }
@@ -89,6 +89,7 @@ suspend fun getLectureList(
         }
     }
 }
+
 
 @Composable
 fun LectureListScreen(
@@ -162,7 +163,7 @@ fun LectureListScreen(
 
                 if (data != null) {
                     LectureList(
-                        data = data.content,
+                        data = data.lectures.content,
                         onClick = onItemClicked,
                         role = role,
                         type = type
