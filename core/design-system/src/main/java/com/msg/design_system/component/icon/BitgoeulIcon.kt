@@ -226,3 +226,19 @@ fun PlusWhiteIcon() {
         contentDescription = "White Plus Icon"
     )
 }
+
+@Composable
+fun MegaphoneIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_megaphone),
+        contentDescription = "White Megaphone icon"
+    )
+}
+
+@Composable
+fun HelpIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_help),
+        contentDescription = "White question mark icon"
+    )
+}

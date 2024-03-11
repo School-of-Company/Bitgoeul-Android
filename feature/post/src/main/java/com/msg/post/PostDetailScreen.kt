@@ -172,6 +172,7 @@ fun PostDetailScreenPre() {
                 "https://youtu.be/eMa_cXrnVgw?si=uwKQyhA8vKHeTWu6"
             )
         ),
+        role = Authority.ROLE_ADMIN,
         onDeleteClicked = {},
         onEditClicked = {},
         id = UUID.randomUUID()

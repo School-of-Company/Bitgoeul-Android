@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.msg.design_system.component.icon.HelpIcon
+import com.msg.design_system.component.icon.MegaphoneIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
@@ -52,11 +54,19 @@ fun PostScreen(
             ) {
                 Text(
                     modifier = modifier.padding(start = 28.dp),
-                    text = "게시판 목록",
+                    text = "게시글 목록",
                     style = typography.titleMedium,
                     color = colors.BLACK
                 )
                 Spacer(Modifier.weight(1f))
+                IconButton(
+                    onClick = {},
+                    content = { MegaphoneIcon() }
+                )
+                IconButton(
+                    onClick = {},
+                    content = { HelpIcon() }
+                )
                 if (roleField.contains(role)) {
                     IconButton(
                         modifier = modifier.padding(end = 28.dp),
@@ -69,10 +79,10 @@ fun PostScreen(
             PostList(
                 modifier = modifier,
                 data = data,
-                onItemClicked = onItemClicked
-            ) {
-                
-            }
+                onItemClicked = onItemClicked,
+                onKebabClicked = {},
+                isAdmin = roleField.contains(role)
+            )
         }
     }
 }
@@ -81,7 +91,7 @@ fun PostScreen(
 @Composable
 fun PostScreenPre() {
     PostScreen(
-        role = Authority.ROLE_ADMIN,
+        role = Authority.ROLE_STUDENT,
         onAddClicked = {},
         onItemClicked = {},
         data = GetPostListResponse(

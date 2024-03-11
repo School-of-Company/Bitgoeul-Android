@@ -19,7 +19,8 @@ fun PostList(
     modifier: Modifier,
     data: GetPostListResponse,
     onItemClicked: (UUID) -> Unit,
-    onKebabClicked: () -> Unit
+    onKebabClicked: () -> Unit,
+    isAdmin: Boolean
 ) {
     LazyColumn(
         modifier = modifier
@@ -32,7 +33,8 @@ fun PostList(
                 modifier = modifier,
                 onItemClicked = onItemClicked,
                 onKebabClicked = onKebabClicked,
-                data = data.posts[it]
+                data = data.posts[it],
+                isAdmin = isAdmin
             )
             Spacer(modifier = modifier.height(12.dp))
             HorizontalDivider(
