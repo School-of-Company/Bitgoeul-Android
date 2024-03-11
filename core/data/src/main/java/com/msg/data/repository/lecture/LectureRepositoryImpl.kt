@@ -42,15 +42,6 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun approvePendingLecture(id: UUID): Flow<Unit> {
-        return lectureDataSource.approvePendingLecture(
-            id = id
-        )
-    }
-
-    override suspend fun rejectPendingLecture(id: UUID): Flow<Unit> {
-        return lectureDataSource.rejectPendingLecture(
-            id = id
-        )
-    }
 }
+
+

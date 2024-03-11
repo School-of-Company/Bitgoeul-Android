@@ -12,6 +12,4 @@ interface LectureRepository {
     suspend fun getLectureList(page: Int, size: Int, type: LectureType): Flow<LectureListResponse>
     suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
     suspend fun lectureApplication(id: UUID): Flow<Unit>
-    suspend fun approvePendingLecture(id: UUID): Flow<Unit>
-    suspend fun rejectPendingLecture(id: UUID): Flow<Unit>
 }
