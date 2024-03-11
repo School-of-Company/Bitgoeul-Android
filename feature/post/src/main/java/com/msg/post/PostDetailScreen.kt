@@ -61,7 +61,6 @@ fun PostDetailScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .background(color = colors.WHITE)
-                    .verticalScroll(scrollState)
             ) {
                 Spacer(modifier = modifier.height(20.dp))
                 GoBackTopBar(
@@ -73,6 +72,7 @@ fun PostDetailScreen(
                 Column(
                     modifier = modifier
                         .padding(horizontal = 28.dp)
+                        .verticalScroll(scrollState)
                 ) {
                     Spacer(modifier = modifier.height(24.dp))
                     Text(

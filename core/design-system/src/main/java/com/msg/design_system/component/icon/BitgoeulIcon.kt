@@ -218,3 +218,11 @@ fun KebabIcon() {
         contentDescription = "Kebab Icon"
     )
 }
+
+@Composable
+fun PlusWhiteIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_plus_white),
+        contentDescription = "White Plus Icon"
+    )
+}
