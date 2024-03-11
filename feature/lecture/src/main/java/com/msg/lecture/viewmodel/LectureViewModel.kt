@@ -6,11 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
-import com.msg.domain.lecture.ApprovePendingLectureUseCase
 import com.msg.domain.lecture.GetDetailLectureUseCase
 import com.msg.domain.lecture.GetLectureListUseCase
 import com.msg.domain.lecture.OpenLectureUseCase
-import com.msg.domain.lecture.RejectPendingLectureUseCase
 import com.msg.lecture.util.Event
 import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
@@ -31,8 +29,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import java.util.UUID
 import javax.inject.Inject
 
@@ -41,8 +37,6 @@ class LectureViewModel @Inject constructor(
     private val getLectureListUseCase: GetLectureListUseCase,
     private val getDetailLectureUseCase: GetDetailLectureUseCase,
     private val openLectureUseCase: OpenLectureUseCase,
-    private val approvePendingLectureUseCase: ApprovePendingLectureUseCase,
-    private val rejectPendingLectureUseCase: RejectPendingLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
     private val current = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
