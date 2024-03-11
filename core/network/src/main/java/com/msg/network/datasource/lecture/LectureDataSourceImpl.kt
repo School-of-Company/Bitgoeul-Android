@@ -57,20 +57,4 @@ class LectureDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
-
-    override suspend fun approvePendingLecture(id: UUID): Flow<Unit> = flow {
-        emit(
-            BitgoeulApiHandler<Unit>()
-                .httpRequest { lectureAPI.approvePendingLecture(id = id) }
-                .sendRequest()
-        )
-    }.flowOn(Dispatchers.IO)
-
-    override suspend fun rejectPendingLecture(id: UUID): Flow<Unit> = flow {
-        emit(
-            BitgoeulApiHandler<Unit>()
-                .httpRequest { lectureAPI.rejectPendingLecture(id = id) }
-                .sendRequest()
-        )
-    }.flowOn(Dispatchers.IO)
 }
