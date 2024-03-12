@@ -95,6 +95,14 @@ class PostViewModel @Inject constructor(
                 links = links,
                 feedType = feedType
             )
-        )
+        ).onSuccess {
+            it.catch { remoteError ->
+                _editPostResponse.value = remoteError.errorHandling()
+            }.collect {
+                _editPostResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _editPostResponse.value = error.errorHandling()
+        }
     }
 }
