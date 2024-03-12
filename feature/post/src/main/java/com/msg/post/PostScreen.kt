@@ -81,7 +81,6 @@ fun PostScreen(
                 data = data,
                 onItemClicked = onItemClicked,
                 onKebabClicked = {},
-                isAdmin = roleField.contains(role)
             )
         }
     }
