@@ -1,4 +1,4 @@
-package com.msg.lecture
+ package com.msg.lecture
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

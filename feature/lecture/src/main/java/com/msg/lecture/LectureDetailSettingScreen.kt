@@ -104,57 +104,6 @@ fun LectureDetailSettingScreenContent() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                SelectedIndicator(
-                    isSelected = selected[0] == "1",
-                    onClick = {
-                        if (selected[0] == "0") {
-                            selected[0] = "1"
-                            lectureCategory.value = "mutual_credit_recognition_curriculum"
-                        } else {
-                            lectureCategory.value = ""
-                            selected[0] = "0"
-                        }
-                    },
-                    modifier = Modifier.padding(end = 8.dp)
-                )
-
-                Text(
-                    text = stringResource(id = R.string.mutual_credit_recognition_curriculum),
-                    color = colors.BLACK,
-                    style = type.bodySmall
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                SelectedIndicator(
-                    isSelected = selected[1] == "1",
-                    onClick = {
-                        if (selected[1] == "0") {
-                            selected[1] = "1"
-                            lectureCategory.value = "university_visit_program"
-                        } else {
-                            selected[1] = "0"
-                            lectureCategory.value = ""
-                        }
-                    },
-                    modifier = Modifier.padding(end = 8.dp)
-                )
-
-                Text(
-                    text = stringResource(id = R.string.university_visit_program),
-                    color = colors.BLACK,
-                    style = type.bodySmall
-                )
-            }
-
-
             Spacer(modifier = Modifier.height(28.dp))
 
             Text(
@@ -171,6 +120,8 @@ fun LectureDetailSettingScreenContent() {
                     modifier = Modifier.weight(1f),
                     text = stringResource(id = R.string.application_start_date)
                 )
+
+                Spacer(modifier = Modifier.width(8.dp))
 
 
                 Picker(
