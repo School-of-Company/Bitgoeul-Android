@@ -65,4 +65,18 @@ class PostViewModel @Inject constructor(
         )
     )
         private set
+
+    fun deletePost(
+        id: UUID
+    ) = viewModelScope.launch {
+        deletePostUseCase(id = id).onSuccess {
+            it.catch { remoteError ->
+                _deletePostResponse.value = remoteError.errorHandling()
+            }.collect {
+                _deletePostResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _deletePostResponse.value = error.errorHandling()
+        }
+    }
 }
