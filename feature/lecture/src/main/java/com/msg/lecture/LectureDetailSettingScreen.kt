@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import com.msg.design_system.R
@@ -289,16 +290,26 @@ fun LectureDetailSettingScreen(
                 }
             }
 
-
-            BitgoeulButton(
-                text = stringResource(id = R.string.apply),
-                modifier = modifier
-                    .padding(bottom = 38.dp, top = 16.dp)
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .padding(horizontal = 24.dp),
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom
             ) {
+                Box(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = colors.WHITE)
+                ) {
+                    BitgoeulButton(
+                        text = stringResource(id = R.string.apply),
+                        modifier = modifier
+                            .padding(bottom = 14.dp, top = 16.dp)
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .height(52.dp)
+                            .padding(horizontal = 24.dp),
+                    ) {
+                    }
+                }
             }
         }
     }
