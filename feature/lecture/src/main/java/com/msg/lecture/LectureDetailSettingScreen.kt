@@ -34,7 +34,7 @@ import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.PickerArrowIcon
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.lecture.component.LectureTypeTag
+import com.msg.lecture.component.LectureSettingTag
 
 @Composable
 fun LectureDetailSettingScreen() {
@@ -84,14 +84,14 @@ fun LectureDetailSettingScreen() {
                     )
 
                     Column {
-                        LectureTypeTag(
+                        LectureSettingTag(
                             modifier = Modifier,
                             lectureType = stringResource(id = R.string.mutual_credit_recognition_curriculum)
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        LectureTypeTag(
+                        LectureSettingTag(
                             modifier = Modifier,
                             lectureType = stringResource(id = R.string.university_visit_program)
                         )

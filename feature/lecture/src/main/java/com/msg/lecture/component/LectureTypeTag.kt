@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun LectureTypeTag(
+fun LectureSettingTag(
     modifier: Modifier,
     lectureType: String,
 ) {
@@ -70,7 +70,7 @@ fun LectureTypeTagPre() {
             .size(200.dp)
     ) {
 
-        LectureTypeTag(
+        LectureSettingTag(
             modifier = Modifier,
             lectureType = "상호학점인정교육과정"
         )
