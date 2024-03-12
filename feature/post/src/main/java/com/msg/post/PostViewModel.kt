@@ -1,5 +1,6 @@
 package com.msg.post
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -127,6 +128,24 @@ class PostViewModel @Inject constructor(
             }
         }.onFailure { error ->
             _sendPostResponse.value = error.errorHandling()
+        }
+    }
+
+    fun getPostList(
+        type: FeedType
+    ) = viewModelScope.launch {
+        getPostListUseCase(
+            page = 1,
+            size = 10,
+            type = type
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getPostListResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getPostListResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getPostListResponse.value = error.errorHandling()
         }
     }
 }
