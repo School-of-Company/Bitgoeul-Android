@@ -38,6 +38,7 @@
     <string name="application_approve">신청 승인</string>
     <string name="activity_detail_setting">활동 세부 설정</string>
     <string name="lecture_line">강의 계열</string>
+    <string name="electrical_electronic">전기•전자</string>
     <string name="machine">기계</string>
     <string name="car">자동차</string>
     <string name="biochemical_engineering">생명화학공학</string>

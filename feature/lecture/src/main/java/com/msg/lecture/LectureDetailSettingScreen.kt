@@ -35,7 +35,7 @@ import com.msg.lecture.component.LectureSettingTag
 
 @Composable
 fun LectureDetailSettingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val lectureCategory = remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
@@ -102,8 +102,59 @@ fun LectureDetailSettingScreen(
                     )
 
                     Row {
-                        LectureSettingTag(modifier = modifier, lectureType = stringResource(id = R.string))
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.electrical_electronic)
+                        )
+
+                        Spacer(modifier = modifier.width(16.dp))
+
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.machine)
+                        )
+
+                        Spacer(modifier = modifier.width(16.dp))
+
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.car)
+                        )
                     }
+
+                    Spacer(modifier = modifier.height(16.dp))
+
+                    Row {
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.biochemical_engineering)
+                        )
+
+                        Spacer(modifier = modifier.width(16.dp))
+
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.beauty)
+                        )
+                    }
+
+                    Spacer(modifier = modifier.height(16.dp))
+
+                    Row {
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.medical_health)
+                        )
+
+                        Spacer(modifier = modifier.width(16.dp))
+
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.drone)
+                        )
+                    }
+
+                    Spacer(modifier = modifier.height(28.dp))
 
                     Text(
                         text = stringResource(id = R.string.application_start_date),
