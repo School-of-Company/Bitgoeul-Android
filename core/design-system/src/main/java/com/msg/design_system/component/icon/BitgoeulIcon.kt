@@ -210,3 +210,35 @@ fun OfficeOfEducationIcon(
         contentDescription = "Gwangju Metropolitan office of education logo"
     )
 }
+
+@Composable
+fun KebabIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_kebab),
+        contentDescription = "Kebab Icon"
+    )
+}
+
+@Composable
+fun PlusWhiteIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_plus_white),
+        contentDescription = "White Plus Icon"
+    )
+}
+
+@Composable
+fun MegaphoneIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_megaphone),
+        contentDescription = "White Megaphone icon"
+    )
+}
+
+@Composable
+fun HelpIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_help),
+        contentDescription = "White question mark icon"
+    )
+}

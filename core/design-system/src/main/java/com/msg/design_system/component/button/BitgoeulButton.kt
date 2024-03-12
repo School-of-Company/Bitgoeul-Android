@@ -127,7 +127,7 @@ fun DetailSettingButton(
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
-                text = stringResource(id = if (type == "강의") R.string.lecture_detail_setting else R.string.activity_detail_setting),
+                text = "${type} 세부 설정",
                 color = colors.P5,
                 style = typography.bodyLarge
             )
