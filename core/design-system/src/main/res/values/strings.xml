@@ -37,4 +37,12 @@
     <string name="application_reject">신청 거부</string>
     <string name="application_approve">신청 승인</string>
     <string name="activity_detail_setting">활동 세부 설정</string>
+    <string name="lecture_line">강의 계열</string>
+    <string name="machine">기계</string>
+    <string name="car">자동차</string>
+    <string name="biochemical_engineering">생명화학공학</string>
+    <string name="beauty">뷰티</string>
+    <string name="medical_health">의료•헬스</string>
+    <string name="drone">드론</string>
+
 </resources>
