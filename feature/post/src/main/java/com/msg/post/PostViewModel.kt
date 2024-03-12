@@ -79,4 +79,22 @@ class PostViewModel @Inject constructor(
             _deletePostResponse.value = error.errorHandling()
         }
     }
+
+    fun editPost(
+        id: UUID,
+        title: String,
+        content: String,
+        links: List<String>,
+        feedType: FeedType
+    ) = viewModelScope.launch {
+        editPostUseCase(
+            id = id,
+            body = WritePostRequest(
+                title = title,
+                content = content,
+                links = links,
+                feedType = feedType
+            )
+        )
+    }
 }
