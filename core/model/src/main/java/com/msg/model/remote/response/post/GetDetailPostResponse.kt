@@ -1,7 +1,7 @@
 package com.msg.model.remote.response.post
 
 import com.msg.model.remote.enumdatatype.FeedType
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 
 data class GetDetailPostResponse(
     val title: String,
