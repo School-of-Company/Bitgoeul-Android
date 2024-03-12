@@ -148,4 +148,20 @@ class PostViewModel @Inject constructor(
             _getPostListResponse.value = error.errorHandling()
         }
     }
+
+    fun getDetailPost(
+        id: UUID
+    ) = viewModelScope.launch {
+        getDetailPostUseCase(
+            id = id
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getDetailPostResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getDetailPostResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getDetailPostResponse.value = error.errorHandling()
+        }
+    }
 }
