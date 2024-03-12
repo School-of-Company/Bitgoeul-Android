@@ -105,4 +105,28 @@ class PostViewModel @Inject constructor(
             _editPostResponse.value = error.errorHandling()
         }
     }
+
+    fun sendPost(
+        title: String,
+        content: String,
+        links: List<String>,
+        feedType: FeedType
+    ) = viewModelScope.launch {
+        sendPostUseCase(
+            body = WritePostRequest(
+                title = title,
+                content = content,
+                links = links,
+                feedType = feedType
+            )
+        ).onSuccess {
+            it.catch { remoteError ->
+                _sendPostResponse.value = remoteError.errorHandling()
+            }.collect {
+                _sendPostResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _sendPostResponse.value = error.errorHandling()
+        }
+    }
 }
