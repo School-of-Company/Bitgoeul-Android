@@ -34,9 +34,14 @@ import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.PickerArrowIcon
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.component.LectureTypeTag
 
 @Composable
 fun LectureDetailSettingScreen() {
+    val selected = remember { mutableStateListOf("0", "0") }
+    val lectureCategory = remember { mutableStateOf("") }
+    val scrollState = rememberScrollState()
+
     BitgoeulAndroidTheme { colors, type ->
         Box(
             modifier = Modifier
@@ -66,8 +71,165 @@ fun LectureDetailSettingScreen() {
                 }
                 Spacer(modifier = Modifier.height(28.dp))
 
-                LectureDetailSettingScreenContent()
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(scrollState)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.lecture_category),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
 
+                    Column {
+                        LectureTypeTag(
+                            modifier = Modifier,
+                            lectureType = stringResource(id = R.string.mutual_credit_recognition_curriculum)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        LectureTypeTag(
+                            modifier = Modifier,
+                            lectureType = stringResource(id = R.string.university_visit_program)
+                        )
+                        Spacer(modifier = Modifier.height(28.dp))
+
+                    }
+
+                    Text(
+                        text = stringResource(id = R.string.application_start_date),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Picker(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.application_start_date)
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+
+                        Picker(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.start_time)
+                        )
+
+                    }
+
+                    Spacer(modifier = Modifier.height(28.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.application_deadline_date),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Picker(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.application_deadline_date)
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Picker(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.deadeline_time)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(28.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.start_semester_date),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Picker(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.start_semester_date)
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Picker(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = R.string.start_semester_time)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(28.dp))
+
+
+                    if (lectureCategory.value == "mutual_credit_recognition_curriculum") {
+                        Column {
+                            Text(
+                                text = stringResource(id = R.string.credits_awarded),
+                                color = colors.BLACK,
+                                style = type.bodyLarge,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Picker(
+                                    modifier = Modifier.weight(1f),
+                                    text = stringResource(id = R.string.select_credits_awarded)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                            }
+                            Spacer(modifier = Modifier.height(28.dp))
+
+                        }
+                    }
+
+                    Text(
+                        text = stringResource(id = R.string.maximum_number_students),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        DefaultTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            placeholder = stringResource(id = R.string.enter_maximum_number_students),
+                            errorText = "Incorrect", // 에러 텍스트는 임의의 값임
+                            onValueChange = {},
+                            onClickButton = {},
+                            isNumberOnly = true,
+                            isError = false,
+                            isLinked = false,
+                            isDisabled = false,
+                            isReadOnly = false,
+                            isReverseTrailingIcon = false,
+                            onClick = {}
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(165.dp))
+                }
             }
 
 
@@ -81,161 +243,6 @@ fun LectureDetailSettingScreen() {
                     .padding(horizontal = 24.dp),
             ) {
             }
-        }
-    }
-}
-
-@Composable
-fun LectureDetailSettingScreenContent() {
-    val selected = remember { mutableStateListOf("0", "0") }
-    val lectureCategory = remember { mutableStateOf("") }
-    val scrollState = rememberScrollState()
-
-    BitgoeulAndroidTheme { colors, type ->
-        Column(
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = stringResource(id = R.string.lecture_category),
-                color = colors.BLACK,
-                style = type.bodyLarge,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Spacer(modifier = Modifier.height(28.dp))
-
-            Text(
-                text = stringResource(id = R.string.application_start_date),
-                color = colors.BLACK,
-                style = type.bodyLarge,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Picker(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.application_start_date)
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-
-                Picker(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.start_time)
-                )
-
-            }
-
-            Spacer(modifier = Modifier.height(28.dp))
-
-            Text(
-                text = stringResource(id = R.string.application_deadline_date),
-                color = colors.BLACK,
-                style = type.bodyLarge,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Picker(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.application_deadline_date)
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Picker(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.deadeline_time)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(28.dp))
-
-            Text(
-                text = stringResource(id = R.string.start_semester_date),
-                color = colors.BLACK,
-                style = type.bodyLarge,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Picker(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.start_semester_date)
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Picker(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.start_semester_time)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(28.dp))
-
-
-            if (lectureCategory.value == "mutual_credit_recognition_curriculum") {
-                Column {
-                    Text(
-                        text = stringResource(id = R.string.credits_awarded),
-                        color = colors.BLACK,
-                        style = type.bodyLarge,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Picker(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(id = R.string.select_credits_awarded)
-                        )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                    }
-                    Spacer(modifier = Modifier.height(28.dp))
-
-                }
-            }
-
-            Text(
-                text = stringResource(id = R.string.maximum_number_students),
-                color = colors.BLACK,
-                style = type.bodyLarge,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                DefaultTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    placeholder = stringResource(id = R.string.enter_maximum_number_students),
-                    errorText = "Incorrect", // 에러 텍스트는 임의의 값임
-                    onValueChange = {},
-                    onClickButton = {},
-                    isNumberOnly = true,
-                    isError = false,
-                    isLinked = false,
-                    isDisabled = false,
-                    isReadOnly = false,
-                    isReverseTrailingIcon = false,
-                    onClick = {}
-                )
-            }
-
-            Spacer(modifier = Modifier.height(165.dp))
         }
     }
 }
