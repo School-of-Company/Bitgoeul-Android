@@ -45,5 +45,7 @@
     <string name="beauty">뷰티</string>
     <string name="medical_health">의료•헬스</string>
     <string name="drone">드론</string>
+    <string name="select_professor_in_charge">담당 교수 선택</string>
+    <string name="professor_in_charge">담당 교수</string>
 
 </resources>

@@ -38,7 +38,7 @@ import com.msg.lecture.component.LectureSettingTag
 fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,
 ) {
-    val lectureCategory = remember { mutableStateOf("") }
+    val lectureType = remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
 
     BitgoeulAndroidTheme { colors, type ->
@@ -83,14 +83,18 @@ fun LectureDetailSettingScreen(
                     )
 
                     LectureSettingTag(
-                        modifier = modifier,
+                        modifier = modifier.clickable {
+                            lectureType.value = "상호학점인정교육과정"
+                        },
                         lectureType = stringResource(id = R.string.mutual_credit_recognition_curriculum)
                     )
 
                     Spacer(modifier = modifier.height(16.dp))
 
                     LectureSettingTag(
-                        modifier = modifier,
+                        modifier = modifier.clickable {
+                            lectureType.value = "대학탐방프로그램"
+                        },
                         lectureType = stringResource(id = R.string.university_visit_program)
                     )
                     Spacer(modifier = modifier.height(28.dp))
@@ -234,8 +238,7 @@ fun LectureDetailSettingScreen(
 
                     Spacer(modifier = modifier.height(28.dp))
 
-
-                    if (lectureCategory.value == "mutual_credit_recognition_curriculum") {
+                    if (lectureType.value == "상호학점인정교욱과정") {
                         Column {
                             Text(
                                 text = stringResource(id = R.string.credits_awarded),
@@ -258,6 +261,14 @@ fun LectureDetailSettingScreen(
                             Spacer(modifier = modifier.height(28.dp))
 
                         }
+                    } else if (lectureType.value == "대학탐방프로그램") {
+                        Text(
+                            text = stringResource(id = R.string.professor_in_charge),
+                            color = colors.BLACK,
+                            style = type.bodyLarge,
+                            modifier = modifier.padding(bottom = 8.dp)
+                        )
+
                     }
 
                     Text(
