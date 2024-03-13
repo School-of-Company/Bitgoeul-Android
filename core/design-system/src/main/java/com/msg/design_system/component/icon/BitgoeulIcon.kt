@@ -244,9 +244,23 @@ fun HelpIcon() {
 }
 
 @Composable
-fun BlackCloseButton() {
+fun BlackCloseIcon(
+    modifier: Modifier,
+) {
     Image(
         painter = painterResource(id = R.drawable.ic_black_close),
-        contentDescription = "Black Close Button"
+        contentDescription = "Black Close Icon",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun SearchIcon(
+    modifier: Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_search),
+        contentDescription = "Search Icon",
+        modifier = modifier
     )
 }
