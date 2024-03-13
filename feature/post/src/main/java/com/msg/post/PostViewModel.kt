@@ -4,11 +4,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.msg.datastore.AuthTokenDataSource
 import com.msg.domain.post.DeletePostUseCase
 import com.msg.domain.post.EditPostUseCase
 import com.msg.domain.post.GetDetailPostUseCase
 import com.msg.domain.post.GetPostListUseCase
 import com.msg.domain.post.SendPostUseCase
+import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.request.post.WritePostRequest
 import com.msg.model.remote.response.post.GetDetailPostResponse
@@ -30,7 +32,8 @@ class PostViewModel @Inject constructor(
     private val editPostUseCase: EditPostUseCase,
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
-    private val sendPostUseCase: SendPostUseCase
+    private val sendPostUseCase: SendPostUseCase,
+    private val authTokenDataSource: AuthTokenDataSource
 ) : ViewModel() {
 
     private val _deletePostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -47,6 +50,8 @@ class PostViewModel @Inject constructor(
 
     private val _sendPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val sendPostResponse = _sendPostResponse.asStateFlow()
+
+    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
 
     var detailPost = mutableStateOf(
         GetDetailPostResponse(
@@ -65,6 +70,9 @@ class PostViewModel @Inject constructor(
             posts = listOf()
         )
     )
+        private set
+
+    var links = mutableStateListOf<String>()
         private set
 
     fun deletePost(
