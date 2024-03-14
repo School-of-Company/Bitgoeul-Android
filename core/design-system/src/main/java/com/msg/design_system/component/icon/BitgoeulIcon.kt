@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -256,11 +257,10 @@ fun BlackCloseIcon(
 
 @Composable
 fun SearchIcon(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Image(
-        painter = painterResource(id = R.drawable.ic_search),
+        painter = painterResource(id = R.drawable.ic_bitgoeul_search),
         contentDescription = "Search Icon",
-        modifier = modifier
     )
 }

@@ -38,6 +38,7 @@ import com.msg.design_system.component.bottomsheet.DatePickerBottomSheet
 import com.msg.design_system.component.bottomsheet.SelectorBottomSheet
 import com.msg.design_system.component.icon.CancelIcon
 import com.msg.design_system.component.icon.PickerArrowIcon
+import com.msg.design_system.component.icon.SearchIcon
 import com.msg.design_system.component.icon.SeeableIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
@@ -381,56 +382,42 @@ fun TrailingIconTextField(
     value: String? = null,
 ) {
     var text by remember { mutableStateOf(value ?: "") }
-    val isFocused = remember { mutableStateOf(false) }
-    BitgoeulAndroidTheme { colors, typography ->
-        Column {
-            OutlinedTextField(
-                value = text,
-                onValueChange = {
-                    text = value ?: it
-                    onValueChange(it)
-                },
-                modifier = modifier
-                    .border(
-                        width = 1.dp,
-                        color = when {
-                            isDisabled -> colors.G1
-                            isFocused.value -> colors.P5
-                            text.isNotEmpty() -> colors.G1
-                            else -> colors.G1
-                        },
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .onFocusChanged {
-                        isFocused.value = it.isFocused
-                        if (it.isFocused && onClick != null) onClick()
-                        if (!it.isFocused && value != null) text = value
-                    }
-                    .background(
-                        color = if (isDisabled) colors.G9 else Color.Transparent
-                    ),
-                textStyle = typography.bodySmall,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedPlaceholderColor = colors.G2,
-                    unfocusedPlaceholderColor = colors.G2,
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = colors.BLACK,
-                    unfocusedTextColor = colors.BLACK,
-                    disabledTextColor = colors.G1,
-                    cursorColor = colors.P5
-                ),
-                enabled = !isDisabled,
-                placeholder = {
-                    Text(text = placeholder, style = typography.bodySmall)
-                },
-                maxLines = 1,
-                singleLine = true,
-                trailingIcon = {
 
-                }
-            )
-        }
+    BitgoeulAndroidTheme { colors, typography ->
+        OutlinedTextField(
+            placeholder = {
+                Text(text = placeholder, style = typography.bodySmall, color = colors.G2)
+            },
+            value = text,
+            onValueChange = {
+                text = it
+                onValueChange(it)
+            },
+            modifier = modifier
+                .border(1.dp, shape = RoundedCornerShape(8.dp), color = colors.G1)
+                .background(
+                    color = Color.Transparent
+                ),
+            textStyle = typography.bodySmall.copy(color = colors.BLACK),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedPlaceholderColor = colors.G2,
+                unfocusedPlaceholderColor = colors.G2,
+                focusedTextColor = colors.BLACK,
+                unfocusedTextColor = colors.BLACK,
+                disabledTextColor = colors.G1,
+                cursorColor = colors.P5,
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+            ),
+            enabled = !isDisabled,
+            maxLines = 1,
+            singleLine = true,
+            trailingIcon = {
+                SearchIcon(
+                    modifier = modifier
+                )
+            }
+        )
     }
 }
 

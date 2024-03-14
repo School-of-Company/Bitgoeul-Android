@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,7 +31,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun SelectProfessorDialog(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Dialog(onDismissRequest = {}) {
@@ -38,7 +39,7 @@ fun SelectProfessorDialog(
                 modifier = modifier
                     .background(color = colors.WHITE, RoundedCornerShape(8.dp))
                     .padding(horizontal = 24.dp)
-                    .wrapContentSize()
+                    .fillMaxHeight()
             ) {
                 Row(
                     modifier = modifier
@@ -60,8 +61,8 @@ fun SelectProfessorDialog(
                 TrailingIconTextField(
                     modifier = modifier
                         .padding(top = 80.dp)
-                        .width(320.dp)
-                        .height(52.dp),
+                        .fillMaxWidth()
+                        .height(54.dp),
                     placeholder = "이름 또는 학교명으로 검색...",
                     onValueChange = {},
                     isDisabled = false,
