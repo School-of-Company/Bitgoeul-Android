@@ -29,7 +29,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.ContentArray
-import com.msg.model.remote.response.lecture.LectureListResponse
 import java.util.UUID
 
 @Composable
