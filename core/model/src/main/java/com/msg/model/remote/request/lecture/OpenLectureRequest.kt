@@ -6,6 +6,7 @@ import com.msg.model.remote.enumdatatype.Semester
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import java.util.UUID
 
 
 data class OpenLectureRequest(
@@ -15,9 +16,10 @@ data class OpenLectureRequest(
     val division: Division,
     val department: String,
     val line: String,
+    val userId: UUID,
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
-    val completeDate: LocalDateTime,
+    val lectureDates: List<LectureDates>,
     val lectureType: LectureType,
     val credit: Int,
     val maxRegisteredUser: Int,
