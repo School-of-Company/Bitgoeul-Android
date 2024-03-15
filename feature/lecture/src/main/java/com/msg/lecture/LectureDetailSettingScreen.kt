@@ -38,7 +38,7 @@ import com.msg.lecture.component.LectureSettingTag
 fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,
 ) {
-    val lectureType = remember { mutableStateOf("") }
+    val lectureType = remember { mutableStateOf("대학탐방프로그램") }
     val scrollState = rememberScrollState()
 
     BitgoeulAndroidTheme { colors, type ->
@@ -268,6 +268,13 @@ fun LectureDetailSettingScreen(
                             style = type.bodyLarge,
                             modifier = modifier.padding(bottom = 8.dp)
                         )
+
+                        Picker(
+                            modifier = modifier.fillMaxWidth(),
+                            text = stringResource(id = R.string.select_professor_in_charge)
+                        )
+
+                        Spacer(modifier = modifier.height(28.dp))
 
                     }
 
