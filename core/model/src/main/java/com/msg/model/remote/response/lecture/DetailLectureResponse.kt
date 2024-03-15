@@ -1,17 +1,23 @@
 package com.msg.model.remote.response.lecture
 
-import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.enumdatatype.Semester
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
-import java.util.UUID
 
 data class DetailLectureResponse(
-    val id: UUID,
     val name: String,
+    val content: String,
+    val semester: Semester,
+    val division: Division,
+    val department: String,
+    val line: String,
+    val createAt: LocalDate,
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
-    val completeDate: LocalDateTime,
+    val lectureDates: List<LectureDates>,
     val lectureType: LectureType,
     val lectureStatus: LectureStatus,
     val headCount: Int,
@@ -19,4 +25,10 @@ data class DetailLectureResponse(
     val isRegistered: Boolean,
     val lecturer: String,
     val credit: Int,
+)
+
+data class LectureDates(
+    val completeDate: LocalDate,
+    val startTime: LocalDate,
+    val endTime: LocalDate,
 )

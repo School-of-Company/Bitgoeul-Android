@@ -1,7 +1,9 @@
 package com.msg.model.remote.response.lecture
 
+import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.enumdatatype.Semester
 import kotlinx.datetime.LocalDateTime
 import java.util.UUID
 
@@ -17,6 +19,9 @@ data class ContentArray(
     val id: UUID,
     val name: String,
     val content: String,
+    val semester: Semester,
+    val division: Division,
+    val department: String,
     val startDate: String,
     val endDate: String,
     val completeDate: String,
