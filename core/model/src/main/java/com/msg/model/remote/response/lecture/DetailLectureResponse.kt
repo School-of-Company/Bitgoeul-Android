@@ -6,6 +6,7 @@ import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 
 data class DetailLectureResponse(
     val name: String,
@@ -29,6 +30,6 @@ data class DetailLectureResponse(
 
 data class LectureDates(
     val completeDate: LocalDate,
-    val startTime: LocalDate,
-    val endTime: LocalDate,
+    val startTime: LocalTime,
+    val endTime: LocalTime,
 )
