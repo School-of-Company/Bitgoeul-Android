@@ -30,7 +30,9 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun LectureDetailSettingSearchDialog(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
-    ) {
+    text: String,
+    searchPlaceHolder: String
+) {
     if (isVisible) {
         BitgoeulAndroidTheme { colors, typography ->
             Dialog(onDismissRequest = {}) {
@@ -56,7 +58,7 @@ fun LectureDetailSettingSearchDialog(
                                     .padding(top = 24.dp, bottom = 24.dp)
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.select_professor_in_charge),
+                                    text = text,
                                     color = colors.BLACK,
                                     style = typography.labelSmall,
                                     modifier = modifier
@@ -72,7 +74,7 @@ fun LectureDetailSettingSearchDialog(
                                     .padding(bottom = 16.dp)
                                     .fillMaxWidth()
                                     .height(54.dp),
-                                placeholder = "이름 또는 학교명으로 검색...",
+                                placeholder = searchPlaceHolder,
                                 onValueChange = {},
                                 isDisabled = false,
                                 onClick = {},
@@ -98,6 +100,11 @@ fun SelectProfessorDialogPre() {
             .fillMaxSize()
             .background(Color.Blue)
     ) {
-        LectureDetailSettingSearchDialog(modifier = Modifier, isVisible = true)
+        LectureDetailSettingSearchDialog(
+            modifier = Modifier, isVisible = true, text = stringResource(
+                id = R.string.select_professor_in_charge
+            ),
+            searchPlaceHolder = "이름 또는 학교명으로 검색..."
+        )
     }
 }
