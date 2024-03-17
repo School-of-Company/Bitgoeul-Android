@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun ProfessorInChargeList(
+fun LectureDetailSettingSearchList(
     modifier: Modifier
 ) {
     BitgoeulAndroidTheme { colors, typography ->
@@ -25,7 +25,7 @@ fun ProfessorInChargeList(
                 Column(
                     modifier = modifier.background(color = Color.Transparent)
                 ) {
-                    ProfessorInChargeCard(
+                    LectureDetailSettingInfoCard(
                         modifier = modifier.background(color = Color.Transparent)
                     )
 
@@ -44,5 +44,5 @@ fun ProfessorInChargeList(
 @Preview
 @Composable
 fun ProfessorInChargeListPre() {
-    ProfessorInChargeList(modifier = Modifier)
+    LectureDetailSettingSearchList(modifier = Modifier)
 }

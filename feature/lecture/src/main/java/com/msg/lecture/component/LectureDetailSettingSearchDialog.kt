@@ -27,7 +27,7 @@ import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun SelectProfessorDialog(
+fun LectureDetailSettingSearchDialog(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
     ) {
@@ -79,7 +79,7 @@ fun SelectProfessorDialog(
                                 onClickButton = {}
                             )
 
-                            ProfessorInChargeList(modifier = modifier)
+                            LectureDetailSettingSearchList(modifier = modifier)
 
                         }
                     }
@@ -98,6 +98,6 @@ fun SelectProfessorDialogPre() {
             .fillMaxSize()
             .background(Color.Blue)
     ) {
-        SelectProfessorDialog(modifier = Modifier, isVisible = true)
+        LectureDetailSettingSearchDialog(modifier = Modifier, isVisible = true)
     }
 }
