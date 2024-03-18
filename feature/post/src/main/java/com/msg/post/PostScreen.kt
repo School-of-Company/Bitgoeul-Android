@@ -32,6 +32,7 @@ fun PostScreen(
     role: Authority,
     onAddClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
+    onViewChangeClicked: (type: FeedType) -> Unit,
     data: GetPostListResponse
 ) {
     val roleField = listOf(
@@ -41,6 +42,9 @@ fun PostScreen(
         Authority.ROLE_COMPANY_INSTRUCTOR,
         Authority.ROLE_GOVERNMENT
     )
+
+    var viewState: FeedType = FeedType.EMPLOYMENT
+
     BitgoeulAndroidTheme { colors, typography ->
         Column(
             modifier = modifier
@@ -54,14 +58,23 @@ fun PostScreen(
             ) {
                 Text(
                     modifier = modifier.padding(start = 28.dp),
-                    text = "게시글 목록",
+                    text = if (viewState == FeedType.EMPLOYMENT) "게시글 목록" else "공지사항",
                     style = typography.titleMedium,
                     color = colors.BLACK
                 )
                 Spacer(Modifier.weight(1f))
                 IconButton(
-                    onClick = {},
-                    content = { MegaphoneIcon() }
+                    onClick = {
+                        viewState =
+                            if (viewState == FeedType.EMPLOYMENT) FeedType.NOTICE else FeedType.EMPLOYMENT
+                        onViewChangeClicked(viewState)
+                    },
+                    content = {
+                        when (viewState) {
+                            FeedType.EMPLOYMENT -> MegaphoneIcon()
+                            FeedType.NOTICE -> ChatIcon()
+                        }
+                    }
                 )
                 IconButton(
                     onClick = {},
@@ -93,6 +106,7 @@ fun PostScreenPre() {
         role = Authority.ROLE_STUDENT,
         onAddClicked = {},
         onItemClicked = {},
+        onViewChangeClicked = {},
         data = GetPostListResponse(
             listOf(
                 PostModel(
