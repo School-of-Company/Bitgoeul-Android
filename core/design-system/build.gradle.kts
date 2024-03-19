@@ -11,4 +11,5 @@ android {
 
 dependencies {
     implementation(libs.coil.kt.compose)
+    implementation(libs.kotlinx.datetime)
 }

@@ -214,6 +214,7 @@ fun TimerBottomSheet(
                 },
                 sheetState = bottomSheetState
             ) {
+
             }
         }
     }
@@ -250,11 +251,6 @@ fun InfiniteItemsPicker(
             })
         }
     }
-}
-
-@Composable
-fun CalenderBottomSheet() {
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -295,32 +291,8 @@ fun Long.convertMillisToDate(): LocalDate {
 @Preview
 @Composable
 fun BottomSheetPre() {
-//    val list = mutableListOf("SMART JOB PROJECT", "나의 미래는 내가 주인공이다!", "Civil 마스터")
-//    val selectedItem = remember {
-//        mutableStateOf("")
-//    }
-//    SelectorBottomSheet(
-//        list = list,
-//        selectedItem = selectedItem.value,
-//        itemChange = {
-//            selectedItem.value = it
-//        },
-//        onQuit = {}
-//    ) {
-//
-//    }
-//
-//    LectureFilterBottomSheet(
-//        onQuit = {},
-//        isVisible = true
-//    )
-
     TimerBottomSheet(
         onQuit = {},
         isVisible = true,
     )
-
-    DatePickerBottomSheet {
-
-    }
 }

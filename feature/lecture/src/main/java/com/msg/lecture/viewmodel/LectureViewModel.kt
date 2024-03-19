@@ -13,8 +13,10 @@ import com.msg.lecture.util.Event
 import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -45,10 +47,12 @@ class LectureViewModel @Inject constructor(
         return Authority.authorityOf(authTokenDataSource.getAuthority())
     }
 
-    private val _getLectureListResponse = MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
+    private val _getLectureListResponse =
+        MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse =
+        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -75,7 +79,10 @@ class LectureViewModel @Inject constructor(
                         lectureStatus = LectureStatus.OPEN,
                         headCount = 0,
                         maxRegisteredUser = 0,
-                        lecturer = ""
+                        lecturer = "",
+                        department = "",
+                        semester = Semester.SECOND_YEAR_FALL_SEMESTER,
+                        division = Division.AI_CONVERGENCE_AI
                     )
                 )
             )
@@ -83,23 +90,23 @@ class LectureViewModel @Inject constructor(
     )
         private set
 
-    var lectureDetailData = mutableStateOf(
-        DetailLectureResponse(
-            id = UUID.randomUUID(),
-            name = "",
-            startDate = current,
-            endDate = current,
-            completeDate = current,
-            lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
-            lectureStatus = LectureStatus.OPEN,
-            headCount = 0,
-            maxRegisteredUser = 0,
-            isRegistered = true,
-            lecturer = "",
-            credit = 0
-        )
-    )
-        private set
+//    var lectureDetailData = mutableStateOf(
+//        DetailLectureResponse(
+//            id = UUID.randomUUID(),
+//            name = "",
+//            startDate = current,
+//            endDate = current,
+//            completeDate = current,
+//            lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+//            lectureStatus = LectureStatus.OPEN,
+//            headCount = 0,
+//            maxRegisteredUser = 0,
+//            isRegistered = true,
+//            lecturer = "",
+//            credit = 0
+//        )
+//    )
+//        private set
 
     var selectedLectureId = mutableStateOf<UUID>(UUID.randomUUID())
         private set
@@ -179,25 +186,26 @@ class LectureViewModel @Inject constructor(
         credit: Int,
         maxRegisteredUser: Int,
     ) = viewModelScope.launch {
-        openLectureUseCase(
-            OpenLectureRequest(
-                name = name,
-                content = content,
-                startDate = startDate,
-                endDate = endDate,
-                completeDate = completeDate,
-                lectureType = lectureType,
-                credit = credit,
-                maxRegisteredUser = maxRegisteredUser
-            )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _openLectureResponse.value = remoteError.errorHandling()
-            }.collect {
-                _openLectureResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _openLectureResponse.value = error.errorHandling()
-        }
+//        openLectureUseCase(
+//            OpenLectureRequest(
+//                name = name,
+//                content = content,
+//                startDate = startDate,
+//                endDate = endDate,
+//                completeDate = completeDate,
+//                lectureType = lectureType,
+//                credit = credit,
+//                maxRegisteredUser = maxRegisteredUser
+//            )
+//        ).onSuccess {
+//            it.catch { remoteError ->
+//                _openLectureResponse.value = remoteError.errorHandling()
+//            }.collect {
+//                _openLectureResponse.value = Event.Success()
+//            }
+//        }.onFailure { error ->
+//            _openLectureResponse.value = error.errorHandling()
+//        }
+//    }
     }
 }

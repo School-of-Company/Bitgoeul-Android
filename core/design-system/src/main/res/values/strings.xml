@@ -40,12 +40,21 @@
     <string name="lecture_line">강의 계열</string>
     <string name="electrical_electronic">전기•전자</string>
     <string name="machine">기계</string>
-    <string name="car">자동차</string>
+    <string name="car_industry">자동차 산업</string>
+    <string name="energy_industry">에너지 산업</string>
+    <string name="culture_industry">문화 산업</string>
+    <string name="semester_attended">수강 학기</string>
+    <string name="first_year_second_semester">1학년 2학기</string>
+    <string name="second_year_first_semester">2학년 1학기</string>
+    <string name="second_year_second_semester">2학년 2학기</string>
+    <string name="third_year_first_semester">3학년 1학기</string>
     <string name="biochemical_engineering">생명화학공학</string>
+    <string name="ai_convergence_composite">A.I 융•복합</string>
     <string name="beauty">뷰티</string>
     <string name="medical_health">의료•헬스</string>
     <string name="drone">드론</string>
     <string name="select_professor_in_charge">담당 교수 선택</string>
     <string name="professor_in_charge">담당 교수</string>
+    <string name="lecture_division">강의 구분</string>
 
 </resources>

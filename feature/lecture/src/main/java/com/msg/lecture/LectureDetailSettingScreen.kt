@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import com.msg.design_system.R
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
-import com.msg.design_system.component.icon.PickerArrowIcon
+import com.msg.design_system.component.picker.Picker
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureSettingTag
@@ -100,7 +98,7 @@ fun LectureDetailSettingScreen(
                     Spacer(modifier = modifier.height(28.dp))
 
                     Text(
-                        text = stringResource(id = R.string.lecture_line),
+                        text = stringResource(id = R.string.semester_attended),
                         color = colors.BLACK,
                         style = type.bodyLarge,
                         modifier = modifier.padding(bottom = 8.dp)
@@ -109,21 +107,14 @@ fun LectureDetailSettingScreen(
                     Row {
                         LectureSettingTag(
                             modifier = modifier,
-                            lectureType = stringResource(id = R.string.electrical_electronic)
+                            lectureType = stringResource(id = R.string.first_year_second_semester)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
 
                         LectureSettingTag(
                             modifier = modifier,
-                            lectureType = stringResource(id = R.string.machine)
-                        )
-
-                        Spacer(modifier = modifier.width(16.dp))
-
-                        LectureSettingTag(
-                            modifier = modifier,
-                            lectureType = stringResource(id = R.string.car)
+                            lectureType = stringResource(id = R.string.second_year_first_semester)
                         )
                     }
 
@@ -132,15 +123,39 @@ fun LectureDetailSettingScreen(
                     Row {
                         LectureSettingTag(
                             modifier = modifier,
-                            lectureType = stringResource(id = R.string.biochemical_engineering)
+                            lectureType = stringResource(id = R.string.second_year_second_semester)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
 
                         LectureSettingTag(
                             modifier = modifier,
-                            lectureType = stringResource(id = R.string.beauty)
+                            lectureType = stringResource(id = R.string.third_year_first_semester)
                         )
+                    }
+                    Spacer(modifier = modifier.height(28.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.lecture_division),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = modifier.padding(bottom = 8.dp)
+                    )
+
+                    Row {
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.car_industry)
+                        )
+
+                        Spacer(modifier = modifier.width(16.dp))
+
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.energy_industry)
+                        )
+
+                        Spacer(modifier = modifier.width(16.dp))
                     }
 
                     Spacer(modifier = modifier.height(16.dp))
@@ -155,8 +170,19 @@ fun LectureDetailSettingScreen(
 
                         LectureSettingTag(
                             modifier = modifier,
-                            lectureType = stringResource(id = R.string.drone)
+                            lectureType = stringResource(id = R.string.ai_convergence_composite)
                         )
+                    }
+
+                    Spacer(modifier = modifier.height(16.dp))
+
+                    Row {
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.culture_industry)
+                        )
+
+                        Spacer(modifier = modifier.width(16.dp))
                     }
 
                     Spacer(modifier = modifier.height(28.dp))
@@ -333,34 +359,6 @@ fun LectureDetailSettingScreen(
     }
 }
 
-@Composable
-fun Picker(
-    modifier: Modifier,
-    text: String,
-) {
-    BitgoeulAndroidTheme { colors, type ->
-        Row(
-            modifier = modifier
-                .background(
-                    color = colors.G9,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(vertical = 15.dp, horizontal = 20.dp)
-                .clickable {
-
-                },
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = text,
-                color = colors.G2,
-                style = type.bodySmall,
-            )
-
-            PickerArrowIcon(isSelected = false)
-        }
-    }
-}
 
 @Preview
 @Composable
