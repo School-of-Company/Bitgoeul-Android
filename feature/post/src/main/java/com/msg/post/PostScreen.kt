@@ -11,20 +11,84 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.design_system.component.icon.ChatIcon
 import com.msg.design_system.component.icon.HelpIcon
 import com.msg.design_system.component.icon.MegaphoneIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.model.post.PostModel
 import com.msg.model.remote.response.post.GetPostListResponse
+import com.msg.post.util.Event
 import com.msg.ui.DevicePreviews
 import com.msg.ui.PostList
 import java.time.LocalDateTime
 import java.util.UUID
+
+@Composable
+fun PostScreenRoute(
+    viewModel: PostViewModel = hiltViewModel(),
+    onItemClicked: (UUID) -> Unit,
+    onAddClicked: () -> Unit
+) {
+    val role = viewModel.role
+    var state = FeedType.EMPLOYMENT
+
+    viewModel.getPostList(
+        type = FeedType.EMPLOYMENT
+    )
+
+    LaunchedEffect(true, state) {
+        getPostList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.postList.value = it
+            },
+            onFailure = {
+                viewModel.postList.value = GetPostListResponse(
+                    posts = emptyList()
+                )
+            }
+        )
+    }
+
+    PostScreen(
+        role = role,
+        onAddClicked = onAddClicked,
+        onItemClicked = onItemClicked,
+        data = viewModel.postList.value,
+        onViewChangeClicked = {
+            viewModel.postList.value = GetPostListResponse(
+                posts = emptyList()
+            )
+            viewModel.getPostList(type = it)
+            state = it
+        }
+    )
+}
+
+suspend fun getPostList(
+    viewModel: PostViewModel,
+    onSuccess: (data: GetPostListResponse) -> Unit,
+    onFailure: () -> Unit
+) {
+    viewModel.getPostListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {
+                onFailure()
+            }
+        }
+    }
+}
 
 @Composable
 fun PostScreen(
