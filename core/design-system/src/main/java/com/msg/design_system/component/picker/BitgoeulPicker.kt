@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.text.font.FontWeight
@@ -78,9 +81,6 @@ fun SpinnerPicker(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-                Spacer(modifier = modifier.height(96.dp))
-            }
 
             if (itemRange == (0..59)) {
                 itemsIndexed(itemList.ifEmpty { itemRange.map { it.toString() } }) { _, item ->
@@ -106,6 +106,7 @@ fun SpinnerPicker(
                         Text(
                             text = if (item.toInt() < 10) "0${item}" else item,
                             style = typography.headlineLarge,
+                            // 선택된 아이템은 항상 검정색으로 표시
                             color = if (isSelected.value) colors.BLACK else colors.G2,
                             fontWeight = FontWeight.Normal
                         )
@@ -131,34 +132,59 @@ fun SpinnerPicker(
                         Text(
                             text = item,
                             style = typography.headlineLarge,
+                            // 선택된 아이템은 항상 검정색으로 표시
                             color = if (isSelected.value) colors.BLACK else colors.G2,
                             fontWeight = FontWeight.Normal
                         )
                     }
                 }
             }
-            item {
-                Spacer(modifier = modifier.height(96.dp))
-            }
         }
     }
 }
 
 
+
 @Preview
 @Composable
 fun PickerPre() {
-    SpinnerPicker(
-        modifier = Modifier, itemList = listOf(
-            "00",
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06",
-            "07",
-            "08"
+    Box(modifier = Modifier) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .background(color = Color.Transparent)
+                .align(Alignment.Center)
         )
-    ) {}
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            SpinnerPicker(
+                modifier = Modifier,
+                itemRange = 1..12,
+                onSelectedItemChange = {}
+            )
+
+            Spacer(modifier = Modifier.width(24.dp))
+
+            SpinnerPicker(
+                modifier = Modifier,
+                itemRange = 0..59,
+                onSelectedItemChange = {}
+            )
+
+            Spacer(modifier = Modifier.width(24.dp))
+
+
+            SpinnerPicker(
+                modifier = Modifier,
+                itemList = listOf("AM", "PM"),
+                onSelectedItemChange = { }
+            )
+        }
+    }
 }
