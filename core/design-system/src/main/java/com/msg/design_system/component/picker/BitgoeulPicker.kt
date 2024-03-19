@@ -69,15 +69,6 @@ fun SpinnerPicker(
     val pickedItem = remember { mutableStateOf("") }
     val baseLine = remember { mutableStateOf(0f) }
 
-    LaunchedEffect(pickedItem.value) {
-        val debounce = Job()
-
-        delay(300L)
-        onSelectedItemChange(pickedItem.value)
-
-        debounce.cancel()
-    }
-
     BitgoeulAndroidTheme { colors, typography ->
         LazyColumn(
             modifier = modifier.onGloballyPositioned {
@@ -90,37 +81,69 @@ fun SpinnerPicker(
             item {
                 Spacer(modifier = modifier.height(96.dp))
             }
-            itemsIndexed(itemList.ifEmpty { itemRange.map { it.toString() } }) { _, item ->
-                val isSelected = remember {
-                    mutableStateOf(false)
-                }
 
-                if (isSelected.value) {
-                    pickedItem.value = item
-                }
+            if (itemRange == (0..59)) {
+                itemsIndexed(itemList.ifEmpty { itemRange.map { it.toString() } }) { _, item ->
+                    val isSelected = remember {
+                        mutableStateOf(false)
+                    }
 
-                Box(
-                    modifier = Modifier
-                        .onGloballyPositioned {
-                            isSelected.value =
-                                baseLine.value in it.positionInWindow().y..it.positionInWindow().y + it.size.height
+                    if (isSelected.value) {
+                        pickedItem.value = if (item.toInt() < 10) {
+                            "0$item"
+                        } else {
+                            item
                         }
-                ) {
-                    Text(
-                        text = item,
-                        style = typography.headlineLarge,
-                        color = if (isSelected.value) colors.BLACK else colors.G2,
-                        fontWeight = FontWeight.Normal
-                    )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .onGloballyPositioned {
+                                isSelected.value =
+                                    baseLine.value in it.positionInWindow().y..it.positionInWindow().y + it.size.height
+                            }
+                    ) {
+                        Text(
+                            text = if (item.toInt() < 10) "0${item}" else item,
+                            style = typography.headlineLarge,
+                            color = if (isSelected.value) colors.BLACK else colors.G2,
+                            fontWeight = FontWeight.Normal
+                        )
+                    }
+                }
+            } else {
+                itemsIndexed(itemList.ifEmpty { itemRange.map { it.toString() } }) { _, item ->
+                    val isSelected = remember {
+                        mutableStateOf(false)
+                    }
+
+                    if (isSelected.value) {
+                        pickedItem.value = item
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .onGloballyPositioned {
+                                isSelected.value =
+                                    baseLine.value in it.positionInWindow().y..it.positionInWindow().y + it.size.height
+                            }
+                    ) {
+                        Text(
+                            text = item,
+                            style = typography.headlineLarge,
+                            color = if (isSelected.value) colors.BLACK else colors.G2,
+                            fontWeight = FontWeight.Normal
+                        )
+                    }
                 }
             }
             item {
                 Spacer(modifier = modifier.height(96.dp))
             }
-
         }
     }
 }
+
 
 @Preview
 @Composable
