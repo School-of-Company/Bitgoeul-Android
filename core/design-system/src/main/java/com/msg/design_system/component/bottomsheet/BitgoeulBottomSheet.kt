@@ -1,9 +1,12 @@
 package com.msg.design_system.component.bottomsheet
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,8 +19,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -32,8 +38,8 @@ import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.checkbox.BitGoeulCheckBox
-import com.msg.design_system.component.picker.SpinnerTimePicker
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import kotlinx.datetime.LocalTime
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -203,6 +209,7 @@ fun TimerBottomSheet(
     isVisible: Boolean,
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
+    val timePickerState = rememberTimePickerState()
     val hour = remember { mutableStateOf("") }
     val minute = remember { mutableStateOf("") }
     val timeZone = remember { mutableStateOf("") }
@@ -210,18 +217,31 @@ fun TimerBottomSheet(
     if (isVisible) {
         BitgoeulAndroidTheme { colors, type ->
             ModalBottomSheet(
-                modifier = modifier.height(330.dp),
+                modifier = modifier
+                    .height(330.dp),
                 sheetState = bottomSheetState,
                 onDismissRequest = {
                     onQuit()
                 },
             ) {
-                SpinnerTimePicker(
-                    modifier = modifier,
-                    onHourValueChange = { hour.value = it },
-                    onMinuteValueChange = { minute.value = it },
-                    onTimeZoneChange = { timeZone.value = it }
-                )
+                Box(
+                    modifier = modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    TimeInput(
+                        state = timePickerState,
+                        colors = TimePickerDefaults.colors(
+                            selectorColor = colors.BLACK,
+                            containerColor = colors.WHITE,
+                            timeSelectorSelectedContainerColor = colors.P5,
+                            timeSelectorSelectedContentColor = colors.WHITE,
+                            periodSelectorBorderColor = colors.BLACK,
+                            periodSelectorSelectedContentColor = colors.WHITE,
+                            periodSelectorSelectedContainerColor = colors.P5,
+                        ),
+                    )
+                }
             }
         }
     }
