@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.msg.design_system.component.bottomsheet.TimerBottomSheet
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.picker.Picker
@@ -38,6 +39,7 @@ fun LectureDetailSettingScreen(
 ) {
     val lectureType = remember { mutableStateOf("대학탐방프로그램") }
     val scrollState = rememberScrollState()
+    val isTimeBottomSheetVisible = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, type ->
         Box(
@@ -206,7 +208,11 @@ fun LectureDetailSettingScreen(
 
 
                         Picker(
-                            modifier = modifier.weight(1f),
+                            modifier = modifier
+                                .weight(1f)
+                                .clickable {
+                                    isTimeBottomSheetVisible.value = !isTimeBottomSheetVisible.value
+                                },
                             text = stringResource(id = R.string.start_time)
                         )
 
@@ -232,7 +238,11 @@ fun LectureDetailSettingScreen(
                         Spacer(modifier = modifier.width(8.dp))
 
                         Picker(
-                            modifier = modifier.weight(1f),
+                            modifier = modifier
+                                .weight(1f)
+                                .clickable {
+                                    isTimeBottomSheetVisible.value = !isTimeBottomSheetVisible.value
+                                },
                             text = stringResource(id = R.string.deadeline_time)
                         )
                     }
@@ -354,6 +364,13 @@ fun LectureDetailSettingScreen(
                     ) {
                     }
                 }
+            }
+
+            TimerBottomSheet(
+                onQuit = { isTimeBottomSheetVisible.value = false },
+                isVisible = isTimeBottomSheetVisible.value
+            ) {
+
             }
         }
     }

@@ -207,12 +207,10 @@ fun TimerBottomSheet(
     modifier: Modifier = Modifier,
     onQuit: () -> Unit,
     isVisible: Boolean,
+    onTimeChange: (String) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val timePickerState = rememberTimePickerState()
-    val hour = remember { mutableStateOf("") }
-    val minute = remember { mutableStateOf("") }
-    val timeZone = remember { mutableStateOf("") }
 
     if (isVisible) {
         BitgoeulAndroidTheme { colors, type ->
@@ -289,5 +287,6 @@ fun BottomSheetPre() {
     TimerBottomSheet(
         onQuit = {},
         isVisible = true,
+        onTimeChange = {}
     )
 }
