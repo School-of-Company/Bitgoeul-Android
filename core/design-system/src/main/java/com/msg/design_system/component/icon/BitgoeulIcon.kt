@@ -262,5 +262,17 @@ fun SearchIcon(
     Image(
         painter = painterResource(id = R.drawable.ic_bitgoeul_search),
         contentDescription = "Search Icon",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun DeleteIcon(
+    modifier: Modifier
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_delete),
+        contentDescription = "Delete Icon",
+        modifier = modifier
     )
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import com.msg.design_system.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,24 +26,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.bottomsheet.TimerBottomSheet
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.picker.Picker
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.component.LectureAttendanceDatePicker
 import com.msg.lecture.component.LectureSettingTag
+import com.msg.lecture.viewmodel.LectureViewModel
+import com.msg.model.remote.request.lecture.LectureDates
+
+@Composable
+fun LectureDetailSettingRoute(
+    onCloseClicked: () -> Unit,
+    onApplyClicked: () -> Unit,
+    viewModel: LectureViewModel = hiltViewModel()
+) {
+    LectureDetailSettingScreen(
+        onCloseClicked = onCloseClicked,
+        onApplyClicked = onApplyClicked
+    )
+}
 
 @Composable
 fun LectureDetailSettingScreen(
+    onCloseClicked: () -> Unit,
+    onApplyClicked: () -> Unit,
+    savedCreditPoint: Int,
+    savedLectureDates: List<LectureDates>,
     modifier: Modifier = Modifier,
 ) {
     val lectureType = remember { mutableStateOf("대학탐방프로그램") }
     val scrollState = rememberScrollState()
     val isTimeBottomSheetVisible = remember { mutableStateOf(false) }
 
+    // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, type ->
-        Box(
+        Surface(
             modifier = modifier
                 .fillMaxSize()
                 .background(colors.WHITE)
@@ -68,7 +90,7 @@ fun LectureDetailSettingScreen(
                     CloseIcon()
 
                 }
-                Spacer(modifier = modifier.height(28.dp))
+                Spacer(modifier = modifier.height(18.dp))
 
                 Column(
                     modifier = modifier
@@ -97,7 +119,7 @@ fun LectureDetailSettingScreen(
                         },
                         lectureType = stringResource(id = R.string.university_visit_program)
                     )
-                    Spacer(modifier = modifier.height(28.dp))
+                    Spacer(modifier = modifier.height(18.dp))
 
                     Text(
                         text = stringResource(id = R.string.semester_attended),
@@ -135,7 +157,7 @@ fun LectureDetailSettingScreen(
                             lectureType = stringResource(id = R.string.third_year_first_semester)
                         )
                     }
-                    Spacer(modifier = modifier.height(28.dp))
+                    Spacer(modifier = modifier.height(26.dp))
 
                     Text(
                         text = stringResource(id = R.string.lecture_division),
@@ -178,16 +200,79 @@ fun LectureDetailSettingScreen(
 
                     Spacer(modifier = modifier.height(16.dp))
 
-                    Row {
+                    LectureSettingTag(
+                        modifier = modifier,
+                        lectureType = stringResource(id = R.string.culture_industry)
+                    )
+
+                    Spacer(modifier = modifier.height(18.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.credit),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = modifier.padding(bottom = 8.dp)
+                    )
+
+                    Row(
+                        modifier = modifier.fillMaxWidth()
+                    ) {
                         LectureSettingTag(
                             modifier = modifier,
-                            lectureType = stringResource(id = R.string.culture_industry)
+                            lectureType = stringResource(id = R.string.one_point)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
+
+                        LectureSettingTag(
+                            modifier = modifier,
+                            lectureType = stringResource(id = R.string.two_point)
+                        )
                     }
 
-                    Spacer(modifier = modifier.height(28.dp))
+                    Spacer(modifier = modifier.height(18.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.lecture_series),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = modifier.padding(bottom = 8.dp)
+                    )
+
+                    Picker(
+                        modifier = modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.select_lecture)
+                    )
+
+                    Spacer(modifier = modifier.height(18.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.division),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = modifier.padding(bottom = 8.dp)
+                    )
+
+                    Picker(
+                        modifier = modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.select_division)
+                    )
+
+                    Spacer(modifier = modifier.height(18.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.professor_in_charge),
+                        color = colors.BLACK,
+                        style = type.bodyLarge,
+                        modifier = modifier.padding(bottom = 8.dp)
+                    )
+
+                    Picker(
+                        modifier = modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.select_professor_in_charge)
+                    )
+
+                    Spacer(modifier = modifier.height(18.dp))
 
                     Text(
                         text = stringResource(id = R.string.application_start_date),
@@ -218,7 +303,7 @@ fun LectureDetailSettingScreen(
 
                     }
 
-                    Spacer(modifier = modifier.height(28.dp))
+                    Spacer(modifier = modifier.height(18.dp))
 
                     Text(
                         text = stringResource(id = R.string.application_deadline_date),
@@ -247,72 +332,19 @@ fun LectureDetailSettingScreen(
                         )
                     }
 
-                    Spacer(modifier = modifier.height(28.dp))
+                    Spacer(modifier = modifier.height(18.dp))
 
                     Text(
-                        text = stringResource(id = R.string.start_semester_date),
+                        text = stringResource(id = R.string.lecture_attendance_date),
                         color = colors.BLACK,
                         style = type.bodyLarge,
                         modifier = modifier.padding(bottom = 8.dp)
                     )
 
-                    Row(
+                    LectureAttendanceDatePicker(
                         modifier = modifier.fillMaxWidth()
-                    ) {
-                        Picker(
-                            modifier = modifier.weight(1f),
-                            text = stringResource(id = R.string.start_semester_date)
-                        )
+                    )
 
-                        Spacer(modifier = modifier.width(8.dp))
-
-                        Picker(
-                            modifier = modifier.weight(1f),
-                            text = stringResource(id = R.string.start_semester_time)
-                        )
-                    }
-
-                    Spacer(modifier = modifier.height(28.dp))
-
-                    if (lectureType.value == "상호학점인정교욱과정") {
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.credits_awarded),
-                                color = colors.BLACK,
-                                style = type.bodyLarge,
-                                modifier = modifier.padding(bottom = 8.dp)
-                            )
-
-                            Row(
-                                modifier = modifier.fillMaxWidth()
-                            ) {
-                                Picker(
-                                    modifier = modifier.weight(1f),
-                                    text = stringResource(id = R.string.select_credits_awarded)
-                                )
-
-                                Spacer(modifier = modifier.width(8.dp))
-
-                            }
-                            Spacer(modifier = modifier.height(28.dp))
-
-                        }
-                    } else if (lectureType.value == "대학탐방프로그램") {
-                        Text(
-                            text = stringResource(id = R.string.professor_in_charge),
-                            color = colors.BLACK,
-                            style = type.bodyLarge,
-                            modifier = modifier.padding(bottom = 8.dp)
-                        )
-
-                        Picker(
-                            modifier = modifier.fillMaxWidth(),
-                            text = stringResource(id = R.string.select_professor_in_charge)
-                        )
-
-                        Spacer(modifier = modifier.height(28.dp))
-
-                    }
 
                     Text(
                         text = stringResource(id = R.string.maximum_number_students),
@@ -321,26 +353,22 @@ fun LectureDetailSettingScreen(
                         modifier = modifier.padding(bottom = 8.dp)
                     )
 
-                    Row(
-                        modifier = modifier.fillMaxWidth()
-                    ) {
-                        DefaultTextField(
-                            modifier = modifier.fillMaxWidth(),
-                            placeholder = stringResource(id = R.string.enter_maximum_number_students),
-                            errorText = "Incorrect", // 에러 텍스트는 임의의 값임
-                            onValueChange = {},
-                            onClickButton = {},
-                            isNumberOnly = true,
-                            isError = false,
-                            isLinked = false,
-                            isDisabled = false,
-                            isReadOnly = false,
-                            isReverseTrailingIcon = false,
-                            onClick = {}
-                        )
-                    }
-
-                    Spacer(modifier = modifier.height(165.dp))
+                    DefaultTextField(
+                        modifier = modifier
+                            .padding(bottom = 128.dp)
+                            .fillMaxWidth(),
+                        placeholder = stringResource(id = R.string.enter_maximum_number_students),
+                        errorText = "Incorrect", // 에러 텍스트는 임의의 값임
+                        onValueChange = {},
+                        onClickButton = {},
+                        isNumberOnly = true,
+                        isError = false,
+                        isLinked = false,
+                        isDisabled = false,
+                        isReadOnly = false,
+                        isReverseTrailingIcon = false,
+                        onClick = {}
+                    )
                 }
             }
 
@@ -380,5 +408,8 @@ fun LectureDetailSettingScreen(
 @Preview
 @Composable
 fun LectureDetailSettingScreenPre() {
-    LectureDetailSettingScreen()
+    LectureDetailSettingScreen(
+        onCloseClicked = {},
+        onApplyClicked = {}
+    )
 }

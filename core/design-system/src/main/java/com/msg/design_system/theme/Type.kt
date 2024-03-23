@@ -73,5 +73,11 @@ val Typography = Typography(
         fontSize = 36.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 48.sp
-    )
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = pretendard,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 26.sp
+    ),
 )
