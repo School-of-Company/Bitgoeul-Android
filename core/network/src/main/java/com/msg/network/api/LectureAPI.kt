@@ -1,13 +1,15 @@
 package com.msg.network.api
 
+import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -36,13 +38,25 @@ interface LectureAPI {
         @Path("id") id: UUID,
     )
 
-    @PATCH("lecture/{id}/approve")
-    suspend fun approvePendingLecture(
+    @DELETE("lecture/{id}")
+    suspend fun lectureApplicationCancel(
         @Path("id") id: UUID,
     )
 
-    @DELETE("lecture/{id}/reject")
-    suspend fun rejectPendingLecture(
-        @Path("id") id: UUID,
-    )
+    @GET("lecture/instructor")
+    suspend fun searchProfessor(
+        @Query("keyword") keyword: String,
+    ): List<SearchProfessorResponse>
+
+
+    @GET("lecture/line")
+    suspend fun searchLine(
+        @Query("keyword") keyword: String,
+        @Query("division") division: Division,
+    ): SearchResponseModel
+
+    @GET("lecture/departments")
+    suspend fun searchDepartment(
+        @Query("keyword") keyword: String,
+    ): SearchResponseModel
 }
