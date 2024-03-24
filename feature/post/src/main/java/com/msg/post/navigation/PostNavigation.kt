@@ -16,6 +16,15 @@ fun NavController.navigateToPostPage(navOptions: NavOptions? = null) {
     this.navigate(postRoute, navOptions)
 }
 
+fun NavGraphBuilder.postScreen(onItemClick: (UUID) -> Unit, onAddClicked: () -> Unit) {
+    composable(route = postRoute) {
+        PostScreenRoute(
+            onItemClicked = onItemClick,
+            onAddClicked = onAddClicked
+        )
+    }
+}
+
 fun NavController.navigateToPostDetailPage(navOptions: NavOptions? = null) {
     this.navigate(postDetailRoute, navOptions)
 }
