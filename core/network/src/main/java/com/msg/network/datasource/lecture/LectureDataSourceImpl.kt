@@ -1,9 +1,12 @@
 package com.msg.network.datasource.lecture
 
+import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.network.api.LectureAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +57,39 @@ class LectureDataSourceImpl @Inject constructor(
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { lectureAPI.lectureApplication(id = id) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun lectureApplicationCancel(id: UUID): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { lectureAPI.lectureApplicationCancel(id = id) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun searchProfessor(keyword: String): Flow<List<SearchProfessorResponse>> =
+        flow {
+            emit(
+                BitgoeulApiHandler<List<SearchProfessorResponse>>()
+                    .httpRequest { lectureAPI.searchProfessor(keyword = keyword) }
+                    .sendRequest()
+            )
+        }.flowOn(Dispatchers.IO)
+
+    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchResponseModel> = flow {
+        emit(
+            BitgoeulApiHandler<SearchResponseModel>()
+                .httpRequest { lectureAPI.searchLine(keyword = keyword, division = division) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun searchDepartment(keyword: String): Flow<SearchResponseModel> = flow {
+        emit(
+            BitgoeulApiHandler<SearchResponseModel>()
+                .httpRequest { lectureAPI.searchDepartment(keyword = keyword) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
