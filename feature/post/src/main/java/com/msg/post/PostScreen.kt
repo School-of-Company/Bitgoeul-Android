@@ -32,7 +32,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Composable
-fun PostScreenRoute(
+internal fun PostScreenRoute(
     viewModel: PostViewModel = hiltViewModel(),
     onItemClicked: (UUID) -> Unit,
     onAddClicked: () -> Unit
