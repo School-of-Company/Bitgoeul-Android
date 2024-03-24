@@ -19,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,6 +38,7 @@ import com.msg.lecture.component.LectureAttendanceDatePicker
 import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
+import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -51,7 +53,21 @@ fun LectureDetailSettingRoute(
 ) {
     LectureDetailSettingScreen(
         onCloseClicked = onCloseClicked,
-        onApplyClicked = onApplyClicked,
+        onApplyClicked = { lectureType, semester, division, department, line, userId, credit, startTime, startDate, endTime, completeDate, maxRegistereduser ->
+            viewModel.lectureType.value = lectureType
+            viewModel.semester.value = semester
+            viewModel.division.value = division
+            viewModel.department.value = department
+            viewModel.line.value = line
+            viewModel.userId.value = userId
+            viewModel.credit.value = credit
+            viewModel.completeDate.value = completeDate
+            viewModel.startTime.value = startTime
+            viewModel.startDate.value = startDate
+            viewModel.endTime.value = endTime
+            viewModel.maxRegisteredUser.value = maxRegistereduser
+            onApplyClicked()
+        },
         savedCreditPoint = viewModel.credit.value,
         savedStartTime = viewModel.startTime.value,
         savedEndTime = viewModel.endTime.value,
@@ -64,13 +80,15 @@ fun LectureDetailSettingRoute(
         savedDepartment = viewModel.department.value,
         savedLine = viewModel.line.value,
         savedUserId = viewModel.userId.value,
+        savedLectureType = viewModel.lectureType.value
     )
 }
 
 @Composable
 fun LectureDetailSettingScreen(
     onCloseClicked: () -> Unit,
-    onApplyClicked: () -> Unit,
+    onApplyClicked: (LectureType, Semester, Division, String, String, UUID, Int, LocalTime?, LocalDateTime?, LocalTime?, LocalDate?, Int) -> Unit,
+    savedLectureType: LectureType,
     savedSemester: Semester,
     savedDivision: Division,
     savedDepartment: String,
@@ -85,9 +103,22 @@ fun LectureDetailSettingScreen(
     savedMaxRegisteredUser: Int,
     modifier: Modifier = Modifier,
 ) {
-    val lectureType = remember { mutableStateOf("대학탐방프로그램") }
     val scrollState = rememberScrollState()
     val isTimeBottomSheetVisible = remember { mutableStateOf(false) }
+
+    val lectureType = remember { mutableStateOf(savedLectureType) }
+    val division = remember { mutableStateOf(savedDivision) }
+    val department = remember { mutableStateOf(savedDepartment) }
+    val line = remember { mutableStateOf(savedLine) }
+    val userId = remember { mutableStateOf(savedUserId) }
+    val credit = remember { mutableIntStateOf(savedCreditPoint) }
+    val semester = remember { mutableStateOf(savedSemester) }
+    val startTime = remember { mutableStateOf(savedStartTime) }
+    val startDate = remember { mutableStateOf(savedStartDate) }
+    val endTime = remember { mutableStateOf(savedEndTime) }
+    val endDate = remember { mutableStateOf(savedEndDate) }
+    val completeDate = remember { mutableStateOf(savedCompleteDate) }
+    val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
     // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, type ->
@@ -133,7 +164,7 @@ fun LectureDetailSettingScreen(
 
                     LectureSettingTag(
                         modifier = modifier.clickable {
-                            lectureType.value = "상호학점인정교육과정"
+                            lectureType.value = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
                         },
                         lectureType = stringResource(id = R.string.mutual_credit_recognition_curriculum)
                     )
@@ -142,10 +173,11 @@ fun LectureDetailSettingScreen(
 
                     LectureSettingTag(
                         modifier = modifier.clickable {
-                            lectureType.value = "대학탐방프로그램"
+                            lectureType.value = LectureType.UNIVERSITY_EXPLORATION_PROGRAM
                         },
                         lectureType = stringResource(id = R.string.university_visit_program)
                     )
+
                     Spacer(modifier = modifier.height(18.dp))
 
                     Text(
@@ -157,14 +189,18 @@ fun LectureDetailSettingScreen(
 
                     Row {
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                semester.value = Semester.FIRST_YEAR_FALL_SEMESTER
+                            },
                             lectureType = stringResource(id = R.string.first_year_second_semester)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
 
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                semester.value = Semester.SECOND_YEAR_SPRING_SEMESTER
+                            },
                             lectureType = stringResource(id = R.string.second_year_first_semester)
                         )
                     }
@@ -173,14 +209,18 @@ fun LectureDetailSettingScreen(
 
                     Row {
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                semester.value = Semester.SECOND_YEAR_FALL_SEMESTER
+                            },
                             lectureType = stringResource(id = R.string.second_year_second_semester)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
 
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                semester.value = Semester.THIRD_YEAR_SPRING_SEMESTER
+                            },
                             lectureType = stringResource(id = R.string.third_year_first_semester)
                         )
                     }
@@ -195,14 +235,18 @@ fun LectureDetailSettingScreen(
 
                     Row {
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                division.value = Division.AUTOMOBILE_INDUSTRY
+                            },
                             lectureType = stringResource(id = R.string.car_industry)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
 
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                division.value = Division.ENERGY_INDUSTRY
+                            },
                             lectureType = stringResource(id = R.string.energy_industry)
                         )
 
@@ -213,14 +257,18 @@ fun LectureDetailSettingScreen(
 
                     Row {
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                division.value = Division.MEDICAL_HEALTHCARE
+                            },
                             lectureType = stringResource(id = R.string.medical_health)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
 
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                division.value = Division.AI_CONVERGENCE_AI
+                            },
                             lectureType = stringResource(id = R.string.ai_convergence_composite)
                         )
                     }
@@ -228,7 +276,9 @@ fun LectureDetailSettingScreen(
                     Spacer(modifier = modifier.height(16.dp))
 
                     LectureSettingTag(
-                        modifier = modifier,
+                        modifier = modifier.clickable {
+                            division.value = Division.CULTURAL_INDUSTRY
+                        },
                         lectureType = stringResource(id = R.string.culture_industry)
                     )
 
@@ -245,14 +295,18 @@ fun LectureDetailSettingScreen(
                         modifier = modifier.fillMaxWidth()
                     ) {
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                credit.value = 1
+                            },
                             lectureType = stringResource(id = R.string.one_point)
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
 
                         LectureSettingTag(
-                            modifier = modifier,
+                            modifier = modifier.clickable {
+                                credit.value = 2
+                            },
                             lectureType = stringResource(id = R.string.two_point)
                         )
                     }
@@ -268,7 +322,7 @@ fun LectureDetailSettingScreen(
 
                     Picker(
                         modifier = modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.select_lecture)
+                        text = line.value.ifEmpty { stringResource(id = R.string.select_lecture) }
                     )
 
                     Spacer(modifier = modifier.height(18.dp))

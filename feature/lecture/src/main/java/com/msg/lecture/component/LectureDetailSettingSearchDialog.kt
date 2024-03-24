@@ -21,23 +21,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.BlackCloseIcon
 import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.viewmodel.LectureViewModel
 
 @Composable
 fun LectureDetailSettingSearchDialog(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
     text: String,
-    searchPlaceHolder: String
+    searchPlaceHolder: String,
+    viewModel: LectureViewModel = hiltViewModel()
 ) {
     if (isVisible) {
         BitgoeulAndroidTheme { colors, typography ->
             Dialog(onDismissRequest = {}) {
                 Surface {
-                    Box(
+                        Box(
                         modifier = modifier
                             .background(color = colors.WHITE, RoundedCornerShape(8.dp))
                             .wrapContentHeight()
@@ -70,19 +73,22 @@ fun LectureDetailSettingSearchDialog(
                                 )
                             }
                             TrailingIconTextField(
-                                modifier = modifier
-                                    .padding(bottom = 16.dp)
-                                    .fillMaxWidth()
-                                    .height(54.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth(),
                                 placeholder = searchPlaceHolder,
                                 onValueChange = {},
                                 isDisabled = false,
-                                onClick = {},
+                                onClick = {
+
+                                },
                                 onClickButton = {}
                             )
 
-                            LectureDetailSettingSearchList(modifier = modifier)
+                            Spacer(modifier = modifier.height(18.dp))
 
+                            LectureDetailSettingSearchList(
+                                modifier = modifier
+                            )
                         }
                     }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -384,40 +385,44 @@ fun TrailingIconTextField(
     var text by remember { mutableStateOf(value ?: "") }
 
     BitgoeulAndroidTheme { colors, typography ->
-        OutlinedTextField(
-            placeholder = {
-                Text(text = placeholder, style = typography.bodySmall, color = colors.G2)
-            },
-            value = text,
-            onValueChange = {
-                text = it
-                onValueChange(it)
-            },
-            modifier = modifier
-                .border(1.dp, shape = RoundedCornerShape(8.dp), color = colors.G1)
-                .background(
-                    color = Color.Transparent
+        Box {
+            OutlinedTextField(
+                placeholder = {
+                    Text(text = placeholder, style = typography.bodySmall, color = colors.G2)
+                },
+                value = text,
+                onValueChange = {
+                    text = it
+                    onValueChange(it)
+                },
+                modifier = modifier
+                    .border(1.dp, shape = RoundedCornerShape(8.dp), color = colors.G1)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                textStyle = typography.bodySmall.copy(color = colors.BLACK),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedPlaceholderColor = colors.G2,
+                    unfocusedPlaceholderColor = colors.G2,
+                    focusedTextColor = colors.BLACK,
+                    unfocusedTextColor = colors.BLACK,
+                    disabledTextColor = colors.G1,
+                    cursorColor = colors.P5,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
                 ),
-            textStyle = typography.bodySmall.copy(color = colors.BLACK),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedPlaceholderColor = colors.G2,
-                unfocusedPlaceholderColor = colors.G2,
-                focusedTextColor = colors.BLACK,
-                unfocusedTextColor = colors.BLACK,
-                disabledTextColor = colors.G1,
-                cursorColor = colors.P5,
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-            ),
-            enabled = !isDisabled,
-            maxLines = 1,
-            singleLine = true,
-            trailingIcon = {
-                SearchIcon(
-                    modifier = modifier
-                )
-            }
-        )
+                enabled = !isDisabled,
+                maxLines = 1,
+                singleLine = true,
+                trailingIcon = {
+                    IconButton(onClick = onClickButton) {
+                        SearchIcon(
+                            modifier = modifier
+                        )
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -563,6 +568,25 @@ fun TextFieldPre() {
             onClickButton = {},
             onValueChange = {},
             maxTextLength = 100
+        )
+        TrailingIconTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            placeholder = "Search",
+            onValueChange = {},
+            isDisabled = false,
+            onClick = {},
+            onClickButton = {}
+        )
+
+        PickerTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = "강의 날짜 선택",
+            list = listOf(),
+            selectedItem = "",
+            onItemChange = {},
+            isDatePicker = true
         )
     }
 }

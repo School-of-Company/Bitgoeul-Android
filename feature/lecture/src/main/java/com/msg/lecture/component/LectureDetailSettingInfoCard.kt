@@ -27,7 +27,7 @@ fun LectureDetailSettingInfoCard(
                     .background(color = colors.WHITE)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                colors = CardDefaults.cardColors(containerColor = colors.WHITE)
             ) {
                 Spacer(modifier = modifier.height(8.dp))
 
