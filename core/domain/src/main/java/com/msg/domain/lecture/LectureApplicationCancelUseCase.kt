@@ -4,7 +4,7 @@ import com.msg.data.repository.lecture.LectureRepository
 import java.util.UUID
 import javax.inject.Inject
 
-class LectureApplicationCancelUserCase @Inject constructor(
+class LectureApplicationCancelUseCase @Inject constructor(
     private val lectureRepository: LectureRepository,
 ) {
     suspend operator fun invoke(id: UUID) = runCatching {
