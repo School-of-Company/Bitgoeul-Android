@@ -36,7 +36,12 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureAttendanceDatePicker
 import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.request.lecture.LectureDates
+import com.msg.model.remote.enumdatatype.Division
+import com.msg.model.remote.enumdatatype.Semester
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import java.util.UUID
 
 @Composable
 fun LectureDetailSettingRoute(
@@ -46,7 +51,19 @@ fun LectureDetailSettingRoute(
 ) {
     LectureDetailSettingScreen(
         onCloseClicked = onCloseClicked,
-        onApplyClicked = onApplyClicked
+        onApplyClicked = onApplyClicked,
+        savedCreditPoint = viewModel.credit.value,
+        savedStartTime = viewModel.startTime.value,
+        savedEndTime = viewModel.endTime.value,
+        savedCompleteDate = viewModel.completeDate.value,
+        savedStartDate = viewModel.startDate.value,
+        savedEndDate = viewModel.endDate.value,
+        savedMaxRegisteredUser = viewModel.maxRegisteredUser.value,
+        savedSemester = viewModel.semester.value,
+        savedDivision = viewModel.division.value,
+        savedDepartment = viewModel.department.value,
+        savedLine = viewModel.line.value,
+        savedUserId = viewModel.userId.value,
     )
 }
 
@@ -54,8 +71,18 @@ fun LectureDetailSettingRoute(
 fun LectureDetailSettingScreen(
     onCloseClicked: () -> Unit,
     onApplyClicked: () -> Unit,
+    savedSemester: Semester,
+    savedDivision: Division,
+    savedDepartment: String,
+    savedLine: String,
+    savedUserId: UUID,
     savedCreditPoint: Int,
-    savedLectureDates: List<LectureDates>,
+    savedStartDate: LocalDateTime?,
+    savedEndDate: LocalDateTime?,
+    savedCompleteDate: LocalDate?,
+    savedStartTime: LocalTime?,
+    savedEndTime: LocalTime?,
+    savedMaxRegisteredUser: Int,
     modifier: Modifier = Modifier,
 ) {
     val lectureType = remember { mutableStateOf("대학탐방프로그램") }
@@ -408,8 +435,8 @@ fun LectureDetailSettingScreen(
 @Preview
 @Composable
 fun LectureDetailSettingScreenPre() {
-    LectureDetailSettingScreen(
-        onCloseClicked = {},
-        onApplyClicked = {}
-    )
+//    LectureDetailSettingScreen(
+//        onCloseClicked = {},
+//        onApplyClicked = {}
+//    )
 }

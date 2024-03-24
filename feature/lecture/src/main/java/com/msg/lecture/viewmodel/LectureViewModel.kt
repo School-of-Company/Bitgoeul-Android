@@ -2,6 +2,7 @@ package com.msg.lecture.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,7 +29,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.util.UUID
@@ -129,13 +132,40 @@ class LectureViewModel @Inject constructor(
     var maxRegisteredUser = mutableIntStateOf(0)
         private set
 
-    var completeDate = mutableStateOf<LocalDateTime?>(null)
+    var semester = mutableStateOf(Semester.SECOND_YEAR_FALL_SEMESTER)
+        private set
+
+    var division = mutableStateOf(Division.AI_CONVERGENCE_AI)
+        private set
+
+    var department = mutableStateOf("")
+        private set
+
+    var line = mutableStateOf("")
+        private set
+
+    var userId = mutableStateOf(UUID.randomUUID())
+        private set
+
+    var lectureType = mutableStateOf(LectureType.UNIVERSITY_EXPLORATION_PROGRAM)
         private set
 
     var startDate = mutableStateOf<LocalDateTime?>(null)
         private set
 
     var endDate = mutableStateOf<LocalDateTime?>(null)
+        private set
+
+    var completeDate = mutableStateOf<LocalDate?>(null)
+        private set
+
+    var startTime = mutableStateOf<LocalTime?>(null)
+        private set
+
+    var endTime = mutableStateOf<LocalTime?>(null)
+        private set
+
+    var lectureDate = mutableStateListOf(completeDate, startTime, endTime)
         private set
 
     fun getLectureList(
