@@ -196,7 +196,7 @@ class LectureViewModel @Inject constructor(
     var endTime = mutableStateOf<LocalTime?>(null)
         private set
 
-    var lectureDate = mutableStateListOf(completeDate, startTime, endTime)
+    var keyword = mutableStateOf("")
         private set
 
     fun getLectureList(
@@ -285,6 +285,55 @@ class LectureViewModel @Inject constructor(
         }.onFailure { error ->
             _openLectureResponse.value = error.errorHandling()
         }
-//    }
+    }
+
+    fun searchProfessor(
+        keyword: String,
+    ) = viewModelScope.launch {
+        searchProfessorUseCase(
+            keyword = keyword
+        ).onSuccess {
+            it.catch { remoteError ->
+                _searchProfessorResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _searchProfessorResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _searchProfessorResponse.value = error.errorHandling()
+        }
+    }
+
+    fun searchLine(
+        keyword: String,
+        division: Division
+    ) = viewModelScope.launch {
+        searchLineUseCase(
+            keyword = keyword,
+            division = division
+        ).onSuccess {
+            it.catch { remoteError ->
+                _searchLineResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _searchLineResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _searchLineResponse.value = error.errorHandling()
+        }
+    }
+
+    fun searchDepartment(
+        keyword: String,
+    ) = viewModelScope.launch {
+        searchDepartmentUseCase(
+            keyword = keyword,
+        ).onSuccess {
+            it.catch { remoteError ->
+                _searchDepartmentResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _searchDepartmentResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _searchDepartmentResponse.value = error.errorHandling()
+        }
     }
 }

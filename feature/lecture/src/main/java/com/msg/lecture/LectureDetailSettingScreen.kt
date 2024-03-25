@@ -49,6 +49,10 @@ import java.util.UUID
 fun LectureDetailSettingRoute(
     onCloseClicked: () -> Unit,
     onApplyClicked: () -> Unit,
+    onSearchResultItemCLick: () -> Unit,
+    onSearchProfessorClicked: () -> Unit,
+    onSearchLineClicked: () -> Unit,
+    onSearchDepartmentClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel()
 ) {
     LectureDetailSettingScreen(
@@ -67,6 +71,22 @@ fun LectureDetailSettingRoute(
             viewModel.endTime.value = endTime
             viewModel.maxRegisteredUser.value = maxRegistereduser
             onApplyClicked()
+        },
+        onSearchProfessorClicked = { keyword ->
+            onSearchProfessorClicked()
+            viewModel.searchProfessor(keyword = keyword)
+        },
+        onSearchLineClicked = { keyword, division ->
+            onSearchLineClicked()
+            viewModel.searchLine(keyword = keyword, division = division)
+        },
+        onSearchDepartmentClicked = { keyword ->
+            onSearchDepartmentClicked()
+            viewModel.searchDepartment(keyword = keyword)
+        },
+        onSearchResultItemCLick = { userId ->
+            onSearchResultItemCLick()
+            viewModel.userId.value = userId
         },
         savedCreditPoint = viewModel.credit.value,
         savedStartTime = viewModel.startTime.value,
@@ -88,6 +108,10 @@ fun LectureDetailSettingRoute(
 fun LectureDetailSettingScreen(
     onCloseClicked: () -> Unit,
     onApplyClicked: (LectureType, Semester, Division, String, String, UUID, Int, LocalTime?, LocalDateTime?, LocalTime?, LocalDate?, Int) -> Unit,
+    onSearchProfessorClicked: (String) -> Unit,
+    onSearchLineClicked: (String, Division) -> Unit,
+    onSearchDepartmentClicked: (String) -> Unit,
+    onSearchResultItemCLick: (UUID) -> Unit,
     savedLectureType: LectureType,
     savedSemester: Semester,
     savedDivision: Division,
@@ -439,7 +463,7 @@ fun LectureDetailSettingScreen(
                             .padding(bottom = 128.dp)
                             .fillMaxWidth(),
                         placeholder = stringResource(id = R.string.enter_maximum_number_students),
-                        errorText = "Incorrect", // 에러 텍스트는 임의의 값임
+                        errorText = "Incorrect Format", // 에러 텍스트는 임의의 값임
                         onValueChange = {},
                         onClickButton = {},
                         isNumberOnly = true,
@@ -471,6 +495,20 @@ fun LectureDetailSettingScreen(
                             .height(52.dp)
                             .padding(horizontal = 24.dp),
                     ) {
+                        onApplyClicked(
+                            lectureType.value,
+                            semester.value,
+                            division.value,
+                            department.value,
+                            line.value,
+                            userId.value,
+                            credit.value,
+                            startTime.value,
+                            startDate.value,
+                            endTime.value,
+                            completeDate.value,
+                            maxRegisteredUser.value
+                        )
                     }
                 }
             }

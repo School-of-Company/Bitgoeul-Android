@@ -1,4 +1,4 @@
- package com.msg.lecture
+package com.msg.lecture
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.DetailSettingButton
 import com.msg.design_system.component.icon.GoBackIcon
@@ -24,6 +25,15 @@ import com.msg.design_system.component.textfield.InputMainContentTextField
 import com.msg.design_system.component.textfield.InputTitleTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.viewmodel.LectureViewModel
+
+@Composable
+fun LectureOpenRoute(
+    onSettingClicked: () -> Unit,
+    viewModel: LectureViewModel = hiltViewModel()
+) {
+
+}
 
 @Composable
 fun LectureOpenScreen(
@@ -64,29 +74,29 @@ fun LectureOpenScreen(
                     .height(1.dp)
                     .fillMaxWidth()
                     .background(color = colors.G9)
-                )
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
-                DetailSettingButton(
-                    modifier = Modifier
-                        .padding(bottom = 100.dp)
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .height(52.dp)
-                        .padding(horizontal = 24.dp),
-                    type = "강의"
-                    ) {}
+            DetailSettingButton(
+                modifier = Modifier
+                    .padding(bottom = 100.dp)
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .padding(horizontal = 24.dp),
+                type = "강의"
+            ) {}
 
-                BitgoeulButton(
-                    text = "강의 개설 신청",
-                    modifier = Modifier
-                        .padding(bottom = 40.dp)
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .height(52.dp)
-                        .padding(horizontal = 24.dp),
-                ) {
-                }
+            BitgoeulButton(
+                text = "강의 개설 신청",
+                modifier = Modifier
+                    .padding(bottom = 40.dp)
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .padding(horizontal = 24.dp),
+            ) {
+            }
         }
     }
 }
