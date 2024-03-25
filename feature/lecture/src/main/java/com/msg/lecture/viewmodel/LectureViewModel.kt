@@ -23,7 +23,7 @@ import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.SearchResponseModel
-import com.msg.model.remote.request.lecture.LectureDates
+import com.msg.model.remote.response.lecture.*
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -113,24 +113,51 @@ class LectureViewModel @Inject constructor(
     )
         private set
 
-//    var lectureDetailData = mutableStateOf(
-//        DetailLectureResponse(
-//            id = UUID.randomUUID(),
-//            name = "",
-//            startDate = current,
-//            endDate = current,
-//            completeDate = current,
-//            lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
-//            lectureStatus = LectureStatus.OPEN,
-//            headCount = 0,
-//            maxRegisteredUser = 0,
-//            isRegistered = true,
-//            lecturer = "",
-//            credit = 0
-//        )
-//    )
-//        private set
-
+    var lectureDetailData = mutableStateOf(
+        DetailLectureResponse(
+            name = "",
+            content = "",
+            semester = Semester.SECOND_YEAR_FALL_SEMESTER,
+            division = Division.AI_CONVERGENCE_AI,
+            department = "",
+            line = "",
+            createAt = LocalDate.parse(current.toString().substringBefore("T")),
+            startDate = current,
+            endDate = current,
+            lectureDates = listOf(
+                LectureDates(
+                    completeDate = LocalDate.parse(current.toString().substringBefore("T")),
+                    startTime = LocalTime.parse(current.toString().substringAfter("T").substringBefore("Z")),
+                    endTime = LocalTime.parse(current.toString().substringAfter("T").substringBefore("Z"))
+                )
+            ),
+            lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+            lectureStatus = LectureStatus.OPEN,
+            headCount = 0,
+            maxRegisteredUser = 0,
+            isRegistered = true,
+            lecturer = "",
+            credit = 0
+        )
+    )
+        private set
+//    val name: String,
+//    val content: String,
+//    val semester: Semester,
+//    val division: Division,
+//    val department: String,
+//    val line: String,
+//    val createAt: LocalDate,
+//    val startDate: LocalDateTime,
+//    val endDate: LocalDateTime,
+//    val lectureDates: List<com.msg.model.remote.response.lecture.LectureDates>,
+//    val lectureType: LectureType,
+//    val lectureStatus: LectureStatus,
+//    val headCount: Int,
+//    val maxRegisteredUser: Int,
+//    val isRegistered: Boolean,
+//    val lecturer: String,
+//    val credit: Int,
     var selectedLectureId = mutableStateOf<UUID>(UUID.randomUUID())
         private set
 

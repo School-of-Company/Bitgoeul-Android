@@ -4,9 +4,9 @@ import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
+import com.msg.model.remote.model.lecture.LectureDates
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
 
 data class DetailLectureResponse(
     val name: String,
@@ -26,10 +26,4 @@ data class DetailLectureResponse(
     val isRegistered: Boolean,
     val lecturer: String,
     val credit: Int,
-)
-
-data class LectureDates(
-    val completeDate: LocalDate,
-    val startTime: LocalTime,
-    val endTime: LocalTime,
 )

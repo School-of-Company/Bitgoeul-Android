@@ -3,6 +3,7 @@ package com.msg.model.remote.request.lecture
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
+import com.msg.model.remote.model.lecture.LectureDates
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -23,10 +24,4 @@ data class OpenLectureRequest(
     val lectureType: LectureType,
     val credit: Int,
     val maxRegisteredUser: Int,
-)
-
-data class LectureDates(
-    val completeDate: LocalDate,
-    val startTime: LocalTime,
-    val endTime: LocalTime,
 )
