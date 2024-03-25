@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ import com.msg.design_system.component.picker.Picker
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureAttendanceDatePicker
+import com.msg.lecture.component.LectureDetailSettingSearchDialog
 import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
@@ -129,6 +131,8 @@ fun LectureDetailSettingScreen(
 ) {
     val scrollState = rememberScrollState()
     val isTimeBottomSheetVisible = remember { mutableStateOf(false) }
+    val isSearchDialogVisible = remember { mutableStateOf(false) }
+    val isClickedPickerType = remember { mutableStateListOf(false, false, false) }
 
     val lectureType = remember { mutableStateOf(savedLectureType) }
     val division = remember { mutableStateOf(savedDivision) }
@@ -345,22 +349,26 @@ fun LectureDetailSettingScreen(
                     )
 
                     Picker(
-                        modifier = modifier.fillMaxWidth(),
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .clickable { isClickedPickerType[0] = !isClickedPickerType[0] },
                         text = line.value.ifEmpty { stringResource(id = R.string.select_lecture) }
                     )
 
                     Spacer(modifier = modifier.height(18.dp))
 
                     Text(
-                        text = stringResource(id = R.string.division),
+                        text = stringResource(id = R.string.department),
                         color = colors.BLACK,
                         style = type.bodyLarge,
                         modifier = modifier.padding(bottom = 8.dp)
                     )
 
                     Picker(
-                        modifier = modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.select_division)
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .clickable { isClickedPickerType[1] = !isClickedPickerType[1] },
+                        text = stringResource(id = R.string.select_department)
                     )
 
                     Spacer(modifier = modifier.height(18.dp))
@@ -373,7 +381,9 @@ fun LectureDetailSettingScreen(
                     )
 
                     Picker(
-                        modifier = modifier.fillMaxWidth(),
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .clickable { isClickedPickerType[2] = !isClickedPickerType[2] },
                         text = stringResource(id = R.string.select_professor_in_charge)
                     )
 
@@ -519,10 +529,33 @@ fun LectureDetailSettingScreen(
             ) {
 
             }
+
+            LectureDetailSettingSearchDialog(
+                isVisible = isSearchDialogVisible.value,
+                text = when (isClickedPickerType.indexOf(true)) {
+                    0 -> stringResource(id = R.string.select_lecture)
+                    1 -> stringResource(id = R.string.select_department)
+                    2 -> stringResource(id = R.string.select_professor_in_charge)
+                    else -> ""
+                },
+                searchPlaceHolder = when (isClickedPickerType.indexOf(true)) {
+                    0 -> stringResource(id = R.string.lecture_series_placeholder)
+                    1 -> stringResource(id = R.string.department_placeholder)
+                    3 -> stringResource(id = R.string.professor_in_charge_placeholder)
+                    else -> ""
+                },
+                searchButtonClick = { keyword, division ->
+                    when (isClickedPickerType.indexOf(true)) {
+                        0 -> onSearchLineClicked(keyword, division)
+                        1 -> onSearchDepartmentClicked(keyword)
+                        2 -> onSearchProfessorClicked(keyword)
+                        else -> {}
+                    }
+                }
+            )
         }
     }
 }
-
 
 @Preview
 @Composable

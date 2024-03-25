@@ -29,7 +29,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun LectureAttendanceDatePicker(
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         var rowItems by remember { mutableStateOf(listOf(1 to false)) }

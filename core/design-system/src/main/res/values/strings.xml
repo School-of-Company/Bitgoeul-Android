@@ -57,12 +57,15 @@
     <string name="professor_in_charge">담당 교수</string>
     <string name="lecture_division">강의 구분</string>
     <string name="select_lecture">강의 선택</string>
-    <string name="select_division">학과 선택</string>
-    <string name="division">학과</string>
+    <string name="select_department">학과 선택</string>
+    <string name="department">학과</string>
     <string name="credit">학점</string>
     <string name="one_point">1점</string>
     <string name="two_point">2점</string>
     <string name="lecture_attendance_date">강의 수강일</string>
     <string name="add_date">+ 날짜 추가하기</string>
     <string name="end_time">종료 시간</string>
+    <string name="lecture_series_placeholder">이름 또는 학교명으로 검색...</string>
+    <string name="department_placeholder">계열 검색 또는 임의로 추가...</string>
+    <string name="professor_in_charge_placeholder">학과 이름으로 검색...</string>
 </resources>

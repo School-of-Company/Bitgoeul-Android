@@ -27,11 +27,13 @@ import com.msg.design_system.component.icon.BlackCloseIcon
 import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.viewmodel.LectureViewModel
+import com.msg.model.remote.enumdatatype.Division
 
 @Composable
 fun LectureDetailSettingSearchDialog(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
+    searchButtonClick: (String, Division) -> Unit,
     text: String,
     searchPlaceHolder: String,
     viewModel: LectureViewModel = hiltViewModel()
