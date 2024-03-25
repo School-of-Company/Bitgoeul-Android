@@ -18,11 +18,13 @@ import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
+import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.Lectures
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -60,6 +62,21 @@ class LectureViewModel @Inject constructor(
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val openLectureResponse = _openLectureResponse.asStateFlow()
+
+    private val _lectureApplicationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val lectureApplicationResponse = _lectureApplicationResponse.asStateFlow()
+
+    private val _lectureApplicationCancelResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val lectureApplicationCancelResponse = _lectureApplicationCancelResponse.asStateFlow()
+
+    private val _searchProfessorResponse = MutableStateFlow<Event<List<SearchProfessorResponse>>>(Event.Loading)
+    val searchProfessorResponse = _searchProfessorResponse.asStateFlow()
+
+    private val _searchLineResponse = MutableStateFlow<Event<SearchResponseModel>>(Event.Loading)
+    val searchLineResponse = _searchLineResponse.asStateFlow()
+
+    private val _searchDepartmentResponse = MutableStateFlow<Event<SearchResponseModel>>(Event.Loading)
+    val searchDepartmentResponse = _searchDepartmentResponse.asStateFlow()
 
     var lectureList = mutableStateOf(
         LectureListResponse(
