@@ -23,6 +23,7 @@ import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.SearchResponseModel
+import com.msg.model.remote.request.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -228,33 +229,51 @@ class LectureViewModel @Inject constructor(
     fun openLecture(
         name: String,
         content: String,
+        semester: Semester,
+        division: Division,
+        department: String,
+        line: String,
+        userId: UUID,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
-        completeDate: LocalDateTime,
+        completeDate: LocalDate,
+        startTime: LocalTime,
+        endTime: LocalTime,
         lectureType: LectureType,
         credit: Int,
         maxRegisteredUser: Int,
     ) = viewModelScope.launch {
-//        openLectureUseCase(
-//            OpenLectureRequest(
-//                name = name,
-//                content = content,
-//                startDate = startDate,
-//                endDate = endDate,
-//                completeDate = completeDate,
-//                lectureType = lectureType,
-//                credit = credit,
-//                maxRegisteredUser = maxRegisteredUser
-//            )
-//        ).onSuccess {
-//            it.catch { remoteError ->
-//                _openLectureResponse.value = remoteError.errorHandling()
-//            }.collect {
-//                _openLectureResponse.value = Event.Success()
-//            }
-//        }.onFailure { error ->
-//            _openLectureResponse.value = error.errorHandling()
-//        }
+        openLectureUseCase(
+            OpenLectureRequest(
+                name = name,
+                content = content,
+                semester = semester,
+                division = division,
+                department = department,
+                line = line,
+                userId = userId,
+                startDate = startDate,
+                endDate = endDate,
+                lectureDates = listOf(
+                    LectureDates(
+                        completeDate = completeDate,
+                        startTime = startTime,
+                        endTime = endTime
+                    )
+                ),
+                lectureType = lectureType,
+                credit = credit,
+                maxRegisteredUser = maxRegisteredUser
+            )
+        ).onSuccess {
+            it.catch { remoteError ->
+                _openLectureResponse.value = remoteError.errorHandling()
+            }.collect {
+                _openLectureResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _openLectureResponse.value = error.errorHandling()
+        }
 //    }
     }
 }
