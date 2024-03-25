@@ -61,12 +61,6 @@ class LectureViewModel @Inject constructor(
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val openLectureResponse = _openLectureResponse.asStateFlow()
 
-    private val _approvePendingLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val approvePendingLectureResponse = _approvePendingLectureResponse.asStateFlow()
-
-    private val _rejectPendingLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val rejectPendingLectureResponse = _rejectPendingLectureResponse.asStateFlow()
-
     var lectureList = mutableStateOf(
         LectureListResponse(
             lectures = Lectures(
