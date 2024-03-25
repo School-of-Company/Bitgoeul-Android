@@ -9,7 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.domain.lecture.GetDetailLectureUseCase
 import com.msg.domain.lecture.GetLectureListUseCase
+import com.msg.domain.lecture.LectureApplicationCancelUseCase
 import com.msg.domain.lecture.OpenLectureUseCase
+import com.msg.domain.lecture.SearchDepartmentUseCase
+import com.msg.domain.lecture.SearchLineUseCase
+import com.msg.domain.lecture.SearchProfessorUseCase
 import com.msg.lecture.util.Event
 import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
@@ -45,6 +49,10 @@ class LectureViewModel @Inject constructor(
     private val getDetailLectureUseCase: GetDetailLectureUseCase,
     private val openLectureUseCase: OpenLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
+    private val lectureApplicationCancelUseCase: LectureApplicationCancelUseCase,
+    private val searchProfessorUseCase: SearchProfessorUseCase,
+    private val searchLineUseCase: SearchLineUseCase,
+    private val searchDepartmentUseCase: SearchDepartmentUseCase,
 ) : ViewModel() {
     private val current = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
