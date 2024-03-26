@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,17 +22,18 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun LectureSettingTag(
+    isSelected: Boolean,
+    onClick: (() -> Unit)?,
     modifier: Modifier,
     lectureType: String,
 ) {
-    var isSelected = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box(modifier = modifier
             .clip(RoundedCornerShape(99.dp))
             .border(
                 width = 1.dp,
-                color = if (isSelected.value) {
+                color = if (isSelected) {
                     colors.P5
                 } else {
                     colors.G2
@@ -38,19 +41,21 @@ fun LectureSettingTag(
                 shape = RoundedCornerShape(99.dp)
             )
             .background(
-                color = if (isSelected.value) {
+                color = if (isSelected) {
                     colors.P5
                 } else {
                     colors.WHITE
                 },
             )
             .clickable {
-                isSelected.value = !isSelected.value
+                if (onClick != null) {
+                    onClick()
+                }
             }) {
             Text(
                 text = lectureType,
                 style = typography.bodyMedium,
-                color = if (isSelected.value) {
+                color = if (isSelected) {
                     colors.WHITE
                 } else {
                     colors.G2
@@ -64,15 +69,40 @@ fun LectureSettingTag(
 @Preview
 @Composable
 fun LectureTypeTagPre() {
-    Box(
+    val isLectureSettingTagSelected = remember{ mutableStateOf("0") }
+    Column(
         modifier = Modifier
             .background(color = Color.White)
-            .size(200.dp)
+            .wrapContentHeight()
     ) {
 
         LectureSettingTag(
             modifier = Modifier,
-            lectureType = "상호학점인정교육과정"
+            lectureType = "상호학점인정교육과정",
+            isSelected = isLectureSettingTagSelected.value == "0",
+            onClick = { isLectureSettingTagSelected.value = "0" }
         )
+
+        LectureSettingTag(
+            modifier = Modifier,
+            lectureType = "상호학점인정교육과정",
+            isSelected = isLectureSettingTagSelected.value == "1",
+            onClick = { isLectureSettingTagSelected.value = "1" }
+        )
+
+        LectureSettingTag(
+            modifier = Modifier,
+            lectureType = "상호학점인정교육과정",
+            isSelected = isLectureSettingTagSelected.value == "2",
+            onClick = { isLectureSettingTagSelected.value = "2" }
+        )
+
+        LectureSettingTag(
+            modifier = Modifier,
+            lectureType = "상호학점인정교육과정",
+            isSelected = isLectureSettingTagSelected.value == "3",
+            onClick = { isLectureSettingTagSelected.value = "3" }
+        )
+
     }
 }

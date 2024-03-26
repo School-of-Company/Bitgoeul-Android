@@ -28,15 +28,17 @@ import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
+import java.util.UUID
 
 @Composable
 fun LectureDetailSettingSearchDialog(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
     searchButtonClick: (String, Division) -> Unit,
+    onResultListClick: (UUID) -> Unit,
     text: String,
+    isDepartment: Boolean,
     searchPlaceHolder: String,
-    viewModel: LectureViewModel = hiltViewModel()
 ) {
     if (isVisible) {
         BitgoeulAndroidTheme { colors, typography ->
@@ -88,9 +90,20 @@ fun LectureDetailSettingSearchDialog(
 
                             Spacer(modifier = modifier.height(18.dp))
 
-                            LectureDetailSettingSearchList(
-                                modifier = modifier
-                            )
+                            when (isDepartment) {
+                                true -> {
+                                    LectureDetailSettingDepartmentSearchList(
+                                        modifier = modifier,
+                                        onClick = onResultListClick,
+                                    )
+                                }
+                                false -> {
+                                    LectureDetailSettingSearchList(
+                                        modifier = modifier,
+                                        onClick = onResultListClick,
+                                    )
+                                }
+                            }
                         }
                     }
 
@@ -103,16 +116,5 @@ fun LectureDetailSettingSearchDialog(
 @Preview
 @Composable
 fun SelectProfessorDialogPre() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Blue)
-    ) {
-        LectureDetailSettingSearchDialog(
-            modifier = Modifier, isVisible = true, text = stringResource(
-                id = R.string.select_professor_in_charge
-            ),
-            searchPlaceHolder = "이름 또는 학교명으로 검색..."
-        )
-    }
+
 }

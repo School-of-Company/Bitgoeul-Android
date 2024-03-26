@@ -133,6 +133,10 @@ fun LectureDetailSettingScreen(
     val isTimeBottomSheetVisible = remember { mutableStateOf(false) }
     val isSearchDialogVisible = remember { mutableStateOf(false) }
     val isClickedPickerType = remember { mutableStateListOf(false, false, false) }
+    val isLectureCategoryTagSelected = remember{ mutableStateOf("0") }
+    val isLectureSemesterAttendedTagSelected = remember{ mutableStateOf("0") }
+    val isLectureDivisionTagSelected = remember{ mutableStateOf("0") }
+    val isLectureCreditTagSelected = remember{ mutableStateOf("0") }
 
     val lectureType = remember { mutableStateOf(savedLectureType) }
     val division = remember { mutableStateOf(savedDivision) }
@@ -173,7 +177,11 @@ fun LectureDetailSettingScreen(
                         style = type.titleSmall,
                     )
 
-                    CloseIcon()
+                    CloseIcon(
+                        modifier = modifier.clickable {
+                            onCloseClicked()
+                        }
+                    )
 
                 }
                 Spacer(modifier = modifier.height(18.dp))
@@ -194,7 +202,9 @@ fun LectureDetailSettingScreen(
                         modifier = modifier.clickable {
                             lectureType.value = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
                         },
-                        lectureType = stringResource(id = R.string.mutual_credit_recognition_curriculum)
+                        lectureType = stringResource(id = R.string.mutual_credit_recognition_curriculum),
+                        isSelected = isLectureCategoryTagSelected.value == "0",
+                        onClick = { isLectureCategoryTagSelected.value = "0" }
                     )
 
                     Spacer(modifier = modifier.height(16.dp))
@@ -203,7 +213,9 @@ fun LectureDetailSettingScreen(
                         modifier = modifier.clickable {
                             lectureType.value = LectureType.UNIVERSITY_EXPLORATION_PROGRAM
                         },
-                        lectureType = stringResource(id = R.string.university_visit_program)
+                        lectureType = stringResource(id = R.string.university_visit_program),
+                        isSelected = isLectureCategoryTagSelected.value == "1",
+                        onClick = { isLectureCategoryTagSelected.value = "1" }
                     )
 
                     Spacer(modifier = modifier.height(18.dp))
@@ -220,7 +232,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 semester.value = Semester.FIRST_YEAR_FALL_SEMESTER
                             },
-                            lectureType = stringResource(id = R.string.first_year_second_semester)
+                            lectureType = stringResource(id = R.string.first_year_second_semester),
+                            isSelected = isLectureSemesterAttendedTagSelected.value == "0",
+                            onClick = { isLectureSemesterAttendedTagSelected.value = "0" }
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
@@ -229,7 +243,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 semester.value = Semester.SECOND_YEAR_SPRING_SEMESTER
                             },
-                            lectureType = stringResource(id = R.string.second_year_first_semester)
+                            lectureType = stringResource(id = R.string.second_year_first_semester),
+                            isSelected = isLectureSemesterAttendedTagSelected.value == "1",
+                            onClick = { isLectureSemesterAttendedTagSelected.value = "1" }
                         )
                     }
 
@@ -240,7 +256,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 semester.value = Semester.SECOND_YEAR_FALL_SEMESTER
                             },
-                            lectureType = stringResource(id = R.string.second_year_second_semester)
+                            lectureType = stringResource(id = R.string.second_year_second_semester),
+                            isSelected = isLectureSemesterAttendedTagSelected.value == "2",
+                            onClick = { isLectureSemesterAttendedTagSelected.value = "2" }
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
@@ -249,7 +267,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 semester.value = Semester.THIRD_YEAR_SPRING_SEMESTER
                             },
-                            lectureType = stringResource(id = R.string.third_year_first_semester)
+                            lectureType = stringResource(id = R.string.third_year_first_semester),
+                            isSelected = isLectureSemesterAttendedTagSelected.value == "3",
+                            onClick = { isLectureSemesterAttendedTagSelected.value = "3" }
                         )
                     }
                     Spacer(modifier = modifier.height(26.dp))
@@ -266,7 +286,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 division.value = Division.AUTOMOBILE_INDUSTRY
                             },
-                            lectureType = stringResource(id = R.string.car_industry)
+                            lectureType = stringResource(id = R.string.car_industry),
+                            isSelected = isLectureDivisionTagSelected.value == "0",
+                            onClick = { isLectureDivisionTagSelected.value = "0" }
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
@@ -275,7 +297,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 division.value = Division.ENERGY_INDUSTRY
                             },
-                            lectureType = stringResource(id = R.string.energy_industry)
+                            lectureType = stringResource(id = R.string.energy_industry),
+                            isSelected = isLectureDivisionTagSelected.value == "1",
+                            onClick = { isLectureDivisionTagSelected.value = "1" }
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
@@ -288,7 +312,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 division.value = Division.MEDICAL_HEALTHCARE
                             },
-                            lectureType = stringResource(id = R.string.medical_health)
+                            lectureType = stringResource(id = R.string.medical_health),
+                            isSelected = isLectureDivisionTagSelected.value == "2",
+                            onClick = { isLectureDivisionTagSelected.value = "2" }
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
@@ -297,7 +323,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 division.value = Division.AI_CONVERGENCE_AI
                             },
-                            lectureType = stringResource(id = R.string.ai_convergence_composite)
+                            lectureType = stringResource(id = R.string.ai_convergence_composite),
+                            isSelected = isLectureDivisionTagSelected.value == "3",
+                            onClick = { isLectureDivisionTagSelected.value = "3" }
                         )
                     }
 
@@ -307,7 +335,9 @@ fun LectureDetailSettingScreen(
                         modifier = modifier.clickable {
                             division.value = Division.CULTURAL_INDUSTRY
                         },
-                        lectureType = stringResource(id = R.string.culture_industry)
+                        lectureType = stringResource(id = R.string.culture_industry),
+                        isSelected = isLectureDivisionTagSelected.value == "4",
+                        onClick = { isLectureDivisionTagSelected.value = "4" }
                     )
 
                     Spacer(modifier = modifier.height(18.dp))
@@ -326,7 +356,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 credit.value = 1
                             },
-                            lectureType = stringResource(id = R.string.one_point)
+                            lectureType = stringResource(id = R.string.one_point),
+                            isSelected = isLectureCreditTagSelected.value == "0",
+                            onClick = { isLectureCreditTagSelected.value = "0" }
                         )
 
                         Spacer(modifier = modifier.width(16.dp))
@@ -335,7 +367,9 @@ fun LectureDetailSettingScreen(
                             modifier = modifier.clickable {
                                 credit.value = 2
                             },
-                            lectureType = stringResource(id = R.string.two_point)
+                            lectureType = stringResource(id = R.string.two_point),
+                            isSelected = isLectureCreditTagSelected.value == "1",
+                            onClick = { isLectureCreditTagSelected.value = "1" }
                         )
                     }
 
@@ -367,7 +401,10 @@ fun LectureDetailSettingScreen(
                     Picker(
                         modifier = modifier
                             .fillMaxWidth()
-                            .clickable { isClickedPickerType[1] = !isClickedPickerType[1] },
+                            .clickable {
+                                isSearchDialogVisible.value = !isSearchDialogVisible.value
+                                isClickedPickerType[1] = !isClickedPickerType[1]
+                            },
                         text = stringResource(id = R.string.select_department)
                     )
 
@@ -551,7 +588,12 @@ fun LectureDetailSettingScreen(
                         2 -> onSearchProfessorClicked(keyword)
                         else -> {}
                     }
-                }
+                },
+                isDepartment = when (isClickedPickerType.indexOf(true)) {
+                    1 -> true
+                    else -> false
+                },
+                onResultListClick = onSearchResultItemCLick
             )
         }
     }

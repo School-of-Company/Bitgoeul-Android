@@ -92,9 +92,3 @@ fun LectureAttendanceDatePicker(
         }
     }
 }
-
-@Preview
-@Composable
-fun Preview() {
-    LectureAttendanceDatePicker(modifier = Modifier)
-}

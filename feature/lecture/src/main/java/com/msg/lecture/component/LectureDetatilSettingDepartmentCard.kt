@@ -1,7 +1,6 @@
 package com.msg.lecture.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -13,29 +12,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import java.util.UUID
 
 @Composable
-fun LectureDetailSettingInfoCard(
-    modifier: Modifier
+fun LectureDetailSettingDepartmentCard(
+    modifier: Modifier,
+    onClick: (UUID) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Surface {
             Card(
                 modifier = modifier
-                    .background(color = colors.WHITE)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 16.dp),
                 colors = CardDefaults.cardColors(containerColor = colors.WHITE)
             ) {
-
                 Text(
-                    text = "박주홍",
+                    text = "A.I융합기계과(야)",
                     color = colors.BLACK,
-                    style = typography.labelLarge
+                    style = typography.headlineMedium
                 )
-
-
-                Text(text = "호남대학교", color = colors.G2, style = typography.bodySmall)
             }
         }
     }
@@ -43,8 +39,9 @@ fun LectureDetailSettingInfoCard(
 
 @Preview
 @Composable
-fun ProfessorInChargeCardPre() {
-    Column {
-        LectureDetailSettingInfoCard(modifier = Modifier)
-    }
+fun test() {
+    LectureDetailSettingDepartmentCard(
+        modifier = Modifier,
+        onClick = {}
+    )
 }
