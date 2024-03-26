@@ -379,7 +379,6 @@ fun TrailingIconTextField(
     isDisabled: Boolean,
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
-    onClick: (() -> Unit)? = null,
     value: String? = null,
 ) {
     var text by remember { mutableStateOf(value ?: "") }
@@ -575,7 +574,6 @@ fun TextFieldPre() {
             placeholder = "Search",
             onValueChange = {},
             isDisabled = false,
-            onClick = {},
             onClickButton = {}
         )
 

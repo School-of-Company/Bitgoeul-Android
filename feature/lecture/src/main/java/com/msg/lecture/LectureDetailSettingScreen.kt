@@ -132,11 +132,11 @@ fun LectureDetailSettingScreen(
     val scrollState = rememberScrollState()
     val isTimeBottomSheetVisible = remember { mutableStateOf(false) }
     val isSearchDialogVisible = remember { mutableStateOf(false) }
-    val isClickedPickerType = remember { mutableStateListOf(false, false, false) }
-    val isLectureCategoryTagSelected = remember{ mutableStateOf("0") }
-    val isLectureSemesterAttendedTagSelected = remember{ mutableStateOf("0") }
-    val isLectureDivisionTagSelected = remember{ mutableStateOf("0") }
-    val isLectureCreditTagSelected = remember{ mutableStateOf("0") }
+    val isClickedPickerType = remember { mutableStateOf("") }
+    val isLectureCategoryTagSelected = remember { mutableStateOf("0") }
+    val isLectureSemesterAttendedTagSelected = remember { mutableStateOf("0") }
+    val isLectureDivisionTagSelected = remember { mutableStateOf("0") }
+    val isLectureCreditTagSelected = remember { mutableStateOf("0") }
 
     val lectureType = remember { mutableStateOf(savedLectureType) }
     val division = remember { mutableStateOf(savedDivision) }
@@ -385,7 +385,10 @@ fun LectureDetailSettingScreen(
                     Picker(
                         modifier = modifier
                             .fillMaxWidth()
-                            .clickable { isClickedPickerType[0] = !isClickedPickerType[0] },
+                            .clickable {
+                                isSearchDialogVisible.value = !isSearchDialogVisible.value
+                                isClickedPickerType.value = "강의 계열"
+                            },
                         text = line.value.ifEmpty { stringResource(id = R.string.select_lecture) }
                     )
 
@@ -403,7 +406,7 @@ fun LectureDetailSettingScreen(
                             .fillMaxWidth()
                             .clickable {
                                 isSearchDialogVisible.value = !isSearchDialogVisible.value
-                                isClickedPickerType[1] = !isClickedPickerType[1]
+                                isClickedPickerType.value = "학과"
                             },
                         text = stringResource(id = R.string.select_department)
                     )
@@ -420,7 +423,10 @@ fun LectureDetailSettingScreen(
                     Picker(
                         modifier = modifier
                             .fillMaxWidth()
-                            .clickable { isClickedPickerType[2] = !isClickedPickerType[2] },
+                            .clickable {
+                                isSearchDialogVisible.value = !isSearchDialogVisible.value
+                                isClickedPickerType.value = "담당 교수"
+                            },
                         text = stringResource(id = R.string.select_professor_in_charge)
                     )
 
@@ -569,31 +575,35 @@ fun LectureDetailSettingScreen(
 
             LectureDetailSettingSearchDialog(
                 isVisible = isSearchDialogVisible.value,
-                text = when (isClickedPickerType.indexOf(true)) {
-                    0 -> stringResource(id = R.string.select_lecture)
-                    1 -> stringResource(id = R.string.select_department)
-                    2 -> stringResource(id = R.string.select_professor_in_charge)
+                text = when (isClickedPickerType.value) {
+                    "강의 계열" -> stringResource(id = R.string.select_lecture)
+                    "학과" -> stringResource(id = R.string.select_department)
+                    "담당 교수" -> stringResource(id = R.string.select_professor_in_charge)
                     else -> ""
                 },
-                searchPlaceHolder = when (isClickedPickerType.indexOf(true)) {
-                    0 -> stringResource(id = R.string.lecture_series_placeholder)
-                    1 -> stringResource(id = R.string.department_placeholder)
-                    3 -> stringResource(id = R.string.professor_in_charge_placeholder)
+                searchPlaceHolder = when (isClickedPickerType.value) {
+                    "강의 계열" -> stringResource(id = R.string.lecture_series_placeholder)
+                    "학과" -> stringResource(id = R.string.department_placeholder)
+                    "담당 교수" -> stringResource(id = R.string.professor_in_charge_placeholder)
                     else -> ""
                 },
-                searchButtonClick = { keyword, division ->
-                    when (isClickedPickerType.indexOf(true)) {
-                        0 -> onSearchLineClicked(keyword, division)
-                        1 -> onSearchDepartmentClicked(keyword)
-                        2 -> onSearchProfessorClicked(keyword)
+                onSearchButtonClick = { keyword, division ->
+                    when (isClickedPickerType.value) {
+                        "강의 계열" -> onSearchLineClicked(keyword, division)
+                        "학과" -> onSearchDepartmentClicked(keyword)
+                        "담당 교수" -> onSearchProfessorClicked(keyword)
                         else -> {}
                     }
                 },
-                isDepartment = when (isClickedPickerType.indexOf(true)) {
-                    1 -> true
-                    else -> false
+                searchAPIType = when (isClickedPickerType.value) {
+                    "학과" -> "학과"
+                    "강의 계열" -> "강의 계열"
+                    "담당 교수" -> "담당 교수"
+                    else -> ""
                 },
-                onResultListClick = onSearchResultItemCLick
+                onResultListClick = onSearchResultItemCLick,
+                onCloseButtonClick = { isSearchDialogVisible.value = false },
+                division = division.value
             )
         }
     }

@@ -14,6 +14,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,18 +37,22 @@ import java.util.UUID
 @Composable
 fun LectureDetailSettingSearchDialog(
     modifier: Modifier = Modifier,
-    isVisible: Boolean,
-    searchButtonClick: (String, Division) -> Unit,
-    onResultListClick: (UUID) -> Unit,
     text: String,
-    isDepartment: Boolean,
     searchPlaceHolder: String,
+    isVisible: Boolean,
+    division: Division,
+    searchAPIType: String,
+    onSearchButtonClick: (String, Division) -> Unit,
+    onResultListClick: (UUID) -> Unit,
+    onCloseButtonClick: () -> Unit
 ) {
+    val keywordState = remember { mutableStateOf("") }
+
     if (isVisible) {
         BitgoeulAndroidTheme { colors, typography ->
             Dialog(onDismissRequest = {}) {
                 Surface {
-                        Box(
+                    Box(
                         modifier = modifier
                             .background(color = colors.WHITE, RoundedCornerShape(8.dp))
                             .wrapContentHeight()
@@ -80,24 +88,28 @@ fun LectureDetailSettingSearchDialog(
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 placeholder = searchPlaceHolder,
-                                onValueChange = {},
-                                isDisabled = false,
-                                onClick = {
-
+                                value = keywordState.value,
+                                onValueChange = { keyword ->
+                                    keywordState.value = keyword
                                 },
-                                onClickButton = {}
+                                isDisabled = false,
+                                onClickButton = {
+                                    onSearchButtonClick(keywordState.value, division)
+                                }
                             )
+
 
                             Spacer(modifier = modifier.height(18.dp))
 
-                            when (isDepartment) {
-                                true -> {
+                            when (searchAPIType) {
+                                "학과" -> {
                                     LectureDetailSettingDepartmentSearchList(
                                         modifier = modifier,
                                         onClick = onResultListClick,
                                     )
                                 }
-                                false -> {
+
+                                else -> {
                                     LectureDetailSettingSearchList(
                                         modifier = modifier,
                                         onClick = onResultListClick,
