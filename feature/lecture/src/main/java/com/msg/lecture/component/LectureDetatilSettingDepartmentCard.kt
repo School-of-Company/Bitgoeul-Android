@@ -12,10 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.model.lecture.SearchResponseModel
 import java.util.UUID
 
 @Composable
 fun LectureDetailSettingDepartmentCard(
+    data: SearchResponseModel?,
     modifier: Modifier,
     onClick: (UUID) -> Unit
 ) {
@@ -28,20 +30,11 @@ fun LectureDetailSettingDepartmentCard(
                 colors = CardDefaults.cardColors(containerColor = colors.WHITE)
             ) {
                 Text(
-                    text = "A.I융합기계과(야)",
+                    text = data?.lines.toString(),
                     color = colors.BLACK,
                     style = typography.headlineMedium
                 )
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun test() {
-    LectureDetailSettingDepartmentCard(
-        modifier = Modifier,
-        onClick = {}
-    )
 }

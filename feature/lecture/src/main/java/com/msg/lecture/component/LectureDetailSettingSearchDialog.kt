@@ -33,10 +33,14 @@ import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
+import com.msg.model.remote.model.lecture.SearchResponseModel
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
 
 @Composable
 fun LectureDetailSettingSearchDialog(
+    searchProfessorData: SearchProfessorResponse?,
+    searchData: SearchResponseModel?,
     modifier: Modifier = Modifier,
     text: String,
     searchPlaceHolder: String,
@@ -110,6 +114,7 @@ fun LectureDetailSettingSearchDialog(
                                     LectureDetailSettingDepartmentSearchList(
                                         modifier = modifier,
                                         onClick = onResultListClick,
+                                        data = searchData
                                     )
                                 }
 
@@ -117,6 +122,11 @@ fun LectureDetailSettingSearchDialog(
                                     LectureDetailSettingSearchList(
                                         modifier = modifier,
                                         onClick = onResultListClick,
+                                        searchProfessorData = searchProfessorData,
+                                        searchAPIType = searchAPIType,
+                                        searchData = searchData,
+                                        division = division,
+                                        keyword = keywordState.value
                                     )
                                 }
                             }

@@ -1,7 +1,7 @@
 package com.msg.lecture.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.model.lecture.SearchResponseModel
 import java.util.UUID
 
 @Composable
 fun LectureDetailSettingDepartmentSearchList(
+    data: SearchResponseModel?,
     modifier: Modifier,
     onClick: (UUID) -> Unit
 ) {
@@ -22,10 +24,11 @@ fun LectureDetailSettingDepartmentSearchList(
         LazyColumn(
             modifier = modifier.background(color = colors.WHITE)
         ) {
-            items(5) {
+            items(listOf(data)) {
                 LectureDetailSettingDepartmentCard(
                     modifier = modifier,
-                    onClick = onClick
+                    onClick = onClick,
+                    data = data
                 )
 
                 Spacer(
@@ -37,13 +40,4 @@ fun LectureDetailSettingDepartmentSearchList(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun LectureDetailSettingDepartmentSearchListPre() {
-    LectureDetailSettingDepartmentSearchList(
-        modifier = Modifier,
-        onClick = {}
-    )
 }

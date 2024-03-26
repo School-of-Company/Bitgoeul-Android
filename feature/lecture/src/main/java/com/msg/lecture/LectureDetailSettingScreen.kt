@@ -42,6 +42,8 @@ import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
+import com.msg.model.remote.model.lecture.SearchResponseModel
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -102,12 +104,14 @@ fun LectureDetailSettingRoute(
         savedDepartment = viewModel.department.value,
         savedLine = viewModel.line.value,
         savedUserId = viewModel.userId.value,
-        savedLectureType = viewModel.lectureType.value
+        savedLectureType = viewModel.lectureType.value,
     )
 }
 
 @Composable
 fun LectureDetailSettingScreen(
+    searchProfessorData: SearchProfessorResponse? = null,
+    searchData: SearchResponseModel? = null,
     onCloseClicked: () -> Unit,
     onApplyClicked: (LectureType, Semester, Division, String, String, UUID, Int, LocalTime?, LocalDateTime?, LocalTime?, LocalDate?, Int) -> Unit,
     onSearchProfessorClicked: (String) -> Unit,
@@ -603,7 +607,9 @@ fun LectureDetailSettingScreen(
                 },
                 onResultListClick = onSearchResultItemCLick,
                 onCloseButtonClick = { isSearchDialogVisible.value = false },
-                division = division.value
+                division = division.value,
+                searchProfessorData = searchProfessorData,
+                searchData = searchData,
             )
         }
     }
