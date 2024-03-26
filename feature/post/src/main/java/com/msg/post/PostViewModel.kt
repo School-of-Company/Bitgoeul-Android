@@ -12,6 +12,7 @@ import com.msg.domain.post.GetPostListUseCase
 import com.msg.domain.post.SendPostUseCase
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.FeedType
+import com.msg.model.remote.model.post.PostModel
 import com.msg.model.remote.request.post.WritePostRequest
 import com.msg.model.remote.response.post.GetDetailPostResponse
 import com.msg.model.remote.response.post.GetPostListResponse
@@ -75,6 +76,9 @@ class PostViewModel @Inject constructor(
     var links = mutableStateListOf<String>()
         private set
 
+    var currentFeedType = mutableStateOf(FeedType.EMPLOYMENT)
+        private set
+
     fun deletePost(
         id: UUID
     ) = viewModelScope.launch {
@@ -119,14 +123,13 @@ class PostViewModel @Inject constructor(
         title: String,
         content: String,
         links: List<String>,
-        feedType: FeedType
     ) = viewModelScope.launch {
         sendPostUseCase(
             body = WritePostRequest(
                 title = title,
                 content = content,
                 links = links,
-                feedType = feedType
+                feedType = currentFeedType.value
             )
         ).onSuccess {
             it.catch { remoteError ->
