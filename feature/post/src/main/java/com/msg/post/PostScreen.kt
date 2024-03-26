@@ -60,7 +60,10 @@ internal fun PostScreenRoute(
 
     PostScreen(
         role = role,
-        onAddClicked = onAddClicked,
+        onAddClicked = {
+            onAddClicked()
+            viewModel.currentFeedType.value = it
+        },
         onItemClicked = onItemClicked,
         data = viewModel.postList.value,
         onViewChangeClicked = {
@@ -69,7 +72,8 @@ internal fun PostScreenRoute(
             )
             viewModel.getPostList(type = it)
             state = it
-        }
+        },
+        feedType = viewModel.currentFeedType.value
     )
 }
 
@@ -94,10 +98,11 @@ suspend fun getPostList(
 fun PostScreen(
     modifier: Modifier = Modifier,
     role: Authority,
-    onAddClicked: () -> Unit,
+    onAddClicked: (feedType: FeedType) -> Unit,
     onItemClicked: (UUID) -> Unit,
     onViewChangeClicked: (type: FeedType) -> Unit,
-    data: GetPostListResponse
+    data: GetPostListResponse,
+    feedType: FeedType = FeedType.EMPLOYMENT
 ) {
     val roleField = listOf(
         Authority.ROLE_ADMIN,
@@ -107,7 +112,7 @@ fun PostScreen(
         Authority.ROLE_GOVERNMENT
     )
 
-    var viewState: FeedType = FeedType.EMPLOYMENT
+    var viewState: FeedType = feedType
 
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -147,7 +152,7 @@ fun PostScreen(
                 if (roleField.contains(role)) {
                     IconButton(
                         modifier = modifier.padding(end = 28.dp),
-                        onClick = onAddClicked,
+                        onClick = { onAddClicked(viewState) },
                         content = { PlusIcon() }
                     )
                 }
