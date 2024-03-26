@@ -83,6 +83,29 @@ fun LectureDetailSettingSearchList(
                                     )
                                 }
                             }
+                        } else if (searchData == null) {
+                            items(1) {
+                                Column(
+                                    modifier = modifier.background(color = Color.Transparent)
+                                ) {
+                                    LectureDetailSettingInfoCard(
+                                        modifier = modifier.background(color = Color.Transparent),
+                                        onClick = onClick,
+                                        searchProfessorData = null,
+                                        searchData = searchData,
+                                        division = division,
+                                        keyword = keyword
+                                    )
+
+
+                                    Spacer(
+                                        modifier = Modifier
+                                            .height(1.dp)
+                                            .fillMaxWidth()
+                                            .background(color = colors.G9)
+                                    )
+                                }
+                            }
                         }
                 }
                     else -> {}
