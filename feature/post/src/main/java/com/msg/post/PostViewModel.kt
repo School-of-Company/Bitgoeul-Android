@@ -84,7 +84,7 @@ class PostViewModel @Inject constructor(
 
     var savedContent = mutableStateOf("")
         private set
-    
+
     fun deletePost(
         id: UUID
     ) = viewModelScope.launch {
@@ -179,6 +179,16 @@ class PostViewModel @Inject constructor(
             }
         }.onFailure { error ->
             _getDetailPostResponse.value = error.errorHandling()
+        }
+    }
+
+    fun addLinks() {
+        links.add("")
+    }
+
+    fun saveLinkList() {
+        links.forEachIndexed { index, link ->
+            if (link == "") links.removeAt(index)
         }
     }
 }
