@@ -49,6 +49,7 @@ fun Picker(
 
                 },
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = text,

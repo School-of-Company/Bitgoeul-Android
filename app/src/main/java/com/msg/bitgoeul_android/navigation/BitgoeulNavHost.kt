@@ -12,8 +12,12 @@ import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.lecture.navigation.lectureDetailSettingScreen
 import com.msg.lecture.navigation.lectureListScreen
+import com.msg.lecture.navigation.lectureOpenScreen
 import com.msg.lecture.navigation.navigateToLecture
+import com.msg.lecture.navigation.navigateToLectureDetailSetting
+import com.msg.lecture.navigation.navigateToLectureOpen
 import com.msg.sign_up.navigation.signUpScreen
 import com.msg.student_activity.navigation.navigateToAddActivity
 import com.msg.student_activity.navigation.navigateToDetailSettingActivity
@@ -36,7 +40,7 @@ fun BitgoeulNavHost(
         modifier = modifier
     ) {
         loginScreen(
-            onSignUpClick = navController::navigateToLecture
+            onSignUpClick = navController::navigateToLectureOpen
         )
         signUpScreen(
             onBackClick = navController::popBackStack
@@ -64,6 +68,19 @@ fun BitgoeulNavHost(
             onOpenClicked = navController::popBackStack,
             onItemClicked = navController::popBackStack,
             onBackClicked = navController::popBackStack,
+        )
+        lectureOpenScreen(
+            onActionClicked = navController::popBackStack,
+            onSettingClicked = navController::navigateToLectureDetailSetting,
+            onBackClicked = navController::popBackStack,
+        )
+        lectureDetailSettingScreen(
+            onCloseClicked = navController::popBackStack,
+            onApplyClicked = navController::popBackStack,
+            onSearchDepartmentClicked = navController::popBackStack,
+            onSearchLineClicked = navController::popBackStack,
+            onSearchProfessorClicked = navController::popBackStack,
+            onSearchResultItemCLick = navController::popBackStack,
         )
         myPageScreen(
             onPasswordChangeClicked = navController::navigateToPasswordChange,
