@@ -79,6 +79,12 @@ class PostViewModel @Inject constructor(
     var currentFeedType = mutableStateOf(FeedType.EMPLOYMENT)
         private set
 
+    var savedTitle = mutableStateOf("")
+        private set
+
+    var savedContent = mutableStateOf("")
+        private set
+    
     fun deletePost(
         id: UUID
     ) = viewModelScope.launch {
@@ -122,14 +128,14 @@ class PostViewModel @Inject constructor(
     fun sendPost(
         title: String,
         content: String,
-        links: List<String>,
+        feedType: FeedType,
     ) = viewModelScope.launch {
         sendPostUseCase(
             body = WritePostRequest(
                 title = title,
                 content = content,
                 links = links,
-                feedType = currentFeedType.value
+                feedType = feedType
             )
         ).onSuccess {
             it.catch { remoteError ->

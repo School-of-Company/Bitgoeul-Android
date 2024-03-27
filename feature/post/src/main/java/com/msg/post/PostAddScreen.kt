@@ -24,22 +24,58 @@ import com.msg.design_system.component.button.DetailSettingButton
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.ui.DevicePreviews
+
+@Composable
+internal fun PostAddScreenRoute(
+    viewModel: PostViewModel,
+    onBackClicked: () -> Unit,
+    onSettingClicked: () -> Unit
+) {
+    PostAddScreen(
+        onBackClicked = onBackClicked,
+        onSettingClicked = { title, content ->
+            viewModel.savedTitle.value = title
+            viewModel.savedContent.value = content
+            onSettingClicked()
+        },
+        onAddClicked = { feedType, title, content ->
+            viewModel.sendPost(
+                feedType = feedType,
+                title = title,
+                content = content
+            )
+            viewModel.savedContent.value = ""
+            viewModel.savedTitle.value = ""
+        },
+        savedTitle = viewModel.savedTitle.value,
+        savedContent = viewModel.savedContent.value,
+        feedType = viewModel.currentFeedType.value
+    )
+}
 
 @Composable
 fun PostAddScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onSettingClicked: () -> Unit,
+    onSettingClicked: (title: String, content: String) -> Unit,
+    onAddClicked: (feedType: FeedType, title: String, content: String) -> Unit,
     savedTitle: String,
-    savedContent: String
+    savedContent: String,
+    feedType: FeedType
 ) {
     val title = remember { mutableStateOf(savedTitle) }
     val content = remember { mutableStateOf(savedContent) }
-    
+
     val maxTitleLength = 100
 
     val scrollState = rememberScrollState()
+
+    val typeText = when (feedType) {
+        FeedType.EMPLOYMENT -> "게시글"
+        FeedType.NOTICE -> "공지사항"
+    }
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
@@ -71,7 +107,7 @@ fun PostAddScreen(
                         textStyle = typography.titleSmall,
                         decorationBox = { innerTextField ->
                             if (title.value.isEmpty()) Text(
-                                text = "활동 제목 (100자 이내)",
+                                text = "$typeText 제목 (100자 이내)",
                                 style = typography.titleSmall,
                                 color = colors.G1
                             )
@@ -88,7 +124,7 @@ fun PostAddScreen(
                     BasicTextField(
                         modifier = modifier.fillMaxWidth(),
                         value = content.value,
-                        onValueChange = { if (it.length <= maxTitleLength) title.value = it },
+                        onValueChange = { if (it.length <= maxTitleLength) content.value = it },
                         textStyle = typography.bodySmall,
                         decorationBox = { innerTextField ->
                             if (content.value.isEmpty()) Text(
@@ -113,16 +149,17 @@ fun PostAddScreen(
                     Spacer(modifier = modifier.height(24.dp))
                     DetailSettingButton(
                         modifier = modifier.fillMaxWidth(),
-                        type = "게시글"
+                        type = typeText
                     ) {
-                        onSettingClicked()
+                        onSettingClicked(title.value, content.value)
                     }
                     Spacer(modifier = modifier.height(8.dp))
                     BitgoeulButton(
                         modifier = modifier.fillMaxWidth(),
-                        text = "게시글 추가",
+                        text = "$typeText 추가",
                         state = if (title.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
                     ) {
+                        onAddClicked(feedType, title.value, content.value)
                     }
                     Spacer(modifier = modifier.height(16.dp))
                 }
@@ -136,8 +173,10 @@ fun PostAddScreen(
 fun PostAddScreenPre() {
     PostAddScreen(
         onBackClicked = {},
-        onSettingClicked = {},
+        onSettingClicked = {_,_ ->},
+        onAddClicked = {_, _, _ ->},
         savedTitle = "",
-        savedContent = ""
+        savedContent = "",
+        feedType = FeedType.NOTICE
     )
 }
