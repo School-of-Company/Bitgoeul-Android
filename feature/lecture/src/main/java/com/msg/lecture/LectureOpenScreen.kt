@@ -34,12 +34,9 @@ import com.msg.design_system.component.textfield.InputTitleTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.viewmodel.LectureViewModel
-import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlinx.datetime.todayAt
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Composable
 fun LectureOpenRoute(
@@ -48,13 +45,6 @@ fun LectureOpenRoute(
     onSettingClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel()
 ) {
-    val currentDate = Clock.System.todayAt(TimeZone.currentSystemDefault())
-    val currentDateTime: LocalDateTime =
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    val currentTime: LocalTime =
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).let {
-            LocalTime(it.hour, it.minute, it.second)
-        }
 
 
     LectureOpenScreen(
@@ -68,11 +58,11 @@ fun LectureOpenRoute(
                 department = viewModel.department.value,
                 line = viewModel.line.value,
                 userId = viewModel.userId.value,
-                startDate = viewModel.startDate.value ?: currentDateTime,
-                endDate = viewModel.endDate.value ?: currentDateTime,
-                completeDate = viewModel.completeDate.value ?: currentDate,
-                startTime = viewModel.startTime.value ?: currentTime,
-                endTime = viewModel.endTime.value ?: currentTime,
+                startDate = viewModel.startDate.value ?: LocalDate.now(),
+                endDate = viewModel.endDate.value ?: LocalDateTime.now(),
+                completeDate = viewModel.completeDate.value ?: LocalDate.now(),
+                startTime = viewModel.startTime.value ?: LocalTime.now(),
+                endTime = viewModel.endTime.value ?: LocalTime.now(),
                 lectureType = viewModel.lectureType.value,
                 credit = viewModel.credit.value,
                 maxRegisteredUser = viewModel.maxRegisteredUser.value,

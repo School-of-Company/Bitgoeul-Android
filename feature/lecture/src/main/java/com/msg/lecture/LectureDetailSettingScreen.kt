@@ -34,6 +34,7 @@ import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.picker.Picker
 import com.msg.design_system.component.textfield.DefaultTextField
+import com.msg.design_system.component.textfield.PickerTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureAttendanceDatePicker
 import com.msg.lecture.component.LectureDetailSettingSearchDialog
@@ -44,9 +45,12 @@ import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
+import com.msg.ui.util.toKoreanFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import java.util.UUID
 
 @Composable
@@ -155,6 +159,8 @@ fun LectureDetailSettingScreen(
     val endDate = remember { mutableStateOf(savedEndDate) }
     val completeDate = remember { mutableStateOf(savedCompleteDate) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
+
+    val applicationStartDateForShow = remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
 
     // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, type ->
@@ -446,9 +452,21 @@ fun LectureDetailSettingScreen(
                     Row(
                         modifier = modifier.fillMaxWidth()
                     ) {
-                        Picker(
+                        PickerTextField(
                             modifier = modifier.weight(1f),
-                            text = stringResource(id = R.string.application_start_date)
+                            text = applicationStartDateForShow.value.ifEmpty { stringResource(id = R.string.application_start_date) },
+                            list = listOf(),
+                            selectedItem = applicationStartDateForShow.value,
+                            onItemChange = {
+                                if (applicationStartDateForShow.value != it) applicationStartDateForShow.value = it else applicationStartDateForShow.value = ""
+                            },
+                            isDatePicker = true,
+                            onQuit = {
+                                if (it != null) {
+                                    applicationStartDateForShow.value = it.toKoreanFormat()
+                                    applicationStartDateForShow.value = it.toKoreanFormat()
+                                }
+                            }
                         )
 
                         Spacer(modifier = modifier.width(8.dp))

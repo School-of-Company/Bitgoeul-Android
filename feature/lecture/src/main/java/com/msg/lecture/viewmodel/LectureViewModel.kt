@@ -2,7 +2,6 @@ package com.msg.lecture.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,12 +34,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -55,7 +51,6 @@ class LectureViewModel @Inject constructor(
     private val searchLineUseCase: SearchLineUseCase,
     private val searchDepartmentUseCase: SearchDepartmentUseCase,
 ) : ViewModel() {
-    private val current = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
     suspend fun getRole(): Authority {
         return Authority.authorityOf(authTokenDataSource.getAuthority())
@@ -95,9 +90,9 @@ class LectureViewModel @Inject constructor(
                         id = UUID.randomUUID(),
                         name = "",
                         content = "",
-                        startDate = current.toString(),
-                        endDate = current.toString(),
-                        completeDate = current.toString(),
+                        startDate = LocalDateTime.now().toString(),
+                        endDate = LocalDateTime.now().toString(),
+                        completeDate = LocalDateTime.now().toString(),
                         lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
                         lectureStatus = LectureStatus.OPEN,
                         headCount = 0,
@@ -121,14 +116,14 @@ class LectureViewModel @Inject constructor(
             division = Division.AI_CONVERGENCE_AI,
             department = "",
             line = "",
-            createAt = LocalDate.parse(current.toString().substringBefore("T")),
-            startDate = current,
-            endDate = current,
+            createAt = LocalDate.now(),
+            startDate = LocalDateTime.now(),
+            endDate = LocalDateTime.now(),
             lectureDates = listOf(
                 LectureDates(
-                    completeDate = LocalDate.parse(current.toString().substringBefore("T")),
-                    startTime = LocalTime.parse(current.toString().substringAfter("T").substringBefore("Z")),
-                    endTime = LocalTime.parse(current.toString().substringAfter("T").substringBefore("Z"))
+                    completeDate = LocalDate.now(),
+                    startTime = LocalTime.now(),
+                    endTime = LocalTime.now()
                 )
             ),
             lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,

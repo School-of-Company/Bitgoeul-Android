@@ -5,8 +5,8 @@ import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.LectureDates
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class DetailLectureResponse(
     val name: String,

@@ -1,7 +1,8 @@
 package com.msg.model.remote.model.lecture
 
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalTime
+import java.time.LocalDate
+import java.time.LocalTime
+
 
 data class LectureDates(
     val completeDate: LocalDate,
