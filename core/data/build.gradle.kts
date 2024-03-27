@@ -13,6 +13,5 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:network"))
 
-    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
 }
