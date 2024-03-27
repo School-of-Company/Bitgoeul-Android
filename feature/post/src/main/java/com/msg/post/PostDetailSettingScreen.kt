@@ -25,6 +25,24 @@ import com.msg.post.component.AddLinkSection
 import com.msg.ui.DevicePreviews
 
 @Composable
+internal fun PostDetailSettingScreenRoute(
+    viewModel: PostViewModel,
+    onCloseClick: () -> Unit
+) {
+    PostDetailSettingScreen(
+        links = viewModel.links,
+        onCloseClick = {
+            onCloseClick()
+            viewModel.saveLinkList()
+        },
+        onClickAddButton = { viewModel.addLinks() },
+        onValueChanged = { index, links ->
+            viewModel.links[index] = links
+        }
+    )
+}
+
+@Composable
 fun PostDetailSettingScreen(
     modifier: Modifier = Modifier,
     links: MutableList<String>,
