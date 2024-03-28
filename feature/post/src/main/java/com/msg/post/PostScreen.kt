@@ -34,7 +34,7 @@ import java.util.UUID
 @Composable
 internal fun PostScreenRoute(
     viewModel: PostViewModel = hiltViewModel(),
-    onItemClicked: (UUID) -> Unit,
+    onItemClicked: () -> Unit,
     onAddClicked: () -> Unit
 ) {
     val role = viewModel.role
@@ -64,7 +64,11 @@ internal fun PostScreenRoute(
             onAddClicked()
             viewModel.currentFeedType.value = it
         },
-        onItemClicked = onItemClicked,
+        onItemClicked = {
+            onItemClicked()
+            viewModel.selectedId.value = it
+            viewModel.getDetailPost(it)
+        },
         data = viewModel.postList.value,
         onViewChangeClicked = {
             viewModel.postList.value = GetPostListResponse(
