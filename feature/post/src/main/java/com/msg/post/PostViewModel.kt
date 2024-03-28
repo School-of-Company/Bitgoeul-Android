@@ -85,6 +85,12 @@ class PostViewModel @Inject constructor(
     var savedContent = mutableStateOf("")
         private set
 
+    var selectedId = mutableStateOf<UUID>(UUID.randomUUID())
+        private set
+
+    var isEditPage = mutableStateOf(false)
+        private set
+
     fun deletePost(
         id: UUID
     ) = viewModelScope.launch {
