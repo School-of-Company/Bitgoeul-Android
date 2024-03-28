@@ -191,4 +191,11 @@ class PostViewModel @Inject constructor(
             if (link == "") links.removeAt(index)
         }
     }
+
+    fun getFilledEditPage() {
+        savedTitle.value = detailPost.value.title
+        savedContent.value = detailPost.value.content
+        links.addAll(detailPost.value.links)
+        isEditPage.value = true
+    }
 }

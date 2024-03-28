@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,11 +36,60 @@ import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.response.post.GetDetailPostResponse
+import com.msg.post.util.Event
 import com.msg.ui.DevicePreviews
 import com.msg.ui.util.toDotFormat
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDateTime
 import java.util.UUID
+
+@Composable
+fun PostDetailScreenRoute(
+    viewModel: PostViewModel,
+    onEditClicked: () -> Unit,
+    onDeleteClicked: () -> Unit,
+    onBackClicked: () -> Unit
+) {
+    LaunchedEffect(true) {
+        getDetailPost(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.detailPost.value = it
+            }
+        )
+    }
+
+    PostDetailScreen(
+        data = viewModel.detailPost.value,
+        id = viewModel.selectedId.value,
+        onDeleteClicked = {
+            onDeleteClicked()
+            viewModel.deletePost(it)
+        },
+        onEditClicked = {
+            onEditClicked()
+            viewModel.getFilledEditPage()
+        },
+        onBackClicked = {
+            onBackClicked()
+            viewModel.selectedId.value = UUID.randomUUID()
+        }
+    )
+}
+
+suspend fun getDetailPost(
+    viewModel: PostViewModel,
+    onSuccess: (data: GetDetailPostResponse) -> Unit
+) {
+    viewModel.getDetailPostResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
 
 @Composable
 fun PostDetailScreen(
