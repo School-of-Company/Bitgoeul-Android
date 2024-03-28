@@ -58,7 +58,7 @@ fun LectureOpenRoute(
                 department = viewModel.department.value,
                 line = viewModel.line.value,
                 userId = viewModel.userId.value,
-                startDate = viewModel.startDate.value ?: LocalDate.now(),
+                startDate = viewModel.startDate.value ?: LocalDateTime.now(),
                 endDate = viewModel.endDate.value ?: LocalDateTime.now(),
                 completeDate = viewModel.completeDate.value ?: LocalDate.now(),
                 startTime = viewModel.startTime.value ?: LocalTime.now(),

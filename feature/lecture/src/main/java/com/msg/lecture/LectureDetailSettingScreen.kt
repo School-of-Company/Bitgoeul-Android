@@ -29,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.msg.design_system.component.bottomsheet.TimerBottomSheet
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.picker.Picker
@@ -160,7 +159,11 @@ fun LectureDetailSettingScreen(
     val completeDate = remember { mutableStateOf(savedCompleteDate) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
+    val lectureCompleteDateForShow = remember { mutableStateOf(savedCompleteDate) }
+    val lectureStartTimeForShow = remember { mutableStateOf(savedStartTime) }
+    val lectureEndTimeForShow = remember { mutableStateOf(savedEndTime) }
     val applicationStartDateForShow = remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
+    val applicationEndDateForShow = remember { mutableStateOf(savedEndDate?.toKoreanFormat() ?: "") }
 
     // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, type ->
@@ -458,10 +461,11 @@ fun LectureDetailSettingScreen(
                             list = listOf(),
                             selectedItem = applicationStartDateForShow.value,
                             onItemChange = {
-                                if (applicationStartDateForShow.value != it) applicationStartDateForShow.value = it else applicationStartDateForShow.value = ""
+                                if (applicationStartDateForShow.value != it) applicationStartDateForShow.value =
+                                    it else applicationStartDateForShow.value = ""
                             },
                             isDatePicker = true,
-                            onQuit = {
+                            onDatePickerQuit = {
                                 if (it != null) {
                                     applicationStartDateForShow.value = it.toKoreanFormat()
                                     applicationStartDateForShow.value = it.toKoreanFormat()
@@ -495,9 +499,22 @@ fun LectureDetailSettingScreen(
                     Row(
                         modifier = modifier.fillMaxWidth()
                     ) {
-                        Picker(
+                        PickerTextField(
                             modifier = modifier.weight(1f),
-                            text = stringResource(id = R.string.application_deadline_date)
+                            text = applicationEndDateForShow.value.ifEmpty { stringResource(id = R.string.application_deadline_date) },
+                            list = listOf(),
+                            selectedItem = applicationEndDateForShow.value,
+                            onItemChange = {
+                                if (applicationEndDateForShow.value != it) applicationEndDateForShow.value =
+                                    it else applicationEndDateForShow.value = ""
+                            },
+                            isDatePicker = true,
+                            onDatePickerQuit = {
+                                if (it != null) {
+                                    applicationEndDateForShow.value = it.toKoreanFormat()
+                                    applicationEndDateForShow.value = it.toKoreanFormat()
+                                }
+                            }
                         )
 
                         Spacer(modifier = modifier.width(8.dp))
@@ -522,7 +539,10 @@ fun LectureDetailSettingScreen(
                     )
 
                     LectureAttendanceDatePicker(
-                        modifier = modifier.fillMaxWidth()
+                        modifier = modifier.fillMaxWidth(),
+                        lectureAttendanceDateText = "ㅁ낭",
+                        lectureStartTimeText = "asjdk",
+                        lectureEndTimeText = "남인ㅁ어"
                     )
 
 
@@ -586,13 +606,6 @@ fun LectureDetailSettingScreen(
                         )
                     }
                 }
-            }
-
-            TimerBottomSheet(
-                onQuit = { isTimeBottomSheetVisible.value = false },
-                isVisible = isTimeBottomSheetVisible.value
-            ) {
-
             }
 
             LectureDetailSettingSearchDialog(

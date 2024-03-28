@@ -99,7 +99,7 @@ fun ActivityDetailSettingScreen(
                     if (activityDateForShow.value != it) activityDateForShow.value = it else activityDateForShow.value = ""
                 },
                 isDatePicker = true,
-                onQuit = {
+                onDatePickerQuit = {
                     if (it != null) {
                         activityDateForShow.value = it.toKoreanFormat()
                         activityDate.value = it

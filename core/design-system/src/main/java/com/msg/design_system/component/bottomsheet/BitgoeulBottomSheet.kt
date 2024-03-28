@@ -1,7 +1,6 @@
 package com.msg.design_system.component.bottomsheet
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +24,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,9 +39,9 @@ import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.checkbox.BitGoeulCheckBox
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import kotlinx.datetime.LocalTime
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -203,23 +203,22 @@ fun LectureFilterBottomSheet(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun TimerBottomSheet(
+fun TimePickerBottomSheet(
     modifier: Modifier = Modifier,
-    onQuit: () -> Unit,
-    isVisible: Boolean,
-    onTimeChange: (String) -> Unit
+    onQuit: (LocalTime) -> Unit,
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val timePickerState = rememberTimePickerState()
+    val selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
 
-    if (isVisible) {
-        BitgoeulAndroidTheme { colors, type ->
+        BitgoeulAndroidTheme { colors, _ ->
             ModalBottomSheet(
                 modifier = modifier
                     .height(330.dp),
                 sheetState = bottomSheetState,
                 onDismissRequest = {
-                    onQuit()
+                        onQuit(selectedTime)
+                        Log.e("selectedTIme", selectedTime.toString())
                 },
             ) {
                 Box(
@@ -240,7 +239,6 @@ fun TimerBottomSheet(
                         ),
                     )
                 }
-            }
         }
     }
 }
@@ -284,9 +282,7 @@ fun Long.convertMillisToDate(): LocalDate {
 @Preview
 @Composable
 fun BottomSheetPre() {
-    TimerBottomSheet(
+    TimePickerBottomSheet(
         onQuit = {},
-        isVisible = true,
-        onTimeChange = {}
     )
 }
