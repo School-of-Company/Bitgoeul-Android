@@ -48,7 +48,8 @@ fun LectureAttendanceDatePicker(
     isDatePicker: Boolean = false,
     isTimePicker: Boolean = false,
     onDatePickerQuit: (LocalDate?) -> Unit = {},
-    onTimePickerQuit: (LocalTime?) -> Unit = {}
+    onStartTimePickerQuit: (LocalTime?) -> Unit = {},
+    onEndTimePickerQuit: (LocalTime?) -> Unit = {}
 ) {
     val isLectureAttendanceFocused = remember { mutableStateOf(false) }
     val isLectureStartTimeFocused = remember { mutableStateOf(false) }
@@ -87,16 +88,16 @@ fun LectureAttendanceDatePicker(
                     if (isLectureAttendanceFocused.value) {
                         when {
                             isDatePicker -> {
-                                DatePickerBottomSheet {
+                                DatePickerBottomSheet { completeDate ->
                                     isLectureAttendanceFocused.value = false
-                                    onDatePickerQuit(it)
+                                    onDatePickerQuit(completeDate)
                                 }
                             }
 
                             isTimePicker -> {
                                 TimePickerBottomSheet {
                                     isLectureAttendanceFocused.value = false
-                                    onTimePickerQuit(it)
+                                    onStartTimePickerQuit(it)
                                 }
                                 if (showDeleteIcon) {
                                     DeleteIcon(
@@ -140,16 +141,16 @@ fun LectureAttendanceDatePicker(
                         if (isLectureStartTimeFocused.value) {
                             when {
                                 isDatePicker -> {
-                                    DatePickerBottomSheet {
+                                    DatePickerBottomSheet { completeDate ->
                                         isLectureStartTimeFocused.value = false
-                                        onDatePickerQuit(it)
+                                        onDatePickerQuit(completeDate)
                                     }
                                 }
 
                                 isTimePicker -> {
-                                    TimePickerBottomSheet {
+                                    TimePickerBottomSheet { startTime ->
                                         isLectureStartTimeFocused.value = false
-                                        onTimePickerQuit(it)
+                                        onStartTimePickerQuit(startTime)
                                     }
                                     if (showDeleteIcon) {
                                         DeleteIcon(
@@ -157,8 +158,7 @@ fun LectureAttendanceDatePicker(
                                                 .weight(0.15f)
                                                 .align(Alignment.CenterVertically)
                                                 .clickable {
-                                                    rowItems =
-                                                        rowItems - (rowItems.size to true)
+                                                    rowItems = rowItems - (rowItems.size to true)
                                                 },
                                         )
                                     }
@@ -191,16 +191,16 @@ fun LectureAttendanceDatePicker(
                         if (isLectureEndTimeFocused.value) {
                             when {
                                 isDatePicker -> {
-                                    DatePickerBottomSheet {
+                                    DatePickerBottomSheet { completeDate ->
                                         isLectureEndTimeFocused.value = false
-                                        onDatePickerQuit(it)
+                                        onDatePickerQuit(completeDate)
                                     }
                                 }
 
                                 isTimePicker -> {
-                                    TimePickerBottomSheet {
+                                    TimePickerBottomSheet { endTime ->
                                         isLectureEndTimeFocused.value = false
-                                        onTimePickerQuit(it)
+                                        onEndTimePickerQuit(endTime)
                                     }
                                     if (showDeleteIcon) {
                                         DeleteIcon(
@@ -227,7 +227,7 @@ fun LectureAttendanceDatePicker(
                     style = typography.headlineMedium
                 )
             }
-            
+
             Spacer(modifier = modifier.height(28.dp))
         }
     }

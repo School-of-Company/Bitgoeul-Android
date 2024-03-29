@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.bottomsheet.DatePickerBottomSheet
+import com.msg.design_system.component.bottomsheet.LocalDateTimePickerBottomSheet
 import com.msg.design_system.component.bottomsheet.SelectorBottomSheet
 import com.msg.design_system.component.bottomsheet.TimePickerBottomSheet
 import com.msg.design_system.component.icon.CancelIcon
@@ -45,6 +46,7 @@ import com.msg.design_system.component.icon.SeeableIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -436,8 +438,10 @@ fun PickerTextField(
     onItemChange: (item: String) -> Unit,
     isDatePicker: Boolean = false,
     isTimePicker: Boolean = false,
+    isLocalDateTimePicker: Boolean = false,
     onDatePickerQuit: (LocalDate?) -> Unit = {},
-    onTimePickerQuit: (LocalTime?) -> Unit = {}
+    onTimePickerQuit: (LocalTime?) -> Unit = {},
+    onLocalDateTimePickerQuit: (LocalDateTime?) -> Unit = {},
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -474,6 +478,11 @@ fun PickerTextField(
                 TimePickerBottomSheet {
                     isFocused.value = false
                     onTimePickerQuit (it)
+                }
+            } else if (isFocused.value && isLocalDateTimePicker) {
+                LocalDateTimePickerBottomSheet {
+                    isFocused.value = false
+                    onLocalDateTimePickerQuit(it)
                 }
             } else if (isFocused.value) {
                 SelectorBottomSheet(

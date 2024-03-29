@@ -3,12 +3,13 @@ package com.msg.lecture.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,41 +26,35 @@ fun LectureSettingTag(
     isSelected: Boolean,
     onClick: (() -> Unit)?,
     modifier: Modifier,
-    lectureType: String,
+    text: String,
 ) {
-
+    val interactionSource = remember { mutableStateOf(MutableInteractionSource()) }
     BitgoeulAndroidTheme { colors, typography ->
         Box(modifier = modifier
             .clip(RoundedCornerShape(99.dp))
             .border(
                 width = 1.dp,
-                color = if (isSelected) {
-                    colors.P5
-                } else {
-                    colors.G2
-                },
+                color = if (isSelected) colors.P5 else colors.G2
+                ,
                 shape = RoundedCornerShape(99.dp)
             )
             .background(
-                color = if (isSelected) {
-                    colors.P5
-                } else {
-                    colors.WHITE
-                },
+                color = if (isSelected) colors.P5 else colors.WHITE
+                ,
             )
-            .clickable {
+            .clickable(
+                interactionSource = interactionSource.value,
+                indication = rememberRipple(bounded = false)
+            ) {
                 if (onClick != null) {
                     onClick()
                 }
             }) {
             Text(
-                text = lectureType,
+                text = text,
                 style = typography.bodyMedium,
-                color = if (isSelected) {
-                    colors.WHITE
-                } else {
-                    colors.G2
-                },
+                color = if (isSelected) colors.WHITE else colors.G2
+                ,
                 modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
@@ -78,28 +73,28 @@ fun LectureTypeTagPre() {
 
         LectureSettingTag(
             modifier = Modifier,
-            lectureType = "상호학점인정교육과정",
+            text = "상호학점인정교육과정",
             isSelected = isLectureSettingTagSelected.value == "0",
             onClick = { isLectureSettingTagSelected.value = "0" }
         )
 
         LectureSettingTag(
             modifier = Modifier,
-            lectureType = "상호학점인정교육과정",
+            text = "상호학점인정교육과정",
             isSelected = isLectureSettingTagSelected.value == "1",
             onClick = { isLectureSettingTagSelected.value = "1" }
         )
 
         LectureSettingTag(
             modifier = Modifier,
-            lectureType = "상호학점인정교육과정",
+            text = "상호학점인정교육과정",
             isSelected = isLectureSettingTagSelected.value == "2",
             onClick = { isLectureSettingTagSelected.value = "2" }
         )
 
         LectureSettingTag(
             modifier = Modifier,
-            lectureType = "상호학점인정교육과정",
+            text = "상호학점인정교육과정",
             isSelected = isLectureSettingTagSelected.value == "3",
             onClick = { isLectureSettingTagSelected.value = "3" }
         )

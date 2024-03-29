@@ -41,6 +41,7 @@ import com.msg.design_system.component.checkbox.BitGoeulCheckBox
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 
@@ -275,8 +276,45 @@ fun DatePickerBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LocalDateTimePickerBottomSheet(
+    onQuit: (LocalDateTime?) -> Unit
+) {
+    val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
+        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+            return utcTimeMillis <= System.currentTimeMillis()
+        }
+    })
+    val selectedDate = datePickerState.selectedDateMillis?.convertMillisToDateTime()
+
+    BitgoeulAndroidTheme { colors, typography ->
+        ModalBottomSheet(
+            onDismissRequest = { onQuit(selectedDate) }
+        ) {
+            DatePicker(
+                state = datePickerState,
+                colors = DatePickerDefaults.colors(
+                    containerColor = colors.WHITE,
+                    selectedDayContainerColor = colors.P5,
+                    selectedYearContainerColor = colors.P5,
+                    todayDateBorderColor = colors.P5,
+                    todayContentColor = colors.P5
+                ),
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
 fun Long.convertMillisToDate(): LocalDate {
     return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
+}
+
+fun Long?.convertMillisToDateTime(): LocalDateTime? {
+    return this?.let {
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
+    }
 }
 
 @Preview
