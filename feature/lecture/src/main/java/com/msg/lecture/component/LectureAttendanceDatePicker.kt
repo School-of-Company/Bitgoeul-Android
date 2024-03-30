@@ -45,8 +45,6 @@ fun LectureAttendanceDatePicker(
     lectureAttendanceDateText: String,
     lectureStartTimeText: String,
     lectureEndTimeText: String,
-    isDatePicker: Boolean = false,
-    isTimePicker: Boolean = false,
     onDatePickerQuit: (LocalDate?) -> Unit = {},
     onStartTimePickerQuit: (LocalTime?) -> Unit = {},
     onEndTimePickerQuit: (LocalTime?) -> Unit = {}
@@ -68,7 +66,6 @@ fun LectureAttendanceDatePicker(
                     Spacer(modifier = modifier.height(20.dp))
                 }
                 Row {
-
                     Row(
                         modifier = modifier
                             .weight(0.85f)
@@ -102,13 +99,6 @@ fun LectureAttendanceDatePicker(
                         )
                     }
                 }
-                if (isLectureAttendanceFocused.value) {
-                    DatePickerBottomSheet { completeDate ->
-                        isLectureAttendanceFocused.value = false
-                        onDatePickerQuit(completeDate)
-                    }
-                }
-
 
                 Spacer(modifier = modifier.height(12.dp))
 
@@ -134,55 +124,62 @@ fun LectureAttendanceDatePicker(
 
                         PickerArrowIcon(isSelected = isLectureStartTimeFocused.value)
                     }
-                    if (isLectureStartTimeFocused.value) {
-                        TimePickerBottomSheet { startTime ->
-                            isLectureStartTimeFocused.value = false
-                            onStartTimePickerQuit(startTime)
-                        }
+
+                    Spacer(modifier = modifier.width(8.dp))
+
+                    Row(
+                        modifier = modifier
+                            .weight(1f)
+                            .background(
+                                color = if (isLectureEndTimeFocused.value) colors.P5 else colors.G9,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .padding(vertical = 15.dp, horizontal = 20.dp)
+                            .clickable {
+                                isLectureEndTimeFocused.value = true
+                            },
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = lectureEndTimeText,
+                            color = if (isLectureEndTimeFocused.value) colors.WHITE else colors.G2,
+                            style = typography.bodySmall,
+                        )
+
+                        PickerArrowIcon(isSelected = isLectureEndTimeFocused.value)
+                    }
+                }
+
+                Spacer(modifier = modifier.height(12.dp))
+
+                Text(
+                    modifier = modifier.clickable {
+                        rowItems = rowItems + (rowItems.size + 1 to true)
+                    },
+                    text = stringResource(id = R.string.add_date),
+                    color = colors.G2,
+                    style = typography.headlineMedium
+                )
+
+                Spacer(modifier = modifier.height(28.dp))
+
+                if (isLectureAttendanceFocused.value) {
+                    DatePickerBottomSheet { completeDate ->
+                        isLectureAttendanceFocused.value = false
+                        onDatePickerQuit(completeDate)
+                    }
+                } else if (isLectureEndTimeFocused.value) {
+                    TimePickerBottomSheet { endTime ->
+                        isLectureEndTimeFocused.value = false
+                        onEndTimePickerQuit(endTime)
+                    }
+                } else if (isLectureStartTimeFocused.value) {
+                    TimePickerBottomSheet { startTime ->
+                        isLectureStartTimeFocused.value = false
+                        onStartTimePickerQuit(startTime)
                     }
                 }
             }
-            Spacer(modifier = modifier.width(8.dp))
-
-            Row(
-                modifier = modifier
-                    .weight(1f)
-                    .background(
-                        color = if (isLectureEndTimeFocused.value) colors.P5 else colors.G9,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(vertical = 15.dp, horizontal = 20.dp)
-                    .clickable {
-                        isLectureEndTimeFocused.value = true
-                    },
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text = lectureEndTimeText,
-                    color = if (isLectureEndTimeFocused.value) colors.WHITE else colors.G2,
-                    style = typography.bodySmall,
-                )
-
-                PickerArrowIcon(isSelected = isLectureEndTimeFocused.value)
-            }
-            if (isLectureEndTimeFocused.value) {
-                TimePickerBottomSheet { endTime ->
-                    isLectureEndTimeFocused.value = false
-                    onEndTimePickerQuit(endTime)
-                }
-            }
         }
-
-        Spacer(modifier = modifier.height(12.dp))
-
-        Text(
-            modifier = modifier.clickable {
-                rowItems = rowItems + (rowItems.size + 1 to true)
-            },
-            text = stringResource(id = R.string.add_date),
-            color = colors.G2,
-            style = typography.headlineMedium
-        )
-        Spacer(modifier = modifier.height(28.dp))
     }
 }
