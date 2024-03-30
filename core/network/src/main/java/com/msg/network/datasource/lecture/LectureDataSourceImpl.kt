@@ -69,10 +69,10 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchProfessor(keyword: String): Flow<List<SearchProfessorResponse>> =
+    override suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> =
         flow {
             emit(
-                BitgoeulApiHandler<List<SearchProfessorResponse>>()
+                BitgoeulApiHandler<SearchProfessorResponse>()
                     .httpRequest { lectureAPI.searchProfessor(keyword = keyword) }
                     .sendRequest()
             )

@@ -73,7 +73,7 @@ class LectureViewModel @Inject constructor(
     private val _lectureApplicationCancelResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val lectureApplicationCancelResponse = _lectureApplicationCancelResponse.asStateFlow()
 
-    private val _searchProfessorResponse = MutableStateFlow<Event<List<SearchProfessorResponse>>>(Event.Loading)
+    private val _searchProfessorResponse = MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
     val searchProfessorResponse = _searchProfessorResponse.asStateFlow()
 
     private val _searchLineResponse = MutableStateFlow<Event<SearchResponseModel>>(Event.Loading)

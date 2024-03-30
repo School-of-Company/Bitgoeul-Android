@@ -51,7 +51,7 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun searchProfessor(keyword: String): Flow<List<SearchProfessorResponse>> {
+    override suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> {
         return lectureDataSource.searchProfessor(
             keyword = keyword
         )

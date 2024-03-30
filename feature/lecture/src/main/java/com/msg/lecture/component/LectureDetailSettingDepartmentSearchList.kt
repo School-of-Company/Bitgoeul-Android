@@ -25,7 +25,7 @@ fun LectureDetailSettingDepartmentSearchList(
             modifier = modifier.background(color = colors.WHITE)
         ) {
             if (data != null) {
-                items(listOf(data)) {
+                items(listOf(data).size) {
                     LectureDetailSettingDepartmentCard(
                         modifier = modifier,
                         onClick = onClick,

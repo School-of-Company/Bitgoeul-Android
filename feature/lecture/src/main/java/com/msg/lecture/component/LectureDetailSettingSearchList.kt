@@ -34,7 +34,7 @@ fun LectureDetailSettingSearchList(
             when (searchAPIType) {
                 "담당 교수" -> {
                     if (searchProfessorData != null) {
-                        items(listOf(searchProfessorData)) {
+                        items(listOf(searchProfessorData).size) {
                             Column(
                                 modifier = modifier.background(color = Color.Transparent)
                             ) {
@@ -61,7 +61,7 @@ fun LectureDetailSettingSearchList(
 
                 "강의 계열" -> {
                         if (searchData != null) {
-                            items(listOf(searchData)) {
+                            items(listOf(searchData).size) {
                                 Column(
                                     modifier = modifier.background(color = Color.Transparent)
                                 ) {

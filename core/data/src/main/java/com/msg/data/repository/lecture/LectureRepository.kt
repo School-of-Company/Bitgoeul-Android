@@ -16,7 +16,7 @@ interface LectureRepository {
     suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
     suspend fun lectureApplication(id: UUID): Flow<Unit>
     suspend fun lectureApplicationCancel(id: UUID): Flow<Unit>
-    suspend fun searchProfessor(keyword: String): Flow<List<SearchProfessorResponse>>
+    suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse>
     suspend fun searchLine(keyword: String, division: Division): Flow<SearchResponseModel>
     suspend fun searchDepartment(keyword: String): Flow<SearchResponseModel>
 }

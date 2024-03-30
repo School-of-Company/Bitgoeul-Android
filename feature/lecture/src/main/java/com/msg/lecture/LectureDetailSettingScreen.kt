@@ -37,6 +37,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureAttendanceDatePicker
 import com.msg.lecture.component.LectureDetailSettingSearchDialog
 import com.msg.lecture.component.LectureSettingTag
+import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
@@ -110,6 +111,37 @@ fun LectureDetailSettingRoute(
     )
 }
 
+suspend fun getSearchResultList(
+    viewModel: LectureViewModel,
+    onSuccess: (data: SearchResponseModel) -> Unit
+) {
+    viewModel.searchLineResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+
+    viewModel.searchDepartmentResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+
+    viewModel.searchProfessorResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
 @Composable
 fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,

@@ -46,7 +46,7 @@ interface LectureAPI {
     @GET("lecture/instructor")
     suspend fun searchProfessor(
         @Query("keyword") keyword: String,
-    ): List<SearchProfessorResponse>
+    ): SearchProfessorResponse
 
 
     @GET("lecture/line")
