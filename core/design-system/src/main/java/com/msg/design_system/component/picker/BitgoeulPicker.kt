@@ -36,6 +36,7 @@ import kotlinx.coroutines.delay
 fun Picker(
     modifier: Modifier,
     text: String,
+    onClick: (() -> Unit)?,
 ) {
     BitgoeulAndroidTheme { colors, type ->
         Row(
@@ -46,7 +47,9 @@ fun Picker(
                 )
                 .padding(vertical = 15.dp, horizontal = 20.dp)
                 .clickable {
-
+                    if(onClick != null) {
+                        onClick()
+                    }
                 },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

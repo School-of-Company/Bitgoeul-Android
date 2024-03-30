@@ -57,6 +57,7 @@ fun LectureSettingTag(
                 ,
                 modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
+
         }
     }
 }

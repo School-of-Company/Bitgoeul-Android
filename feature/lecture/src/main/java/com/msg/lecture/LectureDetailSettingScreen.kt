@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import com.msg.design_system.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -160,11 +158,18 @@ fun LectureDetailSettingScreen(
     val completeDate = remember { mutableStateOf(savedCompleteDate) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
-    val lectureCompleteDateForShow = remember { mutableStateOf(savedCompleteDate?.toKoreanFormat() ?: "") }
-    val lectureStartTimeForShow = remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
-    val lectureEndTimeForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val selectedStartLocalDate = remember { mutableStateOf(LocalDate.now()) }
+    val selectedStartLocalTime = remember { mutableStateOf(LocalTime.now()) }
+    val selectedEndLocalDate = remember { mutableStateOf(LocalDate.now()) }
+    val selectedEndLocalTime = remember { mutableStateOf(LocalTime.now()) }
+
+    val applicationStartTimeForShow = remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
+    val applicationEndTimeForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
     val applicationStartDateForShow = remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
     val applicationEndDateForShow = remember { mutableStateOf(savedEndDate?.toKoreanFormat() ?: "") }
+    val lectureAttendCompleteDateForShow = remember { mutableStateOf(savedCompleteDate?.toKoreanFormat() ?: "") }
+    val lectureAttendStartTimeDateForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val lectureAttendEndTimeDateForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
 
     // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, type ->
@@ -210,23 +215,25 @@ fun LectureDetailSettingScreen(
                 )
 
                 LectureSettingTag(
-                    modifier = modifier.clickable {
-                        lectureType.value = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
-                    },
+                    modifier = modifier,
                     text = stringResource(id = R.string.mutual_credit_recognition_curriculum),
                     isSelected = isLectureCategoryTagSelected.value == "0",
-                    onClick = { isLectureCategoryTagSelected.value = "0" }
+                    onClick = {
+                        isLectureCategoryTagSelected.value = "0"
+                        lectureType.value = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
+                    }
                 )
 
                 Spacer(modifier = modifier.height(16.dp))
 
                 LectureSettingTag(
-                    modifier = modifier.clickable {
-                        lectureType.value = LectureType.UNIVERSITY_EXPLORATION_PROGRAM
-                    },
+                    modifier = modifier,
                     text = stringResource(id = R.string.university_visit_program),
                     isSelected = isLectureCategoryTagSelected.value == "1",
-                    onClick = { isLectureCategoryTagSelected.value = "1" }
+                    onClick = {
+                        isLectureCategoryTagSelected.value = "1"
+                        lectureType.value = LectureType.UNIVERSITY_EXPLORATION_PROGRAM
+                    }
                 )
 
                 Spacer(modifier = modifier.height(18.dp))
@@ -240,23 +247,25 @@ fun LectureDetailSettingScreen(
 
                 Row {
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            semester.value = Semester.FIRST_YEAR_FALL_SEMESTER
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.first_year_second_semester),
                         isSelected = isLectureSemesterAttendedTagSelected.value == "0",
-                        onClick = { isLectureSemesterAttendedTagSelected.value = "0" }
+                        onClick = {
+                            isLectureSemesterAttendedTagSelected.value = "0"
+                            semester.value = Semester.FIRST_YEAR_FALL_SEMESTER
+                        }
                     )
 
                     Spacer(modifier = modifier.width(16.dp))
 
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            semester.value = Semester.SECOND_YEAR_SPRING_SEMESTER
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.second_year_first_semester),
                         isSelected = isLectureSemesterAttendedTagSelected.value == "1",
-                        onClick = { isLectureSemesterAttendedTagSelected.value = "1" }
+                        onClick = {
+                            isLectureSemesterAttendedTagSelected.value = "1"
+                            semester.value = Semester.SECOND_YEAR_SPRING_SEMESTER
+                        }
                     )
                 }
 
@@ -264,23 +273,25 @@ fun LectureDetailSettingScreen(
 
                 Row {
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            semester.value = Semester.SECOND_YEAR_FALL_SEMESTER
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.second_year_second_semester),
                         isSelected = isLectureSemesterAttendedTagSelected.value == "2",
-                        onClick = { isLectureSemesterAttendedTagSelected.value = "2" }
+                        onClick = {
+                            isLectureSemesterAttendedTagSelected.value = "2"
+                            semester.value = Semester.SECOND_YEAR_FALL_SEMESTER
+                        }
                     )
 
                     Spacer(modifier = modifier.width(16.dp))
 
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            semester.value = Semester.THIRD_YEAR_SPRING_SEMESTER
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.third_year_first_semester),
                         isSelected = isLectureSemesterAttendedTagSelected.value == "3",
-                        onClick = { isLectureSemesterAttendedTagSelected.value = "3" }
+                        onClick = {
+                            isLectureSemesterAttendedTagSelected.value = "3"
+                            semester.value = Semester.THIRD_YEAR_SPRING_SEMESTER
+                        }
                     )
                 }
                 Spacer(modifier = modifier.height(26.dp))
@@ -294,23 +305,25 @@ fun LectureDetailSettingScreen(
 
                 Row {
                     LectureSettingTag(
-                        modifier = modifier.clickable() {
-                            division.value = Division.AUTOMOBILE_INDUSTRY
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.car_industry),
                         isSelected = isLectureDivisionTagSelected.value == "0",
-                        onClick = { isLectureDivisionTagSelected.value = "0" }
+                        onClick = {
+                            isLectureDivisionTagSelected.value = "0"
+                            division.value = Division.AUTOMOBILE_INDUSTRY
+                        }
                     )
 
                     Spacer(modifier = modifier.width(16.dp))
 
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            division.value = Division.ENERGY_INDUSTRY
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.energy_industry),
                         isSelected = isLectureDivisionTagSelected.value == "1",
-                        onClick = { isLectureDivisionTagSelected.value = "1" }
+                        onClick = {
+                            isLectureDivisionTagSelected.value = "1"
+                            division.value = Division.ENERGY_INDUSTRY
+                        }
                     )
 
                     Spacer(modifier = modifier.width(16.dp))
@@ -320,35 +333,38 @@ fun LectureDetailSettingScreen(
 
                 Row {
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            division.value = Division.MEDICAL_HEALTHCARE
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.medical_health),
                         isSelected = isLectureDivisionTagSelected.value == "2",
-                        onClick = { isLectureDivisionTagSelected.value = "2" }
+                        onClick = {
+                            isLectureDivisionTagSelected.value = "2"
+                            division.value = Division.MEDICAL_HEALTHCARE
+                        }
                     )
 
                     Spacer(modifier = modifier.width(16.dp))
 
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            division.value = Division.AI_CONVERGENCE_AI
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.ai_convergence_composite),
                         isSelected = isLectureDivisionTagSelected.value == "3",
-                        onClick = { isLectureDivisionTagSelected.value = "3" }
+                        onClick = {
+                            isLectureDivisionTagSelected.value = "3"
+                            division.value = Division.AI_CONVERGENCE_AI
+                        }
                     )
                 }
 
                 Spacer(modifier = modifier.height(16.dp))
 
                 LectureSettingTag(
-                    modifier = modifier.clickable {
-                        division.value = Division.CULTURAL_INDUSTRY
-                    },
+                    modifier = modifier,
                     text = stringResource(id = R.string.culture_industry),
                     isSelected = isLectureDivisionTagSelected.value == "4",
-                    onClick = { isLectureDivisionTagSelected.value = "4" }
+                    onClick = {
+                        isLectureDivisionTagSelected.value = "4"
+                        division.value = Division.CULTURAL_INDUSTRY
+                    }
                 )
 
                 Spacer(modifier = modifier.height(18.dp))
@@ -364,23 +380,25 @@ fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth()
                 ) {
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            credit.value = 1
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.one_point),
                         isSelected = isLectureCreditTagSelected.value == "0",
-                        onClick = { isLectureCreditTagSelected.value = "0" }
+                        onClick = {
+                            isLectureCreditTagSelected.value = "0"
+                            credit.value = 1
+                        }
                     )
 
                     Spacer(modifier = modifier.width(16.dp))
 
                     LectureSettingTag(
-                        modifier = modifier.clickable {
-                            credit.value = 2
-                        },
+                        modifier = modifier,
                         text = stringResource(id = R.string.two_point),
                         isSelected = isLectureCreditTagSelected.value == "1",
-                        onClick = { isLectureCreditTagSelected.value = "1" }
+                        onClick = {
+                            isLectureCreditTagSelected.value = "1"
+                            credit.value = 2
+                        }
                     )
                 }
 
@@ -395,12 +413,12 @@ fun LectureDetailSettingScreen(
 
                 Picker(
                     modifier = modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            isSearchDialogVisible.value = !isSearchDialogVisible.value
-                            isClickedPickerType.value = "강의 계열"
-                        },
-                    text = line.value.ifEmpty { stringResource(id = R.string.select_lecture) }
+                        .fillMaxWidth(),
+                    text = line.value.ifEmpty { stringResource(id = R.string.select_lecture) },
+                    onClick = {
+                        isSearchDialogVisible.value = !isSearchDialogVisible.value
+                        isClickedPickerType.value = "강의 계열"
+                    }
                 )
 
                 Spacer(modifier = modifier.height(18.dp))
@@ -414,12 +432,12 @@ fun LectureDetailSettingScreen(
 
                 Picker(
                     modifier = modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            isSearchDialogVisible.value = !isSearchDialogVisible.value
-                            isClickedPickerType.value = "학과"
-                        },
-                    text = stringResource(id = R.string.select_department)
+                        .fillMaxWidth(),
+                    text = stringResource(id = R.string.select_department),
+                    onClick = {
+                        isSearchDialogVisible.value = !isSearchDialogVisible.value
+                        isClickedPickerType.value = "학과"
+                    }
                 )
 
                 Spacer(modifier = modifier.height(18.dp))
@@ -433,12 +451,12 @@ fun LectureDetailSettingScreen(
 
                 Picker(
                     modifier = modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            isSearchDialogVisible.value = !isSearchDialogVisible.value
-                            isClickedPickerType.value = "담당 교수"
-                        },
-                    text = stringResource(id = R.string.select_professor_in_charge)
+                        .fillMaxWidth(),
+                    text = stringResource(id = R.string.select_professor_in_charge),
+                    onClick = {
+                        isSearchDialogVisible.value = !isSearchDialogVisible.value
+                        isClickedPickerType.value = "담당 교수"
+                    }
                 )
 
                 Spacer(modifier = modifier.height(18.dp))
@@ -462,12 +480,11 @@ fun LectureDetailSettingScreen(
                             if (applicationStartDateForShow.value != it) applicationStartDateForShow.value =
                                 it else applicationStartDateForShow.value = ""
                         },
-                        isLocalDateTimePicker = true,
-                        onLocalDateTimePickerQuit = { selectedStartDate ->
+                        isDatePicker = true,
+                        onDatePickerQuit = { selectedStartDate ->
                             if (selectedStartDate != null) {
-                                applicationStartDateForShow.value =
-                                    selectedStartDate.toKoreanFormat()
-                                startDate.value = selectedStartDate
+                                applicationStartDateForShow.value = selectedStartDate.toKoreanFormat()
+                                selectedStartLocalDate.value = selectedStartDate
                             }
                         }
                     )
@@ -475,15 +492,23 @@ fun LectureDetailSettingScreen(
                     Spacer(modifier = modifier.width(8.dp))
 
 
-                    Picker(
-                        modifier = modifier
-                            .weight(1f)
-                            .clickable {
-                                isTimeBottomSheetVisible.value = !isTimeBottomSheetVisible.value
-                            },
-                        text = stringResource(id = R.string.start_time)
+                    PickerTextField(
+                        modifier = modifier.weight(1f),
+                        text = applicationStartTimeForShow.value.ifEmpty { stringResource(id = R.string.start_time) },
+                        list = listOf(),
+                        selectedItem = applicationStartTimeForShow.value,
+                        onItemChange = {
+                            if (applicationStartTimeForShow.value != it) applicationStartTimeForShow.value =
+                                it else applicationStartTimeForShow.value = ""
+                        },
+                        isTimePicker = true,
+                        onTimePickerQuit = { selectedStartTime ->
+                            if (selectedStartTime != null) {
+                                applicationStartTimeForShow.value = selectedStartTime.toLocalTimeFormat()
+                                selectedStartLocalTime.value = selectedStartTime
+                            }
+                        },
                     )
-
                 }
 
                 Spacer(modifier = modifier.height(18.dp))
@@ -507,24 +532,33 @@ fun LectureDetailSettingScreen(
                             if (applicationEndDateForShow.value != it) applicationEndDateForShow.value =
                                 it else applicationEndDateForShow.value = ""
                         },
-                        isLocalDateTimePicker = true,
-                        onLocalDateTimePickerQuit = { selectedEndDate ->
+                        isDatePicker = true,
+                        onDatePickerQuit = { selectedEndDate ->
                             if (selectedEndDate != null) {
                                 applicationEndDateForShow.value = selectedEndDate.toKoreanFormat()
-                                endDate.value = selectedEndDate
+                                selectedEndLocalDate.value = selectedEndDate
                             }
                         }
                     )
 
                     Spacer(modifier = modifier.width(8.dp))
 
-                    Picker(
-                        modifier = modifier
-                            .weight(1f)
-                            .clickable {
-                                isTimeBottomSheetVisible.value = !isTimeBottomSheetVisible.value
-                            },
-                        text = stringResource(id = R.string.deadeline_time)
+                    PickerTextField(
+                        modifier = modifier.weight(1f),
+                        text = applicationEndTimeForShow.value.ifEmpty { stringResource(id = R.string.deadeline_time) },
+                        list = listOf(),
+                        selectedItem = applicationEndTimeForShow.value,
+                        onItemChange = {
+                            if (applicationEndTimeForShow.value != it) applicationEndTimeForShow.value =
+                                it else applicationEndTimeForShow.value = ""
+                        },
+                        isTimePicker = true,
+                        onTimePickerQuit = { selectedEndTime ->
+                            if (selectedEndTime != null) {
+                                applicationEndTimeForShow.value = selectedEndTime.toLocalTimeFormat()
+                                selectedEndLocalTime.value = selectedEndTime
+                            }
+                        },
                     )
                 }
 
@@ -538,30 +572,29 @@ fun LectureDetailSettingScreen(
                 )
 
                 LectureAttendanceDatePicker(
-                    modifier = modifier.fillMaxWidth(),
-                    lectureAttendanceDateText = lectureCompleteDateForShow.value.ifEmpty {
+                    modifier = modifier,
+                    lectureAttendanceDateText = lectureAttendCompleteDateForShow.value.ifEmpty {
                         stringResource(
                             id = R.string.lecture_attendance_date
                         )
                     },
-                    lectureStartTimeText = lectureStartTimeForShow.value.ifEmpty {
+                    lectureStartTimeText = lectureAttendStartTimeDateForShow.value.ifEmpty {
                         stringResource(
                             id = R.string.start_time
                         )
                     },
-                    lectureEndTimeText = lectureEndTimeForShow.value.ifEmpty { stringResource(id = R.string.end_time) },
+                    lectureEndTimeText = lectureAttendEndTimeDateForShow.value.ifEmpty { stringResource(id = R.string.end_time) },
                     onDatePickerQuit = { selectedCompleteDate ->
-                        lectureCompleteDateForShow.value =
+                        lectureAttendCompleteDateForShow.value =
                             selectedCompleteDate?.toKoreanFormat() ?: ""
                         completeDate.value = selectedCompleteDate
                     },
                     onStartTimePickerQuit = { checkedStartTime ->
-                        lectureStartTimeForShow.value =
-                            checkedStartTime?.toLocalTimeFormat() ?: ""
+                        lectureAttendStartTimeDateForShow.value = checkedStartTime?.toLocalTimeFormat() ?: ""
                         startTime.value = checkedStartTime
                     },
                     onEndTimePickerQuit = { selectedEndTime ->
-                        lectureEndTimeForShow.value = selectedEndTime?.toLocalTimeFormat() ?: ""
+                        lectureAttendEndTimeDateForShow.value = selectedEndTime?.toLocalTimeFormat() ?: ""
                         endTime.value = selectedEndTime
                     }
                 )
