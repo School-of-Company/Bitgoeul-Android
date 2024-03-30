@@ -77,10 +77,10 @@ fun BitgoeulNavHost(
         lectureDetailSettingScreen(
             onCloseClicked = navController::popBackStack,
             onApplyClicked = navController::popBackStack,
-            onSearchDepartmentClicked = navController::popBackStack,
-            onSearchLineClicked = navController::popBackStack,
-            onSearchProfessorClicked = navController::popBackStack,
-            onSearchResultItemCLick = navController::popBackStack,
+            onSearchDepartmentClicked = {},
+            onSearchLineClicked = {},
+            onSearchProfessorClicked = {},
+            onSearchResultItemCLick = {},
         )
         myPageScreen(
             onPasswordChangeClicked = navController::navigateToPasswordChange,

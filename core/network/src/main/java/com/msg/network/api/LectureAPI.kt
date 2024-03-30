@@ -55,7 +55,7 @@ interface LectureAPI {
         @Query("division") division: Division,
     ): SearchResponseModel
 
-    @GET("lecture/departments")
+    @GET("lecture/department")
     suspend fun searchDepartment(
         @Query("keyword") keyword: String,
     ): SearchResponseModel

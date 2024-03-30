@@ -24,19 +24,21 @@ fun LectureDetailSettingDepartmentSearchList(
         LazyColumn(
             modifier = modifier.background(color = colors.WHITE)
         ) {
-            items(listOf(data)) {
-                LectureDetailSettingDepartmentCard(
-                    modifier = modifier,
-                    onClick = onClick,
-                    data = data
-                )
+            if (data != null) {
+                items(listOf(data)) {
+                    LectureDetailSettingDepartmentCard(
+                        modifier = modifier,
+                        onClick = onClick,
+                        data = data
+                    )
 
-                Spacer(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = colors.G9)
-                )
+                    Spacer(
+                        modifier = Modifier
+                            .height(1.dp)
+                            .fillMaxWidth()
+                            .background(color = colors.G9)
+                    )
+                }
             }
         }
     }
