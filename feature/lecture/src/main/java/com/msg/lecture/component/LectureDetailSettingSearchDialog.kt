@@ -40,7 +40,7 @@ import java.util.UUID
 @Composable
 fun LectureDetailSettingSearchDialog(
     searchProfessorData: SearchProfessorResponse?,
-    searchData: SearchResponseModel?,
+    searchData: List<SearchResponseModel>,
     modifier: Modifier = Modifier,
     text: String,
     searchPlaceHolder: String,
@@ -49,6 +49,7 @@ fun LectureDetailSettingSearchDialog(
     searchAPIType: String,
     onSearchButtonClick: (String, Division) -> Unit,
     onResultListClick: (UUID) -> Unit,
+    onDepartmentAndLineListClick: (String) -> Unit,
     onCloseButtonClick: () -> Unit
 ) {
     val keywordState = remember { mutableStateOf("") }
@@ -113,7 +114,7 @@ fun LectureDetailSettingSearchDialog(
                                 "학과" -> {
                                     LectureDetailSettingDepartmentSearchList(
                                         modifier = modifier,
-                                        onClick = onResultListClick,
+                                        onClick = onDepartmentAndLineListClick,
                                         data = searchData
                                     )
                                 }

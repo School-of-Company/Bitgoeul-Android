@@ -1,5 +1,6 @@
 package com.msg.lecture
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,10 +25,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.picker.Picker
@@ -61,6 +65,8 @@ fun LectureDetailSettingRoute(
     onSearchDepartmentClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel()
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     LectureDetailSettingScreen(
         onCloseClicked = onCloseClicked,
         onApplyClicked = { lectureType, semester, division, department, line, userId, credit, startDate, endDate, completeDate, endTime, startTime, maxRegisteredUser ->
@@ -82,19 +88,49 @@ fun LectureDetailSettingRoute(
         onSearchProfessorClicked = { keyword ->
             onSearchProfessorClicked()
             viewModel.searchProfessor(keyword = keyword)
+            observeSearchData(
+                lifecycleOwner = lifecycleOwner,
+                viewModel = viewModel,
+                onLineAndDepartmentSuccess = { data ->
+                    viewModel.searchLineAndDepartmentData.value = data
+                },
+                onSearchProfessorSuccess = { data ->
+                    viewModel.searchProfessorData.value = data
+                })
         },
         onSearchLineClicked = { keyword, division ->
             onSearchLineClicked()
             viewModel.searchLine(keyword = keyword, division = division)
+            observeSearchData(
+                lifecycleOwner = lifecycleOwner,
+                viewModel = viewModel,
+                onLineAndDepartmentSuccess = { data ->
+                    viewModel.searchLineAndDepartmentData.value = data
+                },
+                onSearchProfessorSuccess = { data ->
+                    viewModel.searchProfessorData.value = data
+                })
         },
         onSearchDepartmentClicked = { keyword ->
             onSearchDepartmentClicked()
             viewModel.searchDepartment(keyword = keyword)
+            observeSearchData(
+                lifecycleOwner = lifecycleOwner,
+                viewModel = viewModel,
+                onLineAndDepartmentSuccess = { data ->
+                    viewModel.searchLineAndDepartmentData.value = data
+                },
+                onSearchProfessorSuccess = { data ->
+                    viewModel.searchProfessorData.value = data
+                })
         },
         onSearchResultItemCLick = { userId ->
             onSearchResultItemCLick()
             viewModel.userId.value = userId
+            Log.e("userId", userId.toString())
         },
+        searchData = viewModel.searchLineAndDepartmentData.value,
+        searchProfessorData = viewModel.searchProfessorData.value,
         savedCreditPoint = viewModel.credit.value,
         savedStartTime = viewModel.startTime.value,
         savedEndTime = viewModel.endTime.value,
@@ -111,42 +147,63 @@ fun LectureDetailSettingRoute(
     )
 }
 
-suspend fun getSearchResultList(
+fun observeSearchData(
+    lifecycleOwner: LifecycleOwner,
     viewModel: LectureViewModel,
-    onSuccess: (data: SearchResponseModel) -> Unit
+    onLineAndDepartmentSuccess: (data: SearchResponseModel) -> Unit,
+    onSearchProfessorSuccess: (data: SearchProfessorResponse) -> Unit
 ) {
-    viewModel.searchLineResponse.collect { response ->
-        when (response) {
-            is Event.Success -> {
-                onSuccess(response.data!!)
+    lifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewModel.searchLineResponse.collect { response ->
+            when (response) {
+                is Event.Success -> {
+                    onLineAndDepartmentSuccess(response.data!!)
+                    Log.e("계열 데이터", response.toString())
+                }
+
+                else -> {
+                    Log.e("계열 데이터 안불러와짐", response.toString())
+                }
             }
-            else -> {}
         }
     }
 
-    viewModel.searchDepartmentResponse.collect { response ->
-        when (response) {
-            is Event.Success -> {
-                onSuccess(response.data!!)
+    lifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewModel.searchDepartmentResponse.collect { response ->
+            when (response) {
+                is Event.Success -> {
+                    onLineAndDepartmentSuccess(response.data!!)
+                    Log.e("학과 데이터", response.toString())
+                }
+
+                else -> {
+                    Log.e("학과 데이터 안불러와짐", response.toString())
+                }
             }
-            else -> {}
         }
     }
 
-    viewModel.searchProfessorResponse.collect { response ->
-        when (response) {
-            is Event.Success -> {
-                onSuccess(response.data!!)
+    lifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewModel.searchProfessorResponse.collect { response ->
+            when (response) {
+                is Event.Success -> {
+                    onSearchProfessorSuccess(response.data!!)
+                    Log.e("교수 데이터", response.toString())
+                }
+
+                else -> {
+                    Log.e("교수 데이터 안불러와짐", response.toString())
+                }
             }
-            else -> {}
         }
     }
 }
+
 @Composable
 fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,
-    searchProfessorData: SearchProfessorResponse? = null,
-    searchData: SearchResponseModel? = null,
+    searchProfessorData: SearchProfessorResponse,
+    searchData: SearchResponseModel,
     onCloseClicked: () -> Unit,
     onApplyClicked: (LectureType, Semester, Division, String, String, UUID, Int, LocalDateTime?, LocalDateTime?, LocalDate?, LocalTime?, LocalTime?, Int) -> Unit,
     onSearchProfessorClicked: (String) -> Unit,
@@ -515,7 +572,8 @@ fun LectureDetailSettingScreen(
                         isDatePicker = true,
                         onDatePickerQuit = { selectedStartDate ->
                             if (selectedStartDate != null) {
-                                applicationStartDateForShow.value = selectedStartDate.toKoreanFormat()
+                                applicationStartDateForShow.value =
+                                    selectedStartDate.toKoreanFormat()
                                 selectedStartLocalDate.value = selectedStartDate
                             }
                         }
@@ -536,7 +594,8 @@ fun LectureDetailSettingScreen(
                         isTimePicker = true,
                         onTimePickerQuit = { selectedStartTime ->
                             if (selectedStartTime != null) {
-                                applicationStartTimeForShow.value = selectedStartTime.toLocalTimeFormat()
+                                applicationStartTimeForShow.value =
+                                    selectedStartTime.toLocalTimeFormat()
                                 selectedStartLocalTime.value = selectedStartTime
                             }
                         },
@@ -587,7 +646,8 @@ fun LectureDetailSettingScreen(
                         isTimePicker = true,
                         onTimePickerQuit = { selectedEndTime ->
                             if (selectedEndTime != null) {
-                                applicationEndTimeForShow.value = selectedEndTime.toLocalTimeFormat()
+                                applicationEndTimeForShow.value =
+                                    selectedEndTime.toLocalTimeFormat()
                                 selectedEndLocalTime.value = selectedEndTime
                             }
                         },
@@ -615,18 +675,24 @@ fun LectureDetailSettingScreen(
                             id = R.string.start_time
                         )
                     },
-                    lectureEndTimeText = lectureAttendEndTimeDateForShow.value.ifEmpty { stringResource(id = R.string.end_time) },
+                    lectureEndTimeText = lectureAttendEndTimeDateForShow.value.ifEmpty {
+                        stringResource(
+                            id = R.string.end_time
+                        )
+                    },
                     onDatePickerQuit = { selectedCompleteDate ->
                         lectureAttendCompleteDateForShow.value =
                             selectedCompleteDate?.toKoreanFormat() ?: ""
                         completeDate.value = selectedCompleteDate
                     },
                     onStartTimePickerQuit = { checkedStartTime ->
-                        lectureAttendStartTimeDateForShow.value = checkedStartTime?.toLocalTimeFormat() ?: ""
+                        lectureAttendStartTimeDateForShow.value =
+                            checkedStartTime?.toLocalTimeFormat() ?: ""
                         startTime.value = checkedStartTime
                     },
                     onEndTimePickerQuit = { selectedEndTime ->
-                        lectureAttendEndTimeDateForShow.value = selectedEndTime?.toLocalTimeFormat() ?: ""
+                        lectureAttendEndTimeDateForShow.value =
+                            selectedEndTime?.toLocalTimeFormat() ?: ""
                         endTime.value = selectedEndTime
                     }
                 )
@@ -711,9 +777,9 @@ fun LectureDetailSettingScreen(
             },
             onSearchButtonClick = { keyword, division ->
                 when (isClickedPickerType.value) {
-                    "강의 계열" -> onSearchLineClicked(keyword, division)
-                    "학과" -> onSearchDepartmentClicked(keyword)
-                    "담당 교수" -> onSearchProfessorClicked(keyword)
+                    "강의 계열" -> { onSearchLineClicked(keyword, division) }
+                    "학과" ->  { onSearchDepartmentClicked(keyword) }
+                    "담당 교수" -> { onSearchProfessorClicked(keyword) }
                     else -> {}
                 }
             },
@@ -727,33 +793,8 @@ fun LectureDetailSettingScreen(
             onCloseButtonClick = { isSearchDialogVisible.value = false },
             division = division.value,
             searchProfessorData = searchProfessorData,
-            searchData = searchData,
+            searchData = listOf(searchData),
+            onDepartmentAndLineListClick = onSearchDepartmentClicked
         )
     }
-}
-
-@Preview
-@Composable
-fun LectureDetailSettingScreenPre() {
-    LectureDetailSettingScreen(
-        onCloseClicked = {},
-        onApplyClicked = { _, _, _, _, _, _, _, _, _, _, _, _, _ -> },
-        onSearchProfessorClicked = {},
-        onSearchLineClicked = { _, _ -> },
-        onSearchDepartmentClicked = {},
-        onSearchResultItemCLick = {},
-        savedCreditPoint = 0,
-        savedStartTime = null,
-        savedEndTime = null,
-        savedCompleteDate = null,
-        savedStartDate = null,
-        savedEndDate = null,
-        savedMaxRegisteredUser = 0,
-        savedSemester = Semester.FIRST_YEAR_FALL_SEMESTER,
-        savedDivision = Division.AUTOMOBILE_INDUSTRY,
-        savedDepartment = "",
-        savedLine = "",
-        savedUserId = UUID.randomUUID(),
-        savedLectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
-    )
 }

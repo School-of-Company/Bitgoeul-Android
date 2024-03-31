@@ -1,6 +1,7 @@
 package com.msg.lecture.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -17,20 +18,23 @@ import java.util.UUID
 
 @Composable
 fun LectureDetailSettingDepartmentCard(
-    data: SearchResponseModel?,
+    data: String,
     modifier: Modifier,
-    onClick: (UUID) -> Unit
+    onClick: (String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Surface {
             Card(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .clickable {
+                        onClick(data)
+                    },
                 colors = CardDefaults.cardColors(containerColor = colors.WHITE)
             ) {
                 Text(
-                    text = data?.lines.toString(),
+                    text = data,
                     color = colors.BLACK,
                     style = typography.headlineMedium
                 )

@@ -9,6 +9,7 @@ import com.msg.datastore.AuthTokenDataSource
 import com.msg.domain.lecture.GetDetailLectureUseCase
 import com.msg.domain.lecture.GetLectureListUseCase
 import com.msg.domain.lecture.LectureApplicationCancelUseCase
+import com.msg.domain.lecture.LectureApplicationUseCase
 import com.msg.domain.lecture.OpenLectureUseCase
 import com.msg.domain.lecture.SearchDepartmentUseCase
 import com.msg.domain.lecture.SearchLineUseCase
@@ -46,6 +47,7 @@ class LectureViewModel @Inject constructor(
     private val getDetailLectureUseCase: GetDetailLectureUseCase,
     private val openLectureUseCase: OpenLectureUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
+    private val lectureApplicationUseCase: LectureApplicationUseCase,
     private val lectureApplicationCancelUseCase: LectureApplicationCancelUseCase,
     private val searchProfessorUseCase: SearchProfessorUseCase,
     private val searchLineUseCase: SearchLineUseCase,
@@ -108,6 +110,24 @@ class LectureViewModel @Inject constructor(
     )
         private set
 
+    var searchProfessorData = mutableStateOf(
+        SearchProfessorResponse(
+            id = UUID.randomUUID(),
+            authority = Authority.ROLE_ADMIN,
+            name = "",
+            organization = ""
+        )
+    )
+        private set
+
+    var searchLineAndDepartmentData = mutableStateOf(
+        SearchResponseModel(
+            lines = listOf(
+                ""
+            )
+        )
+    )
+        private set
     var lectureDetailData = mutableStateOf(
         DetailLectureResponse(
             name = "",

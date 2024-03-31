@@ -20,7 +20,7 @@ import com.msg.model.remote.model.lecture.SearchResponseModel
 @Composable
 fun LectureDetailSettingSearchList(
     searchProfessorData: SearchProfessorResponse?,
-    searchData: SearchResponseModel?,
+    searchData: List<SearchResponseModel>,
     searchAPIType: String,
     keyword: String,
     modifier: Modifier,
@@ -61,7 +61,7 @@ fun LectureDetailSettingSearchList(
 
                 "강의 계열" -> {
                         if (searchData != null) {
-                            items(listOf(searchData).size) {
+                            items(searchData.size) {
                                 Column(
                                     modifier = modifier.background(color = Color.Transparent)
                                 ) {
@@ -69,7 +69,7 @@ fun LectureDetailSettingSearchList(
                                         modifier = modifier.background(color = Color.Transparent),
                                         onClick = onClick,
                                         searchProfessorData = null,
-                                        searchData = searchData,
+                                        searchData = searchData[it],
                                         division = division,
                                         keyword = keyword
                                     )
