@@ -16,13 +16,14 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.model.lecture.SearchResponseModel
+import com.msg.model.remote.response.lecture.Instructor
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
 
 @Composable
 fun LectureDetailSettingInfoCard(
     modifier: Modifier,
-    searchProfessorData: SearchProfessorResponse?,
+    searchProfessorData: Instructor?,
     searchData: SearchResponseModel?,
     division: Division,
     keyword: String,

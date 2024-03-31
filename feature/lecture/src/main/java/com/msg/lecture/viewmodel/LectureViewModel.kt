@@ -27,6 +27,7 @@ import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.Instructor
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.Lectures
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
@@ -112,10 +113,14 @@ class LectureViewModel @Inject constructor(
 
     var searchProfessorData = mutableStateOf(
         SearchProfessorResponse(
-            id = UUID.randomUUID(),
-            authority = Authority.ROLE_ADMIN,
-            name = "",
-            organization = ""
+            instructor = listOf(
+                Instructor(
+                    id = UUID.randomUUID(),
+                    authority = Authority.ROLE_ADMIN,
+                    name = "",
+                    organization = ""
+                )
+            )
         )
     )
         private set

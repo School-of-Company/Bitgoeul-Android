@@ -39,7 +39,7 @@ import java.util.UUID
 
 @Composable
 fun LectureDetailSettingSearchDialog(
-    searchProfessorData: SearchProfessorResponse?,
+    searchProfessorData: SearchProfessorResponse,
     searchData: List<SearchResponseModel>,
     modifier: Modifier = Modifier,
     text: String,

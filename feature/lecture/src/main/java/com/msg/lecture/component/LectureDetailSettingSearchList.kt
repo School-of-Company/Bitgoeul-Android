@@ -20,7 +20,7 @@ import com.msg.model.remote.model.lecture.SearchResponseModel
 @Composable
 fun LectureDetailSettingSearchList(
     searchProfessorData: SearchProfessorResponse?,
-    searchData: List<SearchResponseModel>,
+    searchData: List<SearchResponseModel>?,
     searchAPIType: String,
     keyword: String,
     modifier: Modifier,
@@ -33,20 +33,19 @@ fun LectureDetailSettingSearchList(
         ) {
             when (searchAPIType) {
                 "담당 교수" -> {
-                    if (searchProfessorData != null) {
-                        items(listOf(searchProfessorData).size) {
+                    searchProfessorData?.instructor?.let { instructorList ->
+                        items(instructorList.size) { index ->
                             Column(
                                 modifier = modifier.background(color = Color.Transparent)
                             ) {
                                 LectureDetailSettingInfoCard(
                                     modifier = modifier.background(color = Color.Transparent),
                                     onClick = onClick,
-                                    searchProfessorData = searchProfessorData,
+                                    searchProfessorData = instructorList[index],
                                     searchData = null,
                                     division = division,
                                     keyword = keyword
                                 )
-
 
                                 Spacer(
                                     modifier = Modifier
@@ -60,55 +59,31 @@ fun LectureDetailSettingSearchList(
                 }
 
                 "강의 계열" -> {
-                        if (searchData != null) {
-                            items(searchData.size) {
-                                Column(
-                                    modifier = modifier.background(color = Color.Transparent)
-                                ) {
-                                    LectureDetailSettingInfoCard(
-                                        modifier = modifier.background(color = Color.Transparent),
-                                        onClick = onClick,
-                                        searchProfessorData = null,
-                                        searchData = searchData[it],
-                                        division = division,
-                                        keyword = keyword
-                                    )
+                    searchData?.let { dataList ->
+                        items(dataList.size) { index ->
+                            Column(
+                                modifier = modifier.background(color = Color.Transparent)
+                            ) {
+                                LectureDetailSettingInfoCard(
+                                    modifier = modifier.background(color = Color.Transparent),
+                                    onClick = onClick,
+                                    searchProfessorData = null,
+                                    searchData = dataList[index],
+                                    division = division,
+                                    keyword = keyword
+                                )
 
-
-                                    Spacer(
-                                        modifier = Modifier
-                                            .height(1.dp)
-                                            .fillMaxWidth()
-                                            .background(color = colors.G9)
-                                    )
-                                }
-                            }
-                        } else if (searchData == null) {
-                            items(1) {
-                                Column(
-                                    modifier = modifier.background(color = Color.Transparent)
-                                ) {
-                                    LectureDetailSettingInfoCard(
-                                        modifier = modifier.background(color = Color.Transparent),
-                                        onClick = onClick,
-                                        searchProfessorData = null,
-                                        searchData = searchData,
-                                        division = division,
-                                        keyword = keyword
-                                    )
-
-
-                                    Spacer(
-                                        modifier = Modifier
-                                            .height(1.dp)
-                                            .fillMaxWidth()
-                                            .background(color = colors.G9)
-                                    )
-                                }
+                                Spacer(
+                                    modifier = Modifier
+                                        .height(1.dp)
+                                        .fillMaxWidth()
+                                        .background(color = colors.G9)
+                                )
                             }
                         }
+                    }
                 }
-                    else -> {}
+                else -> {}
             }
         }
     }
