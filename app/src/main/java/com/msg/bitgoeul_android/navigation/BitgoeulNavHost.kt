@@ -63,7 +63,7 @@ fun BitgoeulNavHost(
             onApplyClicked = navController::popBackStack
         )
         lectureListScreen(
-            onOpenClicked = navController::popBackStack,
+            onOpenClicked = navController::navigateToLectureOpen,
             onItemClicked = navController::popBackStack,
             onBackClicked = navController::popBackStack,
         )

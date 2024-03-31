@@ -145,6 +145,7 @@ fun LectureListScreen(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clickable {
+                                onOpenClicked()
                                 isFilterBottomSheetVisible.value = !isFilterBottomSheetVisible.value
                             }
                     )

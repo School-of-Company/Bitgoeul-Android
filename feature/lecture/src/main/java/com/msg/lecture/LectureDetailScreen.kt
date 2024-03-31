@@ -1,60 +1,102 @@
 package com.msg.lecture
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.dialog.LectureApplicationDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.design_system.R
-import com.msg.design_system.component.dialog.PositiveActionDialog
-import com.msg.design_system.component.dialog.NegativeActionDialog
+import com.msg.lecture.util.Event
+import com.msg.lecture.viewmodel.LectureViewModel
+import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.Division
+import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.ui.util.toKoreanFormat
+import com.msg.ui.util.toLocalTimeFormat
+
+@Composable
+fun LectureDetailRoute(
+    onBackClick: () -> Unit,
+    viewModel: LectureViewModel = hiltViewModel()
+) {
+    val role = remember { mutableStateOf(Authority.ROLE_USER) }
+    val id = viewModel.selectedLectureId.value
+    LaunchedEffect(true) {
+        role.value = viewModel.getRole()
+        viewModel.getDetailLecture(id = id)
+    getLectureDetailData(
+            viewModel = viewModel,
+            onSuccess = { lectureDetailData ->
+                viewModel.lectureDetailData.value = lectureDetailData
+            }
+        )
+    }
+    LectureDetailScreen(
+        onBackClick = onBackClick,
+        data = viewModel.lectureDetailData.value,
+    )
+}
+
+suspend fun getLectureDetailData(
+    viewModel: LectureViewModel,
+    onSuccess: (data: DetailLectureResponse) -> Unit
+) {
+    viewModel.getDetailLectureResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+
+            else -> {}
+        }
+    }
+}
 
 @Composable
 fun LectureDetailScreen(
+    data: DetailLectureResponse,
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     var isDialogVisible = remember { mutableStateOf(false) }
 
-    BitgoeulAndroidTheme { colors, type ->
+    BitgoeulAndroidTheme { colors, typography ->
         Box(
-            modifier = Modifier
-                .wrapContentSize()
+            modifier = modifier
+                .fillMaxSize()
                 .background(colors.WHITE),
         ) {
             Column(
-                modifier = Modifier
+                modifier = modifier
+                    .padding(horizontal = 24.dp)
                     .background(color = colors.WHITE)
                     .verticalScroll(scrollState)
             ) {
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = modifier.height(20.dp))
 
                 GoBackTopBar(
                     icon = { GoBackIcon() },
@@ -62,20 +104,204 @@ fun LectureDetailScreen(
                     onClick = { onBackClick() }
                 )
 
-                LectureDetailContent()
+                Spacer(modifier = modifier.height(24.dp))
+                Text(
+                    text = "# " + "${data.lectureType}",
+                    color = colors.P3,
+                    style = typography.labelMedium,
+                )
 
-            }
+                Spacer(modifier = modifier.height(4.dp))
 
-            BitgoeulButton(
-                text = "수강 신청하기",
-                modifier = Modifier
-                    .padding(bottom = 40.dp)
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 24.dp),
-            ) {
-                isDialogVisible.value = !isDialogVisible.value
+                Row(
+                    modifier = modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = when (data.division) {
+                            Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
+                            Division.ENERGY_INDUSTRY -> "에너지 산업"
+                            Division.MEDICAL_HEALTHCARE -> "의료헬스케어"
+                            Division.AI_CONVERGENCE_AI -> "AI 융복합"
+                            Division.CULTURAL_INDUSTRY -> "문화 산업"
+                        },
+                        color = colors.G2,
+                        style = typography.labelMedium
+                    )
+
+                    Spacer(modifier = modifier.width(8.dp))
+
+                    Spacer(
+                        modifier = modifier
+                            .size(1.dp, 14.dp)
+                            .background(color = colors.G1)
+                    )
+
+                    Spacer(modifier = modifier.width(8.dp))
+
+                    Text(
+                        text = "${data.line}",
+                        color = colors.G2,
+                        style = typography.labelMedium
+                    )
+
+                    Spacer(modifier = modifier.width(8.dp))
+
+                    Spacer(
+                        modifier = modifier
+                            .size(1.dp, 14.dp)
+                            .background(color = colors.G1)
+                    )
+
+                    Spacer(modifier = modifier.width(8.dp))
+
+
+                    Text(
+                        text = "${data.department}" + " 학과",
+                        color = colors.G2,
+                        style = typography.labelMedium
+                    )
+
+                }
+
+                Spacer(modifier = modifier.height(4.dp))
+
+                Text(
+                    text = "${data.name}",
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                )
+
+                Spacer(modifier = modifier.height(4.dp))
+
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    Text(
+                        text = "2023.12.25 부터 시작",  // 서버 리스폰스로 변경 예정
+                        color = colors.G2,
+                        style = typography.labelMedium
+                    )
+
+                    Text(
+                        text = "학점 ${data.credit}점 부여", // 서버 리스폰스로 변경 예정
+                        color = colors.G2,
+                        style = typography.labelMedium
+                    )
+                }
+
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "2023.11.23 에 게시",
+                        color = colors.G1,
+                        style = typography.labelMedium
+                    )
+
+                    Text(
+                        text = "${data.lecturer} 교수님",
+                        color = colors.G1,
+                        style = typography.labelMedium
+                    )
+                }
+
+                Spacer(modifier = modifier.height(24.dp))
+
+                Text(
+                    modifier = modifier.padding(bottom = 24.dp),
+                    text = "${data.content}",
+                    color = colors.BLACK,
+                    style = typography.bodySmall
+                )
+
+                Spacer(
+                    modifier = modifier
+                        .height(1.dp)
+                        .fillMaxWidth()
+                        .background(color = colors.G9)
+                )
+
+                Spacer(modifier = modifier.height(24.dp))
+
+                Text(
+                    text = "수강 신청 기간",
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                )
+
+                Spacer(modifier = modifier.height(16.dp))
+
+                Text(
+                    text = "• $data",
+                    color = colors.G2,
+                    style = typography.bodySmall
+                )
+
+                Spacer(modifier = modifier.height(4.dp))
+
+                Text(
+                    text = "• ${data.lectureDates}",
+                    color = colors.G2,
+                    style = typography.bodySmall
+                )
+
+                Spacer(modifier = modifier.height(24.dp))
+
+                Text(
+                    text = "강의 수강 날짜",
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                )
+
+                // TODO: 서버에서 온 LectureDates List형식 사이즈만큼 돌리기
+                Spacer(modifier = modifier.height(16.dp))
+                data.lectureDates.forEach { lectureDate ->
+                    Text(
+                        text = "• ${lectureDate.completeDate.toKoreanFormat()}" + "${lectureDate.startTime.toLocalTimeFormat()} ~ " + "${lectureDate.endTime.toLocalTimeFormat()}",
+                        color = colors.G2,
+                        style = typography.bodySmall
+                    )
+                }
+
+                Spacer(modifier = modifier.height(24.dp))
+
+                Text(
+                    text = "모집 정원",
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                )
+
+                Spacer(modifier = modifier.height(16.dp))
+
+                Text(
+                    text = "100명",
+                    color = colors.G2,
+                    style = typography.bodySmall
+                )
+                Column(
+                    modifier = modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Box(
+                        modifier = modifier
+                            .fillMaxWidth()
+                    ) {
+                        BitgoeulButton(
+                            text = "수강 신청하기",
+                            modifier = modifier
+                                .padding(bottom = 40.dp)
+                                .fillMaxWidth()
+                                .height(52.dp)
+                                .align(Alignment.BottomCenter)
+                                .padding(horizontal = 24.dp),
+                        ) {
+                            isDialogVisible.value = !isDialogVisible.value
+                        }
+                    }
+                }
             }
 
             LectureApplicationDialog(
@@ -85,196 +311,4 @@ fun LectureDetailScreen(
             )
         }
     }
-}
-
-@Composable
-fun LectureDetailContent() {
-    BitgoeulAndroidTheme { colors, type ->
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Column(
-            modifier = Modifier.padding(horizontal = 24.dp)
-
-        ) {
-
-            Text(
-                modifier = Modifier
-                    .width(133.dp)
-                    .height(20.dp),
-                text = "#" + stringResource(id = R.string.mutual_credit_recognition_curriculum), // 서버 리스폰스로 변경 예정
-                color = colors.P3,
-                style = type.labelMedium,
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                text = "국가는 국민의 국가는 국민 모두의 생산 및 생활의 기반이 되는 국토의 효율적이고 균형있는 이용·개발과 보전을 위하여 법률이 정하는 바에 의하여 그에 관한 필요한 제한과 의무를 과할 수 있다.", // 서버 리스폰스로 변경 예정
-                color = colors.BLACK,
-                style = type.bodyLarge,
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Row(
-                modifier = Modifier.wrapContentSize()
-            ) {
-                Text(
-                    modifier = Modifier
-                        .width(239.dp)
-                        .height(22.dp),
-                    text = "2023.11.19 ~ 2023.11.25", // 서버 리스폰스로 변경 예정
-                    color = colors.P5,
-                    style = type.bodySmall
-                )
-
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(22.dp),
-                    textAlign = TextAlign.End,
-                    text = "55/100명",
-                    color = colors.P5,
-                    style = type.bodySmall
-                )
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Row(
-                modifier = Modifier.wrapContentSize()
-            ) {
-
-                Text(
-                    modifier = Modifier
-                        .width(225.dp)
-                        .height(20.dp),
-                    text = "2023.12.25 부터 시작",  // 서버 리스폰스로 변경 예정
-                    color = colors.G2,
-                    style = type.labelMedium
-                )
-
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(20.dp),
-                    textAlign = TextAlign.End,
-                    text = "학점 2점 부여", // 서버 리스폰스로 변경 예정
-                    color = colors.G2,
-                    style = type.labelMedium
-                )
-            }
-
-            Row(
-                modifier = Modifier.wrapContentSize()
-            ) {
-                Text(
-                    modifier = Modifier
-                        .width(214.dp)
-                        .height(20.dp), text = "2023.11.23 에 게시",
-                    color = colors.G1,
-                    style = type.labelMedium
-                )
-
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(20.dp),
-                    textAlign = TextAlign.End,
-                    text = "박주홍 교수님",
-                    color = colors.G1,
-                    style = type.labelMedium
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(),
-                text = "강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수 강수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수강민수 강민수 강민수 강민수 강민수 강민수 강민수 강민수", // 서버 리스폰스로 변경 예정
-                color = colors.BLACK,
-                style = type.bodySmall
-            )
-        }
-    }
-}
-
-@Composable
-fun ApplicationRequestButton(
-    modifier: Modifier = Modifier,
-) {
-    val isDialogVisible = remember { mutableStateOf(false) }
-    BitgoeulAndroidTheme { colors, type ->
-        Row {
-            Box(
-                modifier = modifier
-                    .background(
-                        color = colors.E5,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(vertical = 12.dp, horizontal = 32.dp)
-                    .clickable {
-                        isDialogVisible.value = !isDialogVisible.value
-                    },
-            ) {
-                Text(
-                    text = stringResource(id = R.string.application_reject),
-                    color = colors.WHITE,
-                    style = type.bodyLarge
-                )
-
-                NegativeActionDialog(
-                    title = "신청 거부하시겠습니까?",
-                    negativeAction = "거부",
-                    isVisible = isDialogVisible.value,
-                    content = "askdl;asd",
-                    onQuit = {
-                        isDialogVisible.value = !isDialogVisible.value
-                    },
-                    onActionClicked = {}
-                )
-            }
-
-            Spacer(modifier = modifier.width(8.dp))
-            Box(
-                modifier = modifier
-                    .background(
-                        color = colors.P5,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(vertical = 12.dp, horizontal = 32.dp)
-                    .clickable {
-                        isDialogVisible.value = !isDialogVisible.value
-                    },
-            ) {
-                Text(
-                    text = stringResource(id = R.string.application_approve),
-                    color = colors.WHITE,
-                    style = type.bodyLarge
-                )
-
-                PositiveActionDialog(
-                    title = "신청 승인하시겠습니까?",
-                    isVisible = isDialogVisible.value,
-                    content = "askdl;asd",
-                    positiveAction = "승신",
-                    onQuit = {
-                        isDialogVisible.value = !isDialogVisible.value
-                    },
-                    onActionClicked = {}
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun LectureDetailScreenPre() {
-    LectureDetailScreen(onBackClick = {})
 }
