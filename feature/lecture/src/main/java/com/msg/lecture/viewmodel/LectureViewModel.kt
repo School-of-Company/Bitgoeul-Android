@@ -93,7 +93,6 @@ class LectureViewModel @Inject constructor(
                         content = "",
                         startDate = LocalDateTime.now().toString(),
                         endDate = LocalDateTime.now().toString(),
-                        completeDate = LocalDateTime.now().toString(),
                         lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
                         lectureStatus = LectureStatus.OPEN,
                         headCount = 0,
@@ -101,7 +100,8 @@ class LectureViewModel @Inject constructor(
                         lecturer = "",
                         department = "",
                         semester = Semester.SECOND_YEAR_FALL_SEMESTER,
-                        division = Division.AI_CONVERGENCE_AI
+                        division = Division.AI_CONVERGENCE_AI,
+                        line = ""
                     )
                 )
             )
