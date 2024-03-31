@@ -58,19 +58,11 @@ fun NavGraphBuilder.lectureOpenScreen(
 fun NavGraphBuilder.lectureDetailSettingScreen(
     onCloseClicked: () -> Unit,
     onApplyClicked: () -> Unit,
-    onSearchResultItemCLick: () -> Unit,
-    onSearchProfessorClicked: () -> Unit,
-    onSearchLineClicked: () -> Unit,
-    onSearchDepartmentClicked: () -> Unit,
 ) {
     composable(route = lectureDetailSettingRoute) {
         LectureDetailSettingRoute(
             onCloseClicked = onCloseClicked,
             onApplyClicked = onApplyClicked,
-            onSearchResultItemCLick = onSearchResultItemCLick,
-            onSearchProfessorClicked = onSearchProfessorClicked,
-            onSearchLineClicked = onSearchLineClicked,
-            onSearchDepartmentClicked = onSearchDepartmentClicked,
         )
     }
 }

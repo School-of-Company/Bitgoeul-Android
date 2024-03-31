@@ -20,18 +20,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.picker.Picker
@@ -50,6 +48,7 @@ import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -59,13 +58,26 @@ import java.util.UUID
 fun LectureDetailSettingRoute(
     onCloseClicked: () -> Unit,
     onApplyClicked: () -> Unit,
-    onSearchResultItemCLick: () -> Unit,
-    onSearchProfessorClicked: () -> Unit,
-    onSearchLineClicked: () -> Unit,
-    onSearchDepartmentClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel()
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(viewModel.searchProfessorData) {
+        getProfessorSearchData(viewModel = viewModel, onSearchProfessorSuccess = { data ->
+            viewModel.searchProfessorData.value = data
+            Log.e("onSearchProfessorClicked coroutineScope", data.toString())
+        })
+    }
+
+    LaunchedEffect(viewModel.searchLineAndDepartmentData) {
+        getLineSearchData(viewModel = viewModel, onLineSuccess = { data ->
+            viewModel.searchLineAndDepartmentData.value = data
+        })
+    }
+
+    LaunchedEffect(viewModel.searchLineAndDepartmentData) {
+        getDepartmentSearchData(viewModel = viewModel, onDepartmentSuccess = { data ->
+            viewModel.searchLineAndDepartmentData.value = data
+        })
+    }
 
     LectureDetailSettingScreen(
         onCloseClicked = onCloseClicked,
@@ -86,46 +98,16 @@ fun LectureDetailSettingRoute(
             onApplyClicked()
         },
         onSearchProfessorClicked = { keyword ->
-            onSearchProfessorClicked()
             viewModel.searchProfessor(keyword = keyword)
-            observeSearchData(
-                lifecycleOwner = lifecycleOwner,
-                viewModel = viewModel,
-                onLineAndDepartmentSuccess = { data ->
-                    viewModel.searchLineAndDepartmentData.value = data
-                },
-                onSearchProfessorSuccess = { data ->
-                    viewModel.searchProfessorData.value = data
-                })
         },
         onSearchLineClicked = { keyword, division ->
-            onSearchLineClicked()
             viewModel.searchLine(keyword = keyword, division = division)
-            observeSearchData(
-                lifecycleOwner = lifecycleOwner,
-                viewModel = viewModel,
-                onLineAndDepartmentSuccess = { data ->
-                    viewModel.searchLineAndDepartmentData.value = data
-                },
-                onSearchProfessorSuccess = { data ->
-                    viewModel.searchProfessorData.value = data
-                })
         },
         onSearchDepartmentClicked = { keyword ->
-            onSearchDepartmentClicked()
             viewModel.searchDepartment(keyword = keyword)
-            observeSearchData(
-                lifecycleOwner = lifecycleOwner,
-                viewModel = viewModel,
-                onLineAndDepartmentSuccess = { data ->
-                    viewModel.searchLineAndDepartmentData.value = data
-                },
-                onSearchProfessorSuccess = { data ->
-                    viewModel.searchProfessorData.value = data
-                })
+
         },
         onSearchResultItemCLick = { userId ->
-            onSearchResultItemCLick()
             viewModel.userId.value = userId
             Log.e("userId", userId.toString())
         },
@@ -147,53 +129,56 @@ fun LectureDetailSettingRoute(
     )
 }
 
-fun observeSearchData(
-    lifecycleOwner: LifecycleOwner,
+
+suspend fun getLineSearchData(
     viewModel: LectureViewModel,
-    onLineAndDepartmentSuccess: (data: SearchResponseModel) -> Unit,
+    onLineSuccess: (data: SearchResponseModel) -> Unit,
+) {
+    viewModel.searchLineResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onLineSuccess(response.data!!)
+                Log.e("계열 데이터", response.toString())
+            }
+
+            else -> {
+                Log.e("계열 데이터 안불러와짐", response.toString())
+            }
+        }
+    }
+}
+
+suspend fun getProfessorSearchData(
+    viewModel: LectureViewModel,
     onSearchProfessorSuccess: (data: SearchProfessorResponse) -> Unit
 ) {
-    lifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.searchLineResponse.collect { response ->
-            when (response) {
-                is Event.Success -> {
-                    onLineAndDepartmentSuccess(response.data!!)
-                    Log.e("계열 데이터", response.toString())
-                }
+    viewModel.searchProfessorResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSearchProfessorSuccess(response.data!!)
+                Log.e("getProfessorData 함수에서의 교수 데이터", response.toString())
+            }
 
-                else -> {
-                    Log.e("계열 데이터 안불러와짐", response.toString())
-                }
+            else -> {
+                Log.e("getProfessorData 함수에서의 교수 데이터 안불러와짐", response.toString())
             }
         }
     }
+}
 
-    lifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.searchDepartmentResponse.collect { response ->
-            when (response) {
-                is Event.Success -> {
-                    onLineAndDepartmentSuccess(response.data!!)
-                    Log.e("학과 데이터", response.toString())
-                }
-
-                else -> {
-                    Log.e("학과 데이터 안불러와짐", response.toString())
-                }
+suspend fun getDepartmentSearchData(
+    viewModel: LectureViewModel,
+    onDepartmentSuccess: (data: SearchResponseModel) -> Unit,
+) {
+    viewModel.searchDepartmentResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onDepartmentSuccess(response.data!!)
+                Log.e("학과 데이터", response.toString())
             }
-        }
-    }
 
-    lifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.searchProfessorResponse.collect { response ->
-            when (response) {
-                is Event.Success -> {
-                    onSearchProfessorSuccess(response.data!!)
-                    Log.e("교수 데이터", response.toString())
-                }
-
-                else -> {
-                    Log.e("교수 데이터 안불러와짐", response.toString())
-                }
+            else -> {
+                Log.e("학과 데이터 안불러와짐", response.toString())
             }
         }
     }
@@ -777,9 +762,18 @@ fun LectureDetailSettingScreen(
             },
             onSearchButtonClick = { keyword, division ->
                 when (isClickedPickerType.value) {
-                    "강의 계열" -> { onSearchLineClicked(keyword, division) }
-                    "학과" ->  { onSearchDepartmentClicked(keyword) }
-                    "담당 교수" -> { onSearchProfessorClicked(keyword) }
+                    "강의 계열" -> {
+                        onSearchLineClicked(keyword, division)
+                    }
+
+                    "학과" -> {
+                        onSearchDepartmentClicked(keyword)
+                    }
+
+                    "담당 교수" -> {
+                        onSearchProfessorClicked(keyword)
+                    }
+
                     else -> {}
                 }
             },

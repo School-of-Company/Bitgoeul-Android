@@ -54,7 +54,6 @@ fun LectureListRoute(
             size = 10,
             type = type
         )
-        Log.e("getLectureList LaunchedEffect 실행", "실행")
         getLectureList(
             viewModel = viewModel,
             onSuccess = { response ->

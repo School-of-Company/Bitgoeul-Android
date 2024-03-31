@@ -10,12 +10,10 @@ import com.example.my_page.navigation.changePasswordScreen
 import com.example.my_page.navigation.myPageScreen
 import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
-import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
 import com.msg.lecture.navigation.lectureDetailSettingScreen
 import com.msg.lecture.navigation.lectureListScreen
 import com.msg.lecture.navigation.lectureOpenScreen
-import com.msg.lecture.navigation.navigateToLecture
 import com.msg.lecture.navigation.navigateToLectureDetailSetting
 import com.msg.lecture.navigation.navigateToLectureOpen
 import com.msg.sign_up.navigation.signUpScreen
@@ -77,10 +75,6 @@ fun BitgoeulNavHost(
         lectureDetailSettingScreen(
             onCloseClicked = navController::popBackStack,
             onApplyClicked = navController::popBackStack,
-            onSearchDepartmentClicked = {},
-            onSearchLineClicked = {},
-            onSearchProfessorClicked = {},
-            onSearchResultItemCLick = {},
         )
         myPageScreen(
             onPasswordChangeClicked = navController::navigateToPasswordChange,
