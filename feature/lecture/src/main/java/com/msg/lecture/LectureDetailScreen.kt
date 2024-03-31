@@ -295,8 +295,7 @@ fun LectureDetailScreen(
                                 .padding(bottom = 40.dp)
                                 .fillMaxWidth()
                                 .height(52.dp)
-                                .align(Alignment.BottomCenter)
-                                .padding(horizontal = 24.dp),
+                                .align(Alignment.BottomCenter),
                         ) {
                             isDialogVisible.value = !isDialogVisible.value
                         }
