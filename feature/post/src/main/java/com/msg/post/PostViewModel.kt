@@ -109,7 +109,6 @@ class PostViewModel @Inject constructor(
         id: UUID,
         title: String,
         content: String,
-        links: List<String>,
         feedType: FeedType
     ) = viewModelScope.launch {
         editPostUseCase(

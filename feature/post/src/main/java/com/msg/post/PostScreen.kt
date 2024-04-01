@@ -1,5 +1,6 @@
 package com.msg.post
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.icon.ChatIcon
@@ -33,7 +35,7 @@ import java.util.UUID
 
 @Composable
 internal fun PostScreenRoute(
-    viewModel: PostViewModel = hiltViewModel(),
+    viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onItemClicked: () -> Unit,
     onAddClicked: () -> Unit
 ) {

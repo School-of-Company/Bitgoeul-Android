@@ -1,5 +1,6 @@
 package com.msg.post
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,11 +21,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.NegativeBitgoeulButton
@@ -45,7 +48,7 @@ import java.util.UUID
 
 @Composable
 fun PostDetailScreenRoute(
-    viewModel: PostViewModel,
+    viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onEditClicked: () -> Unit,
     onDeleteClicked: () -> Unit,
     onBackClicked: () -> Unit
