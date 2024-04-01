@@ -37,6 +37,7 @@ import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
+import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
@@ -195,13 +196,18 @@ fun LectureDetailScreen(
                 ) {
 
                     Text(
-                        text = "${data.startDate.toKoreanFormat()} 부터 시작",  // 서버 리스폰스로 변경 예정
+                        text = when (data.semester) {
+                            Semester.FIRST_YEAR_FALL_SEMESTER -> "1학년 2학기"
+                            Semester.SECOND_YEAR_SPRING_SEMESTER -> "2학년 1학기"
+                            Semester.SECOND_YEAR_FALL_SEMESTER -> "2학년 2학기"
+                            Semester.THIRD_YEAR_SPRING_SEMESTER -> "3학년 1학기"
+                        },
                         color = colors.G2,
                         style = typography.labelMedium
                     )
 
                     Text(
-                        text = "학점 ${data.credit}점 부여", // 서버 리스폰스로 변경 예정
+                        text = "학점 ${data.credit}점 부여",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
