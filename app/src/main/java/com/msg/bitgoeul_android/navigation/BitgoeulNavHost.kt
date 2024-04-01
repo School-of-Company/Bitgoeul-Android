@@ -12,6 +12,13 @@ import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.post.navigation.navigateToPostAddPage
+import com.msg.post.navigation.navigateToPostDetailPage
+import com.msg.post.navigation.navigateToPostDetailSettingPage
+import com.msg.post.navigation.postAddScreen
+import com.msg.post.navigation.postDetailScreen
+import com.msg.post.navigation.postDetailSettingScreen
+import com.msg.post.navigation.postScreen
 import com.msg.sign_up.navigation.signUpScreen
 import com.msg.student_activity.navigation.navigateToAddActivity
 import com.msg.student_activity.navigation.navigateToDetailSettingActivity
@@ -66,6 +73,23 @@ fun BitgoeulNavHost(
         changePasswordScreen(
             onSuccessScreenButtonClicked = navController::navigateToMyPage,
             onBackClicked = navController::popBackStack
+        )
+        postScreen(
+            onItemClick = navController::navigateToPostDetailPage,
+            onAddClicked = navController::navigateToPostAddPage
+        )
+        postDetailScreen(
+            onEditClicked = navController::navigateToPostAddPage,
+            onDeleteClicked = navController::popBackStack,
+            onBackClicked = navController::popBackStack
+        )
+        postAddScreen(
+            onSettingClicked = navController::navigateToPostDetailSettingPage,
+            onBackClicked = navController::popBackStack,
+            onAddClicked = navController::popBackStack
+        )
+        postDetailSettingScreen(
+            onCloseClicked = navController::popBackStack
         )
     }
 }
