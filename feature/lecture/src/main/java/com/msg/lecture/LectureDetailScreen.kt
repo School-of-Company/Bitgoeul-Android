@@ -23,7 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.design_system.component.button.ApplicationDoneButton
 import com.msg.design_system.component.button.BitgoeulButton
+import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.dialog.LectureApplicationDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
@@ -32,9 +34,11 @@ import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.Division
+import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
+import java.util.UUID
 
 @Composable
 fun LectureDetailRoute(
@@ -46,7 +50,7 @@ fun LectureDetailRoute(
     LaunchedEffect(true) {
         role.value = viewModel.getRole()
         viewModel.getDetailLecture(id = id)
-    getLectureDetailData(
+        getLectureDetailData(
             viewModel = viewModel,
             onSuccess = { lectureDetailData ->
                 viewModel.lectureDetailData.value = lectureDetailData
@@ -54,8 +58,14 @@ fun LectureDetailRoute(
         )
     }
     LectureDetailScreen(
-        onBackClick = onBackClick,
         data = viewModel.lectureDetailData.value,
+        onBackClick = onBackClick,
+        onApplicationCancelClick = {
+            viewModel.lectureApplicationCancel(viewModel.selectedLectureId.value)
+        },
+        onApplicationClick = {
+            viewModel.lectureApplication(viewModel.selectedLectureId.value)
+        }
     )
 }
 
@@ -79,9 +89,12 @@ fun LectureDetailScreen(
     data: DetailLectureResponse,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onApplicationClick: () -> Unit,
+    onApplicationCancelClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
-    var isDialogVisible = remember { mutableStateOf(false) }
+    val isDialogVisible = remember { mutableStateOf(false) }
+    val isApplicationState = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box(
@@ -179,7 +192,7 @@ fun LectureDetailScreen(
                 ) {
 
                     Text(
-                        text = "2023.12.25 부터 시작",  // 서버 리스폰스로 변경 예정
+                        text = "${data.startDate.toKoreanFormat()} 부터 시작",  // 서버 리스폰스로 변경 예정
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -196,7 +209,7 @@ fun LectureDetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "2023.11.23 에 게시",
+                        text = "${data.createAt.toKoreanFormat()} 에 게시",
                         color = colors.G1,
                         style = typography.labelMedium
                     )
@@ -235,7 +248,7 @@ fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(16.dp))
 
                 Text(
-                    text = "• $data",
+                    text = "• ${data.startDate.toKoreanFormat()}",
                     color = colors.G2,
                     style = typography.bodySmall
                 )
@@ -243,7 +256,7 @@ fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(4.dp))
 
                 Text(
-                    text = "• ${data.lectureDates}",
+                    text = "• ${data.endDate.toKoreanFormat()}",
                     color = colors.G2,
                     style = typography.bodySmall
                 )
@@ -256,8 +269,8 @@ fun LectureDetailScreen(
                     style = typography.bodyLarge,
                 )
 
-                // TODO: 서버에서 온 LectureDates List형식 사이즈만큼 돌리기
                 Spacer(modifier = modifier.height(16.dp))
+
                 data.lectureDates.forEach { lectureDate ->
                     Text(
                         text = "• ${lectureDate.completeDate.toKoreanFormat()}" + "${lectureDate.startTime.toLocalTimeFormat()} ~ " + "${lectureDate.endTime.toLocalTimeFormat()}",
@@ -277,35 +290,89 @@ fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(16.dp))
 
                 Text(
-                    text = "100명",
+                    text = "${data.maxRegisteredUser}명",
                     color = colors.G2,
                     style = typography.bodySmall
                 )
-                Column(
-                    modifier = modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    Box(
-                        modifier = modifier
-                            .fillMaxWidth()
-                    ) {
-                        BitgoeulButton(
-                            text = "수강 신청하기",
-                            modifier = modifier
-                                .padding(bottom = 40.dp)
-                                .fillMaxWidth()
-                                .height(52.dp)
-                                .align(Alignment.BottomCenter),
+                when (data.lectureStatus) {
+                    LectureStatus.OPEN -> {
+                        Column(
+                            modifier = modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Bottom
                         ) {
-                            isDialogVisible.value = !isDialogVisible.value
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth()
+                            ) {
+                                when (isApplicationState.value) {
+                                    true -> {
+                                        ApplicationDoneButton(
+                                            text = "수강 신청 완료",
+                                            modifier = modifier.padding(bottom = 40.dp)
+                                            .fillMaxWidth()
+                                            .height(52.dp)
+                                            .align(Alignment.BottomCenter),
+                                            onClick = {
+                                                onApplicationCancelClick()
+                                            }
+                                        )
+                                    }
+                                    false -> {
+                                        BitgoeulButton(
+                                            text = "수강 신청 하기",
+                                            modifier = modifier
+                                                .padding(bottom = 40.dp)
+                                                .fillMaxWidth()
+                                                .height(52.dp)
+                                                .align(Alignment.BottomCenter),
+                                            state = when (isDialogVisible.value) {
+                                                true -> ButtonState.Disable
+                                                false -> ButtonState.Enable
+                                            }
+                                        ) {
+                                            onApplicationClick()
+                                            isDialogVisible.value = !isDialogVisible.value
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+                    LectureStatus.CLOSE -> {
+                        Column(
+                            modifier = modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Bottom
+                        ) {
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth()
+                            ) {
+                                BitgoeulButton(
+                                    text = "수강 신청 불가",
+                                    modifier = modifier
+                                        .padding(bottom = 40.dp)
+                                        .fillMaxWidth()
+                                        .height(52.dp)
+                                        .align(Alignment.BottomCenter),
+                                    state = ButtonState.Disable,
+                                ) {}
+                            }
                         }
                     }
                 }
             }
 
             LectureApplicationDialog(
-                content = "님;나이;ㅁ나ㅣ;ㅇ민;아ㅣ;ㅁ나ㅣ;임니;", // 임의로 정한것임 추후 Detail 조회시 넘어오는 Content Text 값으로 로직 추가 예정
-                onQuit = { isDialogVisible.value = false },
+                content = "${data.name}", // 임의로 정한것임 추후 Detail 조회시 넘어오는 Content Text 값으로 로직 추가 예정
+                onCancelClick = {
+                    isDialogVisible.value = false
+                },
+                onConfirmClick = {
+                    isDialogVisible.value = false
+                    isApplicationState.value = true
+                },
                 isVisible = isDialogVisible.value,
             )
         }

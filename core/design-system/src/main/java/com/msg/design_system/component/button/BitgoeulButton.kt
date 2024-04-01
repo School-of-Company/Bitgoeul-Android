@@ -179,22 +179,23 @@ fun NegativeBitgoeulButton(
 fun ApplicationDoneButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    text: String,
 ) {
     BitgoeulAndroidTheme { colors, type ->
         OutlinedButton(
             modifier = modifier,
             onClick = onClick,
-            border = BorderStroke(1.dp, color = colors.P5),
+            border = BorderStroke(1.dp, color = colors.E5),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = colors.WHITE,
-                contentColor = colors.P5,
+                contentColor = colors.E5,
             ),
             shape = RoundedCornerShape(8.dp),
         ) {
 
             Text(
-                text = stringResource(id = R.string.application_done),
-                color = colors.P5,
+                text = text,
+                color = colors.E5,
                 style = type.bodyLarge
             )
         }
@@ -239,7 +240,8 @@ fun BitgoeulButtonPre() {
             modifier = Modifier
                 .width(319.dp)
                 .height(52.dp),
-            onClick = {}
+            onClick = {},
+            text = "수강 신청 취소"
         )
     }
 }

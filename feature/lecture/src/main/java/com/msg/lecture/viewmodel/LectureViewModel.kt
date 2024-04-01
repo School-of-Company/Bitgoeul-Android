@@ -305,6 +305,38 @@ class LectureViewModel @Inject constructor(
         }
     }
 
+    fun lectureApplication(
+        id: UUID
+    ) = viewModelScope.launch {
+        lectureApplicationUseCase(
+            id = id
+        ).onSuccess {
+            it.catch { remoteError ->
+                _lectureApplicationResponse.value = remoteError.errorHandling()
+            }.collect {
+                _lectureApplicationResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _lectureApplicationResponse.value = error.errorHandling()
+        }
+    }
+
+    fun lectureApplicationCancel(
+        id: UUID
+    ) = viewModelScope.launch {
+        lectureApplicationCancelUseCase(
+            id = id
+        ).onSuccess {
+            it.catch { remoteError ->
+                _lectureApplicationCancelResponse.value = remoteError.errorHandling()
+            }.collect {
+                _lectureApplicationCancelResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _lectureApplicationCancelResponse.value = error.errorHandling()
+        }
+    }
+
     fun searchProfessor(
         keyword: String,
     ) = viewModelScope.launch {

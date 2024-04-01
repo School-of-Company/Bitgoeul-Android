@@ -67,7 +67,10 @@ fun LectureCard(
                     )
 
                     Text(
-                        text = if (data.lectureType == LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM) "상호학점인정교육과정" else "대학탐방프로그램",
+                        text = when (data.lectureType) {
+                            LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM -> "상호학점인정교육과정"
+                            LectureType.UNIVERSITY_EXPLORATION_PROGRAM -> "대학탐방프로그램"
+                        },
                         modifier = Modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
