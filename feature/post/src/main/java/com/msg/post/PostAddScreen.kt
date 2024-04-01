@@ -1,5 +1,6 @@
 package com.msg.post
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.button.DetailSettingButton
@@ -29,9 +32,10 @@ import com.msg.ui.DevicePreviews
 
 @Composable
 internal fun PostAddScreenRoute(
-    viewModel: PostViewModel,
+    viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onBackClicked: () -> Unit,
-    onSettingClicked: () -> Unit
+    onSettingClicked: () -> Unit,
+    onAddClicked: () -> Unit
 ) {
     PostAddScreen(
         onBackClicked = onBackClicked,
@@ -41,13 +45,24 @@ internal fun PostAddScreenRoute(
             onSettingClicked()
         },
         onAddClicked = { feedType, title, content ->
-            viewModel.sendPost(
-                feedType = feedType,
-                title = title,
-                content = content
-            )
+            if (viewModel.isEditPage.value) {
+                viewModel.editPost(
+                    id = viewModel.selectedId.value,
+                    feedType = feedType,
+                    title = title,
+                    content = content
+                )
+            } else {
+                viewModel.sendPost(
+                    feedType = feedType,
+                    title = title,
+                    content = content
+                )
+            }
             viewModel.savedContent.value = ""
             viewModel.savedTitle.value = ""
+            viewModel.isEditPage.value = false
+            onAddClicked()
         },
         savedTitle = viewModel.savedTitle.value,
         savedContent = viewModel.savedContent.value,
