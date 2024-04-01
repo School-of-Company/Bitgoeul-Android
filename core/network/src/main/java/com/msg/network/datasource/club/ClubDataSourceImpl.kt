@@ -8,6 +8,7 @@ import com.msg.network.api.ClubAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.UUID
 import javax.inject.Inject
 
 class ClubDataSourceImpl @Inject constructor(
@@ -29,10 +30,18 @@ class ClubDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getStudentBelongClubList(id: Long): Flow<List<StudentBelongClubResponse>> = flow {
+    override suspend fun getStudentBelongClubDetail(id: Long, studentId: UUID): Flow<StudentBelongClubResponse> = flow {
         emit(
-            BitgoeulApiHandler<List<StudentBelongClubResponse>>()
-                .httpRequest { clubAPI.getStudentBelongClubList(id = id) }
+            BitgoeulApiHandler<StudentBelongClubResponse>()
+                .httpRequest { clubAPI.getStudentBelongClubDetail(id = id, studentId = studentId) }
+                .sendRequest()
+        )
+    }
+
+    override suspend fun getMyClubDetail(): Flow<ClubDetailResponse> = flow {
+        emit(
+            BitgoeulApiHandler<ClubDetailResponse>()
+                .httpRequest { clubAPI.getMyClubDetail() }
                 .sendRequest()
         )
     }
