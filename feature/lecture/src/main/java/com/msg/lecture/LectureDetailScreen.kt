@@ -27,6 +27,8 @@ import com.msg.design_system.component.button.ApplicationDoneButton
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.dialog.LectureApplicationDialog
+import com.msg.design_system.component.dialog.NegativeActionDialog
+import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -93,7 +95,8 @@ fun LectureDetailScreen(
     onApplicationCancelClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
-    val isDialogVisible = remember { mutableStateOf(false) }
+    val isPositiveActionDialogVisible = remember { mutableStateOf(false) }
+    val isNegativeDialogVisible = remember { mutableStateOf(false) }
     val isApplicationState = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
@@ -308,15 +311,17 @@ fun LectureDetailScreen(
                                     true -> {
                                         ApplicationDoneButton(
                                             text = "수강 신청 완료",
-                                            modifier = modifier.padding(bottom = 40.dp)
-                                            .fillMaxWidth()
-                                            .height(52.dp)
-                                            .align(Alignment.BottomCenter),
+                                            modifier = modifier
+                                                .padding(bottom = 40.dp)
+                                                .fillMaxWidth()
+                                                .height(52.dp)
+                                                .align(Alignment.BottomCenter),
                                             onClick = {
-                                                onApplicationCancelClick()
+                                                isNegativeDialogVisible.value = true
                                             }
                                         )
                                     }
+
                                     false -> {
                                         BitgoeulButton(
                                             text = "수강 신청 하기",
@@ -325,13 +330,12 @@ fun LectureDetailScreen(
                                                 .fillMaxWidth()
                                                 .height(52.dp)
                                                 .align(Alignment.BottomCenter),
-                                            state = when (isDialogVisible.value) {
+                                            state = when (isPositiveActionDialogVisible.value) {
                                                 true -> ButtonState.Disable
                                                 false -> ButtonState.Enable
                                             }
                                         ) {
-                                            onApplicationClick()
-                                            isDialogVisible.value = !isDialogVisible.value
+                                            isPositiveActionDialogVisible.value = !isPositiveActionDialogVisible.value
                                         }
                                     }
                                 }
@@ -364,16 +368,31 @@ fun LectureDetailScreen(
                 }
             }
 
-            LectureApplicationDialog(
-                content = "${data.name}", // 임의로 정한것임 추후 Detail 조회시 넘어오는 Content Text 값으로 로직 추가 예정
-                onCancelClick = {
-                    isDialogVisible.value = false
+            PositiveActionDialog(
+                title = "수강 신청하시겠습니까?",
+                content = "${data.name}",
+                positiveAction = "신청",
+                onQuit = {
+                    isPositiveActionDialogVisible.value = false
                 },
-                onConfirmClick = {
-                    isDialogVisible.value = false
+                onActionClicked = {
+                    onApplicationClick()
+                    isPositiveActionDialogVisible.value = false
                     isApplicationState.value = true
                 },
-                isVisible = isDialogVisible.value,
+                isVisible = isPositiveActionDialogVisible.value,
+            )
+
+            NegativeActionDialog(
+                title = "수강 취소하시겠습니까?",
+                negativeAction = "확인",
+                content = "${data.content}",
+                isVisible = isNegativeDialogVisible.value,
+                onQuit = { isNegativeDialogVisible.value = false },
+                onActionClicked = {
+                    onApplicationCancelClick()
+                    isNegativeDialogVisible.value = false
+                }
             )
         }
     }
