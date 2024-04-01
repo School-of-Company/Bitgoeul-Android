@@ -50,11 +50,11 @@ fun NavGraphBuilder.lectureListScreen(
 }
 
 fun NavGraphBuilder.lectureDetailScreen(
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
 ) {
     composable(route = lectureDetailRoute) {
         LectureDetailRoute(
-          onBackClick = onBackClick,
+          onBackClicked = onBackClicked,
         )
     }
 }

@@ -11,6 +11,7 @@ import com.example.my_page.navigation.myPageScreen
 import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.lecture.navigation.lectureDetailScreen
 import com.msg.lecture.navigation.lectureDetailSettingScreen
 import com.msg.lecture.navigation.lectureListScreen
 import com.msg.lecture.navigation.lectureOpenScreen
@@ -65,6 +66,9 @@ fun BitgoeulNavHost(
         lectureListScreen(
             onOpenClicked = navController::navigateToLectureOpen,
             onItemClicked = navController::popBackStack,
+            onBackClicked = navController::popBackStack,
+        )
+        lectureDetailScreen(
             onBackClicked = navController::popBackStack,
         )
         lectureOpenScreen(

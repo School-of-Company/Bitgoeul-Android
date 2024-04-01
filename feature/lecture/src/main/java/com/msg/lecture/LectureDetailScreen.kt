@@ -45,7 +45,7 @@ import java.util.UUID
 
 @Composable
 fun LectureDetailRoute(
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel()
 ) {
     val role = remember { mutableStateOf(Authority.ROLE_USER) }
@@ -62,7 +62,7 @@ fun LectureDetailRoute(
     }
     LectureDetailScreen(
         data = viewModel.lectureDetailData.value,
-        onBackClick = onBackClick,
+        onBackClicked = onBackClicked,
         onApplicationCancelClick = {
             viewModel.lectureApplicationCancel(viewModel.selectedLectureId.value)
         },
@@ -91,7 +91,7 @@ suspend fun getLectureDetailData(
 fun LectureDetailScreen(
     data: DetailLectureResponse,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
     onApplicationClick: () -> Unit,
     onApplicationCancelClick: () -> Unit
 ) {
@@ -118,7 +118,7 @@ fun LectureDetailScreen(
                 GoBackTopBar(
                     icon = { GoBackIcon() },
                     text = "돌아가기",
-                    onClick = { onBackClick() }
+                    onClick = { onBackClicked() }
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
