@@ -1,5 +1,6 @@
 package com.msg.post
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,15 +16,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.NegativeBitgoeulButton
@@ -35,11 +39,60 @@ import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.response.post.GetDetailPostResponse
+import com.msg.post.util.Event
 import com.msg.ui.DevicePreviews
 import com.msg.ui.util.toDotFormat
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDateTime
 import java.util.UUID
+
+@Composable
+fun PostDetailScreenRoute(
+    viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onEditClicked: () -> Unit,
+    onDeleteClicked: () -> Unit,
+    onBackClicked: () -> Unit
+) {
+    LaunchedEffect(true) {
+        getDetailPost(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.detailPost.value = it
+            }
+        )
+    }
+
+    PostDetailScreen(
+        data = viewModel.detailPost.value,
+        id = viewModel.selectedId.value,
+        onDeleteClicked = {
+            onDeleteClicked()
+            viewModel.deletePost(it)
+        },
+        onEditClicked = {
+            onEditClicked()
+            viewModel.getFilledEditPage()
+        },
+        onBackClicked = {
+            onBackClicked()
+            viewModel.selectedId.value = UUID.randomUUID()
+        }
+    )
+}
+
+suspend fun getDetailPost(
+    viewModel: PostViewModel,
+    onSuccess: (data: GetDetailPostResponse) -> Unit
+) {
+    viewModel.getDetailPostResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
 
 @Composable
 fun PostDetailScreen(

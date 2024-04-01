@@ -276,3 +276,10 @@ fun DeleteIcon(
         modifier = modifier
     )
 }
+@Composable
+fun ChatIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_chat),
+        contentDescription = "White chat icon"
+    )
+}

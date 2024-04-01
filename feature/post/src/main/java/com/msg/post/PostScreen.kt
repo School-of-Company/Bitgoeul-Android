@@ -1,5 +1,6 @@
 package com.msg.post
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,28 +12,103 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.design_system.component.icon.ChatIcon
 import com.msg.design_system.component.icon.HelpIcon
 import com.msg.design_system.component.icon.MegaphoneIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.model.post.PostModel
 import com.msg.model.remote.response.post.GetPostListResponse
+import com.msg.post.util.Event
 import com.msg.ui.DevicePreviews
 import com.msg.ui.PostList
 import java.time.LocalDateTime
 import java.util.UUID
 
 @Composable
+internal fun PostScreenRoute(
+    viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onItemClicked: () -> Unit,
+    onAddClicked: () -> Unit
+) {
+    val role = viewModel.role
+    var state = FeedType.EMPLOYMENT
+
+    viewModel.getPostList(
+        type = FeedType.EMPLOYMENT
+    )
+
+    LaunchedEffect(true, state) {
+        getPostList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.postList.value = it
+            },
+            onFailure = {
+                viewModel.postList.value = GetPostListResponse(
+                    posts = emptyList()
+                )
+            }
+        )
+    }
+
+    PostScreen(
+        role = role,
+        onAddClicked = {
+            onAddClicked()
+            viewModel.currentFeedType.value = it
+        },
+        onItemClicked = {
+            onItemClicked()
+            viewModel.selectedId.value = it
+            viewModel.getDetailPost(it)
+        },
+        data = viewModel.postList.value,
+        onViewChangeClicked = {
+            viewModel.postList.value = GetPostListResponse(
+                posts = emptyList()
+            )
+            viewModel.getPostList(type = it)
+            state = it
+        },
+        feedType = viewModel.currentFeedType.value
+    )
+}
+
+suspend fun getPostList(
+    viewModel: PostViewModel,
+    onSuccess: (data: GetPostListResponse) -> Unit,
+    onFailure: () -> Unit
+) {
+    viewModel.getPostListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {
+                onFailure()
+            }
+        }
+    }
+}
+
+@Composable
 fun PostScreen(
     modifier: Modifier = Modifier,
     role: Authority,
-    onAddClicked: () -> Unit,
+    onAddClicked: (feedType: FeedType) -> Unit,
     onItemClicked: (UUID) -> Unit,
-    data: GetPostListResponse
+    onViewChangeClicked: (type: FeedType) -> Unit,
+    data: GetPostListResponse,
+    feedType: FeedType = FeedType.EMPLOYMENT
 ) {
     val roleField = listOf(
         Authority.ROLE_ADMIN,
@@ -41,6 +117,9 @@ fun PostScreen(
         Authority.ROLE_COMPANY_INSTRUCTOR,
         Authority.ROLE_GOVERNMENT
     )
+
+    var viewState: FeedType = feedType
+
     BitgoeulAndroidTheme { colors, typography ->
         Column(
             modifier = modifier
@@ -54,14 +133,23 @@ fun PostScreen(
             ) {
                 Text(
                     modifier = modifier.padding(start = 28.dp),
-                    text = "게시글 목록",
+                    text = if (viewState == FeedType.EMPLOYMENT) "게시글 목록" else "공지사항",
                     style = typography.titleMedium,
                     color = colors.BLACK
                 )
                 Spacer(Modifier.weight(1f))
                 IconButton(
-                    onClick = {},
-                    content = { MegaphoneIcon() }
+                    onClick = {
+                        viewState =
+                            if (viewState == FeedType.EMPLOYMENT) FeedType.NOTICE else FeedType.EMPLOYMENT
+                        onViewChangeClicked(viewState)
+                    },
+                    content = {
+                        when (viewState) {
+                            FeedType.EMPLOYMENT -> MegaphoneIcon()
+                            FeedType.NOTICE -> ChatIcon()
+                        }
+                    }
                 )
                 IconButton(
                     onClick = {},
@@ -70,7 +158,7 @@ fun PostScreen(
                 if (roleField.contains(role)) {
                     IconButton(
                         modifier = modifier.padding(end = 28.dp),
-                        onClick = onAddClicked,
+                        onClick = { onAddClicked(viewState) },
                         content = { PlusIcon() }
                     )
                 }
@@ -81,7 +169,6 @@ fun PostScreen(
                 data = data,
                 onItemClicked = onItemClicked,
                 onKebabClicked = {},
-                isAdmin = roleField.contains(role)
             )
         }
     }
@@ -94,6 +181,7 @@ fun PostScreenPre() {
         role = Authority.ROLE_STUDENT,
         onAddClicked = {},
         onItemClicked = {},
+        onViewChangeClicked = {},
         data = GetPostListResponse(
             listOf(
                 PostModel(

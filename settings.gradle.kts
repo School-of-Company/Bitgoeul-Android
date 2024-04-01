@@ -33,3 +33,5 @@ include(":feature:student-activity")
 include(":feature:my-page")
 include(":feature:main")
 include(":feature:post")
+
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))

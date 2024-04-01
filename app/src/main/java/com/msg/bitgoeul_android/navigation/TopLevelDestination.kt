@@ -4,5 +4,6 @@ enum class TopLevelDestination {
     LOGIN,
     SIGN_UP,
     STUDENT_ACTIVITY,
-    MY_PAGE
+    MY_PAGE,
+    POST
 }

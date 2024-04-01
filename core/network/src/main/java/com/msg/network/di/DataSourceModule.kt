@@ -14,6 +14,7 @@ import com.msg.network.datasource.faq.FaqDataSource
 import com.msg.network.datasource.faq.FaqDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
 import com.msg.network.datasource.lecture.LectureDataSourceImpl
+import com.msg.network.datasource.post.PostDataSource
 import com.msg.network.datasource.post.PostDataSourceImpl
 import com.msg.network.datasource.user.UserDataSource
 import com.msg.network.datasource.user.UserDataSourceImpl
@@ -68,5 +69,5 @@ abstract class DataSourceModule {
     @Binds
     abstract fun bindPostDataSource(
         postDataSourceImpl: PostDataSourceImpl
-    ): PostDataSourceImpl
+    ): PostDataSource
 }

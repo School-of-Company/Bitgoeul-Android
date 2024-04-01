@@ -35,7 +35,6 @@ fun PostCard(
     onItemClicked: (UUID) -> Unit,
     onKebabClicked: () -> Unit,
     data: PostModel,
-    isAdmin: Boolean
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Card(
@@ -50,29 +49,11 @@ fun PostCard(
                 ),
         ) {
             Spacer(modifier = modifier.height(8.dp))
-            Row(
-                modifier = modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = data.title,
-                    style = typography.bodyLarge,
-                    color = colors.BLACK
-                )
-                Spacer(modifier = modifier.weight(1f))
-                if (isAdmin) {
-                    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
-                        IconButton(
-                            modifier = modifier
-                                .height(12.dp)
-                                .width(2.dp),
-                            onClick = {},
-                            content = { KebabIcon() }
-                        )
-                    }
-                }
-            }
+            Text(
+                text = data.title,
+                style = typography.bodyLarge,
+                color = colors.BLACK
+            )
             Spacer(
                 modifier = modifier.height(12.dp)
             )
@@ -97,7 +78,6 @@ fun PostCardPre() {
             id = UUID.randomUUID(),
             title = "Test Post",
             modifiedAt = LocalDateTime.now()
-        ),
-        isAdmin = true
+        )
     )
 }

@@ -2,7 +2,6 @@ package com.msg.data.repository.lecture
 
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
-import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse

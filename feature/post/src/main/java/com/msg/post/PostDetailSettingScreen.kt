@@ -1,5 +1,6 @@
 package com.msg.post
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +19,31 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.post.component.AddLinkSection
 import com.msg.ui.DevicePreviews
+
+@Composable
+internal fun PostDetailSettingScreenRoute(
+    viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onCloseClick: () -> Unit
+) {
+    PostDetailSettingScreen(
+        links = viewModel.links,
+        onCloseClick = {
+            onCloseClick()
+            viewModel.saveLinkList()
+        },
+        onClickAddButton = { viewModel.addLinks() },
+        onValueChanged = { index, links ->
+            viewModel.links[index] = links
+        }
+    )
+}
 
 @Composable
 fun PostDetailSettingScreen(

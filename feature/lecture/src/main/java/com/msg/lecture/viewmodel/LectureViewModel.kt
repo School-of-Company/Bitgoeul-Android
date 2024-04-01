@@ -23,7 +23,6 @@ import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.LectureDates
-import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -126,7 +125,7 @@ class LectureViewModel @Inject constructor(
     var searchLineAndDepartmentData = mutableStateOf(
         SearchResponseModel(
             lines = listOf(
-                ""
+                "", ""
             )
         )
     )
@@ -345,11 +344,14 @@ class LectureViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _searchProfessorResponse.value = remoteError.errorHandling()
+                Log.e("교수 검색 ViewModel함수 catch", remoteError.toString())
             }.collect { response ->
                 _searchProfessorResponse.value = Event.Success(data = response)
+                Log.e("교수 검색 ViewModel함수 collect 성공", response.toString())
             }
         }.onFailure { error ->
             _searchProfessorResponse.value = error.errorHandling()
+            Log.e("교수 검색 ViewModel함수 onFailure", error.toString())
         }
     }
 
@@ -363,11 +365,15 @@ class LectureViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _searchLineResponse.value = remoteError.errorHandling()
+                Log.e("계열 검색 ViewModel함수 catch", remoteError.toString())
             }.collect { response ->
                 _searchLineResponse.value = Event.Success(data = response)
+                Log.e("계열 검색 ViewModel함수 collect 성공", response.toString())
             }
         }.onFailure { error ->
             _searchLineResponse.value = error.errorHandling()
+            Log.e("계열 검색 ViewModel함수 onFailure", error.toString())
+
         }
     }
 
@@ -379,11 +385,14 @@ class LectureViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _searchDepartmentResponse.value = remoteError.errorHandling()
+                Log.e("학과 검색 ViewModel함수 catch", remoteError.toString())
             }.collect { response ->
                 _searchDepartmentResponse.value = Event.Success(data = response)
+                Log.e("학과 검색 ViewModel함수 collect 성공", response.toString())
             }
         }.onFailure { error ->
             _searchDepartmentResponse.value = error.errorHandling()
+            Log.e("학과 검색 ViewModel함수 onFailure", error.toString())
         }
     }
 }

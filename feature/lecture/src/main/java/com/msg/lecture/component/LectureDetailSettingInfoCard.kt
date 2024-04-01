@@ -3,7 +3,6 @@ package com.msg.lecture.component
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -12,20 +11,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Division
-import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.response.lecture.Instructor
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
 
 @Composable
 fun LectureDetailSettingInfoCard(
     modifier: Modifier,
     searchProfessorData: Instructor?,
-    searchData: SearchResponseModel?,
+    searchData: String?,
     division: Division,
     keyword: String,
     onClick: (UUID) -> Unit
@@ -62,7 +58,7 @@ fun LectureDetailSettingInfoCard(
 
                 searchData?.let {
                     Text(
-                        text = it.lines.toString(),
+                        text = it,
                         color = colors.BLACK,
                         style = typography.headlineMedium
                     )

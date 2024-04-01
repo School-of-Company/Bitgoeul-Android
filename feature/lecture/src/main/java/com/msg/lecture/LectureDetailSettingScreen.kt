@@ -43,7 +43,6 @@ import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
-import com.msg.model.remote.model.lecture.SearchResponseModel
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
@@ -68,12 +67,14 @@ fun LectureDetailSettingRoute(
     LaunchedEffect(viewModel.searchLineAndDepartmentData) {
         getLineSearchData(viewModel = viewModel, onLineSuccess = { data ->
             viewModel.searchLineAndDepartmentData.value = data
+            Log.e("onSearchLineClicked coroutineScope", data.toString())
         })
     }
 
     LaunchedEffect(viewModel.searchLineAndDepartmentData) {
         getDepartmentSearchData(viewModel = viewModel, onDepartmentSuccess = { data ->
             viewModel.searchLineAndDepartmentData.value = data
+            Log.e("onSearchDepartmentClicked coroutineScope", data.toString())
         })
     }
 
@@ -785,7 +786,7 @@ fun LectureDetailSettingScreen(
             onCloseButtonClick = { isSearchDialogVisible.value = false },
             division = division.value,
             searchProfessorData = searchProfessorData,
-            searchData = listOf(searchData),
+            searchData = searchData,
             onDepartmentAndLineListClick = onSearchDepartmentClicked
         )
     }
