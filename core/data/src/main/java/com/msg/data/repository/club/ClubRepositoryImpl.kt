@@ -6,6 +6,7 @@ import com.msg.model.remote.response.club.ClubListResponse
 import com.msg.model.remote.response.club.StudentBelongClubResponse
 import com.msg.network.datasource.club.ClubDataSource
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 import javax.inject.Inject
 
 class ClubRepositoryImpl @Inject constructor(
@@ -19,8 +20,14 @@ class ClubRepositoryImpl @Inject constructor(
         return clubDataSource.getClubDetail(id = id)
     }
 
-    override suspend fun getStudentBelongClubList(id: Long): Flow<List<StudentBelongClubResponse>> {
-        return clubDataSource.getStudentBelongClubList(id = id)
+    override suspend fun getStudentBelongClubDetail(
+        id: Long,
+        studentId: UUID
+    ): Flow<StudentBelongClubResponse> {
+        return clubDataSource.getStudentBelongClubDetail(id = id, studentId = studentId)
     }
 
+    override suspend fun getMyClubDetail(): Flow<ClubDetailResponse> {
+        return clubDataSource.getMyClubDetail()
+    }
 }

@@ -7,6 +7,7 @@ import com.msg.model.remote.response.club.StudentBelongClubResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.UUID
 
 interface ClubAPI {
     @GET("club")
@@ -19,8 +20,12 @@ interface ClubAPI {
         @Path("id") id: Long,
     ): ClubDetailResponse
 
-    @GET("club/{id}/member")
-    suspend fun getStudentBelongClubList(
+    @GET("club/{id}/{student_id}")
+    suspend fun getStudentBelongClubDetail(
         @Path("id") id: Long,
-    ): List<StudentBelongClubResponse>
+        @Path("student_id") studentId: UUID,
+    ): StudentBelongClubResponse
+
+    @GET("club/my")
+    suspend fun getMyClubDetail(): ClubDetailResponse
 }
