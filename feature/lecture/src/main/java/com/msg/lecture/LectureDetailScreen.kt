@@ -138,7 +138,7 @@ fun LectureDetailScreen(
                             Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
                             Division.ENERGY_INDUSTRY -> "에너지 산업"
                             Division.MEDICAL_HEALTHCARE -> "의료헬스케어"
-                            Division.AI_CONVERGENCE_AI -> "AI 융복합"
+                            Division.AI_CONVERGENCE -> "AI 융복합"
                             Division.CULTURAL_INDUSTRY -> "문화 산업"
                         },
                         color = colors.G2,

@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,9 +44,12 @@ import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.enumdatatype.Semester
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -57,27 +61,7 @@ fun LectureDetailSettingRoute(
     onApplyClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(viewModel.searchProfessorData) {
-        getProfessorSearchData(viewModel = viewModel, onSearchProfessorSuccess = { data ->
-            viewModel.searchProfessorData.value = data
-            Log.e("onSearchProfessorClicked coroutineScope", data.toString())
-        })
-    }
-
-    LaunchedEffect(viewModel.searchLineAndDepartmentData) {
-        getLineSearchData(viewModel = viewModel, onLineSuccess = { data ->
-            viewModel.searchLineAndDepartmentData.value = data
-            Log.e("onSearchLineClicked coroutineScope", data.toString())
-        })
-    }
-
-    LaunchedEffect(viewModel.searchLineAndDepartmentData) {
-        getDepartmentSearchData(viewModel = viewModel, onDepartmentSuccess = { data ->
-            viewModel.searchLineAndDepartmentData.value = data
-            Log.e("onSearchDepartmentClicked coroutineScope", data.toString())
-        })
-    }
-
+    val coroutineScope = rememberCoroutineScope()
     LectureDetailSettingScreen(
         onCloseClicked = onCloseClicked,
         onApplyClicked = { lectureType, semester, division, department, line, userId, credit, startDate, endDate, completeDate, endTime, startTime, maxRegisteredUser ->
@@ -98,20 +82,39 @@ fun LectureDetailSettingRoute(
         },
         onSearchProfessorClicked = { keyword ->
             viewModel.searchProfessor(keyword = keyword)
+            coroutineScope.launch {
+                getProfessorSearchData(viewModel = viewModel, onSearchProfessorSuccess = { data ->
+                    viewModel.searchProfessorData.value = data
+                    Log.e("onSearchProfessorClicked coroutineScope", data.toString())
+                })
+            }
         },
         onSearchLineClicked = { keyword, division ->
             viewModel.searchLine(keyword = keyword, division = division)
+            coroutineScope.launch {
+                getLineSearchData(viewModel = viewModel, onLineSuccess = { data ->
+                    viewModel.searchLineData.value = data
+                    Log.e("onSearchLineClicked coroutineScope", data.toString())
+                })
+            }
         },
         onSearchDepartmentClicked = { keyword ->
             viewModel.searchDepartment(keyword = keyword)
+            coroutineScope.launch {
+                getDepartmentSearchData(viewModel = viewModel, onDepartmentSuccess = { data ->
+                    viewModel.searchDepartmentData.value = data
+                    Log.e("onSearchDepartmentClicked coroutineScope", data.toString())
+                })
+            }
 
         },
         onSearchResultItemCLick = { userId ->
             viewModel.userId.value = userId
             Log.e("userId", userId.toString())
         },
-        searchData = viewModel.searchLineAndDepartmentData.value,
+        searchLineData = viewModel.searchLineData.value,
         searchProfessorData = viewModel.searchProfessorData.value,
+        searchDepartmentData = viewModel.searchDepartmentData.value,
         savedCreditPoint = viewModel.credit.value,
         savedStartTime = viewModel.startTime.value,
         savedEndTime = viewModel.endTime.value,
@@ -131,7 +134,7 @@ fun LectureDetailSettingRoute(
 
 suspend fun getLineSearchData(
     viewModel: LectureViewModel,
-    onLineSuccess: (data: SearchResponseModel) -> Unit,
+    onLineSuccess: (data: SearchLineResponse) -> Unit,
 ) {
     viewModel.searchLineResponse.collect { response ->
         when (response) {
@@ -167,7 +170,7 @@ suspend fun getProfessorSearchData(
 
 suspend fun getDepartmentSearchData(
     viewModel: LectureViewModel,
-    onDepartmentSuccess: (data: SearchResponseModel) -> Unit,
+    onDepartmentSuccess: (data: SearchDepartmentResponse) -> Unit,
 ) {
     viewModel.searchDepartmentResponse.collect { response ->
         when (response) {
@@ -187,7 +190,8 @@ suspend fun getDepartmentSearchData(
 fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,
     searchProfessorData: SearchProfessorResponse,
-    searchData: SearchResponseModel,
+    searchLineData: SearchLineResponse,
+    searchDepartmentData: SearchDepartmentResponse,
     onCloseClicked: () -> Unit,
     onApplyClicked: (LectureType, Semester, Division, String, String, UUID, Int, LocalDateTime?, LocalDateTime?, LocalDate?, LocalTime?, LocalTime?, Int) -> Unit,
     onSearchProfessorClicked: (String) -> Unit,
@@ -423,7 +427,7 @@ fun LectureDetailSettingScreen(
                         isSelected = isLectureDivisionTagSelected.value == "3",
                         onClick = {
                             isLectureDivisionTagSelected.value = "3"
-                            division.value = Division.AI_CONVERGENCE_AI
+                            division.value = Division.AI_CONVERGENCE
                         }
                     )
                 }
@@ -786,7 +790,8 @@ fun LectureDetailSettingScreen(
             onCloseButtonClick = { isSearchDialogVisible.value = false },
             division = division.value,
             searchProfessorData = searchProfessorData,
-            searchData = searchData,
+            searchLineData = searchLineData,
+            searchDepartmentData = searchDepartmentData,
             onDepartmentAndLineListClick = onSearchDepartmentClicked
         )
     }

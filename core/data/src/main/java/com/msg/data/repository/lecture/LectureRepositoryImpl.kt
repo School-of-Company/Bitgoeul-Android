@@ -5,6 +5,8 @@ import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.network.datasource.lecture.LectureDataSource
 import kotlinx.coroutines.flow.Flow
@@ -56,14 +58,14 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchResponseModel> {
+    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchLineResponse> {
         return lectureDataSource.searchLine(
             keyword = keyword,
             division = division
         )
     }
 
-    override suspend fun searchDepartment(keyword: String): Flow<SearchResponseModel> {
+    override suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> {
         return lectureDataSource.searchDepartment(
             keyword = keyword
         )

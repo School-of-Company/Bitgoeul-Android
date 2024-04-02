@@ -162,7 +162,7 @@ fun LectureCard(
                                 Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
                                 Division.ENERGY_INDUSTRY -> "에너지 산업"
                                 Division.MEDICAL_HEALTHCARE -> "의료헬스케어"
-                                Division.AI_CONVERGENCE_AI -> "AI 융복합"
+                                Division.AI_CONVERGENCE -> "AI 융복합"
                                 Division.CULTURAL_INDUSTRY -> "문화 산업"
                             },
                             department = data.department
@@ -186,7 +186,7 @@ fun LectureCardPre() {
             name = "유저 리서치 - 사용자 경험 개선하기",
             content = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심박주홍박주홍박주홍박주홍박주홍박주홍박주홍박주홍박주홍",
             semester = Semester.SECOND_YEAR_SPRING_SEMESTER,
-            division = Division.AI_CONVERGENCE_AI,
+            division = Division.AI_CONVERGENCE,
             department = "컴퓨터공학과",
             startDate = "2021-03-02",
             endDate = "2021-06-02",

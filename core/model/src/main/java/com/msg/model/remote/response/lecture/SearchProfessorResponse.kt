@@ -4,10 +4,10 @@ import com.msg.model.remote.enumdatatype.Authority
 import java.util.UUID
 
 data class SearchProfessorResponse(
-    val instructor: List<Instructor>
+    var instructors: List<Instructors>
 )
 
-data class Instructor(
+data class Instructors(
     val id: UUID,
     val name: String,
     val organization: String,

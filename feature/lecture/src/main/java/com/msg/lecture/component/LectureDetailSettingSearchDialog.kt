@@ -25,13 +25,16 @@ import com.msg.design_system.component.icon.BlackCloseIcon
 import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Division
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
 
 @Composable
 fun LectureDetailSettingSearchDialog(
     searchProfessorData: SearchProfessorResponse,
-    searchData: SearchResponseModel,
+    searchLineData: SearchLineResponse,
+    searchDepartmentData: SearchDepartmentResponse,
     modifier: Modifier = Modifier,
     text: String,
     searchPlaceHolder: String,
@@ -101,32 +104,34 @@ fun LectureDetailSettingSearchDialog(
 
                             Spacer(modifier = modifier.height(18.dp))
 
-                            when (searchAPIType) {
-                                "학과" -> {
-                                    LectureDetailSettingDepartmentSearchList(
-                                        modifier = modifier,
-                                        onClick = onDepartmentAndLineListClick,
-                                        data = searchData
-                                    )
-                                }
-
-                                else -> {
-                                    LectureDetailSettingSearchList(
-                                        modifier = modifier,
-                                        onClick = onResultListClick,
-                                        searchProfessorData = searchProfessorData,
-                                        searchAPIType = searchAPIType,
-                                        searchData = searchData,
-                                        division = division,
-                                        keyword = keywordState.value
-                                    )
-                                }
+                            if (searchAPIType == "강의 계열") {
+                                LectureLineList(
+                                    modifier = modifier,
+                                    onClick = onResultListClick,
+                                    searchLineData = searchLineData,
+                                    division = division,
+                                    keyword = keywordState.value
+                                )
+                            } else if (searchAPIType == "담당 교수") {
+                                LectureProfessorList(
+                                    modifier = modifier,
+                                    onClick = onResultListClick,
+                                    searchProfessorData = searchProfessorData,
+                                    division = division,
+                                    keyword = keywordState.value
+                                )
+                            } else if (searchAPIType == "학과") {
+                                LectureDepartmentList(
+                                    modifier = modifier,
+                                    onClick = onDepartmentAndLineListClick,
+                                    data = searchDepartmentData
+                                )
                             }
                         }
                     }
-
                 }
             }
+
         }
     }
 }

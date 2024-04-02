@@ -5,6 +5,8 @@ import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.network.api.LectureAPI
 import com.msg.network.util.BitgoeulApiHandler
@@ -77,17 +79,17 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchResponseModel> = flow {
+    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchLineResponse> = flow {
         emit(
-            BitgoeulApiHandler<SearchResponseModel>()
+            BitgoeulApiHandler<SearchLineResponse>()
                 .httpRequest { lectureAPI.searchLine(keyword = keyword, division = division) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchDepartment(keyword: String): Flow<SearchResponseModel> = flow {
+    override suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> = flow {
         emit(
-            BitgoeulApiHandler<SearchResponseModel>()
+            BitgoeulApiHandler<SearchDepartmentResponse>()
                 .httpRequest { lectureAPI.searchDepartment(keyword = keyword) }
                 .sendRequest()
         )

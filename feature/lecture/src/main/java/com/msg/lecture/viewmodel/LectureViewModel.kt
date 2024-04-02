@@ -26,9 +26,11 @@ import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
-import com.msg.model.remote.response.lecture.Instructor
+import com.msg.model.remote.response.lecture.Instructors
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.Lectures
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -76,10 +78,10 @@ class LectureViewModel @Inject constructor(
     private val _searchProfessorResponse = MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
     val searchProfessorResponse = _searchProfessorResponse.asStateFlow()
 
-    private val _searchLineResponse = MutableStateFlow<Event<SearchResponseModel>>(Event.Loading)
+    private val _searchLineResponse = MutableStateFlow<Event<SearchLineResponse>>(Event.Loading)
     val searchLineResponse = _searchLineResponse.asStateFlow()
 
-    private val _searchDepartmentResponse = MutableStateFlow<Event<SearchResponseModel>>(Event.Loading)
+    private val _searchDepartmentResponse = MutableStateFlow<Event<SearchDepartmentResponse>>(Event.Loading)
     val searchDepartmentResponse = _searchDepartmentResponse.asStateFlow()
 
     var lectureList = mutableStateOf(
@@ -99,7 +101,7 @@ class LectureViewModel @Inject constructor(
                         lecturer = "",
                         department = "",
                         semester = Semester.SECOND_YEAR_FALL_SEMESTER,
-                        division = Division.AI_CONVERGENCE_AI,
+                        division = Division.AI_CONVERGENCE,
                         line = ""
                     )
                 )
@@ -110,8 +112,8 @@ class LectureViewModel @Inject constructor(
 
     var searchProfessorData = mutableStateOf(
         SearchProfessorResponse(
-            instructor = listOf(
-                Instructor(
+            instructors = listOf(
+                Instructors(
                     id = UUID.randomUUID(),
                     authority = Authority.ROLE_ADMIN,
                     name = "",
@@ -122,20 +124,30 @@ class LectureViewModel @Inject constructor(
     )
         private set
 
-    var searchLineAndDepartmentData = mutableStateOf(
-        SearchResponseModel(
+    var searchLineData = mutableStateOf(
+        SearchLineResponse(
             lines = listOf(
-                "", ""
+                ""
             )
         )
     )
         private set
+
+    var searchDepartmentData = mutableStateOf(
+        SearchDepartmentResponse(
+            departments = listOf(
+                ""
+            )
+        )
+    )
+        private set
+
     var lectureDetailData = mutableStateOf(
         DetailLectureResponse(
             name = "",
             content = "",
             semester = Semester.SECOND_YEAR_FALL_SEMESTER,
-            division = Division.AI_CONVERGENCE_AI,
+            division = Division.AI_CONVERGENCE,
             department = "",
             line = "",
             createAt = LocalDate.now(),
@@ -183,7 +195,7 @@ class LectureViewModel @Inject constructor(
     var semester = mutableStateOf(Semester.SECOND_YEAR_FALL_SEMESTER)
         private set
 
-    var division = mutableStateOf(Division.AI_CONVERGENCE_AI)
+    var division = mutableStateOf(Division.AI_CONVERGENCE)
         private set
 
     var department = mutableStateOf("")

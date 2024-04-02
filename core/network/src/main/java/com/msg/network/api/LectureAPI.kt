@@ -5,6 +5,8 @@ import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -52,10 +54,10 @@ interface LectureAPI {
     suspend fun searchLine(
         @Query("keyword") keyword: String,
         @Query("division") division: Division,
-    ): SearchResponseModel
+    ): SearchLineResponse
 
     @GET("lecture/department")
     suspend fun searchDepartment(
         @Query("keyword") keyword: String,
-    ): SearchResponseModel
+    ): SearchDepartmentResponse
 }

@@ -14,20 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Division
-import com.msg.model.remote.response.lecture.Instructor
+import com.msg.model.remote.response.lecture.Instructors
+import com.msg.model.remote.response.lecture.SearchLineResponse
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
 
 @Composable
 fun LectureDetailSettingInfoCard(
     modifier: Modifier,
-    searchProfessorData: Instructor?,
-    searchData: String?,
+    searchProfessorData: Instructors?,
+    searchLineData: String?,
     division: Division,
     keyword: String,
     onClick: (UUID) -> Unit
 ) {
-    Log.e("searchProfessorData", searchProfessorData.toString())
-    Log.e("searchData", searchData.toString())
     BitgoeulAndroidTheme { colors, typography ->
         Surface {
             Card(
@@ -42,23 +42,21 @@ fun LectureDetailSettingInfoCard(
                     .padding(horizontal = 16.dp, vertical = 16.dp),
                 colors = CardDefaults.cardColors(containerColor = colors.WHITE)
             ) {
-                searchProfessorData?.let {
+                if (searchProfessorData != null) {
                     Text(
-                        text = it.name,
+                        text = searchProfessorData.name,
                         color = colors.BLACK,
                         style = typography.labelLarge
                     )
 
                     Text(
-                        text = it.organization,
+                        text = searchProfessorData.organization,
                         color = colors.G2,
                         style = typography.bodySmall
                     )
-                }
-
-                searchData?.let {
+                } else if (searchLineData != null) {
                     Text(
-                        text = it,
+                        text = searchLineData,
                         color = colors.BLACK,
                         style = typography.headlineMedium
                     )
@@ -68,13 +66,13 @@ fun LectureDetailSettingInfoCard(
                             Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
                             Division.ENERGY_INDUSTRY -> "에너지 산업"
                             Division.MEDICAL_HEALTHCARE -> "의료•헬스"
-                            Division.AI_CONVERGENCE_AI -> "A.I 융•복합"
+                            Division.AI_CONVERGENCE -> "A.I 융•복합"
                             Division.CULTURAL_INDUSTRY -> "문화 산업"
                         },
                         color = colors.G2,
                         style = typography.bodySmall
                     )
-                } ?: run {
+                } else if (searchLineData == null || searchLineData == "") {
                     Log.e("LectureDetailSettingInfoCard", "searchData is null")
                     Text(
                         text = keyword,
@@ -87,7 +85,7 @@ fun LectureDetailSettingInfoCard(
                             Division.AUTOMOBILE_INDUSTRY -> "자동차 산업에 추가하기..."
                             Division.ENERGY_INDUSTRY -> "에너지 산업에 추가하기..."
                             Division.MEDICAL_HEALTHCARE -> "의료•헬스에 추가하기..."
-                            Division.AI_CONVERGENCE_AI -> "A.I 융•복합에 추가하기..."
+                            Division.AI_CONVERGENCE -> "A.I 융•복합에 추가하기..."
                             Division.CULTURAL_INDUSTRY -> "문화 산업에 추가하기..."
                         },
                         color = colors.G2,
