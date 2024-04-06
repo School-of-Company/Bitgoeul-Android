@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -55,15 +54,8 @@ fun LectureDetailSettingSearchDialog(
                     Box(
                         modifier = modifier
                             .background(color = colors.WHITE, RoundedCornerShape(8.dp))
-                            .wrapContentHeight()
+                            .height(480.dp)
                     ) {
-                        Spacer(
-                            modifier = modifier
-                                .padding(top = 150.dp)
-                                .height(1.dp)
-                                .fillMaxWidth()
-                                .background(color = colors.G9)
-                        )
                         Column(
                             modifier = modifier.padding(horizontal = 24.dp)
                         ) {
@@ -101,8 +93,14 @@ fun LectureDetailSettingSearchDialog(
                                 }
                             )
 
+                            Spacer(modifier = modifier.height(16.dp))
 
-                            Spacer(modifier = modifier.height(18.dp))
+                            Spacer(
+                                modifier = modifier
+                                    .height(1.dp)
+                                    .fillMaxWidth()
+                                    .background(color = colors.G9)
+                            )
 
                             if (searchAPIType == "강의 계열") {
                                 LectureLineList(

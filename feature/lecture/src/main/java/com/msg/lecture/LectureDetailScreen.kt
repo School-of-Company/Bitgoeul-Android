@@ -1,5 +1,6 @@
 package com.msg.lecture
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.ApplicationDoneButton
@@ -46,7 +48,7 @@ import java.util.UUID
 @Composable
 fun LectureDetailRoute(
     onBackClicked: () -> Unit,
-    viewModel: LectureViewModel = hiltViewModel()
+    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
     val role = remember { mutableStateOf(Authority.ROLE_USER) }
     val id = viewModel.selectedLectureId.value

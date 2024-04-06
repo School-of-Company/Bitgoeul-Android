@@ -1,15 +1,13 @@
 package com.msg.lecture
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
@@ -19,8 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,8 +27,6 @@ import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.button.DetailSettingButton
 import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
-import com.msg.design_system.component.textfield.InputMainContentTextField
-import com.msg.design_system.component.textfield.InputTitleTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.viewmodel.LectureViewModel
@@ -43,13 +39,10 @@ fun LectureOpenRoute(
     onActionClicked: () -> Unit,
     onBackClicked: () -> Unit,
     onSettingClicked: () -> Unit,
-    viewModel: LectureViewModel = hiltViewModel()
+    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
-
-
     LectureOpenScreen(
         onActionClicked = {
-            onActionClicked()
             viewModel.openLecture(
                 name = viewModel.name.value,
                 content = viewModel.content.value,
@@ -60,13 +53,11 @@ fun LectureOpenRoute(
                 userId = viewModel.userId.value,
                 startDate = viewModel.startDate.value ?: LocalDateTime.now(),
                 endDate = viewModel.endDate.value ?: LocalDateTime.now(),
-                completeDate = viewModel.completeDate.value ?: LocalDate.now(),
-                startTime = viewModel.startTime.value ?: LocalTime.now(),
-                endTime = viewModel.endTime.value ?: LocalTime.now(),
                 lectureType = viewModel.lectureType.value,
                 credit = viewModel.credit.value,
                 maxRegisteredUser = viewModel.maxRegisteredUser.value,
             )
+            onActionClicked()
         },
         onBackClicked = onBackClicked,
         onSettingClicked = { name, content ->

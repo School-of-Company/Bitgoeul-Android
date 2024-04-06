@@ -2,6 +2,7 @@ package com.msg.lecture.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -60,10 +61,12 @@ class LectureViewModel @Inject constructor(
         return Authority.authorityOf(authTokenDataSource.getAuthority())
     }
 
-    private val _getLectureListResponse = MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
+    private val _getLectureListResponse =
+        MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse =
+        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -75,13 +78,15 @@ class LectureViewModel @Inject constructor(
     private val _lectureApplicationCancelResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val lectureApplicationCancelResponse = _lectureApplicationCancelResponse.asStateFlow()
 
-    private val _searchProfessorResponse = MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
+    private val _searchProfessorResponse =
+        MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
     val searchProfessorResponse = _searchProfessorResponse.asStateFlow()
 
     private val _searchLineResponse = MutableStateFlow<Event<SearchLineResponse>>(Event.Loading)
     val searchLineResponse = _searchLineResponse.asStateFlow()
 
-    private val _searchDepartmentResponse = MutableStateFlow<Event<SearchDepartmentResponse>>(Event.Loading)
+    private val _searchDepartmentResponse =
+        MutableStateFlow<Event<SearchDepartmentResponse>>(Event.Loading)
     val searchDepartmentResponse = _searchDepartmentResponse.asStateFlow()
 
     var lectureList = mutableStateOf(
@@ -183,7 +188,7 @@ class LectureViewModel @Inject constructor(
     var lecturer = mutableStateOf("")
         private set
 
-    var credit = mutableIntStateOf(0)
+    var credit = mutableIntStateOf(1)
         private set
 
     var headCount = mutableIntStateOf(0)
@@ -192,10 +197,10 @@ class LectureViewModel @Inject constructor(
     var maxRegisteredUser = mutableIntStateOf(0)
         private set
 
-    var semester = mutableStateOf(Semester.SECOND_YEAR_FALL_SEMESTER)
+    var semester = mutableStateOf(Semester.FIRST_YEAR_FALL_SEMESTER)
         private set
 
-    var division = mutableStateOf(Division.AI_CONVERGENCE)
+    var division = mutableStateOf(Division.AUTOMOBILE_INDUSTRY)
         private set
 
     var department = mutableStateOf("")
@@ -207,7 +212,7 @@ class LectureViewModel @Inject constructor(
     var userId = mutableStateOf(UUID.randomUUID())
         private set
 
-    var lectureType = mutableStateOf(LectureType.UNIVERSITY_EXPLORATION_PROGRAM)
+    var lectureType = mutableStateOf(LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM)
         private set
 
     var startDate = mutableStateOf<LocalDateTime?>(null)
@@ -228,6 +233,9 @@ class LectureViewModel @Inject constructor(
     var keyword = mutableStateOf("")
         private set
 
+    var lectureDates = mutableStateListOf<LectureDates>()
+        private set
+
     fun getLectureList(
         page: Int,
         size: Int,
@@ -240,10 +248,8 @@ class LectureViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _getLectureListResponse.value = remoteError.errorHandling()
-                Log.e("remoteError", remoteError.toString())
             }.collect { response ->
                 _getLectureListResponse.value = Event.Success(data = response)
-                Log.e("viewModel 단 response", response.toString())
             }
         }.onFailure { error ->
             _getLectureListResponse.value = error.errorHandling()
@@ -276,9 +282,6 @@ class LectureViewModel @Inject constructor(
         userId: UUID,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
-        completeDate: LocalDate,
-        startTime: LocalTime,
-        endTime: LocalTime,
         lectureType: LectureType,
         credit: Int,
         maxRegisteredUser: Int,
@@ -294,13 +297,7 @@ class LectureViewModel @Inject constructor(
                 userId = userId,
                 startDate = startDate,
                 endDate = endDate,
-                lectureDates = listOf(
-                    LectureDates(
-                        completeDate = completeDate,
-                        startTime = startTime,
-                        endTime = endTime
-                    )
-                ),
+                lectureDates = lectureDates,
                 lectureType = lectureType,
                 credit = credit,
                 maxRegisteredUser = maxRegisteredUser
@@ -315,6 +312,23 @@ class LectureViewModel @Inject constructor(
             _openLectureResponse.value = error.errorHandling()
         }
     }
+
+    fun addLectureDates() {
+        lectureDates.add(
+            LectureDates(
+                completeDate = completeDate.value ?: LocalDate.now(),
+                startTime = startTime.value ?: LocalTime.now(),
+                endTime = endTime.value ?: LocalTime.now()
+            )
+        )
+    }
+
+    fun saveLectureDatesList() {
+        lectureDates.forEachIndexed { index, _ ->
+            lectureDates.removeAt(index)
+        }
+    }
+
 
     fun lectureApplication(
         id: UUID
@@ -356,14 +370,11 @@ class LectureViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _searchProfessorResponse.value = remoteError.errorHandling()
-                Log.e("교수 검색 ViewModel함수 catch", remoteError.toString())
             }.collect { response ->
                 _searchProfessorResponse.value = Event.Success(data = response)
-                Log.e("교수 검색 ViewModel함수 collect 성공", response.toString())
             }
         }.onFailure { error ->
             _searchProfessorResponse.value = error.errorHandling()
-            Log.e("교수 검색 ViewModel함수 onFailure", error.toString())
         }
     }
 
@@ -377,14 +388,11 @@ class LectureViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _searchLineResponse.value = remoteError.errorHandling()
-                Log.e("계열 검색 ViewModel함수 catch", remoteError.toString())
             }.collect { response ->
                 _searchLineResponse.value = Event.Success(data = response)
-                Log.e("계열 검색 ViewModel함수 collect 성공", response.toString())
             }
         }.onFailure { error ->
             _searchLineResponse.value = error.errorHandling()
-            Log.e("계열 검색 ViewModel함수 onFailure", error.toString())
 
         }
     }
@@ -397,14 +405,11 @@ class LectureViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _searchDepartmentResponse.value = remoteError.errorHandling()
-                Log.e("학과 검색 ViewModel함수 catch", remoteError.toString())
             }.collect { response ->
                 _searchDepartmentResponse.value = Event.Success(data = response)
-                Log.e("학과 검색 ViewModel함수 collect 성공", response.toString())
             }
         }.onFailure { error ->
             _searchDepartmentResponse.value = error.errorHandling()
-            Log.e("학과 검색 ViewModel함수 onFailure", error.toString())
         }
     }
 }

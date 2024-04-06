@@ -212,37 +212,38 @@ fun TimePickerBottomSheet(
     val timePickerState = rememberTimePickerState()
     val selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
 
-        BitgoeulAndroidTheme { colors, _ ->
-            ModalBottomSheet(
+    BitgoeulAndroidTheme { colors, _ ->
+        ModalBottomSheet(
+            modifier = modifier
+                .height(330.dp),
+            sheetState = bottomSheetState,
+            onDismissRequest = {
+                onQuit(selectedTime)
+                Log.e("selectedTIme", selectedTime.toString())
+            },
+        ) {
+            Box(
                 modifier = modifier
-                    .height(330.dp),
-                sheetState = bottomSheetState,
-                onDismissRequest = {
-                        onQuit(selectedTime)
-                        Log.e("selectedTIme", selectedTime.toString())
-                },
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center,
             ) {
-                Box(
-                    modifier = modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    TimeInput(
-                        state = timePickerState,
-                        colors = TimePickerDefaults.colors(
-                            selectorColor = colors.BLACK,
-                            containerColor = colors.WHITE,
-                            timeSelectorSelectedContainerColor = colors.P5,
-                            timeSelectorSelectedContentColor = colors.WHITE,
-                            periodSelectorBorderColor = colors.BLACK,
-                            periodSelectorSelectedContentColor = colors.WHITE,
-                            periodSelectorSelectedContainerColor = colors.P5,
-                        ),
-                    )
-                }
+                TimeInput(
+                    state = timePickerState,
+                    colors = TimePickerDefaults.colors(
+                        selectorColor = colors.BLACK,
+                        containerColor = colors.WHITE,
+                        timeSelectorSelectedContainerColor = colors.P5,
+                        timeSelectorSelectedContentColor = colors.WHITE,
+                        periodSelectorBorderColor = colors.BLACK,
+                        periodSelectorSelectedContentColor = colors.WHITE,
+                        periodSelectorSelectedContainerColor = colors.P5,
+                    ),
+                )
+            }
         }
     }
 }
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
