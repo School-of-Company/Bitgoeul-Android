@@ -11,7 +11,6 @@ data class ClubDetailResponse(
     val teacher: Teacher
 ) {
     data class Student(
-        val userId: UUID,
         val id: UUID,
         val name: String
     )
