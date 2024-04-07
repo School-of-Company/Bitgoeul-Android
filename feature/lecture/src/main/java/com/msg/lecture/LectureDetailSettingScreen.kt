@@ -45,7 +45,6 @@ import com.msg.design_system.component.picker.Picker
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.PickerTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.lecture.component.LectureAttendanceDatePicker
 import com.msg.lecture.component.LectureDetailSettingSearchDialog
 import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.util.Event
@@ -230,9 +229,13 @@ fun LectureDetailSettingScreen(
     val isLectureSemesterAttendedTagSelected = remember { mutableStateOf("0") }
     val isLectureDivisionTagSelected = remember { mutableStateOf("0") }
     val isLectureCreditTagSelected = remember { mutableStateOf("0") }
+    val isLectureAttendanceFocusedList = remember { mutableListOf<Boolean>() }
+    val isLectureStartTimeFocusedList = remember { mutableListOf<Boolean>() }
+    val isLectureEndTimeFocusedList = remember { mutableListOf<Boolean>() }
     val isLectureAttendanceFocused = remember { mutableStateOf(false) }
     val isLectureStartTimeFocused = remember { mutableStateOf(false) }
     val isLectureEndTimeFocused = remember { mutableStateOf(false) }
+
     val isShowDeleteIcon = remember { mutableStateOf(false) }
 
     val lectureType = remember { mutableStateOf(savedLectureType) }
@@ -254,13 +257,20 @@ fun LectureDetailSettingScreen(
     val selectedEndLocalDate = remember { mutableStateOf(LocalDate.now()) }
     val selectedEndLocalTime = remember { mutableStateOf(LocalTime.now()) }
 
-    val applicationStartTimeForShow = remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
-    val applicationEndTimeForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
-    val applicationStartDateForShow = remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
-    val applicationEndDateForShow = remember { mutableStateOf(savedEndDate?.toKoreanFormat() ?: "") }
-    val lectureAttendCompleteDateForShow = remember { mutableStateOf(savedCompleteDate?.toKoreanFormat() ?: "") }
-    val lectureAttendStartTimeDateForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
-    val lectureAttendEndTimeDateForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val applicationStartTimeForShow =
+        remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
+    val applicationEndTimeForShow =
+        remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val applicationStartDateForShow =
+        remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
+    val applicationEndDateForShow =
+        remember { mutableStateOf(savedEndDate?.toKoreanFormat() ?: "") }
+    val lectureAttendCompleteDateForShow =
+        remember { mutableStateOf(savedCompleteDate?.toKoreanFormat() ?: "") }
+    val lectureAttendStartTimeDateForShow =
+        remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val lectureAttendEndTimeDateForShow =
+        remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
 
     // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, typography ->
@@ -294,43 +304,37 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .wrapContentSize()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.lecture_category),
-                        color = colors.BLACK,
-                        style = typography.bodyLarge,
-                        modifier = modifier.padding(bottom = 8.dp)
-                    )
+                Text(
+                    text = stringResource(id = R.string.lecture_category),
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                    modifier = modifier.padding(bottom = 8.dp)
+                )
 
-                    LectureSettingTag(
-                        modifier = modifier,
-                        text = stringResource(id = R.string.mutual_credit_recognition_curriculum),
-                        isSelected = isLectureCategoryTagSelected.value == "0",
-                        onClick = {
-                            isLectureCategoryTagSelected.value = "0"
-                            lectureType.value = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
-                        }
-                    )
+                LectureSettingTag(
+                    modifier = modifier,
+                    text = stringResource(id = R.string.mutual_credit_recognition_curriculum),
+                    isSelected = isLectureCategoryTagSelected.value == "0",
+                    onClick = {
+                        isLectureCategoryTagSelected.value = "0"
+                        lectureType.value = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
+                    }
+                )
 
-                    Spacer(modifier = modifier.height(16.dp))
+                Spacer(modifier = modifier.height(16.dp))
 
-                    LectureSettingTag(
-                        modifier = modifier,
-                        text = stringResource(id = R.string.university_visit_program),
-                        isSelected = isLectureCategoryTagSelected.value == "1",
-                        onClick = {
-                            isLectureCategoryTagSelected.value = "1"
-                            lectureType.value = LectureType.UNIVERSITY_EXPLORATION_PROGRAM
-                        }
-                    )
+                LectureSettingTag(
+                    modifier = modifier,
+                    text = stringResource(id = R.string.university_visit_program),
+                    isSelected = isLectureCategoryTagSelected.value == "1",
+                    onClick = {
+                        isLectureCategoryTagSelected.value = "1"
+                        lectureType.value = LectureType.UNIVERSITY_EXPLORATION_PROGRAM
+                    }
+                )
 
-                    Spacer(modifier = modifier.height(28.dp))
+                Spacer(modifier = modifier.height(28.dp))
 
-                }
             }
 
             item {
@@ -684,6 +688,19 @@ fun LectureDetailSettingScreen(
                 Spacer(modifier = modifier.height(28.dp))
             }
 
+            if (lectureDates.size > isLectureAttendanceFocusedList.size) {
+                val diff = lectureDates.size - isLectureAttendanceFocusedList.size
+                repeat(diff) {
+                    isLectureAttendanceFocusedList.add(false)
+                    isLectureStartTimeFocusedList.add(false)
+                    isLectureEndTimeFocusedList.add(false)
+                }
+                Log.e(
+                    "lectureDatesList Index 추가 if구문 실행",
+                    isLectureAttendanceFocusedList.toString()
+                )
+            }
+
             item {
                 Text(
                     text = stringResource(id = R.string.lecture_attendance_date),
@@ -800,7 +817,7 @@ fun LectureDetailSettingScreen(
                             )
                             .padding(vertical = 15.dp, horizontal = 20.dp)
                             .clickable {
-                                isLectureAttendanceFocused.value = true
+                                isLectureAttendanceFocusedList[index] = true
                             },
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
@@ -844,7 +861,7 @@ fun LectureDetailSettingScreen(
                             )
                             .padding(vertical = 15.dp, horizontal = 20.dp)
                             .clickable {
-                                isLectureStartTimeFocused.value = true
+                                isLectureStartTimeFocusedList[index] = true
                             },
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
@@ -872,7 +889,7 @@ fun LectureDetailSettingScreen(
                             )
                             .padding(vertical = 15.dp, horizontal = 20.dp)
                             .clickable {
-                                isLectureEndTimeFocused.value = true
+                                isLectureEndTimeFocusedList[index] = true
                             },
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
@@ -887,6 +904,31 @@ fun LectureDetailSettingScreen(
                         )
 
                         PickerArrowIcon(isSelected = false)
+                    }
+                    if (isLectureAttendanceFocused.value || isLectureAttendanceFocusedList[index]) {
+                        DatePickerBottomSheet { selectedCompleteDate ->
+                            isLectureAttendanceFocused.value = false
+                            isLectureAttendanceFocusedList[index] = false
+                            completeDate.value = selectedCompleteDate
+                            lectureAttendCompleteDateForShow.value =
+                                selectedCompleteDate?.toKoreanFormat() ?: ""
+                        }
+                    } else if (isLectureStartTimeFocused.value || isLectureStartTimeFocusedList[index]) {
+                        TimePickerBottomSheet { selectedStartTime ->
+                            isLectureStartTimeFocused.value = false
+                            isLectureStartTimeFocusedList[index] = false
+                            startTime.value = selectedStartTime
+                            lectureAttendStartTimeDateForShow.value =
+                                selectedStartTime?.toLocalTimeFormat() ?: ""
+                        }
+                    } else if (isLectureEndTimeFocused.value || isLectureEndTimeFocusedList[index]) {
+                        TimePickerBottomSheet { selectedEndTime ->
+                            isLectureEndTimeFocused.value = false
+                            isLectureEndTimeFocusedList[index] = false
+                            endTime.value = selectedEndTime
+                            lectureAttendEndTimeDateForShow.value =
+                                selectedEndTime?.toLocalTimeFormat() ?: ""
+                        }
                     }
                 }
             }
@@ -905,7 +947,6 @@ fun LectureDetailSettingScreen(
 
                 Spacer(modifier = modifier.height(28.dp))
             }
-//
 
             item {
                 Text(
@@ -1017,25 +1058,5 @@ fun LectureDetailSettingScreen(
             onDepartmentAndLineListClick = onSearchDepartmentClicked
         )
 
-
-        if (isLectureAttendanceFocused.value) {
-            DatePickerBottomSheet { selectedCompleteDate ->
-                isLectureAttendanceFocused.value = false
-                completeDate.value = selectedCompleteDate
-                lectureAttendCompleteDateForShow.value = selectedCompleteDate?.toKoreanFormat() ?: ""
-            }
-        } else if (isLectureStartTimeFocused.value) {
-            TimePickerBottomSheet { selectedStartTime ->
-                isLectureStartTimeFocused.value = false
-                startTime.value = selectedStartTime
-                lectureAttendStartTimeDateForShow.value = selectedStartTime?.toLocalTimeFormat()
-                    ?: ""
-            }
-        } else if (isLectureEndTimeFocused.value) {
-            TimePickerBottomSheet { selectedEndTime ->
-                isLectureEndTimeFocused.value = false
-                endTime.value = selectedEndTime
-            }
-        }
     }
 }
