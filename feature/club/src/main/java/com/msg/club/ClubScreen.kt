@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.msg.club.component.ClubResultList
 import com.msg.club.util.getSchoolNameFromEnum
@@ -92,7 +93,8 @@ fun ClubScreen(
                         modifier = modifier.align(Alignment.CenterHorizontally),
                         text = "재학중인 학교에 취업동아리가 없거나\n등록되어 있지 않습니다.",
                         style = typography.bodyLarge,
-                        color = colors.G1
+                        color = colors.G1,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
