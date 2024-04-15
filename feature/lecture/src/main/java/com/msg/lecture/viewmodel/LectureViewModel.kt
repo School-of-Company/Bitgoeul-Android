@@ -314,18 +314,20 @@ class LectureViewModel @Inject constructor(
     }
 
     fun addLectureDates() {
-        lectureDates.add(
-            LectureDates(
-                completeDate = completeDate.value ?: LocalDate.now(),
-                startTime = startTime.value ?: LocalTime.now(),
-                endTime = endTime.value ?: LocalTime.now()
+        if (completeDate.value != null && startTime.value != null && endTime.value != null) {
+            lectureDates.add(
+                LectureDates(
+                    completeDate = completeDate.value!!,
+                    startTime = startTime.value!!,
+                    endTime = endTime.value!!
+                )
             )
-        )
+        }
     }
 
     fun saveLectureDatesList() {
         lectureDates.forEachIndexed { index, _ ->
-            lectureDates.removeAt(index)
+            if (lectureDates.isEmpty()) lectureDates.removeAt(index)
         }
     }
 

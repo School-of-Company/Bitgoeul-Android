@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -256,10 +257,12 @@ fun DatePickerBottomSheet(
             return utcTimeMillis <= System.currentTimeMillis()
         }
     })
-    val selectedDate = datePickerState.selectedDateMillis?.convertMillisToDate()
+    val sheetState = rememberModalBottomSheetState()
 
+    val selectedDate = datePickerState.selectedDateMillis?.convertMillisToDate()
     BitgoeulAndroidTheme { colors, typography ->
         ModalBottomSheet(
+            sheetState = sheetState,
             onDismissRequest = { onQuit(selectedDate) }
         ) {
             DatePicker(

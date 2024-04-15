@@ -15,15 +15,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import com.msg.design_system.R
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +63,7 @@ import java.time.LocalTime
 import java.util.UUID
 
 @Composable
-fun LectureDetailSettingRoute(
+internal fun LectureDetailSettingRoute(
     onCloseClicked: () -> Unit,
     onApplyClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
@@ -74,7 +72,7 @@ fun LectureDetailSettingRoute(
     LectureDetailSettingScreen(
         onCloseClicked = {
             onCloseClicked()
-
+            viewModel.saveLectureDatesList()
         },
         onApplyClicked = { lectureType, semester, division, department, line, userId, credit, startDate, endDate, completeDate, endTime, startTime, maxRegisteredUser ->
             viewModel.lectureType.value = lectureType
@@ -119,14 +117,12 @@ fun LectureDetailSettingRoute(
         },
         onSearchResultItemCLick = { userId ->
             viewModel.userId.value = userId
-            Log.e("userId", userId.toString())
         },
         onLectureDatesAddClicked = {
             viewModel.addLectureDates()
         },
-        onLectureDatesChanged = { index, item ->
-            viewModel.lectureDates[index] = item
-            viewModel.saveLectureDatesList()
+        onLectureDatesChanged = { index, lectureDates ->
+            viewModel.lectureDates[index] = lectureDates
         },
         lectureDates = viewModel.lectureDates,
         searchLineData = viewModel.searchLineData.value,
@@ -229,13 +225,6 @@ fun LectureDetailSettingScreen(
     val isLectureSemesterAttendedTagSelected = remember { mutableStateOf("0") }
     val isLectureDivisionTagSelected = remember { mutableStateOf("0") }
     val isLectureCreditTagSelected = remember { mutableStateOf("0") }
-    val isLectureAttendanceFocusedList = remember { mutableListOf<Boolean>() }
-    val isLectureStartTimeFocusedList = remember { mutableListOf<Boolean>() }
-    val isLectureEndTimeFocusedList = remember { mutableListOf<Boolean>() }
-    val isLectureAttendanceFocused = remember { mutableStateOf(false) }
-    val isLectureStartTimeFocused = remember { mutableStateOf(false) }
-    val isLectureEndTimeFocused = remember { mutableStateOf(false) }
-
     val isShowDeleteIcon = remember { mutableStateOf(false) }
 
     val lectureType = remember { mutableStateOf(savedLectureType) }
@@ -252,25 +241,25 @@ fun LectureDetailSettingScreen(
     val completeDate = remember { mutableStateOf(savedCompleteDate) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
+    val completeDateWeight = remember { mutableFloatStateOf(1f) }
+
     val selectedStartLocalDate = remember { mutableStateOf(LocalDate.now()) }
     val selectedStartLocalTime = remember { mutableStateOf(LocalTime.now()) }
     val selectedEndLocalDate = remember { mutableStateOf(LocalDate.now()) }
     val selectedEndLocalTime = remember { mutableStateOf(LocalTime.now()) }
 
-    val applicationStartTimeForShow =
-        remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
-    val applicationEndTimeForShow =
-        remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
-    val applicationStartDateForShow =
-        remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
-    val applicationEndDateForShow =
-        remember { mutableStateOf(savedEndDate?.toKoreanFormat() ?: "") }
-    val lectureAttendCompleteDateForShow =
-        remember { mutableStateOf(savedCompleteDate?.toKoreanFormat() ?: "") }
-    val lectureAttendStartTimeDateForShow =
-        remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
-    val lectureAttendEndTimeDateForShow =
-        remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val applicationStartTimeForShow = remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
+    val applicationEndTimeForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val applicationStartDateForShow = remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
+    val applicationEndDateForShow = remember { mutableStateOf(savedEndDate?.toKoreanFormat() ?: "") }
+
+    val lectureAttendCompleteDateListForShow = remember { mutableStateListOf(savedCompleteDate?.toKoreanFormat() ?: "") }
+    val lectureAttendStartTimeListForShow = remember { mutableStateListOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val lectureAttendEndTimeListForShow = remember { mutableStateListOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+
+    val isLectureAttendanceFocusedList = remember { mutableListOf(false) }
+    val isLectureStartTimeFocusedList = remember { mutableListOf(false) }
+    val isLectureEndTimeFocusedList = remember { mutableListOf(false) }
 
     // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, typography ->
@@ -533,7 +522,6 @@ fun LectureDetailSettingScreen(
 
             }
 
-
             item {
                 Text(
                     text = stringResource(id = R.string.department),
@@ -688,19 +676,6 @@ fun LectureDetailSettingScreen(
                 Spacer(modifier = modifier.height(28.dp))
             }
 
-            if (lectureDates.size > isLectureAttendanceFocusedList.size) {
-                val diff = lectureDates.size - isLectureAttendanceFocusedList.size
-                repeat(diff) {
-                    isLectureAttendanceFocusedList.add(false)
-                    isLectureStartTimeFocusedList.add(false)
-                    isLectureEndTimeFocusedList.add(false)
-                }
-                Log.e(
-                    "lectureDatesList Index 추가 if구문 실행",
-                    isLectureAttendanceFocusedList.toString()
-                )
-            }
-
             item {
                 Text(
                     text = stringResource(id = R.string.lecture_attendance_date),
@@ -710,119 +685,28 @@ fun LectureDetailSettingScreen(
                 )
             }
 
-            item {
+            itemsIndexed(lectureDates) { index, lectureDates ->
+                if (index > 0) {
+                    isShowDeleteIcon.value = true
+                    Spacer(modifier = modifier.height(20.dp))
+                    completeDateWeight.value = 0.85f
+                }
                 Row {
                     Row(
                         modifier = modifier
-                            .weight(1f)
+                            .weight(completeDateWeight.value)
                             .background(
                                 color = colors.G9,
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .padding(vertical = 15.dp, horizontal = 20.dp)
                             .clickable {
-                                isLectureAttendanceFocused.value = true
+                                isLectureAttendanceFocusedList.add(index, true)
                             },
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = lectureAttendCompleteDateForShow.value.ifEmpty {
-                                stringResource(
-                                    id = R.string.lecture_attendance_date
-                                )
-
-                            },
-                            color = colors.G2,
-                            style = typography.bodySmall,
-                        )
-
-                        PickerArrowIcon(isSelected = false)
-                    }
-                }
-
-                Spacer(modifier = modifier.height(12.dp))
-
-                Row {
-                    Row(
-                        modifier = modifier
-                            .weight(1f)
-                            .background(
-                                color = colors.G9,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .padding(vertical = 15.dp, horizontal = 20.dp)
-                            .clickable {
-                                isLectureStartTimeFocused.value = true
-                            },
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = lectureAttendStartTimeDateForShow.value.ifEmpty {
-                                stringResource(
-                                    id = R.string.start_time
-                                )
-                            },
-                            color = colors.G2,
-                            style = typography.bodySmall,
-                        )
-
-                        PickerArrowIcon(isSelected = false)
-                    }
-
-                    Spacer(modifier = modifier.width(8.dp))
-
-                    Row(
-                        modifier = modifier
-                            .weight(1f)
-                            .background(
-                                color = colors.G9,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .padding(vertical = 15.dp, horizontal = 20.dp)
-                            .clickable {
-                                isLectureEndTimeFocused.value = true
-                            },
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = lectureAttendEndTimeDateForShow.value.ifEmpty {
-                                stringResource(
-                                    id = R.string.end_time
-                                )
-                            },
-                            color = colors.G2,
-                            style = typography.bodySmall,
-                        )
-
-                        PickerArrowIcon(isSelected = false)
-                    }
-                }
-            }
-
-
-            itemsIndexed(lectureDates) { index, item ->
-                if (index < 0) {
-                    isShowDeleteIcon.value = false
-                }
-
-                Spacer(modifier = modifier.height(20.dp))
-
-                Row {
-                    Row(
-                        modifier = modifier
-                            .weight(0.85f)
-                            .background(
-                                color = colors.G9,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .padding(vertical = 15.dp, horizontal = 20.dp)
-                            .clickable {
-                                isLectureAttendanceFocusedList[index] = true
-                            },
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = lectureAttendCompleteDateForShow.value.ifEmpty {
+                            text = lectureAttendCompleteDateListForShow[index].ifEmpty {
                                 stringResource(
                                     id = R.string.lecture_attendance_date
                                 )
@@ -841,9 +725,7 @@ fun LectureDetailSettingScreen(
                                 .weight(0.15f)
                                 .align(Alignment.CenterVertically)
                                 .clickable {
-                                    onLectureDatesChanged(index, item)
-
-                                    Log.e("index", index.toString())
+                                    onLectureDatesChanged(index, lectureDates)
                                 },
                         )
                     }
@@ -861,12 +743,12 @@ fun LectureDetailSettingScreen(
                             )
                             .padding(vertical = 15.dp, horizontal = 20.dp)
                             .clickable {
-                                isLectureStartTimeFocusedList[index] = true
+                                isLectureStartTimeFocusedList.add(index, true)
                             },
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = lectureAttendStartTimeDateForShow.value.ifEmpty {
+                            text = lectureAttendStartTimeListForShow[index].ifEmpty {
                                 stringResource(
                                     id = R.string.start_time
                                 )
@@ -889,12 +771,12 @@ fun LectureDetailSettingScreen(
                             )
                             .padding(vertical = 15.dp, horizontal = 20.dp)
                             .clickable {
-                                isLectureEndTimeFocusedList[index] = true
+                                isLectureEndTimeFocusedList.add(index, true)
                             },
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = lectureAttendEndTimeDateForShow.value.ifEmpty {
+                            text = lectureAttendEndTimeListForShow[index].ifEmpty {
                                 stringResource(
                                     id = R.string.end_time
                                 )
@@ -905,40 +787,44 @@ fun LectureDetailSettingScreen(
 
                         PickerArrowIcon(isSelected = false)
                     }
-                    if (isLectureAttendanceFocused.value || isLectureAttendanceFocusedList[index]) {
-                        DatePickerBottomSheet { selectedCompleteDate ->
-                            isLectureAttendanceFocused.value = false
-                            isLectureAttendanceFocusedList[index] = false
-                            completeDate.value = selectedCompleteDate
-                            lectureAttendCompleteDateForShow.value =
-                                selectedCompleteDate?.toKoreanFormat() ?: ""
-                        }
-                    } else if (isLectureStartTimeFocused.value || isLectureStartTimeFocusedList[index]) {
-                        TimePickerBottomSheet { selectedStartTime ->
-                            isLectureStartTimeFocused.value = false
-                            isLectureStartTimeFocusedList[index] = false
-                            startTime.value = selectedStartTime
-                            lectureAttendStartTimeDateForShow.value =
-                                selectedStartTime?.toLocalTimeFormat() ?: ""
-                        }
-                    } else if (isLectureEndTimeFocused.value || isLectureEndTimeFocusedList[index]) {
-                        TimePickerBottomSheet { selectedEndTime ->
-                            isLectureEndTimeFocused.value = false
-                            isLectureEndTimeFocusedList[index] = false
-                            endTime.value = selectedEndTime
-                            lectureAttendEndTimeDateForShow.value =
-                                selectedEndTime?.toLocalTimeFormat() ?: ""
-                        }
+                }
+                if (isLectureAttendanceFocusedList[index]) {
+                    DatePickerBottomSheet { selectedCompleteDate ->
+                        completeDate.value = selectedCompleteDate
+                        isLectureAttendanceFocusedList[index] = false
+                        lectureAttendEndTimeListForShow[index] =
+                            selectedCompleteDate?.toKoreanFormat() ?: ""
+                        onLectureDatesChanged(index, lectureDates)
+                    }
+                } else if (isLectureStartTimeFocusedList[index]) {
+                    TimePickerBottomSheet { selectedStartTime ->
+                        startTime.value = selectedStartTime
+                        isLectureStartTimeFocusedList[index] = false
+                        lectureAttendStartTimeListForShow[index] =
+                            selectedStartTime.toLocalTimeFormat()
+                        onLectureDatesChanged(index, lectureDates)
+                    }
+                } else if (isLectureEndTimeFocusedList[index]) {
+                    TimePickerBottomSheet { selectedEndTime ->
+                        endTime.value = selectedEndTime
+                        isLectureEndTimeFocusedList[index] = false
+                        lectureAttendEndTimeListForShow[index] =
+                            selectedEndTime.toLocalTimeFormat()
+                        onLectureDatesChanged(index, lectureDates)
                     }
                 }
             }
+
             item {
                 Spacer(modifier = modifier.height(12.dp))
 
                 Text(
                     modifier = modifier.clickable {
                         onLectureDatesAddClicked()
-                        isShowDeleteIcon.value = true
+                        Log.e("CompleteDateList", isLectureAttendanceFocusedList.toString())
+                        Log.e("StartTimeList", isLectureStartTimeFocusedList.toString())
+                        Log.e("EndTimeList", isLectureEndTimeFocusedList.toString())
+                        Log.e("LectureDatesDefault", lectureDates[0].toString())
                     },
                     text = stringResource(id = R.string.add_date),
                     color = colors.G2,
