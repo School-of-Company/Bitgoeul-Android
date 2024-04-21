@@ -221,13 +221,13 @@ class LectureViewModel @Inject constructor(
     var endDate = mutableStateOf<LocalDateTime?>(null)
         private set
 
-    var completeDate = mutableStateOf<LocalDate?>(null)
+    var completeDate = mutableStateOf<LocalDate?>(LocalDate.now())
         private set
 
-    var startTime = mutableStateOf<LocalTime?>(null)
+    var startTime = mutableStateOf<LocalTime?>(LocalTime.now())
         private set
 
-    var endTime = mutableStateOf<LocalTime?>(null)
+    var endTime = mutableStateOf<LocalTime?>(LocalTime.now())
         private set
 
     var keyword = mutableStateOf("")
@@ -314,7 +314,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun addLectureDates() {
-        if (completeDate.value != null && startTime.value != null && endTime.value != null) {
+        if (completeDate.value != null || startTime.value != null || endTime.value != null) {
             lectureDates.add(
                 LectureDates(
                     completeDate = completeDate.value!!,
@@ -331,6 +331,11 @@ class LectureViewModel @Inject constructor(
         }
     }
 
+    fun removeLectureDates() {
+        lectureDates.forEachIndexed { index, _ ->
+            lectureDates.removeAt(index)
+        }
+    }
 
     fun lectureApplication(
         id: UUID
