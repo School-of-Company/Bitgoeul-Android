@@ -1,24 +1,45 @@
 package com.msg.club
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.club.component.ClubInfoSection
 import com.msg.club.component.ClubMemberInfoListSection
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
-import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.theme.color.BitgoeulColor
+import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.response.club.ClubDetailResponse
 import com.msg.ui.DevicePreviews
 import java.util.UUID
+
+@Composable
+fun ClubDetailScreenRoute(
+    viewModel: ClubViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onBackClicked: () -> Unit,
+    onBackClickedByAdmin: () -> Unit
+) {
+    val isAdmin = viewModel.role == Authority.ROLE_ADMIN
+
+    if (isAdmin) viewModel.getClubDetail() else viewModel.getMyClubDetail()
+
+    ClubDetailScreen(
+        onBackClicked = {
+            if (isAdmin) onBackClickedByAdmin()
+            else onBackClicked()
+        },
+        data = viewModel.detailClub.value,
+        onItemClicked = {}
+    )
+}
 
 @Composable
 fun ClubDetailScreen(
