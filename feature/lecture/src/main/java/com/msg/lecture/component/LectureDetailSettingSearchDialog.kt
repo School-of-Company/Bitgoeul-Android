@@ -95,13 +95,6 @@ fun LectureDetailSettingSearchDialog(
 
                             Spacer(modifier = modifier.height(16.dp))
 
-                            Spacer(
-                                modifier = modifier
-                                    .height(1.dp)
-                                    .fillMaxWidth()
-                                    .background(color = colors.G9)
-                            )
-
                             if (searchAPIType == "강의 계열") {
                                 LectureLineList(
                                     modifier = modifier,
