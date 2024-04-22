@@ -335,8 +335,8 @@ class LectureViewModel @Inject constructor(
     }
 
     fun removeLectureDates() {
-        lectureDates.forEachIndexed { index, _ ->
-            lectureDates.removeAt(index)
+        if (lectureDates.isNotEmpty()) {
+            lectureDates.removeAt(lectureDates.size - 1)
         }
     }
 

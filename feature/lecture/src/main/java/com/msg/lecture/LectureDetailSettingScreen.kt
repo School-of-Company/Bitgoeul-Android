@@ -255,6 +255,8 @@ fun LectureDetailSettingScreen(
     val endTime = remember { mutableStateOf(savedEndTime) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
+    val completeDatesComponentWeight = remember { mutableFloatStateOf(1f) }
+
     val applicationStartTimeForShow = remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
     val applicationEndTimeForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
     val applicationStartDateForShow = remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
@@ -583,9 +585,9 @@ fun LectureDetailSettingScreen(
                         text = applicationStartDateForShow.value.ifEmpty { stringResource(id = R.string.application_start_date) },
                         list = listOf(),
                         selectedItem = applicationStartDateForShow.value,
-                        onItemChange = {
-                            if (applicationStartDateForShow.value != it) applicationStartDateForShow.value =
-                                it else applicationStartDateForShow.value = ""
+                        onItemChange = { startDateText ->
+                            if (applicationStartDateForShow.value != startDateText) applicationStartDateForShow.value =
+                                startDateText else applicationStartDateForShow.value = ""
                         },
                         isDatePicker = true,
                         onDatePickerQuit = { selectedStartDate ->
@@ -603,9 +605,9 @@ fun LectureDetailSettingScreen(
                         text = applicationStartTimeForShow.value.ifEmpty { stringResource(id = R.string.start_time) },
                         list = listOf(),
                         selectedItem = applicationStartTimeForShow.value,
-                        onItemChange = {
-                            if (applicationStartTimeForShow.value != it) applicationStartTimeForShow.value =
-                                it else applicationStartTimeForShow.value = ""
+                        onItemChange = { startTimeText ->
+                            if (applicationStartTimeForShow.value != startTimeText) applicationStartTimeForShow.value =
+                                startTimeText else applicationStartTimeForShow.value = ""
                         },
                         isTimePicker = true,
                         onTimePickerQuit = { selectedStartTime ->
@@ -641,9 +643,9 @@ fun LectureDetailSettingScreen(
                         text = applicationEndDateForShow.value.ifEmpty { stringResource(id = R.string.application_deadline_date) },
                         list = listOf(),
                         selectedItem = applicationEndDateForShow.value,
-                        onItemChange = {
-                            if (applicationEndDateForShow.value != it) applicationEndDateForShow.value =
-                                it else applicationEndDateForShow.value = ""
+                        onItemChange = { endDateText ->
+                            if (applicationEndDateForShow.value != endDateText) applicationEndDateForShow.value =
+                                endDateText else applicationEndDateForShow.value = ""
                         },
                         isDatePicker = true,
                         onDatePickerQuit = { selectedEndDate ->
@@ -661,9 +663,9 @@ fun LectureDetailSettingScreen(
                         text = applicationEndTimeForShow.value.ifEmpty { stringResource(id = R.string.deadeline_time) },
                         list = listOf(),
                         selectedItem = applicationEndTimeForShow.value,
-                        onItemChange = {
-                            if (applicationEndTimeForShow.value != it) applicationEndTimeForShow.value =
-                                it else applicationEndTimeForShow.value = ""
+                        onItemChange = { endTimeText ->
+                            if (applicationEndTimeForShow.value != endTimeText) applicationEndTimeForShow.value =
+                                endTimeText else applicationEndTimeForShow.value = ""
                         },
                         isTimePicker = true,
                         onTimePickerQuit = { selectedEndTime ->
@@ -694,18 +696,16 @@ fun LectureDetailSettingScreen(
 
             items(lectureDates.size + 1) { index ->
                 if (index > 0) {
+                    completeDatesComponentWeight.value = 0.85f
                     isShowDeleteIcon.value = true
                     Spacer(modifier = modifier.height(20.dp))
+                } else {
+                    completeDatesComponentWeight.value = 1f
+                    isShowDeleteIcon.value = false
                 }
                 Row {
                     PickerTextField(
-                        modifier = modifier.weight(
-                            if (index <= 0) {
-                                1f
-                            } else {
-                                0.85f
-                            }
-                        ),
+                        modifier = modifier.weight(completeDatesComponentWeight.value),
                         text = lectureAttendCompleteDateListForShow[index].ifEmpty {
                             stringResource(
                                 id = R.string.lecture_attendance_date
@@ -713,9 +713,9 @@ fun LectureDetailSettingScreen(
                         },
                         list = listOf(),
                         selectedItem = lectureAttendCompleteDateListForShow[index],
-                        onItemChange = {
-                            if (lectureAttendCompleteDateListForShow[index] != it) lectureAttendCompleteDateListForShow[index] =
-                                it else lectureAttendCompleteDateListForShow[index] = ""
+                        onItemChange = { completeDateText ->
+                            if (lectureAttendCompleteDateListForShow[index] != completeDateText) lectureAttendCompleteDateListForShow[index] =
+                                completeDateText else lectureAttendCompleteDateListForShow[index] = ""
                         },
                         isDatePicker = true,
                         onDatePickerQuit = { selectedCompleteDate ->
@@ -734,6 +734,9 @@ fun LectureDetailSettingScreen(
                                 .align(Alignment.CenterVertically)
                                 .clickable {
                                     onLectureDatesRemoveClicked()
+                                    lectureAttendCompleteDateListForShow.removeAt(index)
+                                    lectureAttendStartTimeListForShow.removeAt(index)
+                                    lectureAttendEndTimeListForShow.removeAt(index)
                                 },
                         )
                     }
@@ -747,9 +750,9 @@ fun LectureDetailSettingScreen(
                         text = lectureAttendStartTimeListForShow[index].ifEmpty { stringResource(id = R.string.start_time) },
                         list = listOf(),
                         selectedItem = lectureAttendStartTimeListForShow[index],
-                        onItemChange = {
-                            if (lectureAttendStartTimeListForShow[index] != it) lectureAttendStartTimeListForShow[index] =
-                                it else lectureAttendStartTimeListForShow[index] = ""
+                        onItemChange = { startTimeText ->
+                            if (lectureAttendStartTimeListForShow[index] != startTimeText) lectureAttendStartTimeListForShow[index] =
+                                startTimeText else lectureAttendStartTimeListForShow[index] = ""
                         },
                         isTimePicker = true,
                         onTimePickerQuit = { selectedStartTime ->
@@ -768,9 +771,9 @@ fun LectureDetailSettingScreen(
                         text = lectureAttendEndTimeListForShow[index].ifEmpty { stringResource(id = R.string.end_time) },
                         list = listOf(),
                         selectedItem = lectureAttendEndTimeListForShow[index],
-                        onItemChange = {
-                            if (lectureAttendEndTimeListForShow[index] != it) lectureAttendEndTimeListForShow[index] =
-                                it else lectureAttendEndTimeListForShow[index] = ""
+                        onItemChange = { endTimeText ->
+                            if (lectureAttendEndTimeListForShow[index] != endTimeText) lectureAttendEndTimeListForShow[index] =
+                                endTimeText else lectureAttendEndTimeListForShow[index] = ""
                         },
                         isTimePicker = true,
                         onTimePickerQuit = { selectedEndTime ->
@@ -789,6 +792,11 @@ fun LectureDetailSettingScreen(
 
                 Text(
                     modifier = modifier.clickable {
+                        if (lectureDates.isNullOrEmpty()) {
+                            lectureAttendCompleteDateListForShow.add("")
+                            lectureAttendStartTimeListForShow.add("")
+                            lectureAttendEndTimeListForShow.add("")
+                        }
                         onLectureDatesAddClicked()
                     },
                     text = stringResource(id = R.string.add_date),
@@ -801,7 +809,7 @@ fun LectureDetailSettingScreen(
 
             item {
                 Text(
-                    text = stringResource(id = R.string.maximum_number_students     ),
+                    text = stringResource(id = R.string.maximum_number_students),
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                     modifier = modifier.padding(bottom = 8.dp)
@@ -844,6 +852,9 @@ fun LectureDetailSettingScreen(
                         .height(52.dp)
                         .padding(horizontal = 24.dp),
                 ) {
+                    if (lectureDates.size == 1 && lectureDates.isNotEmpty()) {
+                        onLectureDatesAddClicked()
+                    }
                     onApplyClicked(
                         lectureType.value,
                         semester.value,
