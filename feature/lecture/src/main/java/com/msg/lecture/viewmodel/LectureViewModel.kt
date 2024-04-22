@@ -57,7 +57,9 @@ class LectureViewModel @Inject constructor(
     private val searchDepartmentUseCase: SearchDepartmentUseCase,
 ) : ViewModel() {
 
-    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
+    suspend fun getRole(): Authority {
+        return Authority.authorityOf(authTokenDataSource.getAuthority())
+    }
 
     private val _getLectureListResponse =
         MutableStateFlow<Event<LectureListResponse>>(Event.Loading)

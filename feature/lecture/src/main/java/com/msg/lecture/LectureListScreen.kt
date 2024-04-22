@@ -47,9 +47,10 @@ fun LectureListRoute(
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     type: LectureType,
 ) {
-    val role = viewModel.role
+    var role = remember { mutableStateOf(Authority.ROLE_USER) }
 
     LaunchedEffect(true) {
+        role.value = viewModel.getRole()
         viewModel.getLectureList(
             page = 0,
             size = 10,
@@ -70,7 +71,7 @@ fun LectureListRoute(
             viewModel.selectedLectureId.value = it
         },
         onBackClicked = onBackClicked,
-        role = role,
+        role = role.value,
         type = type
     )
 }
