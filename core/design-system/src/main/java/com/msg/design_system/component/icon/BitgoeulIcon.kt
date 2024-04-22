@@ -283,3 +283,11 @@ fun ChatIcon() {
         contentDescription = "White chat icon"
     )
 }
+
+@Composable
+fun EmptyBoxIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_empty_box),
+        contentDescription = "Empty Box Icon"
+    )
+}
