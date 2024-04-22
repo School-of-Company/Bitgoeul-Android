@@ -67,34 +67,36 @@ fun LectureLineList(
     onClick: (UUID) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, _ ->
-        LazyColumn(
-            modifier = modifier.background(color = Color.Transparent)
-        ) {
-            items(searchLineData.lines.size) { index ->
-                Spacer(
-                    modifier = modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = colors.G9)
-                )
+        if (searchLineData.lines.isNotEmpty()) {
+            LazyColumn(
+                modifier = modifier.background(color = Color.Transparent)
+            ) {
+                items(searchLineData.lines.size) { index ->
+                    Spacer(
+                        modifier = modifier
+                            .height(1.dp)
+                            .fillMaxWidth()
+                            .background(color = colors.G9)
+                    )
 
-                searchLineData.lines.getOrNull(index)?.let { linesData ->
-                    LectureDetailSettingInfoCard(
-                        modifier = modifier.background(color = Color.Transparent),
-                        onClick = onClick,
-                        searchProfessorData = null,
-                        searchLineData = linesData,
-                        division = division,
-                        keyword = keyword
+                    searchLineData.lines.getOrNull(index)?.let { linesData ->
+                        LectureDetailSettingInfoCard(
+                            modifier = modifier.background(color = Color.Transparent),
+                            onClick = onClick,
+                            searchProfessorData = null,
+                            searchLineData = linesData,
+                            division = division,
+                            keyword = keyword
+                        )
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .height(1.dp)
+                            .fillMaxWidth()
+                            .background(color = colors.G9)
                     )
                 }
-
-                Spacer(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = colors.G9)
-                )
             }
         }
     }

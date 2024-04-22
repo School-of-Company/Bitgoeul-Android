@@ -50,10 +50,8 @@ fun LectureDetailRoute(
     onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
-    val role = remember { mutableStateOf(Authority.ROLE_USER) }
     val id = viewModel.selectedLectureId.value
     LaunchedEffect(true) {
-        role.value = viewModel.getRole()
         viewModel.getDetailLecture(id = id)
         getLectureDetailData(
             viewModel = viewModel,

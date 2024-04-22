@@ -72,8 +72,7 @@ fun LectureDetailSettingInfoCard(
                         color = colors.G2,
                         style = typography.bodySmall
                     )
-                } else if (searchLineData == null || searchLineData == "") {
-                    Log.e("LectureDetailSettingInfoCard", "searchData is null")
+                } else {
                     Text(
                         text = keyword,
                         color = colors.BLACK,
