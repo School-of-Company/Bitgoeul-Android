@@ -17,11 +17,7 @@ class FaqRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getFrequentlyAskedQuestionsList(): Flow<List<FrequentlyAskedQuestionsListResponse>> {
+    override suspend fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>> {
         return faqDataSource.getFrequentlyAskedQuestionsList()
-    }
-
-    override suspend fun getFrequentlyAskedQuestionsDetail(id: UUID): Flow<GetFrequentlyAskedQuestionDetailResponse> {
-        return faqDataSource.getFrequentlyAskedQuestionsDetail(id = id)
     }
 }

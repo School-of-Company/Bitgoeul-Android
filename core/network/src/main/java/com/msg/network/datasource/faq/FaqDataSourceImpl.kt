@@ -24,20 +24,12 @@ class FaqDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun getFrequentlyAskedQuestionsList(): Flow<List<FrequentlyAskedQuestionsListResponse>> =
+    override suspend fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>> =
         flow {
             emit(
-                BitgoeulApiHandler<List<FrequentlyAskedQuestionsListResponse>>()
+                BitgoeulApiHandler<List<GetFrequentlyAskedQuestionDetailResponse>>()
                     .httpRequest { faqAPI.getFrequentlyAskedQuestionsList() }
                     .sendRequest()
             )
-        }
-
-    override suspend fun getFrequentlyAskedQuestionsDetail(id: UUID): Flow<GetFrequentlyAskedQuestionDetailResponse> = flow {
-        emit(
-            BitgoeulApiHandler<GetFrequentlyAskedQuestionDetailResponse>()
-                .httpRequest { faqAPI.getFrequentlyAskedQuestionsDetail(id = id) }
-                .sendRequest()
-        )
-    }
+        }.flowOn(Dispatchers.IO)
 }

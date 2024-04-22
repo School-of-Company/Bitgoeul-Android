@@ -8,6 +8,5 @@ import java.util.UUID
 
 interface FaqDataSource {
     suspend fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit>
-    suspend fun getFrequentlyAskedQuestionsList(): Flow<List<FrequentlyAskedQuestionsListResponse>>
-    suspend fun getFrequentlyAskedQuestionsDetail(id: UUID): Flow<GetFrequentlyAskedQuestionDetailResponse>
+    suspend fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>>
 }
