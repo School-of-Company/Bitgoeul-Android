@@ -294,3 +294,26 @@ fun EmptyBoxIcon(
         modifier = modifier
     )
 }
+
+@Composable
+fun GreySettingIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_setting),
+        contentDescription = "Grey color setting icon"
+    )
+}
+
+@Composable
+fun DashIcon() {
+    Image(painter = painterResource(id = R.drawable.ic_dash),
+        contentDescription = "Grey dash icon"
+    )
+}
+
+@Composable
+fun BigAlertIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_big_alert),
+        contentDescription = "Big alert icon"
+    )
+}

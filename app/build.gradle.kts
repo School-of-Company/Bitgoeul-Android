@@ -23,6 +23,7 @@ dependencies {
     implementation(project(":feature:lecture"))
     implementation(project(":feature:my-page"))
     implementation(project(":feature:post"))
+    implementation(project(":feature:club"))
 
     implementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
