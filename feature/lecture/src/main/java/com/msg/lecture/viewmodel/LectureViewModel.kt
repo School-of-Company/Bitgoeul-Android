@@ -221,16 +221,19 @@ class LectureViewModel @Inject constructor(
     var endDate = mutableStateOf<LocalDateTime?>(null)
         private set
 
-    var completeDate = mutableStateOf<LocalDate?>(LocalDate.now())
+    var startDateForConversion = mutableStateOf<LocalDate?>(null)
         private set
 
-    var startTime = mutableStateOf<LocalTime?>(LocalTime.now())
+    var endDateForConversion = mutableStateOf<LocalDate?>(null)
         private set
 
-    var endTime = mutableStateOf<LocalTime?>(LocalTime.now())
+    var completeDate = mutableStateOf<LocalDate?>(null)
         private set
 
-    var keyword = mutableStateOf("")
+    var startTime = mutableStateOf<LocalTime?>(null)
+        private set
+
+    var endTime = mutableStateOf<LocalTime?>(null)
         private set
 
     var lectureDates = mutableStateListOf<LectureDates>()

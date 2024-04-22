@@ -131,6 +131,8 @@ internal fun LectureDetailSettingRoute(
             viewModel.endTime.value = endTime
         },
         lectureDates = viewModel.lectureDates,
+        startDateForConversion = viewModel.startDateForConversion.value,
+        endDateForConversion = viewModel.endDateForConversion.value,
         searchLineData = viewModel.searchLineData.value,
         searchProfessorData = viewModel.searchProfessorData.value,
         searchDepartmentData = viewModel.searchDepartmentData.value,
@@ -214,6 +216,8 @@ fun LectureDetailSettingScreen(
     onStartTimeChanged: (startTIme: LocalTime) -> Unit,
     onEndTimeChanged: (endTime: LocalTime) -> Unit,
     lectureDates: MutableList<LectureDates>,
+    startDateForConversion: LocalDate?,
+    endDateForConversion: LocalDate?,
     savedLectureType: LectureType,
     savedSemester: Semester,
     savedDivision: Division,
@@ -245,9 +249,11 @@ fun LectureDetailSettingScreen(
     val semester = remember { mutableStateOf(savedSemester) }
     val startDate = remember { mutableStateOf(savedStartDate) }
     val endDate = remember { mutableStateOf(savedEndDate) }
+    val startDateForConversion = remember { mutableStateOf(startDateForConversion) }
+    val endDateForConversion = remember { mutableStateOf(endDateForConversion) }
+    val startTime = remember { mutableStateOf(savedStartTime) }
+    val endTime = remember { mutableStateOf(savedEndTime) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
-
-    val completeDateWeight = remember { mutableFloatStateOf(1f) }
 
     val applicationStartTimeForShow = remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
     val applicationEndTimeForShow = remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
@@ -257,10 +263,6 @@ fun LectureDetailSettingScreen(
     val lectureAttendCompleteDateListForShow = remember { mutableStateListOf(savedCompleteDate?.toKoreanFormat() ?: "") }
     val lectureAttendStartTimeListForShow = remember { mutableStateListOf(savedStartTime?.toLocalTimeFormat() ?: "") }
     val lectureAttendEndTimeListForShow = remember { mutableStateListOf(savedEndTime?.toLocalTimeFormat() ?: "") }
-
-    val isLectureAttendanceFocusedList = remember { mutableStateListOf<Boolean>() }
-    val isLectureStartTimeFocusedList = remember { mutableStateListOf<Boolean>() }
-    val isLectureEndTimeFocusedList = remember { mutableStateListOf<Boolean>() }
 
     // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
     BitgoeulAndroidTheme { colors, typography ->
@@ -589,6 +591,7 @@ fun LectureDetailSettingScreen(
                         onDatePickerQuit = { selectedStartDate ->
                             if (selectedStartDate != null) {
                                 applicationStartDateForShow.value = selectedStartDate.toKoreanFormat()
+                                startDateForConversion.value = selectedStartDate
                             }
                         }
                     )
@@ -608,6 +611,7 @@ fun LectureDetailSettingScreen(
                         onTimePickerQuit = { selectedStartTime ->
                             if (selectedStartTime != null) {
                                 applicationStartTimeForShow.value = selectedStartTime.toLocalTimeFormat()
+                                startTime.value = selectedStartTime
                             }
                         },
                     )
@@ -615,6 +619,10 @@ fun LectureDetailSettingScreen(
 
                 Spacer(modifier = modifier.height(28.dp))
 
+                if (startDateForConversion.value != null && startTime.value != null) {
+                    startDate.value = LocalDateTime.of(startDateForConversion.value, startTime.value)
+                    startTime.value = null
+                }
             }
 
             item {
@@ -641,6 +649,7 @@ fun LectureDetailSettingScreen(
                         onDatePickerQuit = { selectedEndDate ->
                             if (selectedEndDate != null) {
                                 applicationEndDateForShow.value = selectedEndDate.toKoreanFormat()
+                                endDateForConversion.value = selectedEndDate
                             }
                         }
                     )
@@ -660,12 +669,18 @@ fun LectureDetailSettingScreen(
                         onTimePickerQuit = { selectedEndTime ->
                             if (selectedEndTime != null) {
                                 applicationEndTimeForShow.value = selectedEndTime.toLocalTimeFormat()
+                                endTime.value = selectedEndTime
                             }
                         },
                     )
                 }
 
                 Spacer(modifier = modifier.height(28.dp))
+
+                if (endDateForConversion.value != null && endTime.value != null) {
+                    endDate.value = LocalDateTime.of(endDateForConversion.value, endTime.value)
+                    endTime.value = null
+                }
             }
 
             item {
@@ -677,16 +692,25 @@ fun LectureDetailSettingScreen(
                 )
             }
 
-            items(lectureDates.size) { index ->
+            items(lectureDates.size + 1) { index ->
                 if (index > 0) {
                     isShowDeleteIcon.value = true
                     Spacer(modifier = modifier.height(20.dp))
-                    completeDateWeight.value = 0.85f
                 }
                 Row {
                     PickerTextField(
-                        modifier = modifier.weight(completeDateWeight.value),
-                        text = lectureAttendCompleteDateListForShow[index].ifEmpty { stringResource(id = R.string.lecture_attendance_date) },
+                        modifier = modifier.weight(
+                            if (index <= 0) {
+                                1f
+                            } else {
+                                0.85f
+                            }
+                        ),
+                        text = lectureAttendCompleteDateListForShow[index].ifEmpty {
+                            stringResource(
+                                id = R.string.lecture_attendance_date
+                            )
+                        },
                         list = listOf(),
                         selectedItem = lectureAttendCompleteDateListForShow[index],
                         onItemChange = {
@@ -697,12 +721,14 @@ fun LectureDetailSettingScreen(
                         onDatePickerQuit = { selectedCompleteDate ->
                             if (selectedCompleteDate != null) {
                                 lectureAttendCompleteDateListForShow[index] = selectedCompleteDate.toKoreanFormat()
+                                onCompleteDateChanged(selectedCompleteDate)
+                                lectureAttendCompleteDateListForShow.add("")
                             }
                         }
                     )
 
                     if (isShowDeleteIcon.value) {
-                        DeleteIcon(
+                            DeleteIcon(
                             modifier = modifier
                                 .weight(0.15f)
                                 .align(Alignment.CenterVertically)
@@ -729,6 +755,8 @@ fun LectureDetailSettingScreen(
                         onTimePickerQuit = { selectedStartTime ->
                             if (selectedStartTime != null) {
                                 lectureAttendStartTimeListForShow[index] = selectedStartTime.toLocalTimeFormat()
+                                onStartTimeChanged(selectedStartTime)
+                                lectureAttendStartTimeListForShow.add("")
                             }
                         },
                     )
@@ -748,40 +776,19 @@ fun LectureDetailSettingScreen(
                         onTimePickerQuit = { selectedEndTime ->
                             if (selectedEndTime != null) {
                                 lectureAttendEndTimeListForShow[index] = selectedEndTime.toLocalTimeFormat()
+                                onEndTimeChanged(selectedEndTime)
+                                lectureAttendEndTimeListForShow.add("")
                             }
                         },
                     )
                 }
-                if (isLectureAttendanceFocusedList[index]) {
-                    DatePickerBottomSheet { selectedCompleteDate ->
-                        isLectureAttendanceFocusedList[index] = false
-                        lectureAttendCompleteDateListForShow[index] = selectedCompleteDate?.toKoreanFormat() ?: ""
-                        onCompleteDateChanged(selectedCompleteDate!!)
-                    }
-                } else if (isLectureStartTimeFocusedList[index]) {
-                    TimePickerBottomSheet { selectedStartTime ->
-                        isLectureStartTimeFocusedList[index] = false
-                        lectureAttendStartTimeListForShow[index] = selectedStartTime.toLocalTimeFormat()
-                        onStartTimeChanged(selectedStartTime)
-                    }
-                } else if (isLectureEndTimeFocusedList[index]) {
-                    TimePickerBottomSheet { selectedEndTime ->
-                        isLectureEndTimeFocusedList[index] = false
-                        lectureAttendEndTimeListForShow[index] = selectedEndTime.toLocalTimeFormat()
-                        onEndTimeChanged(selectedEndTime)
-                    }
-                }
             }
-
 
             item {
                 Spacer(modifier = modifier.height(12.dp))
 
                 Text(
                     modifier = modifier.clickable {
-                        isLectureAttendanceFocusedList.add(false)
-                        isLectureStartTimeFocusedList.add(false)
-                        isLectureEndTimeFocusedList.add(false)
                         onLectureDatesAddClicked()
                     },
                     text = stringResource(id = R.string.add_date),
@@ -794,7 +801,7 @@ fun LectureDetailSettingScreen(
 
             item {
                 Text(
-                    text = stringResource(id = R.string.maximum_number_students),
+                    text = stringResource(id = R.string.maximum_number_students     ),
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                     modifier = modifier.padding(bottom = 8.dp)
