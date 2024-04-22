@@ -12,6 +12,9 @@ import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.club.navigation.clubDetailScreen
+import com.msg.club.navigation.clubScreen
+import com.msg.club.navigation.navigateToClubDetailPage
 import com.msg.post.navigation.navigateToPostAddPage
 import com.msg.post.navigation.navigateToPostDetailPage
 import com.msg.post.navigation.navigateToPostDetailSettingPage
@@ -90,6 +93,14 @@ fun BitgoeulNavHost(
         )
         postDetailSettingScreen(
             onCloseClicked = navController::popBackStack
+        )
+        clubScreen(
+            onItemClicked = navController::navigateToClubDetailPage
+        )
+        clubDetailScreen(
+            onBackClickedByAdmin = navController::popBackStack,
+            //onBackClicked = navController::navigateToMainPage
+            onBackClicked = navController::popBackStack
         )
     }
 }
