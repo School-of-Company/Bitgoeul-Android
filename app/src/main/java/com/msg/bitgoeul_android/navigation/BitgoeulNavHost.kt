@@ -20,6 +20,7 @@ import com.msg.lecture.navigation.navigateToLectureOpen
 import com.msg.club.navigation.clubDetailScreen
 import com.msg.club.navigation.clubScreen
 import com.msg.club.navigation.navigateToClubDetailPage
+import com.msg.lecture.navigation.navigateToLecture
 import com.msg.post.navigation.navigateToPostAddPage
 import com.msg.post.navigation.navigateToPostDetailPage
 import com.msg.post.navigation.navigateToPostDetailSettingPage
@@ -49,7 +50,7 @@ fun BitgoeulNavHost(
         modifier = modifier
     ) {
         loginScreen(
-            onSignUpClick = navController::navigateToLectureOpen
+            onSignUpClick = navController::navigateToLecture
         )
         signUpScreen(
             onBackClick = navController::popBackStack

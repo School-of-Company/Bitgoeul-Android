@@ -1,7 +1,7 @@
 package com.msg.lecture.component
 
-import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -28,7 +27,6 @@ import com.msg.design_system.R
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
@@ -38,28 +36,29 @@ import java.util.UUID
 
 @Composable
 fun LectureCard(
+    modifier: Modifier,
     data: ContentArray,
     onClick: (UUID) -> Unit,
-    role: Authority = Authority.ROLE_USER,
-    type: LectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
 ) {
     BitgoeulAndroidTheme { color, type ->
-        Log.e("data", data.toString())
         Surface {
             Card(
-                modifier = Modifier
-                    .wrapContentSize(),
+                modifier = modifier
+                    .wrapContentSize()
+                    .clickable {
+                        onClick(data.id)
+                    },
                 colors = CardDefaults.cardColors(containerColor = color.WHITE)
             ) {
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = modifier.height(20.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = data.lecturer + " 교수",
-                        modifier = Modifier
+                        modifier = modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
                         color = color.BLACK,
@@ -71,7 +70,7 @@ fun LectureCard(
                             LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM -> "상호학점인정교육과정"
                             LectureType.UNIVERSITY_EXPLORATION_PROGRAM -> "대학탐방프로그램"
                         },
-                        modifier = Modifier
+                        modifier = modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
                         color = color.G2,
@@ -79,14 +78,14 @@ fun LectureCard(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = modifier.height(12.dp))
 
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = modifier.fillMaxSize()
                 ) {
                     Text(
                         text = data.name,
-                        modifier = Modifier
+                        modifier = modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
                         color = color.BLACK,
@@ -95,23 +94,23 @@ fun LectureCard(
                         overflow = TextOverflow.Ellipsis,
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = modifier.height(12.dp))
 
                     ContentDescriptionText(
                         maxLines = 2,
                         text = data.content
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = modifier.height(12.dp))
 
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = modifier.fillMaxWidth()
                     ) {
                         Text(
                             text = "${
                                 data.startDate.replace("-", ".").substring(0, 10)
-                            } ~ ${data.endDate.toString().replace("-", ".").substring(0, 10)}",
-                            modifier = Modifier
+                            } ~ ${data.endDate.replace("-", ".").substring(0, 10)}",
+                            modifier = modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
                             color = color.G2,
@@ -121,7 +120,7 @@ fun LectureCard(
                         Image(
                             painterResource(id = R.drawable.ic_colon_separator),
                             contentDescription = null,
-                            modifier = Modifier
+                            modifier = modifier
                                 .padding(start = 8.dp, end = 8.dp)
                                 .align(alignment = Alignment.CenterVertically)
                         )
@@ -133,7 +132,7 @@ fun LectureCard(
                                 Semester.SECOND_YEAR_FALL_SEMESTER -> "2학년 2학기"
                                 Semester.THIRD_YEAR_SPRING_SEMESTER -> "3학년 1학기"
                             },
-                            modifier = Modifier
+                            modifier = modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
                             color = color.G2,
@@ -142,18 +141,18 @@ fun LectureCard(
 
                     }
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = modifier.height(4.dp))
 
                     Text(
                         text = "${data.headCount}/${data.maxRegisteredUser}명",
-                        modifier = Modifier
+                        modifier = modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
                         color = color.G1,
                         style = type.labelMedium,
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = modifier.height(12.dp))
 
                     Row {
                         LectureCategoryTag(
@@ -170,7 +169,7 @@ fun LectureCard(
                     }
 
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = modifier.height(8.dp))
                 }
             }
         }
@@ -181,6 +180,7 @@ fun LectureCard(
 @Composable
 fun LectureCardPre() {
     LectureCard(
+        modifier = Modifier,
         data = ContentArray(
             id = UUID.randomUUID(),
             name = "유저 리서치 - 사용자 경험 개선하기",
@@ -198,7 +198,5 @@ fun LectureCardPre() {
             line = "전기전자"
         ),
         onClick = {},
-        role = Authority.ROLE_USER,
-        type = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM
     )
 }

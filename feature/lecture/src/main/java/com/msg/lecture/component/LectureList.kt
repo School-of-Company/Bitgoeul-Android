@@ -1,6 +1,5 @@
 package com.msg.lecture.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,47 +13,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Authority
-import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.ContentArray
 import java.util.UUID
 
 @Composable
 fun LectureList(
+    modifier: Modifier,
     data: List<ContentArray>?,
     onClick: (UUID) -> Unit,
-    role: Authority,
-    type: LectureType
 ) {
     BitgoeulAndroidTheme { colors, _ ->
         LazyColumn(
-            modifier = Modifier
+            modifier = modifier
                 .padding(horizontal = 28.dp)
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
             if (data != null) {
-                Log.e("data", data.toString())
                 items(data) { item ->
                     Column {
                         Spacer(
-                            modifier = Modifier
+                            modifier = modifier
                                 .height(1.dp)
                                 .fillMaxWidth()
                                 .background(color = colors.G9)
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = modifier.height(12.dp))
 
                     LectureCard(
+                        modifier = modifier,
                         data = item,
                         onClick = onClick,
-                        role = role,
-                        type = type
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = modifier.height(12.dp))
                 }
 
             }

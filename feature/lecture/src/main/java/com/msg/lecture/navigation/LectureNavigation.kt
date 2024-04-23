@@ -37,14 +37,12 @@ fun NavGraphBuilder.lectureListScreen(
     onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,
-    type: LectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
 ) {
     composable(route = lectureListRoute) {
         LectureListRoute(
             onOpenClicked = onOpenClicked,
             onItemClicked = onItemClicked,
             onBackClicked = onBackClicked,
-            type = type,
         )
     }
 }

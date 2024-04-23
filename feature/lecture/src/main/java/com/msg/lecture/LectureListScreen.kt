@@ -37,6 +37,7 @@ import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.Lectures
 import java.util.UUID
 
 @Composable
@@ -45,16 +46,16 @@ fun LectureListRoute(
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
-    type: LectureType,
 ) {
-    var role = remember { mutableStateOf(Authority.ROLE_USER) }
+    val role = remember { mutableStateOf(Authority.ROLE_USER) }
+    val type = remember { mutableStateOf(null) }
 
     LaunchedEffect(true) {
         role.value = viewModel.getRole()
         viewModel.getLectureList(
             page = 0,
             size = 10,
-            type = type
+            type = type.value
         )
         getLectureList(
             viewModel = viewModel,
@@ -66,13 +67,25 @@ fun LectureListRoute(
     LectureListScreen(
         data = viewModel.lectureList.value,
         onOpenClicked = onOpenClicked,
-        onItemClicked = {
+        onItemClicked = { id ->
             onItemClicked()
-            viewModel.selectedLectureId.value = it
+            viewModel.selectedLectureId.value = id
+            viewModel.getDetailLecture(id)
+        },
+        onFilterClicked = { type ->
+            viewModel.lectureList.value = LectureListResponse(
+                lectures = Lectures(
+                    content = emptyList()
+                )
+            )
+            viewModel.getLectureList(
+                page = 0,
+                size = 10,
+                type = type
+            )
         },
         onBackClicked = onBackClicked,
         role = role.value,
-        type = type
     )
 }
 
@@ -94,36 +107,37 @@ suspend fun getLectureList(
 
 @Composable
 fun LectureListScreen(
+    modifier: Modifier = Modifier,
     data: LectureListResponse? = null,
     onOpenClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit,
+    onFilterClicked: (type: LectureType) -> Unit,
     role: Authority,
-    type: LectureType,
 ) {
-    var isFilterBottomSheetVisible = remember { mutableStateOf(false) }
+    val isFilterBottomSheetVisible = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .background(color = colors.WHITE),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = modifier.height(20.dp))
 
                 Row(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth()
                         .height(35.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    Spacer(modifier = Modifier.width(28.dp))
+                    Spacer(modifier = modifier.width(28.dp))
 
                     Text(
-                        modifier = Modifier
+                        modifier = modifier
                             .width(97.dp)
                             .height(31.dp),
                         text = stringResource(id = R.string.lecture_list),
@@ -131,44 +145,42 @@ fun LectureListScreen(
                         style = typography.titleMedium,
                     )
 
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = modifier.weight(1f))
 
-                    if (role == Authority.ROLE_PROFESSOR || role == Authority.ROLE_GOVERNMENT || role == Authority.ROLE_COMPANY_INSTRUCTOR) {
+                    if (role == Authority.ROLE_ADMIN) {
                         IconButton(
                             onClick = onOpenClicked,
-                            modifier = Modifier.padding(top = 4.dp),
+                            modifier = modifier.padding(top = 4.dp),
                             content = { PlusIcon() }
                         )
 
-                        Spacer(modifier = Modifier.width(24.dp))
+                        Spacer(modifier = modifier.width(24.dp))
 
                     }
                     FilterIcon(
-                        modifier = Modifier
+                        modifier = modifier
                             .padding(end = 8.dp)
                             .clickable {
-                                onOpenClicked()
                                 isFilterBottomSheetVisible.value = !isFilterBottomSheetVisible.value
                             }
                     )
-                    if (role != Authority.ROLE_PROFESSOR || role != Authority.ROLE_GOVERNMENT || role != Authority.ROLE_COMPANY_INSTRUCTOR) {
+                    if (role != Authority.ROLE_ADMIN) {
                         Text(
                             text = "필터",
                             color = colors.G1,
                             style = typography.bodySmall,
                         )
                     }
-                    Spacer(modifier = Modifier.width(28.dp))
+                    Spacer(modifier = modifier.width(28.dp))
 
                 }
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = modifier.height(40.dp))
 
                 if (data != null) {
                     LectureList(
+                        modifier = modifier,
                         data = data.lectures.content,
                         onClick = onItemClicked,
-                        role = role,
-                        type = type
                     )
                 }
 
@@ -189,7 +201,7 @@ fun LectureListPagePreview() {
         onBackClicked = {},
         onItemClicked = {},
         onOpenClicked = {},
+        onFilterClicked = {},
         role = Authority.ROLE_STUDENT,
-        type = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
     )
 }

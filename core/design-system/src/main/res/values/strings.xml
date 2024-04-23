@@ -68,4 +68,5 @@
     <string name="lecture_series_placeholder">이름 또는 학교명으로 검색...</string>
     <string name="department_placeholder">계열 검색 또는 임의로 추가...</string>
     <string name="professor_in_charge_placeholder">학과 이름으로 검색...</string>
+    <string name="entire">전체</string>
 </resources>
