@@ -1,6 +1,5 @@
 package com.msg.lecture
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,9 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import com.msg.design_system.R
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
@@ -33,12 +30,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.msg.design_system.component.bottomsheet.DatePickerBottomSheet
-import com.msg.design_system.component.bottomsheet.TimePickerBottomSheet
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.DeleteIcon
-import com.msg.design_system.component.icon.PickerArrowIcon
 import com.msg.design_system.component.picker.Picker
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.PickerTextField

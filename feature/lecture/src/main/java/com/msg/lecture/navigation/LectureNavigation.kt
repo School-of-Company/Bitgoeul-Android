@@ -8,7 +8,6 @@ import com.msg.lecture.LectureDetailRoute
 import com.msg.lecture.LectureDetailSettingRoute
 import com.msg.lecture.LectureListRoute
 import com.msg.lecture.LectureOpenRoute
-import com.msg.model.remote.enumdatatype.LectureType
 
 const val lectureListRoute = "lecture_list_route"
 

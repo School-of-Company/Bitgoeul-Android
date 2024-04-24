@@ -1,6 +1,5 @@
 package com.msg.lecture
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
-import com.msg.design_system.component.bottomsheet.LectureFilterBottomSheet
 import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.lecture.component.LectureFilterDialog
@@ -158,6 +156,7 @@ fun LectureListScreen(
                         Spacer(modifier = modifier.width(24.dp))
 
                     }
+
                     FilterIcon(
                         modifier = modifier
                             .padding(end = 8.dp)
@@ -165,6 +164,7 @@ fun LectureListScreen(
                                 isFilterDialogVisible.value = !isFilterDialogVisible.value
                             }
                     )
+
                     if (role != Authority.ROLE_ADMIN) {
                         Text(
                             text = "필터",
@@ -175,6 +175,7 @@ fun LectureListScreen(
                     Spacer(modifier = modifier.width(28.dp))
 
                 }
+
                 Spacer(modifier = modifier.height(40.dp))
 
                 if (data != null) {

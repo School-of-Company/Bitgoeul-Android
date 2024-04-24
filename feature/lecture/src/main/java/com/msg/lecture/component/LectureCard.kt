@@ -168,7 +168,6 @@ fun LectureCard(
                         )
                     }
 
-
                     Spacer(modifier = modifier.height(8.dp))
                 }
             }

@@ -1,6 +1,5 @@
 package com.msg.lecture.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,8 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.response.lecture.Instructors
-import com.msg.model.remote.response.lecture.SearchLineResponse
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
 
 @Composable

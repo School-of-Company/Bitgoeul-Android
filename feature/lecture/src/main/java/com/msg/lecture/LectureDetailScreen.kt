@@ -28,7 +28,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.ApplicationDoneButton
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
-import com.msg.design_system.component.dialog.LectureApplicationDialog
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
@@ -36,14 +35,12 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
-import java.util.UUID
 
 @Composable
 fun LectureDetailRoute(
@@ -51,6 +48,7 @@ fun LectureDetailRoute(
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
     val id = viewModel.selectedLectureId.value
+
     LaunchedEffect(true) {
         viewModel.getDetailLecture(id = id)
         getLectureDetailData(
@@ -60,6 +58,7 @@ fun LectureDetailRoute(
             }
         )
     }
+
     LectureDetailScreen(
         data = viewModel.lectureDetailData.value,
         onBackClicked = onBackClicked,
@@ -156,7 +155,7 @@ fun LectureDetailScreen(
                     Spacer(modifier = modifier.width(8.dp))
 
                     Text(
-                        text = "${data.line}",
+                        text = data.line,
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -173,7 +172,7 @@ fun LectureDetailScreen(
 
 
                     Text(
-                        text = "${data.department}" + " 학과",
+                        text = data.department + " 학과",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -183,7 +182,7 @@ fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(4.dp))
 
                 Text(
-                    text = "${data.name}",
+                    text = data.name,
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                 )
@@ -234,7 +233,7 @@ fun LectureDetailScreen(
 
                 Text(
                     modifier = modifier.padding(bottom = 24.dp),
-                    text = "${data.content}",
+                    text = data.content,
                     color = colors.BLACK,
                     style = typography.bodySmall
                 )
@@ -376,7 +375,7 @@ fun LectureDetailScreen(
 
             PositiveActionDialog(
                 title = "수강 신청하시겠습니까?",
-                content = "${data.name}",
+                content = data.name,
                 positiveAction = "신청",
                 onQuit = {
                     isPositiveActionDialogVisible.value = false
@@ -392,7 +391,7 @@ fun LectureDetailScreen(
             NegativeActionDialog(
                 title = "수강 취소하시겠습니까?",
                 negativeAction = "확인",
-                content = "${data.content}",
+                content = data.content,
                 isVisible = isNegativeDialogVisible.value,
                 onQuit = { isNegativeDialogVisible.value = false },
                 onActionClicked = {

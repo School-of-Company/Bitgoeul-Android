@@ -19,7 +19,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
@@ -30,9 +29,7 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.viewmodel.LectureViewModel
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 
 @Composable
 fun LectureOpenRoute(
@@ -98,7 +95,7 @@ fun LectureOpenScreen(
                     .fillMaxSize()
                     .background(color = colors.WHITE)
             ) {
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier =  modifier.height(20.dp))
 
                 GoBackTopBar(
                     icon = { GoBackIcon() },
@@ -107,7 +104,7 @@ fun LectureOpenScreen(
                     onBackClicked()
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = modifier.height(16.dp))
 
                 Column(
                     modifier = modifier
@@ -130,7 +127,6 @@ fun LectureOpenScreen(
                             innerTextField()
                         }
                     )
-
 
                     Spacer(modifier = modifier.height(16.dp))
 
@@ -157,6 +153,7 @@ fun LectureOpenScreen(
                         }
                     )
                 }
+
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
@@ -202,16 +199,4 @@ fun LectureOpenScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun LectureOpenScreenPre() {
-    LectureOpenScreen(
-        onActionClicked = {},
-        onSettingClicked = { _, _ -> },
-        savedName = "",
-        savedContent = "",
-        onBackClicked = {}
-    )
 }

@@ -1,6 +1,5 @@
 package com.msg.lecture.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf

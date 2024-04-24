@@ -95,28 +95,32 @@ fun LectureDetailSettingSearchDialog(
 
                             Spacer(modifier = modifier.height(16.dp))
 
-                            if (searchAPIType == "강의 계열") {
-                                LectureLineList(
-                                    modifier = modifier,
-                                    onClick = onResultListClick,
-                                    searchLineData = searchLineData,
-                                    division = division,
-                                    keyword = keywordState.value
-                                )
-                            } else if (searchAPIType == "담당 교수") {
-                                LectureProfessorList(
-                                    modifier = modifier,
-                                    onClick = onResultListClick,
-                                    searchProfessorData = searchProfessorData,
-                                    division = division,
-                                    keyword = keywordState.value
-                                )
-                            } else if (searchAPIType == "학과") {
-                                LectureDepartmentList(
-                                    modifier = modifier,
-                                    onClick = onDepartmentAndLineListClick,
-                                    data = searchDepartmentData
-                                )
+                            when (searchAPIType) {
+                                "강의 계열" -> {
+                                    LectureLineList(
+                                        modifier = modifier,
+                                        onClick = onResultListClick,
+                                        searchLineData = searchLineData,
+                                        division = division,
+                                        keyword = keywordState.value
+                                    )
+                                }
+                                "담당 교수" -> {
+                                    LectureProfessorList(
+                                        modifier = modifier,
+                                        onClick = onResultListClick,
+                                        searchProfessorData = searchProfessorData,
+                                        division = division,
+                                        keyword = keywordState.value
+                                    )
+                                }
+                                "학과" -> {
+                                    LectureDepartmentList(
+                                        modifier = modifier,
+                                        onClick = onDepartmentAndLineListClick,
+                                        data = searchDepartmentData
+                                    )
+                                }
                             }
                         }
                     }
