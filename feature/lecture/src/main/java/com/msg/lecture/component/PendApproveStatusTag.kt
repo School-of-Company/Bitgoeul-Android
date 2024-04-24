@@ -37,9 +37,3 @@ fun PendApproveStatusTag() {
         }
     }
 }
-
-@Preview
-@Composable
-fun PendApproveStatusTagPre() {
-    PendApproveStatusTag()
-}

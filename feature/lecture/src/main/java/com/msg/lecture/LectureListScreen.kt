@@ -31,6 +31,7 @@ import com.msg.design_system.R
 import com.msg.design_system.component.bottomsheet.LectureFilterBottomSheet
 import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.PlusIcon
+import com.msg.lecture.component.LectureFilterDialog
 import com.msg.lecture.component.LectureList
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
@@ -72,7 +73,7 @@ fun LectureListRoute(
             viewModel.selectedLectureId.value = id
             viewModel.getDetailLecture(id)
         },
-        onFilterClicked = { type ->
+        onFilterChanged = { type ->
             viewModel.lectureList.value = LectureListResponse(
                 lectures = Lectures(
                     content = emptyList()
@@ -112,10 +113,10 @@ fun LectureListScreen(
     onOpenClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit,
-    onFilterClicked: (type: LectureType) -> Unit,
+    onFilterChanged: (type: LectureType?) -> Unit,
     role: Authority,
 ) {
-    val isFilterBottomSheetVisible = remember { mutableStateOf(false) }
+    val isFilterDialogVisible = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface {
@@ -161,7 +162,7 @@ fun LectureListScreen(
                         modifier = modifier
                             .padding(end = 8.dp)
                             .clickable {
-                                isFilterBottomSheetVisible.value = !isFilterBottomSheetVisible.value
+                                isFilterDialogVisible.value = !isFilterDialogVisible.value
                             }
                     )
                     if (role != Authority.ROLE_ADMIN) {
@@ -184,10 +185,15 @@ fun LectureListScreen(
                     )
                 }
 
-                LectureFilterBottomSheet(
-                    onQuit = { isFilterBottomSheetVisible.value = false },
-                    isVisible = isFilterBottomSheetVisible.value
-                )
+                LectureFilterDialog(
+                    modifier = modifier,
+                    isVisible = isFilterDialogVisible.value,
+                    onCloseButtonClick = {
+                        isFilterDialogVisible.value = false
+                    }
+                ) { lectureType ->
+                    onFilterChanged(lectureType)
+                }
 
             }
         }
@@ -201,7 +207,7 @@ fun LectureListPagePreview() {
         onBackClicked = {},
         onItemClicked = {},
         onOpenClicked = {},
-        onFilterClicked = {},
+        onFilterChanged = {},
         role = Authority.ROLE_STUDENT,
     )
 }
