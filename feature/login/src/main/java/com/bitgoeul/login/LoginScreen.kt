@@ -2,7 +2,6 @@ package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
 import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,10 +17,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,7 +36,6 @@ import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
 import com.msg.model.remote.request.auth.LoginRequest
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun LoginRoute(

@@ -14,8 +14,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,11 +30,15 @@ fun LectureApplicationDialog(
     modifier: Modifier = Modifier,
     content: String,
     isVisible: Boolean,
-    onQuit: () -> Unit,
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit,
 ) {
     if (isVisible) {
         BitgoeulAndroidTheme { colors, type ->
-            Dialog(onDismissRequest = { onQuit() }) {
+            Dialog(onDismissRequest = {
+                onCancelClick()
+                onConfirmClick()
+            }) {
                 Box(
                     modifier = modifier
                         .background(
@@ -89,7 +91,7 @@ fun LectureApplicationDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            onQuit()
+                                            onCancelClick()
                                         },
                                     text = stringResource(id = R.string.cancel),
                                     color = colors.WHITE,
@@ -117,7 +119,7 @@ fun LectureApplicationDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            onQuit()
+                                            onConfirmClick()
                                         },
                                     text = stringResource(id = R.string.application),
                                     color = colors.WHITE,

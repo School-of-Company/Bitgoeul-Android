@@ -1,7 +1,5 @@
 package com.msg.design_system.theme.color
 
-import androidx.annotation.ColorRes
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.graphics.Color
 
 abstract class ColorTheme {

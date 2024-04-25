@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-        <domain-config cleartextTrafficPermitted="true">
-            <domain includeSubdomains="true">http://bitgouel-alb-349134598.ap-northeast-2.elb.amazonaws.com/</domain>
-        </domain-config>
-    <base-config cleartextTrafficPermitted="true"/>
-</network-security-config>

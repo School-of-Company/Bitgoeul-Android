@@ -5,7 +5,7 @@ import com.msg.model.remote.enumdatatype.Authority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.datetime.LocalDateTime
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class AuthTokenDataSource @Inject constructor(
@@ -29,10 +29,10 @@ class AuthTokenDataSource @Inject constructor(
         }
 
 
-    suspend fun setAccessTokenExp(accessTokenExp: LocalDateTime) {
+    suspend fun setAccessTokenExp(accessTokenExp: String) {
         authToken.updateData {
             it.toBuilder()
-                .setAccessExp(accessTokenExp.toString())
+                .setAccessExp(accessTokenExp)
                 .build()
         }
     }
@@ -55,17 +55,30 @@ class AuthTokenDataSource @Inject constructor(
         }
 
 
-    suspend fun setRefreshTokenExp(refreshTokenExp: LocalDateTime) {
+    suspend fun setRefreshTokenExp(refreshTokenExp: String) {
         authToken.updateData {
             it.toBuilder()
-                .setRefreshExp(refreshTokenExp.toString())
+                .setRefreshExp(refreshTokenExp)
                 .build()
         }
     }
 
-    fun getAuthority(): Flow<String> = authToken.data.map {
-        it.authority ?: ""
+    fun getAuthority(): Flow<Authority> = authToken.data.mapNotNull { data ->
+        data.authority?.let { authority ->
+            when (authority) {
+                "ROLE_USER" -> Authority.ROLE_USER
+                "ROLE_ADMIN" -> Authority.ROLE_ADMIN
+                "ROLE_STUDENT" -> Authority.ROLE_STUDENT
+                "ROLE_TEACHER" -> Authority.ROLE_TEACHER
+                "ROLE_BBOZZAK" -> Authority.ROLE_BBOZZAK
+                "ROLE_PROFESSOR" -> Authority.ROLE_PROFESSOR
+                "ROLE_COMPANY_INSTRUCTOR" -> Authority.ROLE_COMPANY_INSTRUCTOR
+                "ROLE_GOVERNMENT" -> Authority.ROLE_GOVERNMENT
+                else -> null
+            }
+        }
     }
+
 
     suspend fun setAuthority(authority: Authority) {
         authToken.updateData {

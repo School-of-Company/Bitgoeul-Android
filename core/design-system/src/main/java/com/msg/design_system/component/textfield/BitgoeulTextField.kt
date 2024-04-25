@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -36,12 +36,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.bottomsheet.DatePickerBottomSheet
 import com.msg.design_system.component.bottomsheet.SelectorBottomSheet
+import com.msg.design_system.component.bottomsheet.TimePickerBottomSheet
 import com.msg.design_system.component.icon.CancelIcon
 import com.msg.design_system.component.icon.PickerArrowIcon
+import com.msg.design_system.component.icon.SearchIcon
 import com.msg.design_system.component.icon.SeeableIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -369,6 +373,60 @@ fun InputMainContentTextField(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TrailingIconTextField(
+    modifier: Modifier,
+    placeholder: String,
+    isDisabled: Boolean,
+    onValueChange: (String) -> Unit,
+    onClickButton: () -> Unit,
+    value: String? = null,
+) {
+    var text by remember { mutableStateOf(value ?: "") }
+
+    BitgoeulAndroidTheme { colors, typography ->
+        Box {
+            OutlinedTextField(
+                placeholder = {
+                    Text(text = placeholder, style = typography.bodySmall, color = colors.G2)
+                },
+                value = text,
+                onValueChange = {
+                    text = it
+                    onValueChange(it)
+                },
+                modifier = modifier
+                    .border(1.dp, shape = RoundedCornerShape(8.dp), color = colors.G1)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                textStyle = typography.bodySmall.copy(color = colors.BLACK),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedPlaceholderColor = colors.G2,
+                    unfocusedPlaceholderColor = colors.G2,
+                    focusedTextColor = colors.BLACK,
+                    unfocusedTextColor = colors.BLACK,
+                    disabledTextColor = colors.G1,
+                    cursorColor = colors.P5,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                ),
+                enabled = !isDisabled,
+                maxLines = 1,
+                singleLine = true,
+                trailingIcon = {
+                    IconButton(onClick = onClickButton) {
+                        SearchIcon(
+                            modifier = modifier
+                        )
+                    }
+                }
+            )
+        }
+    }
+}
+
 @Composable
 fun PickerTextField(
     modifier: Modifier = Modifier,
@@ -377,7 +435,11 @@ fun PickerTextField(
     selectedItem: String,
     onItemChange: (item: String) -> Unit,
     isDatePicker: Boolean = false,
-    onQuit: (LocalDate?) -> Unit = {}
+    isTimePicker: Boolean = false,
+    isLocalDateTimePicker: Boolean = false,
+    onDatePickerQuit: (LocalDate?) -> Unit = {},
+    onTimePickerQuit: (LocalTime?) -> Unit = {},
+    onLocalDateTimePickerQuit: (LocalDateTime?) -> Unit = {},
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -408,7 +470,12 @@ fun PickerTextField(
             if (isFocused.value && isDatePicker) {
                 DatePickerBottomSheet {
                     isFocused.value = false
-                    onQuit(it)
+                    onDatePickerQuit(it)
+                }
+            } else if (isFocused.value && isTimePicker) {
+                TimePickerBottomSheet {
+                    isFocused.value = false
+                    onTimePickerQuit(it)
                 }
             } else if (isFocused.value) {
                 SelectorBottomSheet(
@@ -426,6 +493,7 @@ fun PickerTextField(
         }
     }
 }
+
 
 @Composable
 fun ErrorText(
@@ -511,6 +579,24 @@ fun TextFieldPre() {
             onClickButton = {},
             onValueChange = {},
             maxTextLength = 100
+        )
+        TrailingIconTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            placeholder = "Search",
+            onValueChange = {},
+            isDisabled = false,
+            onClickButton = {}
+        )
+
+        PickerTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = "강의 날짜 선택",
+            list = listOf(),
+            selectedItem = "",
+            onItemChange = {},
+            isDatePicker = true
         )
     }
 }

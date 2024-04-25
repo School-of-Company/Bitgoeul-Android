@@ -1,10 +1,13 @@
 package com.msg.network.datasource.lecture
 
-import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.network.api.LectureAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +28,20 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getLectureList(page: Int, size: Int, status: ApproveStatus, type: LectureType): Flow<List<LectureListResponse>> = flow {
+    override suspend fun getLectureList(
+        page: Int,
+        size: Int,
+        type: LectureType?,
+    ): Flow<LectureListResponse> = flow {
         emit(
-            BitgoeulApiHandler<List<LectureListResponse>>()
-                .httpRequest { lectureAPI.getLectureList(page = page, size = size, status = status, type = type) }
+            BitgoeulApiHandler<LectureListResponse>()
+                .httpRequest {
+                    lectureAPI.getLectureList(
+                        page = page,
+                        size = size,
+                        type = type
+                    )
+                }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
@@ -49,18 +62,35 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun approvePendingLecture(id: UUID): Flow<Unit> = flow {
+    override suspend fun lectureApplicationCancel(id: UUID): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
-                .httpRequest { lectureAPI.approvePendingLecture(id = id) }
+                .httpRequest { lectureAPI.lectureApplicationCancel(id = id) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun rejectPendingLecture(id: UUID): Flow<Unit> = flow {
+    override suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> =
+        flow {
+            emit(
+                BitgoeulApiHandler<SearchProfessorResponse>()
+                    .httpRequest { lectureAPI.searchProfessor(keyword = keyword) }
+                    .sendRequest()
+            )
+        }.flowOn(Dispatchers.IO)
+
+    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchLineResponse> = flow {
         emit(
-            BitgoeulApiHandler<Unit>()
-                .httpRequest { lectureAPI.rejectPendingLecture(id = id) }
+            BitgoeulApiHandler<SearchLineResponse>()
+                .httpRequest { lectureAPI.searchLine(keyword = keyword, division = division) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> = flow {
+        emit(
+            BitgoeulApiHandler<SearchDepartmentResponse>()
+                .httpRequest { lectureAPI.searchDepartment(keyword = keyword) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
