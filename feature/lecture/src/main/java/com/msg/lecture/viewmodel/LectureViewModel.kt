@@ -1,6 +1,5 @@
 package com.msg.lecture.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -326,11 +325,6 @@ class LectureViewModel @Inject constructor(
                 )
             )
         }
-        Log.e("lectureDates in ViewModel", lectureDates.last().toString())
-        Log.e("completeDates in ViewModel", completeDate.value.toString())
-        Log.e("startTime in ViewModel", startTime.value.toString())
-        Log.e("endTime in ViewModel", endTime.value.toString())
-        Log.e("lectureDates Size in Viewmodel", lectureDates.size.toString())
     }
 
     fun saveLectureDatesList() {

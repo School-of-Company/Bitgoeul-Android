@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -36,7 +35,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.bottomsheet.DatePickerBottomSheet
-import com.msg.design_system.component.bottomsheet.LocalDateTimePickerBottomSheet
 import com.msg.design_system.component.bottomsheet.SelectorBottomSheet
 import com.msg.design_system.component.bottomsheet.TimePickerBottomSheet
 import com.msg.design_system.component.icon.CancelIcon
@@ -477,12 +475,7 @@ fun PickerTextField(
             } else if (isFocused.value && isTimePicker) {
                 TimePickerBottomSheet {
                     isFocused.value = false
-                    onTimePickerQuit (it)
-                }
-            } else if (isFocused.value && isLocalDateTimePicker) {
-                LocalDateTimePickerBottomSheet {
-                    isFocused.value = false
-                    onLocalDateTimePickerQuit(it)
+                    onTimePickerQuit(it)
                 }
             } else if (isFocused.value) {
                 SelectorBottomSheet(
@@ -500,6 +493,7 @@ fun PickerTextField(
         }
     }
 }
+
 
 @Composable
 fun ErrorText(

@@ -1,6 +1,5 @@
 package com.msg.network.datasource.lecture
 
-import android.util.Log
 import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest

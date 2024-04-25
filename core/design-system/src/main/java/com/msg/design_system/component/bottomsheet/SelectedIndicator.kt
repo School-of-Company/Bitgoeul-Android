@@ -1,6 +1,5 @@
 package com.msg.design_system.component.bottomsheet
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

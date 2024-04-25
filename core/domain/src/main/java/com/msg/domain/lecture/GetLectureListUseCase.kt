@@ -1,7 +1,6 @@
 package com.msg.domain.lecture
 
 import com.msg.data.repository.lecture.LectureRepository
-import com.msg.model.remote.enumdatatype.ApproveStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import javax.inject.Inject
 
