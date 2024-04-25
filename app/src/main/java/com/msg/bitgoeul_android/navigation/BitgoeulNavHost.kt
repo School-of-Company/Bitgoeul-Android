@@ -21,6 +21,7 @@ import com.msg.club.navigation.clubDetailScreen
 import com.msg.club.navigation.clubScreen
 import com.msg.club.navigation.navigateToClubDetailPage
 import com.msg.lecture.navigation.navigateToLecture
+import com.msg.lecture.navigation.navigateToLectureDetail
 import com.msg.post.navigation.navigateToPostAddPage
 import com.msg.post.navigation.navigateToPostDetailPage
 import com.msg.post.navigation.navigateToPostDetailSettingPage
@@ -76,7 +77,7 @@ fun BitgoeulNavHost(
         )
         lectureListScreen(
             onOpenClicked = navController::navigateToLectureOpen,
-            onItemClicked = navController::popBackStack,
+            onItemClicked = navController::navigateToLectureDetail,
             onBackClicked = navController::popBackStack,
         )
         lectureDetailScreen(

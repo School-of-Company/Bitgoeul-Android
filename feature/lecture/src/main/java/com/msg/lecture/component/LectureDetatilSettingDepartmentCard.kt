@@ -1,5 +1,6 @@
 package com.msg.lecture.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ fun LectureDetailSettingDepartmentCard(
         Surface {
             Card(
                 modifier = modifier
+                    .background(color = colors.WHITE)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 16.dp)
                     .clickable {

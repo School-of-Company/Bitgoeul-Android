@@ -23,7 +23,7 @@ fun LectureDetailSettingInfoCard(
     searchLineData: String?,
     division: Division,
     keyword: String,
-    onClick: (UUID) -> Unit
+    onClick: (UUID, String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Surface {
@@ -33,7 +33,7 @@ fun LectureDetailSettingInfoCard(
                     .fillMaxWidth()
                     .clickable {
                         if (searchProfessorData != null) {
-                            onClick(searchProfessorData.id)
+                            onClick(searchProfessorData.id, searchProfessorData.name)
                         }
                     }
                     .padding(horizontal = 16.dp, vertical = 16.dp),

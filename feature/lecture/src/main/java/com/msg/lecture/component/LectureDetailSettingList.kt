@@ -42,7 +42,9 @@ fun LectureDepartmentList(
 
                 LectureDetailSettingDepartmentCard(
                     modifier = modifier,
-                    onClick = onClick,
+                    onClick = { department ->
+                        onClick(department)
+                    },
                     data = data.departments[index]
                 )
 
@@ -63,7 +65,7 @@ fun LectureLineList(
     keyword: String,
     modifier: Modifier,
     division: Division,
-    onClick: (UUID) -> Unit
+    onClick: (String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, _ ->
         if (searchLineData.lines.isNotEmpty()) {
@@ -81,7 +83,9 @@ fun LectureLineList(
                     searchLineData.lines.getOrNull(index)?.let { linesData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
-                            onClick = onClick,
+                            onClick = { _, searchLineData ->
+                                onClick(searchLineData)
+                            },
                             searchProfessorData = null,
                             searchLineData = linesData,
                             division = division,
@@ -125,7 +129,9 @@ fun LectureProfessorList(
                     searchProfessorData.instructors.getOrNull(index)?.let {
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
-                            onClick = onClick,
+                            onClick = { professor, _ ->
+                                onClick(professor)
+                            },
                             searchProfessorData = searchProfessorData.instructors[index],
                             searchLineData = null,
                             division = division,
@@ -162,6 +168,3 @@ fun LectureProfessorList(
         }
     }
 }
-
-
-

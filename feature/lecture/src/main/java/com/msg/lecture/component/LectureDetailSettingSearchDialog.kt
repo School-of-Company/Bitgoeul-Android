@@ -17,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.msg.design_system.component.icon.BlackCloseIcon
@@ -41,8 +40,9 @@ fun LectureDetailSettingSearchDialog(
     division: Division,
     searchAPIType: String,
     onSearchButtonClick: (String, Division) -> Unit,
-    onResultListClick: (UUID) -> Unit,
-    onDepartmentAndLineListClick: (String) -> Unit,
+    onProfessorListClick: (UUID) -> Unit,
+    onDepartmentListClick: (String) -> Unit,
+    onLineListClick: (String) -> Unit,
     onCloseButtonClick: () -> Unit
 ) {
     val keywordState = remember { mutableStateOf("") }
@@ -99,25 +99,33 @@ fun LectureDetailSettingSearchDialog(
                                 "강의 계열" -> {
                                     LectureLineList(
                                         modifier = modifier,
-                                        onClick = onResultListClick,
+                                        onClick = { selectedLineData ->
+                                            onLineListClick(selectedLineData)
+                                        },
                                         searchLineData = searchLineData,
                                         division = division,
                                         keyword = keywordState.value
                                     )
                                 }
+
                                 "담당 교수" -> {
                                     LectureProfessorList(
                                         modifier = modifier,
-                                        onClick = onResultListClick,
+                                        onClick = { professor ->
+                                            onProfessorListClick(professor)
+                                        },
                                         searchProfessorData = searchProfessorData,
                                         division = division,
                                         keyword = keywordState.value
                                     )
                                 }
+
                                 "학과" -> {
                                     LectureDepartmentList(
                                         modifier = modifier,
-                                        onClick = onDepartmentAndLineListClick,
+                                        onClick = { department ->
+                                            onDepartmentListClick(department)
+                                        },
                                         data = searchDepartmentData
                                     )
                                 }
@@ -129,10 +137,4 @@ fun LectureDetailSettingSearchDialog(
 
         }
     }
-}
-
-@Preview
-@Composable
-fun SelectProfessorDialogPre() {
-
 }

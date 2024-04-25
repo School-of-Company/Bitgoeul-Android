@@ -1,5 +1,6 @@
 package com.msg.lecture
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -268,6 +269,7 @@ fun LectureDetailSettingScreen(
                 .padding(top = 24.dp)
                 .padding(horizontal = 24.dp)
         ) {
+
             item {
                 Row(
                     modifier = modifier
@@ -499,6 +501,7 @@ fun LectureDetailSettingScreen(
                 Spacer(modifier = modifier.height(28.dp))
 
             }
+
             item {
                 Text(
                     text = stringResource(id = R.string.lecture_series),
@@ -532,7 +535,7 @@ fun LectureDetailSettingScreen(
                 Picker(
                     modifier = modifier
                         .fillMaxWidth(),
-                    text = stringResource(id = R.string.select_department),
+                    text = department.value.ifEmpty { stringResource(id = R.string.select_department) },
                     onClick = {
                         isSearchDialogVisible.value = !isSearchDialogVisible.value
                         isClickedPickerType.value = "학과"
@@ -617,6 +620,7 @@ fun LectureDetailSettingScreen(
 
                 if (startDateForConversion.value != null && startTime.value != null) {
                     startDate.value = LocalDateTime.of(startDateForConversion.value, startTime.value)
+                    startDateForConversion.value = null
                     startTime.value = null
                 }
             }
@@ -675,6 +679,7 @@ fun LectureDetailSettingScreen(
 
                 if (endDateForConversion.value != null && endTime.value != null) {
                     endDate.value = LocalDateTime.of(endDateForConversion.value, endTime.value)
+                    endDateForConversion.value = null
                     endTime.value = null
                 }
             }
@@ -697,13 +702,12 @@ fun LectureDetailSettingScreen(
                     completeDatesComponentWeight.value = 1f
                     isShowDeleteIcon.value = false
                 }
+
                 Row {
                     PickerTextField(
                         modifier = modifier.weight(completeDatesComponentWeight.value),
                         text = lectureAttendCompleteDateListForShow[index].ifEmpty {
-                            stringResource(
-                                id = R.string.lecture_attendance_date
-                            )
+                            stringResource(id = R.string.lecture_attendance_date)
                         },
                         list = listOf(),
                         selectedItem = lectureAttendCompleteDateListForShow[index],
@@ -722,7 +726,7 @@ fun LectureDetailSettingScreen(
                     )
 
                     if (isShowDeleteIcon.value) {
-                            DeleteIcon(
+                        DeleteIcon(
                             modifier = modifier
                                 .weight(0.15f)
                                 .align(Alignment.CenterVertically)
@@ -828,6 +832,7 @@ fun LectureDetailSettingScreen(
             }
 
         }
+
         Column(
             modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
@@ -846,9 +851,10 @@ fun LectureDetailSettingScreen(
                         .height(52.dp)
                         .padding(horizontal = 24.dp),
                 ) {
-                    if (lectureDates.size == 1 && lectureDates.isNotEmpty()) {
+                    if (lectureDates.size == 0) {
                         onLectureDatesAddClicked()
                     }
+
                     onApplyClicked(
                         lectureType.value,
                         semester.value,
@@ -859,8 +865,10 @@ fun LectureDetailSettingScreen(
                         credit.value,
                         startDate.value,
                         endDate.value,
-                        maxRegisteredUser.value
+                        maxRegisteredUser.value,
                     )
+                    Log.e("startDate", startDate.toString())
+                    Log.e("endDate", endDate.toString())
                 }
             }
         }
@@ -902,14 +910,20 @@ fun LectureDetailSettingScreen(
                 "담당 교수" -> "담당 교수"
                 else -> ""
             },
-            onResultListClick = onSearchResultItemCLick,
+            onProfessorListClick = { selectedProfessorUUID ->
+                userId.value = selectedProfessorUUID
+            },
             onCloseButtonClick = { isSearchDialogVisible.value = false },
             division = division.value,
             searchProfessorData = searchProfessorData,
             searchLineData = searchLineData,
             searchDepartmentData = searchDepartmentData,
-            onDepartmentAndLineListClick = { onSearchDepartmentClicked }
+            onDepartmentListClick = { selectedDepartmentData ->
+                department.value = selectedDepartmentData
+            },
+            onLineListClick = { selectedLineData ->
+                line.value = selectedLineData
+            },
         )
-
     }
 }
