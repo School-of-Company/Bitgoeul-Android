@@ -70,5 +70,4 @@ class LectureRepositoryImpl @Inject constructor(
             keyword = keyword
         )
     }
-
 }
