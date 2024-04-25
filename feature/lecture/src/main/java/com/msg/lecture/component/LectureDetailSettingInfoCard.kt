@@ -33,7 +33,7 @@ fun LectureDetailSettingInfoCard(
                     .fillMaxWidth()
                     .clickable {
                         if (searchProfessorData != null) {
-                            onClick(searchProfessorData.id, searchProfessorData.name)
+                            onClick(searchProfessorData.id, searchLineData.toString())
                         }
                     }
                     .padding(horizontal = 16.dp, vertical = 16.dp),

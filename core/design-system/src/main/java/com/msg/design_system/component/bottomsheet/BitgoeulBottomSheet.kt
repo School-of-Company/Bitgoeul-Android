@@ -252,14 +252,10 @@ fun TimePickerBottomSheet(
 fun DatePickerBottomSheet(
     onQuit: (LocalDate?) -> Unit
 ) {
-    val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
-        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-            return utcTimeMillis <= System.currentTimeMillis()
-        }
-    })
+    val datePickerState = rememberDatePickerState()
+    val selectedDate = datePickerState.selectedDateMillis?.convertMillisToDate()
     val sheetState = rememberModalBottomSheetState()
 
-    val selectedDate = datePickerState.selectedDateMillis?.convertMillisToDate()
     BitgoeulAndroidTheme { colors, typography ->
         ModalBottomSheet(
             sheetState = sheetState,

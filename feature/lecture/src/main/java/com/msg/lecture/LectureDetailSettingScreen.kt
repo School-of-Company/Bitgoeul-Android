@@ -1,6 +1,5 @@
 package com.msg.lecture
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -107,9 +106,6 @@ internal fun LectureDetailSettingRoute(
             }
 
         },
-        onSearchResultItemCLick = { userId ->
-            viewModel.userId.value = userId
-        },
         onLectureDatesAddClicked = {
             viewModel.addLectureDates()
         },
@@ -206,7 +202,6 @@ fun LectureDetailSettingScreen(
     onSearchProfessorClicked: (String) -> Unit,
     onSearchLineClicked: (String, Division) -> Unit,
     onSearchDepartmentClicked: (String) -> Unit,
-    onSearchResultItemCLick: (UUID) -> Unit,
     onCompleteDateChanged: (completeDate: LocalDate) -> Unit,
     onStartTimeChanged: (startTIme: LocalTime) -> Unit,
     onEndTimeChanged: (endTime: LocalTime) -> Unit,
@@ -513,7 +508,7 @@ fun LectureDetailSettingScreen(
                 Picker(
                     modifier = modifier
                         .fillMaxWidth(),
-                    text = line.value.ifEmpty { stringResource(id = R.string.select_lecture) },
+                    text = line.value.ifEmpty { stringResource(id = R.string.select_line) },
                     onClick = {
                         isSearchDialogVisible.value = !isSearchDialogVisible.value
                         isClickedPickerType.value = "강의 계열"
@@ -867,8 +862,6 @@ fun LectureDetailSettingScreen(
                         endDate.value,
                         maxRegisteredUser.value,
                     )
-                    Log.e("startDate", startDate.toString())
-                    Log.e("endDate", endDate.toString())
                 }
             }
         }
