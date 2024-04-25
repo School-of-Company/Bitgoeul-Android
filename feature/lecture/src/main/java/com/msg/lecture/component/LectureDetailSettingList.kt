@@ -28,31 +28,51 @@ fun LectureDepartmentList(
     modifier: Modifier,
     onClick: (String) -> Unit
 ) {
-    BitgoeulAndroidTheme { colors, _ ->
+    BitgoeulAndroidTheme { colors, typography ->
+        if (data.departments.isNotEmpty()) {
         LazyColumn(
             modifier = modifier.background(color = colors.WHITE)
         ) {
-            items(data.departments.size) { index ->
-                Spacer(
+                items(data.departments.size) { index ->
+                    Spacer(
+                        modifier = modifier
+                            .height(1.dp)
+                            .fillMaxWidth()
+                            .background(color = colors.G9)
+                    )
+
+                    LectureDetailSettingDepartmentCard(
+                        modifier = modifier,
+                        onClick = { department ->
+                            onClick(department)
+                        },
+                        data = data.departments[index]
+                    )
+
+                    Spacer(
+                        modifier = Modifier
+                            .height(1.dp)
+                            .fillMaxWidth()
+                            .background(color = colors.G9)
+                    )
+                }
+            }
+        } else {
+            Column(
+                modifier = modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                EmptyBoxIcon(
                     modifier = modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = colors.G9)
                 )
 
-                LectureDetailSettingDepartmentCard(
-                    modifier = modifier,
-                    onClick = { department ->
-                        onClick(department)
-                    },
-                    data = data.departments[index]
-                )
+                Spacer(modifier = modifier.height(8.dp))
 
-                Spacer(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = colors.G9)
+                Text(
+                    text = "검색 결과가 없습니다.",
+                    style = typography.labelMedium,
+                    color = colors.G2
                 )
             }
         }
@@ -67,7 +87,7 @@ fun LectureLineList(
     division: Division,
     onClick: (String) -> Unit
 ) {
-    BitgoeulAndroidTheme { colors, _ ->
+    BitgoeulAndroidTheme { colors, typography ->
         if (searchLineData.lines.isNotEmpty()) {
             LazyColumn(
                 modifier = modifier.background(color = Color.Transparent)
@@ -100,6 +120,24 @@ fun LectureLineList(
                             .background(color = colors.G9)
                     )
                 }
+            }
+        } else {
+            Column(
+                modifier = modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                EmptyBoxIcon(
+                    modifier = modifier
+                )
+
+                Spacer(modifier = modifier.height(8.dp))
+
+                Text(
+                    text = "검색 결과가 없습니다.",
+                    style = typography.labelMedium,
+                    color = colors.G2
+                )
             }
         }
     }
