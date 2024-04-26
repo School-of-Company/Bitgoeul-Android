@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="login">로그인</string>
+    <string name="go_back">돌아가기</string>
     <string name="project_name">빛고을\n직업교육\n혁신지구</string>
     <string name="email">이메일</string>
     <string name="error_text_email">이메일을 다시 한번 확인해주세요.</string>
