@@ -29,9 +29,6 @@ fun GoBackTopBar(
                 .fillMaxWidth()
                 .background(colors.WHITE)
         ) {
-            Spacer(
-                modifier = modifier.width(28.dp)
-            )
             IconButton(
                 onClick = onClick,
                 modifier = modifier
