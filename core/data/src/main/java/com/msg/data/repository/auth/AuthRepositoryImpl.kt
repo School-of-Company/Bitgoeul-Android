@@ -2,6 +2,7 @@ package com.msg.data.repository.auth
 
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.model.remote.model.auth.AuthTokenModel
+import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.auth.LoginRequest
 import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
@@ -69,6 +70,11 @@ class AuthRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun findPassword(body: FindPasswordRequest): Flow<Unit> {
+        return authDataSource.findPassword(
+            body = body
+        )
+    }
     override suspend fun logout(): Flow<Unit> {
         return authDataSource.logout()
     }
