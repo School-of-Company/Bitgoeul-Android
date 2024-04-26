@@ -1,6 +1,7 @@
 package com.msg.network.datasource.auth
 
 import com.msg.model.remote.model.auth.AuthTokenModel
+import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.auth.LoginRequest
 import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
@@ -72,6 +73,14 @@ class AuthDataSourceImpl @Inject constructor(
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpBbozzakTeacher(body = body) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun findPassword(body: FindPasswordRequest): Flow<Unit> = flow {
+        emit(
+            BitgoeulApiHandler<Unit>()
+                .httpRequest { authAPI.findPassword(body = body) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)

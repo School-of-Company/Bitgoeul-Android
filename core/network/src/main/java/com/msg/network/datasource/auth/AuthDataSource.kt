@@ -1,6 +1,7 @@
 package com.msg.network.datasource.auth
 
 import com.msg.model.remote.model.auth.AuthTokenModel
+import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.auth.LoginRequest
 import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
@@ -18,6 +19,7 @@ interface AuthDataSource {
     suspend fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit>
     suspend fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit>
     suspend fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit>
+    suspend fun findPassword(body: FindPasswordRequest): Flow<Unit>
     suspend fun logout(): Flow<Unit>
     suspend fun withdraw(): Flow<Unit>
 }
