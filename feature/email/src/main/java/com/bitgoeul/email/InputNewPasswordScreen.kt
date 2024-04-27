@@ -68,7 +68,8 @@ fun InputNewPasswordScreen(
                     isLinked = false,
                     isReverseTrailingIcon = false,
                     onClickButton = {},
-                    placeholder = "8~24자 영문, 숫자, 특수문자 1개 이상"
+                    placeholder = "8~24자 영문, 숫자, 특수문자 1개 이상",
+                    visualTransformationState = true
                 )
 
                 Spacer(modifier = modifier.height(16.dp))
@@ -82,7 +83,8 @@ fun InputNewPasswordScreen(
                     isLinked = false,
                     isReverseTrailingIcon = false,
                     onClickButton = {},
-                    placeholder = "비밀번호 확인"
+                    placeholder = "비밀번호 확인",
+                    visualTransformationState = true
                 )
 
                 Spacer(modifier = modifier.weight(1f))
