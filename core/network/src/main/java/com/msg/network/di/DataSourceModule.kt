@@ -10,6 +10,8 @@ import com.msg.network.datasource.certification.CertificationDataSource
 import com.msg.network.datasource.certification.CertificationDataSourceImpl
 import com.msg.network.datasource.club.ClubDataSource
 import com.msg.network.datasource.club.ClubDataSourceImpl
+import com.msg.network.datasource.email.EmailDataSource
+import com.msg.network.datasource.email.EmailDataSourceImpl
 import com.msg.network.datasource.faq.FaqDataSource
 import com.msg.network.datasource.faq.FaqDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
@@ -70,4 +72,9 @@ abstract class DataSourceModule {
     abstract fun bindPostDataSource(
         postDataSourceImpl: PostDataSourceImpl
     ): PostDataSource
+
+    @Binds
+    abstract fun bindEmailDataSource(
+        emailDataSourceImpl: EmailDataSourceImpl
+    ): EmailDataSource
 }
