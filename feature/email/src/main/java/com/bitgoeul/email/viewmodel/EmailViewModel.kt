@@ -7,6 +7,7 @@ import com.bitgoeul.email.util.Event
 import com.bitgoeul.email.util.errorHandling
 import com.msg.domain.email.GetEmailAuthenticateStatusUseCase
 import com.msg.domain.email.SendLinkToEmailUseCase
+import com.msg.model.remote.request.email.SendLinkToEmailRequest
 import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,5 +43,23 @@ class EmailViewModel @Inject constructor(
        }.onFailure { error ->
            _getEmailAuthenticateStatusResponse.value = error.errorHandling()
        }
+    }
+
+    fun sendLinkToEmail(
+        email: String
+    ) = viewModelScope.launch {
+        sendLinkToEmailUseCase(
+            body = SendLinkToEmailRequest(
+                email = email
+            )
+        ).onSuccess {
+            it.catch {remoteError ->
+                _sendLinkToEmailResponse.value = remoteError.errorHandling()
+            }.collect {
+                _sendLinkToEmailResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _sendLinkToEmailResponse.value = error.errorHandling()
+        }
     }
 }
