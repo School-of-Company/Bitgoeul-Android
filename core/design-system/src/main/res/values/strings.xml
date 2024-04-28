@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="login">로그인</string>
+    <string name="go_back">돌아가기</string>
     <string name="project_name">빛고을\n직업교육\n혁신지구</string>
     <string name="email">이메일</string>
     <string name="error_text_email">이메일을 다시 한번 확인해주세요.</string>
@@ -8,6 +9,7 @@
     <string name="find_password">비밀번호 찾기</string>
     <string name="forgot_password">비밀번호를 잊었나요?</string>
     <string name="wrong_password">잘못된 비밀번호 입니다.</string>
+    <string name="email_authentication_process">이메일 인증을 진행합니다</string>
     <string name="sign_up">회원가입</string>
     <string name="lecture_list">강의 목록</string>
     <string name="filter">필터</string>
@@ -33,7 +35,7 @@
     <string name="select_credits_awarded">수여 학점 선택</string>
     <string name="maximum_number_students">최대 수강 인원</string>
     <string name="enter_maximum_number_students">최대 수강 인원 입력</string>
-    <string name="application_done">수강 신청 완료</string>
+    <string name="application_done">수강 신청 완료</string>ㅈ
     <string name="application_reject">신청 거부</string>
     <string name="application_approve">신청 승인</string>
     <string name="activity_detail_setting">활동 세부 설정</string>

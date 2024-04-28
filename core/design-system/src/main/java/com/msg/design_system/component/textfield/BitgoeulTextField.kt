@@ -31,6 +31,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,6 +66,7 @@ fun DefaultTextField(
     onClickLink: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
     value: String? = null,
+    visualTransformationState: Boolean = false,
 ) {
     var text by remember { mutableStateOf(value ?: "") }
     val isFocused = remember { mutableStateOf(false) }
@@ -143,7 +145,8 @@ fun DefaultTextField(
                 readOnly = isReadOnly,
                 keyboardOptions = if (isNumberOnly) KeyboardOptions(keyboardType = KeyboardType.Number) else KeyboardOptions(
                     autoCorrect = false
-                )
+                ),
+                visualTransformation = if (visualTransformationState) PasswordVisualTransformation() else VisualTransformation.None
             )
             if (isError || isLinked) {
                 val isAll: Boolean = isError && isLinked
