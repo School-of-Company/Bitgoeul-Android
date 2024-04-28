@@ -73,9 +73,11 @@ fun observeLoginEvent(
                     Log.e("토큰 저장 실패", "토큰이 유효하지 않습니다.")
                 }
             }
+
             is Event.UnKnown -> {
                 Log.e("Unknown Event", "Unknown 이벤트가 발생했습니다.")
             }
+
             else -> {
                 Log.e("토큰 저장 실패", "이벤트 타입이 올바르지 않습니다.")
             }
@@ -88,6 +90,7 @@ fun observeLoginEvent(
 fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
+    onFindPasswordClick: () -> Unit = {},
     setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -166,7 +169,9 @@ fun LoginScreen(
                         onValueChange = {
                             passwordState.value = it
                         },
-                        onClickLink = {},
+                        onClickLink = {
+                            onFindPasswordClick()
+                        },
                         isError = isPasswordErrorStatus.value,
                         isLinked = true,
                         linkText = stringResource(id = R.string.find_password),
