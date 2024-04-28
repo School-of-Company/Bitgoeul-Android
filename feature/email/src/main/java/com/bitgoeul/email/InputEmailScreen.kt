@@ -1,5 +1,6 @@
 package com.bitgoeul.email
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bitgoeul.email.viewmodel.EmailViewModel
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -20,11 +26,26 @@ import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.textfield.DefaultTextField
-
+@Composable
+fun InputEmailRoute(
+    onBackClicked: () -> Unit,
+    viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+) {
+    InputEmailScreen(
+        onBackClicked = onBackClicked,
+        onNextClicked = { email ->
+            viewModel.sendLinkToEmail(email)
+        }
+    )
+}
 @Composable
 fun InputEmailScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit,
+    onNextClicked: (String) -> Unit,
 ) {
+    val email = remember { mutableStateOf("") }
+
     BitgoeulAndroidTheme { color, typography ->
         Surface {
             Column(
@@ -39,7 +60,7 @@ fun InputEmailScreen(
                     icon = { GoBackIcon() },
                     text = stringResource(id = R.string.go_back)
                 ) {
-                    // TODO onBackClicked() 추가하기
+                    onBackClicked()
                 }
 
                 Spacer(modifier = modifier.height(16.dp))
@@ -60,7 +81,9 @@ fun InputEmailScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { },
+                    onValueChange = { inputEmail ->
+                        email.value = inputEmail
+                    },
                     errorText = "",
                     isDisabled = false,
                     isError = false,
@@ -79,7 +102,9 @@ fun InputEmailScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     state = ButtonState.Disable,
-                    onClick = {}
+                    onClick = {
+                        onNextClicked(email.value)
+                    }
                 )
             }
         }
