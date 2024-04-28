@@ -26,15 +26,18 @@ import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.textfield.DefaultTextField
+
 @Composable
 fun InputEmailRoute(
     onBackClicked: () -> Unit,
+    onNextClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
     InputEmailScreen(
         onBackClicked = onBackClicked,
         onNextClicked = { email ->
             viewModel.sendLinkToEmail(email)
+            onNextClicked()
         }
     )
 }
