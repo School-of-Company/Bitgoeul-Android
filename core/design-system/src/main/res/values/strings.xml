@@ -58,6 +58,7 @@
     <string name="drone">드론</string>
     <string name="select_professor_in_charge">담당 교수 선택</string>
     <string name="professor_in_charge">담당 교수</string>
+    <string name="teacher_in_charge">담당 강사</string>
     <string name="lecture_division">강의 구분</string>
     <string name="select_lecture">강의 선택</string>
     <string name="select_department">학과 선택</string>
