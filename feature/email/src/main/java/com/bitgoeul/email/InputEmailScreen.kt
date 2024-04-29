@@ -36,7 +36,8 @@ fun InputEmailRoute(
     InputEmailScreen(
         onBackClicked = onBackClicked,
         onNextClicked = { email ->
-            viewModel.sendLinkToEmail(email)
+            viewModel.email.value = email
+            viewModel.sendLinkToEmail()
             onNextClicked()
         }
     )

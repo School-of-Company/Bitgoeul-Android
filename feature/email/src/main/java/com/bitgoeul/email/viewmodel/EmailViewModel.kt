@@ -29,11 +29,9 @@ class EmailViewModel @Inject constructor(
     var email = mutableStateOf("")
         private set
 
-    fun getEmailAuthenticateStatus(
-        email: String
-    ) = viewModelScope.launch {
+    fun getEmailAuthenticateStatus() = viewModelScope.launch {
        getEmailAuthenticateStatusUseCase(
-           email = email
+           email = email.value
        ).onSuccess {
            it.catch {remoteError ->
                _getEmailAuthenticateStatusResponse.value = remoteError.errorHandling()
@@ -45,12 +43,10 @@ class EmailViewModel @Inject constructor(
        }
     }
 
-    fun sendLinkToEmail(
-        email: String
-    ) = viewModelScope.launch {
+    fun sendLinkToEmail() = viewModelScope.launch {
         sendLinkToEmailUseCase(
             body = SendLinkToEmailRequest(
-                email = email
+                email = email.value
             )
         ).onSuccess {
             it.catch {remoteError ->

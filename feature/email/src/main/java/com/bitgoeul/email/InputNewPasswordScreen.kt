@@ -22,6 +22,15 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
+fun InputNewPasswordRoute(
+    onBackClicked: () -> Unit,
+    onNextClicked: () -> Unit,
+) {
+    InputNewPasswordScreen(
+    )
+}
+
+@Composable
 fun InputNewPasswordScreen(
     modifier: Modifier = Modifier
 ) {
