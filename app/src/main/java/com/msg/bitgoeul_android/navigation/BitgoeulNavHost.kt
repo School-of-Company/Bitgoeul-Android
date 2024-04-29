@@ -3,6 +3,13 @@ package com.msg.bitgoeul_android.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.bitgoeul.email.navigation.emailSendInformScreen
+import com.bitgoeul.email.navigation.inputEmailScreen
+import com.bitgoeul.email.navigation.inputNewPasswordScreen
+import com.bitgoeul.email.navigation.navigateToEmailSendInform
+import com.bitgoeul.email.navigation.navigateToInputEmail
+import com.bitgoeul.email.navigation.navigateToInputNewPassword
+import com.bitgoeul.email.navigation.navigateToPasswordChangeSuccess
 import com.bitgoeul.login.navigation.loginRoute
 import com.bitgoeul.login.navigation.loginScreen
 import com.bitgoeul.login.navigation.navigateToLogin
@@ -18,7 +25,6 @@ import com.msg.lecture.navigation.lectureDetailScreen
 import com.msg.lecture.navigation.lectureDetailSettingScreen
 import com.msg.lecture.navigation.lectureListScreen
 import com.msg.lecture.navigation.lectureOpenScreen
-import com.msg.lecture.navigation.navigateToLecture
 import com.msg.lecture.navigation.navigateToLectureDetail
 import com.msg.lecture.navigation.navigateToLectureDetailSetting
 import com.msg.lecture.navigation.navigateToLectureOpen
@@ -52,7 +58,20 @@ fun BitgoeulNavHost(
         modifier = modifier
     ) {
         loginScreen(
-            onSignUpClick = navController::navigateToSignUp
+            onSignUpClick = navController::navigateToSignUp,
+            onFindPasswordClick = navController::navigateToInputEmail
+        )
+        inputEmailScreen(
+            onBackClicked = navController::navigateToLogin,
+            onNextClicked = navController::navigateToEmailSendInform
+        )
+        emailSendInformScreen(
+            onBackClicked = navController::navigateToInputEmail,
+            onMoveNewPasswordClick = navController::navigateToInputNewPassword
+        )
+        inputNewPasswordScreen(
+            onBackClicked = navController::navigateToInputEmail,
+            onNextClicked = navController::navigateToPasswordChangeSuccess
         )
         signUpScreen(
             onBackClick = navController::popBackStack

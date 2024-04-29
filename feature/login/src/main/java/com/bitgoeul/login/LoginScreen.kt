@@ -40,19 +40,21 @@ import com.msg.model.remote.request.auth.LoginRequest
 @Composable
 fun LoginRoute(
     onSignUpClick: () -> Unit,
+    onFindPasswordClick: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LoginScreen(
         onSignUpClick = onSignUpClick,
+        onFindPasswordClick = onFindPasswordClick,
         onLoginClick = {
             viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
             observeLoginEvent(lifecycleOwner = lifecycleOwner, viewModel = viewModel)
         },
         setLoginData = { email, password ->
             viewModel.setLoginData(email = email, password = password)
-        }
+        },
     )
 }
 
@@ -90,7 +92,7 @@ fun observeLoginEvent(
 fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
-    onFindPasswordClick: () -> Unit = {},
+    onFindPasswordClick: () -> Unit,
     setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -219,9 +221,4 @@ fun LoginScreen(
             }
         }
     }
-}
-
-@Composable
-fun preview() {
-    LoginScreen(onSignUpClick = {})
 }
