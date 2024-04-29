@@ -1,5 +1,6 @@
 package com.bitgoeul.email
 
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -35,10 +36,9 @@ fun InputNewPasswordRoute(
 ) {
     InputNewPasswordScreen(
         onBackClicked = onBackClicked,
-        onNextClicked = { currentPassword, newPassword ->
-            viewModel.currentPassword.value = currentPassword
+        onNextClicked = { newPassword ->
             viewModel.newPassword.value = newPassword
-            viewModel.changePassword()
+            viewModel.findPassword()
             onNextClicked()
         },
     )
@@ -48,10 +48,12 @@ fun InputNewPasswordRoute(
 fun InputNewPasswordScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onNextClicked: (String, String) -> Unit,
+    onNextClicked: (String) -> Unit,
 ) {
-    val currentPassword = remember { mutableStateOf("") }
-    val newPassword = remember { mutableStateOf("") }
+    val passwordPattern = Regex("^(?=.*[A-Za-z0-9])[A-Za-z0-9!@#$%^&*]{8,24}$")
+    val firstInputPassword = remember { mutableStateOf("") }
+    val secondInputPassword = remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     BitgoeulAndroidTheme { color, typography ->
         Surface {
@@ -89,8 +91,8 @@ fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { inputCurrentPassword ->
-                        currentPassword.value = inputCurrentPassword
+                    onValueChange = { inputPassword ->
+                        firstInputPassword.value = inputPassword
                     },
                     errorText = "",
                     isDisabled = false,
@@ -106,12 +108,12 @@ fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { inputNewPassword ->
-                        newPassword.value = inputNewPassword
+                    onValueChange = { inputPassword ->
+                        secondInputPassword.value = inputPassword
                     },
-                    errorText = "",
+                    errorText = "비밀번호가 일치하지 않습니다.",
                     isDisabled = false,
-                    isError = false,
+                    isError = firstInputPassword.value != secondInputPassword.value,
                     isLinked = false,
                     isReverseTrailingIcon = false,
                     onClickButton = {},
@@ -127,9 +129,13 @@ fun InputNewPasswordScreen(
                         .padding(bottom = 14.dp)
                         .fillMaxWidth()
                         .height(52.dp),
-                    state = if(currentPassword.value.isNotEmpty() && newPassword.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
+                    state = if(firstInputPassword.value.isNotEmpty() && secondInputPassword.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
                     onClick = {
-                        onNextClicked(currentPassword.value, newPassword.value)
+                        if (passwordPattern.matches(firstInputPassword.value)) {
+                            onNextClicked(secondInputPassword.value)
+                        } else {
+                            Toast.makeText(context, "비밀번호는 8~24자 영문, 숫자, 특수문자 1개 이상이어야 합니다.", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 )
             }

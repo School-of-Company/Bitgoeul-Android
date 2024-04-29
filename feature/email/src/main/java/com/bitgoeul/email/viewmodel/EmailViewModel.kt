@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.bitgoeul.email.util.Event
 import com.bitgoeul.email.util.errorHandling
 import com.msg.domain.activity.ChangePasswordUseCase
+import com.msg.domain.auth.FindPasswordUseCase
 import com.msg.domain.email.GetEmailAuthenticateStatusUseCase
 import com.msg.domain.email.SendLinkToEmailUseCase
+import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.email.SendLinkToEmailRequest
 import com.msg.model.remote.request.user.ChangePasswordRequest
 import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
@@ -22,7 +24,7 @@ import javax.inject.Inject
 class EmailViewModel @Inject constructor(
     private val sendLinkToEmailUseCase: SendLinkToEmailUseCase,
     private val getEmailAuthenticateStatusUseCase: GetEmailAuthenticateStatusUseCase,
-    private val changePasswordUseCase: ChangePasswordUseCase
+    private val findPasswordUseCase: FindPasswordUseCase,
 ) : ViewModel() {
 
     private val _sendLinkToEmailResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -31,19 +33,13 @@ class EmailViewModel @Inject constructor(
     private val _getEmailAuthenticateStatusResponse = MutableStateFlow<Event<GetEmailAuthenticateStatusResponse>>(Event.Loading)
     val getEmailAuthenticateStatusResponse = _getEmailAuthenticateStatusResponse.asStateFlow()
 
-    private val _changePasswordResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val changePasswordResponse = _changePasswordResponse.asStateFlow()
+    private val _findPasswordResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val findPasswordResponse = _findPasswordResponse.asStateFlow()
 
     var email = mutableStateOf("")
         private set
 
-    var currentPassword = mutableStateOf("")
-        private set
-
     var newPassword = mutableStateOf("")
-        private set
-
-    var authenticateStatus = mutableStateOf<Boolean?>(false)
         private set
 
     fun getEmailAuthenticateStatus() = viewModelScope.launch {
@@ -54,7 +50,6 @@ class EmailViewModel @Inject constructor(
                _getEmailAuthenticateStatusResponse.value = remoteError.errorHandling()
            }.collect { response ->
                _getEmailAuthenticateStatusResponse.value = Event.Success(data = response)
-               authenticateStatus.value = response.isAuthentication
            }
        }.onFailure { error ->
            _getEmailAuthenticateStatusResponse.value = error.errorHandling()
@@ -77,21 +72,20 @@ class EmailViewModel @Inject constructor(
         }
     }
 
-    fun changePassword(
-    ) = viewModelScope.launch {
-        changePasswordUseCase(
-            body = ChangePasswordRequest(
-                currentPassword = currentPassword.value,
+    fun findPassword() = viewModelScope.launch {
+        findPasswordUseCase(
+            body = FindPasswordRequest(
+                email = email.value,
                 newPassword = newPassword.value
             )
         ).onSuccess {
             it.catch {remoteError ->
-                _changePasswordResponse.value = remoteError.errorHandling()
+                _findPasswordResponse.value = remoteError.errorHandling()
             }.collect {
-                _changePasswordResponse.value = Event.Success()
+                _findPasswordResponse.value = Event.Success()
             }
         }.onFailure { error ->
-            _changePasswordResponse.value = error.errorHandling()
+            _findPasswordResponse.value = error.errorHandling()
         }
     }
 }
