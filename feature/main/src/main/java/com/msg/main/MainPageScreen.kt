@@ -30,9 +30,11 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.GwangjuIcon
 import com.msg.design_system.component.icon.OfficeOfEducationIcon
+import com.msg.main.component.FaqSection
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.model.remote.enumdatatype.HighSchool
+import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData
 import com.msg.model.ui.HNCollegeData
@@ -43,7 +45,8 @@ import com.msg.ui.DevicePreviews
 
 @Composable
 fun MainPageScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    data: List<GetFrequentlyAskedQuestionDetailResponse>
 ) {
     val scrollState = rememberScrollState()
     val highSchoolScrollState = rememberScrollState()
@@ -233,7 +236,9 @@ fun MainPageScreen(
                         "FutureTransport"
                     )
                 )
-                Spacer(modifier = modifier.height(120.dp))
+                Spacer(modifier = modifier.height(64.dp))
+                FaqSection(data = data)
+                Spacer(modifier = modifier.height(24.dp))
                 Column(
                     modifier = modifier
                         .fillMaxWidth()
@@ -260,5 +265,13 @@ fun MainPageScreen(
 @DevicePreviews
 @Composable
 fun MainPageScreenPre() {
-    MainPageScreen()
+    MainPageScreen(
+        data = listOf(
+            GetFrequentlyAskedQuestionDetailResponse(
+                id = 0,
+                question = "학원에서 자격증 과정을 운영할 수 있나요?",
+                answer = "불가능 합니다. 그러나, 학교 주관으로 학원강사를 섭외할 수는 있고, 학원시설 이용비, 학원강사 수당 지급은 가능 합니다."
+            )
+        )
+    )
 }
