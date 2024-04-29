@@ -6,10 +6,13 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bitgoeul.email.EmailSendInformRoute
 import com.bitgoeul.email.InputEmailRoute
+import com.bitgoeul.email.InputNewPasswordRoute
 
 const val inputEmailRoute = "input_email_route"
 
 const val emailSendInformRoute = "email_send_inform_route"
+
+const val inputNewPasswordRoute = "input_new_password_route"
 
 fun NavController.navigateToInputEmail(navOptions: NavOptions? = null) {
     this.navigate(inputEmailRoute, navOptions)
@@ -17,6 +20,10 @@ fun NavController.navigateToInputEmail(navOptions: NavOptions? = null) {
 
 fun NavController.navigateToEmailSendInform(navOptions: NavOptions? = null) {
     this.navigate(emailSendInformRoute, navOptions)
+}
+
+fun NavController.navigateToInputNewPassword(navOptions: NavOptions? = null) {
+    this.navigate(inputNewPasswordRoute, navOptions)
 }
 
 fun NavGraphBuilder.inputEmailScreen(
@@ -39,6 +46,18 @@ fun NavGraphBuilder.emailSendInformScreen(
         EmailSendInformRoute(
             onBackClicked = onBackClicked,
             onMoveNewPasswordClick = onMoveNewPasswordClick,
+        )
+    }
+}
+
+fun NavGraphBuilder.inputNewPasswordScreen(
+    onBackClicked: () -> Unit,
+    onNextClicked: () -> Unit
+) {
+    composable(route = inputNewPasswordRoute) {
+        InputNewPasswordRoute(
+            onBackClicked = onBackClicked,
+            onNextClicked = onNextClicked
         )
     }
 }
