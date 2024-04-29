@@ -1,5 +1,7 @@
 package com.bitgoeul.email
 
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bitgoeul.email.viewmodel.EmailViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
@@ -22,9 +29,32 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun InputNewPasswordScreen(
-    modifier: Modifier = Modifier
+fun InputNewPasswordRoute(
+    onBackClicked: () -> Unit,
+    onNextClicked: () -> Unit,
+    viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
+    InputNewPasswordScreen(
+        onBackClicked = onBackClicked,
+        onNextClicked = { newPassword ->
+            viewModel.newPassword.value = newPassword
+            viewModel.findPassword()
+            onNextClicked()
+        },
+    )
+}
+
+@Composable
+fun InputNewPasswordScreen(
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit,
+    onNextClicked: (String) -> Unit,
+) {
+    val passwordPattern = Regex("^(?=.*[A-Za-z0-9])[A-Za-z0-9!@#$%^&*]{8,24}$")
+    val firstInputPassword = remember { mutableStateOf("") }
+    val secondInputPassword = remember { mutableStateOf("") }
+    val context = LocalContext.current
+
     BitgoeulAndroidTheme { color, typography ->
         Surface {
             Column(
@@ -39,7 +69,7 @@ fun InputNewPasswordScreen(
                     icon = { GoBackIcon() },
                     text = stringResource(id = R.string.go_back)
                 ) {
-                    // TODO onBackClicked() 추가하기
+                    onBackClicked()
                 }
 
                 Spacer(modifier = modifier.height(16.dp))
@@ -61,7 +91,9 @@ fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { },
+                    onValueChange = { inputPassword ->
+                        firstInputPassword.value = inputPassword
+                    },
                     errorText = "",
                     isDisabled = false,
                     isError = false,
@@ -76,10 +108,12 @@ fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { },
-                    errorText = "",
+                    onValueChange = { inputPassword ->
+                        secondInputPassword.value = inputPassword
+                    },
+                    errorText = "비밀번호가 일치하지 않습니다.",
                     isDisabled = false,
-                    isError = false,
+                    isError = firstInputPassword.value != secondInputPassword.value,
                     isLinked = false,
                     isReverseTrailingIcon = false,
                     onClickButton = {},
@@ -95,8 +129,14 @@ fun InputNewPasswordScreen(
                         .padding(bottom = 14.dp)
                         .fillMaxWidth()
                         .height(52.dp),
-                    state = ButtonState.Disable,
-                    onClick = {}
+                    state = if(firstInputPassword.value.isNotEmpty() && secondInputPassword.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
+                    onClick = {
+                        if (passwordPattern.matches(firstInputPassword.value)) {
+                            onNextClicked(secondInputPassword.value)
+                        } else {
+                            Toast.makeText(context, "비밀번호는 8~24자 영문, 숫자, 특수문자 1개 이상이어야 합니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 )
             }
         }

@@ -20,8 +20,17 @@ import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
+fun PasswordChangeSuccessRoute(
+    onBackClicked: () -> Unit
+) {
+    PasswordChangeSuccessScreen(
+        onBackClicked = onBackClicked
+    )
+}
+@Composable
 fun PasswordChangeSuccessScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit
 ) {
     BitgoeulAndroidTheme { color, typography ->
         Surface {
@@ -65,7 +74,9 @@ fun PasswordChangeSuccessScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     state = ButtonState.Enable,
-                    onClick = {}
+                    onClick = {
+                        onBackClicked()
+                    }
                 )
             }
         }
