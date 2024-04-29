@@ -11,12 +11,14 @@ import com.msg.domain.email.SendLinkToEmailUseCase
 import com.msg.model.remote.request.email.SendLinkToEmailRequest
 import com.msg.model.remote.request.user.ChangePasswordRequest
 import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class EmailViewModel @Inject constructor(
     private val sendLinkToEmailUseCase: SendLinkToEmailUseCase,
     private val getEmailAuthenticateStatusUseCase: GetEmailAuthenticateStatusUseCase,
