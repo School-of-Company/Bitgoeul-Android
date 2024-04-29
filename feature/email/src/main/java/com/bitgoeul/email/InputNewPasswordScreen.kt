@@ -1,5 +1,6 @@
 package com.bitgoeul.email
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bitgoeul.email.viewmodel.EmailViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
@@ -25,15 +31,25 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun InputNewPasswordRoute(
     onBackClicked: () -> Unit,
     onNextClicked: () -> Unit,
+    viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
     InputNewPasswordScreen(
+        onBackClicked = onBackClicked,
+        onNextClicked = { currentPassword, newPassword ->
+
+        },
     )
 }
 
 @Composable
 fun InputNewPasswordScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit,
+    onNextClicked: (String, String) -> Unit,
 ) {
+    val currentPassword = remember { mutableStateOf("") }
+    val newPassword = remember { mutableStateOf("") }
+
     BitgoeulAndroidTheme { color, typography ->
         Surface {
             Column(
@@ -70,7 +86,9 @@ fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { },
+                    onValueChange = { inputCurrentPassword ->
+                        currentPassword.value = inputCurrentPassword
+                    },
                     errorText = "",
                     isDisabled = false,
                     isError = false,
@@ -85,7 +103,9 @@ fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { },
+                    onValueChange = { inputNewPassword ->
+                        newPassword.value = inputNewPassword
+                    },
                     errorText = "",
                     isDisabled = false,
                     isError = false,
@@ -105,7 +125,9 @@ fun InputNewPasswordScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     state = ButtonState.Disable,
-                    onClick = {}
+                    onClick = {
+                        onNextClicked(currentPassword.value, newPassword.value)
+                    }
                 )
             }
         }

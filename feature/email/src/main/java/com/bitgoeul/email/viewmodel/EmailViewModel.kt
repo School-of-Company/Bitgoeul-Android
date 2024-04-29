@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitgoeul.email.util.Event
 import com.bitgoeul.email.util.errorHandling
+import com.msg.domain.activity.ChangePasswordUseCase
 import com.msg.domain.email.GetEmailAuthenticateStatusUseCase
 import com.msg.domain.email.SendLinkToEmailUseCase
 import com.msg.model.remote.request.email.SendLinkToEmailRequest
+import com.msg.model.remote.request.user.ChangePasswordRequest
 import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class EmailViewModel @Inject constructor(
     private val sendLinkToEmailUseCase: SendLinkToEmailUseCase,
     private val getEmailAuthenticateStatusUseCase: GetEmailAuthenticateStatusUseCase,
+    private val changePasswordUseCase: ChangePasswordUseCase
 ) : ViewModel() {
 
     private val _sendLinkToEmailResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -25,6 +28,9 @@ class EmailViewModel @Inject constructor(
 
     private val _getEmailAuthenticateStatusResponse = MutableStateFlow<Event<GetEmailAuthenticateStatusResponse>>(Event.Loading)
     val getEmailAuthenticateStatusResponse = _getEmailAuthenticateStatusResponse.asStateFlow()
+
+    private val _changePasswordResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val changePasswordResponse = _changePasswordResponse.asStateFlow()
 
     var email = mutableStateOf("")
         private set
@@ -56,6 +62,22 @@ class EmailViewModel @Inject constructor(
             }
         }.onFailure { error ->
             _sendLinkToEmailResponse.value = error.errorHandling()
+        }
+    }
+
+    fun changePassword(
+        body: ChangePasswordRequest
+    ) = viewModelScope.launch {
+        changePasswordUseCase(
+            body = body
+        ).onSuccess {
+            it.catch {remoteError ->
+                _changePasswordResponse.value = remoteError.errorHandling()
+            }.collect {
+                _changePasswordResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _changePasswordResponse.value = error.errorHandling()
         }
     }
 }
