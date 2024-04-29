@@ -105,7 +105,7 @@ fun InputEmailScreen(
                         .padding(bottom = 14.dp)
                         .fillMaxWidth()
                         .height(52.dp),
-                    state = ButtonState.Disable,
+                    state = if(email.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
                     onClick = {
                         onNextClicked(email.value)
                     }

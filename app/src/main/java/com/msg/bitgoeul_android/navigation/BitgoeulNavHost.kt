@@ -10,6 +10,7 @@ import com.bitgoeul.email.navigation.navigateToEmailSendInform
 import com.bitgoeul.email.navigation.navigateToInputEmail
 import com.bitgoeul.email.navigation.navigateToInputNewPassword
 import com.bitgoeul.email.navigation.navigateToPasswordChangeSuccess
+import com.bitgoeul.email.navigation.passwordChangeSuccessScreen
 import com.bitgoeul.login.navigation.loginRoute
 import com.bitgoeul.login.navigation.loginScreen
 import com.bitgoeul.login.navigation.navigateToLogin
@@ -72,6 +73,9 @@ fun BitgoeulNavHost(
         inputNewPasswordScreen(
             onBackClicked = navController::navigateToInputEmail,
             onNextClicked = navController::navigateToPasswordChangeSuccess
+        )
+        passwordChangeSuccessScreen(
+            onBackClicked = navController::navigateToLogin
         )
         signUpScreen(
             onBackClick = navController::popBackStack

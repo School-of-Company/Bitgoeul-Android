@@ -43,6 +43,9 @@ class EmailViewModel @Inject constructor(
     var newPassword = mutableStateOf("")
         private set
 
+    var authenticateStatus = mutableStateOf<Boolean?>(false)
+        private set
+
     fun getEmailAuthenticateStatus() = viewModelScope.launch {
        getEmailAuthenticateStatusUseCase(
            email = email.value
@@ -51,6 +54,7 @@ class EmailViewModel @Inject constructor(
                _getEmailAuthenticateStatusResponse.value = remoteError.errorHandling()
            }.collect { response ->
                _getEmailAuthenticateStatusResponse.value = Event.Success(data = response)
+               authenticateStatus.value = response.isAuthentication
            }
        }.onFailure { error ->
            _getEmailAuthenticateStatusResponse.value = error.errorHandling()

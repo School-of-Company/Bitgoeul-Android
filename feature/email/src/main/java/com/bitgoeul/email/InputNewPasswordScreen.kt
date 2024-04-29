@@ -127,7 +127,7 @@ fun InputNewPasswordScreen(
                         .padding(bottom = 14.dp)
                         .fillMaxWidth()
                         .height(52.dp),
-                    state = ButtonState.Disable,
+                    state = if(currentPassword.value.isNotEmpty() && newPassword.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
                     onClick = {
                         onNextClicked(currentPassword.value, newPassword.value)
                     }
