@@ -35,6 +35,12 @@ class EmailViewModel @Inject constructor(
     var email = mutableStateOf("")
         private set
 
+    var currentPassword = mutableStateOf("")
+        private set
+
+    var newPassword = mutableStateOf("")
+        private set
+
     fun getEmailAuthenticateStatus() = viewModelScope.launch {
        getEmailAuthenticateStatusUseCase(
            email = email.value
@@ -66,10 +72,12 @@ class EmailViewModel @Inject constructor(
     }
 
     fun changePassword(
-        body: ChangePasswordRequest
     ) = viewModelScope.launch {
         changePasswordUseCase(
-            body = body
+            body = ChangePasswordRequest(
+                currentPassword = currentPassword.value,
+                newPassword = newPassword.value
+            )
         ).onSuccess {
             it.catch {remoteError ->
                 _changePasswordResponse.value = remoteError.errorHandling()

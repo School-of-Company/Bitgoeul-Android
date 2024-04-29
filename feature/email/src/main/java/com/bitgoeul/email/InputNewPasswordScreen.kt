@@ -36,7 +36,10 @@ fun InputNewPasswordRoute(
     InputNewPasswordScreen(
         onBackClicked = onBackClicked,
         onNextClicked = { currentPassword, newPassword ->
-
+            viewModel.currentPassword.value = currentPassword
+            viewModel.newPassword.value = newPassword
+            viewModel.changePassword()
+            onNextClicked()
         },
     )
 }
@@ -64,7 +67,7 @@ fun InputNewPasswordScreen(
                     icon = { GoBackIcon() },
                     text = stringResource(id = R.string.go_back)
                 ) {
-                    // TODO onBackClicked() 추가하기
+                    onBackClicked()
                 }
 
                 Spacer(modifier = modifier.height(16.dp))
