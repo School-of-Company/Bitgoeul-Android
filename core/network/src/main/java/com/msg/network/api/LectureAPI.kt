@@ -53,7 +53,7 @@ interface LectureAPI {
     @GET("lecture/line")
     suspend fun searchLine(
         @Query("keyword") keyword: String,
-        @Query("division") division: Division,
+        @Query("division") division: String,
     ): SearchLineResponse
 
     @GET("lecture/department")

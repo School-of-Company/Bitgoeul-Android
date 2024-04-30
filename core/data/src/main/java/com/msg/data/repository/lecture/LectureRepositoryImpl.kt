@@ -58,7 +58,7 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchLineResponse> {
+    override suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> {
         return lectureDataSource.searchLine(
             keyword = keyword,
             division = division

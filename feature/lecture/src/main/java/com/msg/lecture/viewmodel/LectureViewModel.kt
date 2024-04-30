@@ -389,7 +389,7 @@ class LectureViewModel @Inject constructor(
 
     fun searchLine(
         keyword: String,
-        division: Division
+        division: String
     ) = viewModelScope.launch {
         searchLineUseCase(
             keyword = keyword,

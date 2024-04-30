@@ -79,7 +79,7 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchLine(keyword: String, division: Division): Flow<SearchLineResponse> = flow {
+    override suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> = flow {
         emit(
             BitgoeulApiHandler<SearchLineResponse>()
                 .httpRequest { lectureAPI.searchLine(keyword = keyword, division = division) }
