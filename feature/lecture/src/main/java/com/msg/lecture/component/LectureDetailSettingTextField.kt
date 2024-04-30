@@ -14,10 +14,14 @@ import com.msg.design_system.component.textfield.LectureDetailSettingTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun LectureDetailSettingNotInputTextField(
+fun LectureDetailSettingSection(
     modifier: Modifier,
     subjectText: String,
-    placeholder: String,
+    list: List<String>,
+    selectedItem: String,
+    onItemChange: (item: String) -> Unit,
+    type: String,
+    onClick: () -> Unit = {}
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -30,11 +34,37 @@ fun LectureDetailSettingNotInputTextField(
             )
 
             Spacer(modifier = modifier.height(8.dp))
+            when (type) {
+                "Selector" -> {
+                    LectureDetailSettingTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        list = list,
+                        selectedItem = selectedItem,
+                        onItemChange = onItemChange,
+                        selectorBottomSheet = true,
+                        searchBottomSheet = false
+                    )
+                }
+                "Search" -> {
+                    LectureDetailSettingSearchTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        subjectText = subjectText,
+                        placeholder = selectedItem,
+                        onClick = onClick
+                    )
+                }
+                "Input" -> {
+                    LectureDetailSettingInputTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        subjectText = subjectText,
+                        placeholder = selectedItem
+                    )
+                }
 
-            LectureDetailSettingTextField(
-                modifier = modifier.fillMaxWidth(),
-                placeholder = placeholder,
-            )
+                "LectureDates" -> {
+
+                }
+            }
         }
     }
 }
@@ -67,6 +97,37 @@ fun LectureDetailSettingInputTextField(
                 isReverseTrailingIcon = false,
                 onValueChange = {},
                 onClickButton = {},
+            )
+        }
+    }
+}
+
+@Composable
+fun LectureDetailSettingSearchTextField(
+    modifier: Modifier,
+    subjectText: String,
+    placeholder: String,
+    onClick: () -> Unit,
+) {
+    BitgoeulAndroidTheme { colors, typography ->
+        Column(
+            modifier = modifier.background(color = colors.WHITE)
+        ) {
+            Text(
+                text = subjectText,
+                color = colors.BLACK,
+                style = typography.bodyLarge,
+            )
+
+            Spacer(modifier = modifier.height(8.dp))
+
+            LectureDetailSettingTextField(
+                modifier = modifier.fillMaxWidth(),
+                list = listOf(),
+                selectedItem = placeholder,
+                onItemChange = {},
+                selectorBottomSheet = false,
+                searchBottomSheet = true
             )
         }
     }

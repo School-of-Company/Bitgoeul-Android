@@ -433,7 +433,11 @@ fun TrailingIconTextField(
 @Composable
 fun LectureDetailSettingTextField(
     modifier: Modifier = Modifier,
-    placeholder: String,
+    list: List<String>,
+    selectedItem: String,
+    onItemChange: (item: String) -> Unit,
+    selectorBottomSheet: Boolean,
+    searchBottomSheet: Boolean
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -455,13 +459,23 @@ fun LectureDetailSettingTextField(
                 },
         ) {
             Text(
-                text = placeholder,
+                text = selectedItem,
                 style = typography.bodySmall,
                 color = colors.G2
             )
 
-            if (isFocused.value) {
-                // TODO : BottomSheetComponent 제작후 연결
+            if (isFocused.value && selectorBottomSheet) {
+                SelectorBottomSheet(
+                    list = list,
+                    selectedItem = selectedItem,
+                    itemChange = onItemChange,
+                    onQuit = {
+                        isFocused.value = false
+                    },
+                    firstItem = {}
+                )
+            } else if (isFocused.value && searchBottomSheet) {
+
             }
         }
     }

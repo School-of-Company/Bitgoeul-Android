@@ -196,10 +196,10 @@ class LectureViewModel @Inject constructor(
     var maxRegisteredUser = mutableIntStateOf(0)
         private set
 
-    var semester = mutableStateOf(Semester.FIRST_YEAR_FALL_SEMESTER)
+    var semester = mutableStateOf("")
         private set
 
-    var division = mutableStateOf(Division.AUTOMOBILE_INDUSTRY)
+    var division = mutableStateOf("")
         private set
 
     var department = mutableStateOf("")
@@ -211,7 +211,7 @@ class LectureViewModel @Inject constructor(
     var userId = mutableStateOf(UUID.randomUUID())
         private set
 
-    var lectureType = mutableStateOf(LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM)
+    var lectureType = mutableStateOf("")
         private set
 
     var startDate = mutableStateOf<LocalDateTime?>(null)

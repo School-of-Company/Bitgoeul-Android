@@ -72,6 +72,9 @@ fun SelectorBottomSheet(
                 }
             }
             item {
+                lastItem()
+            }
+            item {
                 Spacer(modifier = Modifier.height(72.dp))
             }
         }

@@ -33,13 +33,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.component.AddLectureDatesButton
 import com.msg.lecture.component.LectureDetailSettingInputTextField
-import com.msg.lecture.component.LectureDetailSettingNotInputTextField
+import com.msg.lecture.component.LectureDetailSettingSearchBottomSheet
+import com.msg.lecture.component.LectureDetailSettingSection
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.enumdatatype.Division
-import com.msg.model.remote.enumdatatype.LectureType
-import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
@@ -194,9 +193,9 @@ fun LectureDetailSettingScreen(
     onCloseClicked: () -> Unit,
     onLectureDatesAddClicked: () -> Unit,
     onLectureDatesRemoveClicked: () -> Unit,
-    onApplyClicked: (LectureType, Semester, Division, String, String, UUID, Int, LocalDateTime?, LocalDateTime?, Int) -> Unit,
+    onApplyClicked: (String, String, String, String, String, UUID, Int, LocalDateTime?, LocalDateTime?, Int) -> Unit,
     onSearchProfessorClicked: (String) -> Unit,
-    onSearchLineClicked: (String, Division) -> Unit,
+    onSearchLineClicked: (String, String) -> Unit,
     onSearchDepartmentClicked: (String) -> Unit,
     onCompleteDateChanged: (completeDate: LocalDate) -> Unit,
     onStartTimeChanged: (startTIme: LocalTime) -> Unit,
@@ -204,9 +203,9 @@ fun LectureDetailSettingScreen(
     lectureDates: MutableList<LectureDates>,
     startDateForConversion: LocalDate?,
     endDateForConversion: LocalDate?,
-    savedLectureType: LectureType,
-    savedSemester: Semester,
-    savedDivision: Division,
+    savedLectureType: String,
+    savedSemester: String,
+    savedDivision: String,
     savedDepartment: String,
     savedLine: String,
     savedUserId: UUID,
@@ -218,13 +217,17 @@ fun LectureDetailSettingScreen(
     savedEndTime: LocalTime?,
     savedMaxRegisteredUser: Int,
 ) {
-    val isSearchDialogVisible = remember { mutableStateOf(false) }
+    val isSearchBottomSheetVisible = remember { mutableStateOf(false) }
     val isClickedPickerType = remember { mutableStateOf("") }
     val isLectureCategoryTagSelected = remember { mutableStateOf("0") }
     val isLectureSemesterAttendedTagSelected = remember { mutableStateOf("0") }
     val isLectureDivisionTagSelected = remember { mutableStateOf("0") }
     val isLectureCreditTagSelected = remember { mutableStateOf("0") }
     val isShowDeleteIcon = remember { mutableStateOf(false) }
+
+    val semesterList = listOf("1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기")
+    val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램", "기타")
+    val divisionList = listOf("자동차 산업", "에너지 산업", "의료•헬스케어", "AI융•복합", "문화 산업")
 
     val lectureType = remember { mutableStateOf(savedLectureType) }
     val division = remember { mutableStateOf(savedDivision) }
@@ -259,7 +262,7 @@ fun LectureDetailSettingScreen(
     val lectureAttendEndTimeListForShow =
         remember { mutableStateListOf(savedEndTime?.toLocalTimeFormat() ?: "") }
 
-    // TODO : 이거 스크린 내부 내용이 너무 많아서 컴포넌트화 해도 좀 더럽고 헷갈리는데 최대한 고쳐야함 ex. StackKnowledge V2 처럼 뭉탱이?로 컴포넌트화 해야하나?
+
     BitgoeulAndroidTheme { colors, typography ->
         LazyColumn(
             modifier = modifier
@@ -292,88 +295,175 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingNotInputTextField(
-                    modifier = modifier,
-                    placeholder = "학기 선택",
-                    subjectText = stringResource(id = R.string.semester_attended)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.semester_attended),
+                    list = semesterList,
+                    selectedItem = semester.value.ifEmpty { "학기 선택" },
+                    onItemChange = { selectedSemester ->
+                        if (semester.value != selectedSemester) semester.value =
+                            selectedSemester else semester.value = "학기 선택"
+                    },
+                    type = "Selector"
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingNotInputTextField(
-                    modifier = modifier,
-                    placeholder = "유형 선택",
-                    subjectText = stringResource(id = R.string.lecture_category)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.lecture_category),
+                    list = lectureTypeList,
+                    selectedItem = lectureType.value.ifEmpty { "유형 선택" },
+                    onItemChange = { selectedLectureType ->
+                        if (lectureType.value != selectedLectureType) lectureType.value =
+                            selectedLectureType else lectureType.value = "유형 선택"
+                    },
+                    type = "Selector"
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingNotInputTextField(
-                    modifier = modifier,
-                    placeholder = "구분 선택",
-                    subjectText = stringResource(id = R.string.lecture_division)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.lecture_division),
+                    list = divisionList,
+                    selectedItem = division.value.ifEmpty { "구분 선택" },
+                    onItemChange = { selectedDivision ->
+                        if (division.value != selectedDivision) division.value =
+                            selectedDivision else division.value = "구분 선택"
+                    },
+                    type = "Selector"
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingNotInputTextField(
-                    modifier = modifier,
-                    placeholder = "강의 선택",
-                    subjectText = stringResource(id = R.string.lecture_series)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.lecture_series),
+                    list = listOf(),
+                    selectedItem = "강의 선택",
+                    onItemChange = {},
+                    type = "Search",
+                    onClick = {
+                        isSearchBottomSheetVisible.value = true
+                        isClickedPickerType.value = "강의 계열"
+                    }
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingNotInputTextField(
-                    modifier = modifier,
-                    placeholder = "학과 선택",
-                    subjectText = stringResource(id = R.string.department)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.department),
+                    list = listOf(),
+                    selectedItem = "학과 선택",
+                    onItemChange = {},
+                    type = "Search",
+                    onClick = {
+                        isSearchBottomSheetVisible.value = true
+                        isClickedPickerType.value = "학과"
+                    }
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingNotInputTextField(
-                    modifier = modifier,
-                    placeholder = "담당 강사 선택",
-                    subjectText = stringResource(id = R.string.teacher_in_charge)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.teacher_in_charge),
+                    list = listOf(),
+                    selectedItem = "담당 강사 선택",
+                    onItemChange = {},
+                    type = "Search",
+                    onClick = {
+                        isSearchBottomSheetVisible.value = true
+                        isClickedPickerType.value = "담당 교수"
+                    }
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
                 // 입력 가능한 Component 생성 후 변경하기
-                LectureDetailSettingInputTextField(
-                    modifier = modifier,
-                    placeholder = "예시: ○○○○년 ○○월 ○○일",
-                    subjectText = stringResource(id = R.string.application_start_date)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.application_start_date),
+                    list = listOf(),
+                    selectedItem = "예시: ○○○○년 ○○월 ○○일",
+                    onItemChange = {},
+                    type = "Input"
                 )
 
-                LectureDetailSettingInputTextField(
-                    modifier = modifier,
-                    placeholder = "○○시 ○○분",
-                    subjectText = ""
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = "",
+                    list = listOf(),
+                    selectedItem = "○○시 ○○분",
+                    onItemChange = {},
+                    type = "Input"
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
+
             }
 
             item {
-                LectureDetailSettingInputTextField(
-                    modifier = modifier,
-                    placeholder = "예시: ○○○○년 ○○월 ○○일",
-                    subjectText = stringResource(id = R.string.application_deadline_date)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.application_deadline_date),
+                    list = listOf(),
+                    selectedItem = "예시: ○○○○년 ○○월 ○○일",
+                    onItemChange = {},
+                    type = "Input"
                 )
 
-                LectureDetailSettingInputTextField(
-                    modifier = modifier,
-                    placeholder = "○○시 ○○분",
-                    subjectText = ""
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = "",
+                    list = listOf(),
+                    selectedItem = "○○시 ○○분",
+                    onItemChange = {},
+                    type = "Input"
                 )
-            }
 
-            itemsIndexed(lectureDates) { index, lectureDatesItem ->
+                Spacer(modifier = modifier.height(24.dp))
+
                 Text(
                     text = stringResource(id = R.string.lecture_attendance_date),
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
+            }
+
+            itemsIndexed(lectureDates) { index, lectureDatesItem ->
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = "",
+                    list = listOf(),
+                    selectedItem = "",
+                    onItemChange = {},
+                    type = "LectureDates"
+                )
+            }
+
+            item {
+                AddLectureDatesButton(
+                    modifier = modifier.fillMaxWidth()
+                ) {
+
+                }
             }
 
             item {
@@ -383,7 +473,6 @@ fun LectureDetailSettingScreen(
                     subjectText = stringResource(id = R.string.maximum_number_students)
                 )
             }
-
         }
 
         Column(
@@ -423,5 +512,53 @@ fun LectureDetailSettingScreen(
                 }
             }
         }
+        LectureDetailSettingSearchBottomSheet(
+            isVisible = isSearchBottomSheetVisible.value,
+            searchPlaceHolder = when (isClickedPickerType.value) {
+                "강의 계열" -> stringResource(id = R.string.lecture_series_placeholder)
+                "학과" -> stringResource(id = R.string.department_placeholder)
+                "담당 교수" -> stringResource(id = R.string.professor_in_charge_placeholder)
+                else -> ""
+            },
+            onSearchButtonClick = { keyword, division ->
+                when (isClickedPickerType.value) {
+                    "강의 계열" -> {
+                        onSearchLineClicked(keyword, division)
+                    }
+
+                    "학과" -> {
+                        onSearchDepartmentClicked(keyword)
+                    }
+
+                    "담당 교수" -> {
+                        onSearchProfessorClicked(keyword)
+                    }
+
+                    else -> {}
+                }
+            },
+            searchAPIType = when (isClickedPickerType.value) {
+                "학과" -> "학과"
+                "강의 계열" -> "강의 계열"
+                "담당 교수" -> "담당 교수"
+                else -> ""
+            },
+            onProfessorListClick = { selectedProfessorUUID ->
+                userId.value = selectedProfessorUUID
+            },
+            division = division.value,
+            searchProfessorData = searchProfessorData,
+            searchLineData = searchLineData,
+            searchDepartmentData = searchDepartmentData,
+            onDepartmentListClick = { selectedDepartmentData ->
+                department.value = selectedDepartmentData
+            },
+            onLineListClick = { selectedLineData ->
+                line.value = selectedLineData
+            },
+            onQuit = {
+                isSearchBottomSheetVisible.value = false
+            }
+        )
     }
 }

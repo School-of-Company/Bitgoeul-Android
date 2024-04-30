@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.icon.EmptyBoxIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
@@ -84,7 +83,7 @@ fun LectureLineList(
     searchLineData: SearchLineResponse,
     keyword: String,
     modifier: Modifier,
-    division: Division,
+    division: String,
     onClick: (String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
@@ -148,7 +147,7 @@ fun LectureProfessorList(
     searchProfessorData: SearchProfessorResponse,
     keyword: String,
     modifier: Modifier,
-    division: Division,
+    division: String,
     onClick: (UUID) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
