@@ -434,7 +434,6 @@ fun TrailingIconTextField(
 fun LectureDetailSettingTextField(
     modifier: Modifier = Modifier,
     placeholder: String,
-    selectedItem: String,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 

@@ -305,58 +305,51 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.lecture_category),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+                LectureDetailSettingTextField(
+                    modifier = modifier,
+                    placeholder = "유형 선택",
+                    subjectText = stringResource(id = R.string.lecture_category)
                 )
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.lecture_division),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+                LectureDetailSettingTextField(
+                    modifier = modifier,
+                    placeholder = "구분 선택",
+                    subjectText = stringResource(id = R.string.lecture_division)
                 )
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.lecture_series),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+                LectureDetailSettingTextField(
+                    modifier = modifier,
+                    placeholder = "강의 선택",
+                    subjectText = stringResource(id = R.string.lecture_series)
                 )
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.department),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+                LectureDetailSettingTextField(
+                    modifier = modifier,
+                    placeholder = "학과 선택",
+                    subjectText = stringResource(id = R.string.department)
                 )
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.teacher_in_charge),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+                LectureDetailSettingTextField(
+                    modifier = modifier,
+                    placeholder = "담당 강사 선택",
+                    subjectText = stringResource(id = R.string.teacher_in_charge)
                 )
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.application_start_date),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
-                )
-            }
-
-            item {
-                Text(
-                    text = stringResource(id = R.string.application_start_date),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+                // 입력 가능한 Component 생성 후 변경하기
+                LectureDetailSettingTextField(
+                    modifier = modifier,
+                    placeholder = "시작일 입력",
+                    subjectText = stringResource(id = R.string.application_start_date)
                 )
             }
 
