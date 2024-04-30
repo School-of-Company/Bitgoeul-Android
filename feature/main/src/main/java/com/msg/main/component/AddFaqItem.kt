@@ -2,6 +2,7 @@ package com.msg.main.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +20,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -29,7 +31,8 @@ fun AddFaqItem(
     questionValue: String,
     onQuestionValueChanged: (String) -> Unit,
     answerValue: String,
-    onAnswerValueChanged: (String) -> Unit
+    onAnswerValueChanged: (String) -> Unit,
+    onAddClicked: () -> Unit
 ) {
     val isSelected = remember { mutableStateOf(false) }
     val questionHintVisible = remember {
@@ -38,6 +41,7 @@ fun AddFaqItem(
     val answerHintVisible = remember {
         derivedStateOf { answerValue.isEmpty() }
     }
+    val interactionSource = remember { MutableInteractionSource() }
 
     BitgoeulAndroidTheme { colors, typography ->
         ElevatedCard(
@@ -54,14 +58,18 @@ fun AddFaqItem(
                     color = colors.WHITE,
                     shape = RoundedCornerShape(12.dp)
                 )
-                .clickable {
-                    isSelected.value = !isSelected.value
-                }
         ) {
             Spacer(modifier = modifier.height(16.dp))
             if (!isSelected.value) {
                 Text(
-                    modifier = modifier.padding(horizontal = 20.dp),
+                    modifier = modifier
+                        .clickable(
+                            indication = null,
+                            interactionSource = interactionSource
+                        ) {
+                            isSelected.value = true
+                        }
+                        .padding(horizontal = 20.dp),
                     text = "+ 자주 묻는 질문 추가하기",
                     style = typography.bodySmall,
                     color = colors.P5
@@ -122,6 +130,38 @@ fun AddFaqItem(
                     thickness = 1.dp,
                     color = colors.G2
                 )
+                Spacer(modifier = modifier.height(12.dp))
+                Row(
+                    modifier = modifier.padding(horizontal = 20.dp)
+                ) {
+                    Spacer(modifier = modifier.weight(1f))
+                    Text(
+                        modifier = modifier.clickable(
+                            indication = null,
+                            interactionSource = interactionSource
+                        ) {
+                            isSelected.value = false
+                        },
+                        text = "취소",
+                        style = typography.bodySmall,
+                        fontWeight = FontWeight(600),
+                        color = colors.G1
+                    )
+                    Spacer(modifier = modifier.width(24.dp))
+                    Text(
+                        modifier = modifier.clickable(
+                            indication = null,
+                            interactionSource = interactionSource
+                        ) {
+                            onAddClicked()
+                            isSelected.value = false
+                        },
+                        text = "작성",
+                        style = typography.bodySmall,
+                        fontWeight = FontWeight(600),
+                        color = colors.P5
+                    )
+                }
             }
             Spacer(modifier = modifier.height(16.dp))
         }
@@ -135,6 +175,7 @@ fun AddFaqItemPre() {
         questionValue = "",
         onQuestionValueChanged = {},
         answerValue = "",
-        onAnswerValueChanged = {}
+        onAnswerValueChanged = {},
+        onAddClicked = {}
     )
 }
