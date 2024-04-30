@@ -15,6 +15,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,6 +32,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.GwangjuIcon
 import com.msg.design_system.component.icon.OfficeOfEducationIcon
+import com.msg.main.component.AddFaqItem
 import com.msg.main.component.FaqSection
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
@@ -65,6 +68,9 @@ fun MainPageScreen(
         SYCollegeData,
         NBCollegeData
     )
+
+    val questionValue = remember { mutableStateOf("") }
+    val answerValue = remember { mutableStateOf("") }
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
@@ -238,6 +244,16 @@ fun MainPageScreen(
                 )
                 Spacer(modifier = modifier.height(64.dp))
                 FaqSection(data = data)
+                AddFaqItem(
+                    questionValue = questionValue.value,
+                    onQuestionValueChanged = {
+                        questionValue.value = it
+                    },
+                    answerValue = answerValue.value,
+                    onAnswerValueChanged = {
+                        answerValue.value = it
+                    }
+                )
                 Spacer(modifier = modifier.height(24.dp))
                 Column(
                     modifier = modifier
