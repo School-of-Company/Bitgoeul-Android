@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import com.msg.design_system.R
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,14 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
-import com.msg.design_system.component.icon.DeleteIcon
-import com.msg.design_system.component.picker.Picker
-import com.msg.design_system.component.textfield.DefaultTextField
-import com.msg.design_system.component.textfield.PickerTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.lecture.component.LectureDetailSettingSearchDialog
-import com.msg.lecture.component.LectureDetailSettingTextField
-import com.msg.lecture.component.LectureSettingTag
+import com.msg.lecture.component.LectureDetailSettingInputTextField
+import com.msg.lecture.component.LectureDetailSettingNotInputTextField
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Division
@@ -297,7 +292,7 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingTextField(
+                LectureDetailSettingNotInputTextField(
                     modifier = modifier,
                     placeholder = "학기 선택",
                     subjectText = stringResource(id = R.string.semester_attended)
@@ -305,7 +300,7 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingTextField(
+                LectureDetailSettingNotInputTextField(
                     modifier = modifier,
                     placeholder = "유형 선택",
                     subjectText = stringResource(id = R.string.lecture_category)
@@ -313,7 +308,7 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingTextField(
+                LectureDetailSettingNotInputTextField(
                     modifier = modifier,
                     placeholder = "구분 선택",
                     subjectText = stringResource(id = R.string.lecture_division)
@@ -321,7 +316,7 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingTextField(
+                LectureDetailSettingNotInputTextField(
                     modifier = modifier,
                     placeholder = "강의 선택",
                     subjectText = stringResource(id = R.string.lecture_series)
@@ -329,7 +324,7 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingTextField(
+                LectureDetailSettingNotInputTextField(
                     modifier = modifier,
                     placeholder = "학과 선택",
                     subjectText = stringResource(id = R.string.department)
@@ -337,7 +332,7 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingTextField(
+                LectureDetailSettingNotInputTextField(
                     modifier = modifier,
                     placeholder = "담당 강사 선택",
                     subjectText = stringResource(id = R.string.teacher_in_charge)
@@ -346,22 +341,34 @@ fun LectureDetailSettingScreen(
 
             item {
                 // 입력 가능한 Component 생성 후 변경하기
-                LectureDetailSettingTextField(
+                LectureDetailSettingInputTextField(
                     modifier = modifier,
-                    placeholder = "시작일 입력",
+                    placeholder = "예시: ○○○○년 ○○월 ○○일",
                     subjectText = stringResource(id = R.string.application_start_date)
                 )
-            }
 
-            item {
-                Text(
-                    text = stringResource(id = R.string.application_deadline_date),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+                LectureDetailSettingInputTextField(
+                    modifier = modifier,
+                    placeholder = "○○시 ○○분",
+                    subjectText = ""
                 )
             }
 
             item {
+                LectureDetailSettingInputTextField(
+                    modifier = modifier,
+                    placeholder = "예시: ○○○○년 ○○월 ○○일",
+                    subjectText = stringResource(id = R.string.application_deadline_date)
+                )
+
+                LectureDetailSettingInputTextField(
+                    modifier = modifier,
+                    placeholder = "○○시 ○○분",
+                    subjectText = ""
+                )
+            }
+
+            itemsIndexed(lectureDates) { index, lectureDatesItem ->
                 Text(
                     text = stringResource(id = R.string.lecture_attendance_date),
                     color = colors.BLACK,
@@ -370,27 +377,10 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.maximum_number_students),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
-                )
-
-                DefaultTextField(
-                    modifier = modifier
-                        .padding(bottom = 128.dp)
-                        .fillMaxWidth(),
+                LectureDetailSettingInputTextField(
+                    modifier = modifier,
                     placeholder = stringResource(id = R.string.enter_maximum_number_students),
-                    errorText = "Incorrect Format", // 에러 텍스트는 임의의 값임
-                    onValueChange = {},
-                    onClickButton = {},
-                    isNumberOnly = true,
-                    isError = false,
-                    isLinked = false,
-                    isDisabled = false,
-                    isReadOnly = false,
-                    isReverseTrailingIcon = false,
-                    onClick = {}
+                    subjectText = stringResource(id = R.string.maximum_number_students)
                 )
             }
 

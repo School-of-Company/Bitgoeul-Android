@@ -10,10 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.textfield.DefaultTextField
+import com.msg.design_system.component.textfield.LectureDetailSettingTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun LectureDetailSettingTextField(
+fun LectureDetailSettingNotInputTextField(
     modifier: Modifier,
     subjectText: String,
     placeholder: String,
@@ -33,7 +34,6 @@ fun LectureDetailSettingTextField(
             LectureDetailSettingTextField(
                 modifier = modifier.fillMaxWidth(),
                 placeholder = placeholder,
-                subjectText = subjectText
             )
         }
     }
@@ -54,6 +54,9 @@ fun LectureDetailSettingInputTextField(
                 color = colors.BLACK,
                 style = typography.bodyLarge,
             )
+
+            Spacer(modifier = modifier.height(8.dp))
+
             DefaultTextField(
                 modifier = modifier.fillMaxWidth(),
                 placeholder= placeholder,
