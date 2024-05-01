@@ -21,21 +21,24 @@ fun LectureDetailSettingSection(
     selectedItem: String,
     onItemChange: (item: String) -> Unit,
     type: String,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column(
             modifier = modifier.background(color = colors.WHITE)
         ) {
-            Text(
-                text = subjectText,
-                color = colors.BLACK,
-                style = typography.bodyLarge,
-            )
+            if (subjectText.isNotEmpty()) {
+                Text(
+                    text = subjectText,
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                )
+            }
 
-            Spacer(modifier = modifier.height(8.dp))
             when (type) {
                 "Selector" -> {
+                    Spacer(modifier = modifier.height(8.dp))
+
                     LectureDetailSettingTextField(
                         modifier = modifier.fillMaxWidth(),
                         list = list,
@@ -45,24 +48,31 @@ fun LectureDetailSettingSection(
                         searchBottomSheet = false
                     )
                 }
+
                 "Search" -> {
                     LectureDetailSettingSearchTextField(
                         modifier = modifier.fillMaxWidth(),
-                        subjectText = subjectText,
                         placeholder = selectedItem,
                         onClick = onClick
                     )
                 }
+
                 "Input" -> {
                     LectureDetailSettingInputTextField(
                         modifier = modifier.fillMaxWidth(),
-                        subjectText = subjectText,
-                        placeholder = selectedItem
+                        placeholder = selectedItem,
+                        onItemChange = { inputString ->
+                            onItemChange(inputString)
+                        }
                     )
                 }
 
                 "LectureDates" -> {
-
+                    LectureDetailSettingLectureDatesTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        placeholder = selectedItem,
+                        onClick = onClick
+                    )
                 }
             }
         }
@@ -72,30 +82,26 @@ fun LectureDetailSettingSection(
 @Composable
 fun LectureDetailSettingInputTextField(
     modifier: Modifier,
-    subjectText: String,
-    placeholder: String
+    placeholder: String,
+    onItemChange: (item: String) -> Unit,
 ) {
-    BitgoeulAndroidTheme { colors, typography ->
+    BitgoeulAndroidTheme { colors, _ ->
         Column(
             modifier = modifier.background(color = colors.WHITE)
         ) {
-            Text(
-                text = subjectText,
-                color = colors.BLACK,
-                style = typography.bodyLarge,
-            )
-
             Spacer(modifier = modifier.height(8.dp))
 
             DefaultTextField(
                 modifier = modifier.fillMaxWidth(),
-                placeholder= placeholder,
+                placeholder = placeholder,
                 errorText = "",
                 isError = false,
                 isDisabled = false,
                 isLinked = false,
                 isReverseTrailingIcon = false,
-                onValueChange = {},
+                onValueChange = { inputString ->
+                    onItemChange(inputString)
+                },
                 onClickButton = {},
             )
         }
@@ -105,20 +111,13 @@ fun LectureDetailSettingInputTextField(
 @Composable
 fun LectureDetailSettingSearchTextField(
     modifier: Modifier,
-    subjectText: String,
     placeholder: String,
     onClick: () -> Unit,
 ) {
-    BitgoeulAndroidTheme { colors, typography ->
+    BitgoeulAndroidTheme { colors, _ ->
         Column(
             modifier = modifier.background(color = colors.WHITE)
         ) {
-            Text(
-                text = subjectText,
-                color = colors.BLACK,
-                style = typography.bodyLarge,
-            )
-
             Spacer(modifier = modifier.height(8.dp))
 
             LectureDetailSettingTextField(
@@ -131,4 +130,13 @@ fun LectureDetailSettingSearchTextField(
             )
         }
     }
+}
+
+@Composable
+fun LectureDetailSettingLectureDatesTextField(
+    modifier: Modifier,
+    placeholder: String,
+    onClick: () -> Unit,
+) {
+
 }

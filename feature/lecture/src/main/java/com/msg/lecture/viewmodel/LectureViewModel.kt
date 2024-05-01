@@ -277,14 +277,14 @@ class LectureViewModel @Inject constructor(
     fun openLecture(
         name: String,
         content: String,
-        semester: Semester,
-        division: Division,
+        semester: String,
+        division: String,
         department: String,
         line: String,
         userId: UUID,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
-        lectureType: LectureType,
+        lectureType: String,
         credit: Int,
         maxRegisteredUser: Int,
     ) = viewModelScope.launch {

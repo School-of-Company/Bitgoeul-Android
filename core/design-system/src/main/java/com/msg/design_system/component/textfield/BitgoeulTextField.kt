@@ -542,8 +542,6 @@ fun PickerTextField(
                     firstItem = {}
                 )
             }
-
-
         }
     }
 }

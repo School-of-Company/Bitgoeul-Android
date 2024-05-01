@@ -1,5 +1,6 @@
 package com.msg.lecture
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import com.msg.design_system.R
@@ -156,7 +158,7 @@ suspend fun getLineSearchData(
 
 suspend fun getProfessorSearchData(
     viewModel: LectureViewModel,
-    onSearchProfessorSuccess: (data: SearchProfessorResponse) -> Unit
+    onSearchProfessorSuccess: (data: SearchProfessorResponse) -> Unit,
 ) {
     viewModel.searchProfessorResponse.collect { response ->
         when (response) {
@@ -246,26 +248,20 @@ fun LectureDetailSettingScreen(
 
     val completeDatesComponentWeight = remember { mutableFloatStateOf(1f) }
 
-    val applicationStartTimeForShow =
-        remember { mutableStateOf(savedStartTime?.toLocalTimeFormat() ?: "") }
-    val applicationEndTimeForShow =
-        remember { mutableStateOf(savedEndTime?.toLocalTimeFormat() ?: "") }
-    val applicationStartDateForShow =
-        remember { mutableStateOf(savedStartDate?.toKoreanFormat() ?: "") }
-    val applicationEndDateForShow =
-        remember { mutableStateOf(savedEndDate?.toKoreanFormat() ?: "") }
+    val applicationStartTimeForShow = remember { mutableStateOf("") }
+    val applicationEndTimeForShow = remember { mutableStateOf("") }
+    val applicationStartDateForShow = remember { mutableStateOf("") }
+    val applicationEndDateForShow = remember { mutableStateOf("") }
 
-    val lectureAttendCompleteDateListForShow =
-        remember { mutableStateListOf(savedCompleteDate?.toKoreanFormat() ?: "") }
-    val lectureAttendStartTimeListForShow =
-        remember { mutableStateListOf(savedStartTime?.toLocalTimeFormat() ?: "") }
-    val lectureAttendEndTimeListForShow =
-        remember { mutableStateListOf(savedEndTime?.toLocalTimeFormat() ?: "") }
+    val lectureAttendCompleteDateListForShow = remember { mutableStateListOf("") }
+    val lectureAttendStartTimeListForShow = remember { mutableStateListOf("") }
+    val lectureAttendEndTimeListForShow = remember { mutableStateListOf("") }
 
 
     BitgoeulAndroidTheme { colors, typography ->
         LazyColumn(
             modifier = modifier
+                .wrapContentSize()
                 .background(color = colors.WHITE)
                 .padding(top = 24.dp)
                 .padding(horizontal = 24.dp)
@@ -394,13 +390,14 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                // 입력 가능한 Component 생성 후 변경하기
                 LectureDetailSettingSection(
                     modifier = modifier.fillMaxWidth(),
                     subjectText = stringResource(id = R.string.application_start_date),
                     list = listOf(),
                     selectedItem = "예시: ○○○○년 ○○월 ○○일",
-                    onItemChange = {},
+                    onItemChange = { inputApplicationStartDate ->
+                        applicationStartDateForShow.value = inputApplicationStartDate
+                    },
                     type = "Input"
                 )
 
@@ -409,7 +406,9 @@ fun LectureDetailSettingScreen(
                     subjectText = "",
                     list = listOf(),
                     selectedItem = "○○시 ○○분",
-                    onItemChange = {},
+                    onItemChange = { inputApplicationStartTime ->
+                        applicationStartTimeForShow.value = inputApplicationStartTime
+                    },
                     type = "Input"
                 )
 
@@ -423,7 +422,9 @@ fun LectureDetailSettingScreen(
                     subjectText = stringResource(id = R.string.application_deadline_date),
                     list = listOf(),
                     selectedItem = "예시: ○○○○년 ○○월 ○○일",
-                    onItemChange = {},
+                    onItemChange = { inputApplicationEndDate ->
+                        applicationEndDateForShow.value = inputApplicationEndDate
+                    },
                     type = "Input"
                 )
 
@@ -432,7 +433,9 @@ fun LectureDetailSettingScreen(
                     subjectText = "",
                     list = listOf(),
                     selectedItem = "○○시 ○○분",
-                    onItemChange = {},
+                    onItemChange = { inputApplicationEndTime ->
+                        applicationEndTimeForShow.value = inputApplicationEndTime
+                    },
                     type = "Input"
                 )
 
@@ -443,18 +446,19 @@ fun LectureDetailSettingScreen(
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                 )
-
-                Spacer(modifier = modifier.height(24.dp))
             }
+
 
             itemsIndexed(lectureDates) { index, lectureDatesItem ->
                 LectureDetailSettingSection(
                     modifier = modifier.fillMaxWidth(),
                     subjectText = "",
                     list = listOf(),
-                    selectedItem = "",
-                    onItemChange = {},
-                    type = "LectureDates"
+                    selectedItem = if (index > 0) "수강일 입력(선택)" else "수강일 입력(필수)",
+                    onItemChange = { inputLectureAttendCompleteDate ->
+                        lectureAttendCompleteDateListForShow[index] = inputLectureAttendCompleteDate
+                    },
+                    type = "Input"
                 )
             }
 
@@ -467,10 +471,13 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingInputTextField(
-                    modifier = modifier,
-                    placeholder = stringResource(id = R.string.enter_maximum_number_students),
-                    subjectText = stringResource(id = R.string.maximum_number_students)
+                LectureDetailSettingSection(
+                    modifier = modifier.fillMaxWidth(),
+                    subjectText = stringResource(id = R.string.maximum_number_students),
+                    list = listOf(),
+                    selectedItem = stringResource(id = R.string.enter_maximum_number_students),
+                    onItemChange = {},
+                    type = "Input"
                 )
             }
         }
