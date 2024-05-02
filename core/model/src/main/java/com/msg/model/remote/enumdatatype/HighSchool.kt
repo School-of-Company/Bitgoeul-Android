@@ -1,6 +1,16 @@
 package com.msg.model.remote.enumdatatype
 
-import com.msg.model.ui.*
+import com.msg.model.ui.DHSofFSClubList
+import com.msg.model.ui.GATClubList
+import com.msg.model.ui.GETHSClubList
+import com.msg.model.ui.GGCHSClubList
+import com.msg.model.ui.GNSHSClubList
+import com.msg.model.ui.GSMClubList
+import com.msg.model.ui.GTHSClubList
+import com.msg.model.ui.JTHSClubList
+import com.msg.model.ui.KTHSClubList
+import com.msg.model.ui.SGCHSClubList
+import com.msg.model.ui.SSTHSClubList
 
 enum class HighSchool(val school: String, val club: List<String>) {
     GWANGJU_TECHNICAL_HIGH_SCHOOL("광주공업고등학교", GTHSClubList),

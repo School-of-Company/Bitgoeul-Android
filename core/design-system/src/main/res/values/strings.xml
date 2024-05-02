@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="login">로그인</string>
+    <string name="go_back">돌아가기</string>
     <string name="project_name">빛고을\n직업교육\n혁신지구</string>
     <string name="email">이메일</string>
     <string name="error_text_email">이메일을 다시 한번 확인해주세요.</string>
@@ -8,6 +9,7 @@
     <string name="find_password">비밀번호 찾기</string>
     <string name="forgot_password">비밀번호를 잊었나요?</string>
     <string name="wrong_password">잘못된 비밀번호 입니다.</string>
+    <string name="email_authentication_process">이메일 인증을 진행합니다</string>
     <string name="sign_up">회원가입</string>
     <string name="lecture_list">강의 목록</string>
     <string name="filter">필터</string>
@@ -27,14 +29,47 @@
     <string name="start_time">시작 시간</string>
     <string name="application_deadline_date">신청 마감일</string>
     <string name="deadeline_time">마감 시간</string>
-    <string name="start_semester_date">개강일</string>
-    <string name="start_semester_time">개강 시간</string>
+    <string name="start_application_date">신청 시작일</string>
+    <string name="start_semester_time">시작 시간</string>
     <string name="credits_awarded">수여 학점</string>
     <string name="select_credits_awarded">수여 학점 선택</string>
     <string name="maximum_number_students">최대 수강 인원</string>
     <string name="enter_maximum_number_students">최대 수강 인원 입력</string>
-    <string name="application_done">수강 신청 완료</string>
+    <string name="application_done">수강 신청 완료</string>ㅈ
     <string name="application_reject">신청 거부</string>
     <string name="application_approve">신청 승인</string>
     <string name="activity_detail_setting">활동 세부 설정</string>
+    <string name="lecture_series">강의 계열</string>
+    <string name="electrical_electronic">전기•전자</string>
+    <string name="machine">기계</string>
+    <string name="car_industry">자동차 산업</string>
+    <string name="energy_industry">에너지 산업</string>
+    <string name="culture_industry">문화 산업</string>
+    <string name="semester_attended">수강 학기</string>
+    <string name="first_year_second_semester">1학년 2학기</string>
+    <string name="second_year_first_semester">2학년 1학기</string>
+    <string name="second_year_second_semester">2학년 2학기</string>
+    <string name="third_year_first_semester">3학년 1학기</string>
+    <string name="biochemical_engineering">생명화학공학</string>
+    <string name="ai_convergence_composite">A.I 융•복합</string>
+    <string name="beauty">뷰티</string>
+    <string name="medical_health">의료•헬스</string>
+    <string name="select_line">계열 선택</string>
+    <string name="drone">드론</string>
+    <string name="select_professor_in_charge">담당 교수 선택</string>
+    <string name="professor_in_charge">담당 교수</string>
+    <string name="lecture_division">강의 구분</string>
+    <string name="select_lecture">강의 선택</string>
+    <string name="select_department">학과 선택</string>
+    <string name="department">학과</string>
+    <string name="credit">학점</string>
+    <string name="one_point">1점</string>
+    <string name="two_point">2점</string>
+    <string name="lecture_attendance_date">강의 수강일</string>
+    <string name="add_date">+ 날짜 추가하기</string>
+    <string name="end_time">종료 시간</string>
+    <string name="lecture_series_placeholder">이름 또는 학교명으로 검색...</string>
+    <string name="department_placeholder">계열 검색 또는 임의로 추가...</string>
+    <string name="professor_in_charge_placeholder">학과 이름으로 검색...</string>
+    <string name="entire">전체</string>
 </resources>

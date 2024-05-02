@@ -7,6 +7,7 @@ import com.msg.network.api.AdminAPI
 import com.msg.network.api.AuthAPI
 import com.msg.network.api.CertificationAPI
 import com.msg.network.api.ClubAPI
+import com.msg.network.api.EmailAPI
 import com.msg.network.api.FaqAPI
 import com.msg.network.api.LectureAPI
 import com.msg.network.api.PostAPI
@@ -99,4 +100,8 @@ object NetworkModule {
     @Provides
     fun providePostAPI(retrofit: Retrofit): PostAPI =
         retrofit.create(PostAPI::class.java)
+
+    @Provides
+    fun provideEmailAPI(retrofit: Retrofit): EmailAPI =
+        retrofit.create(EmailAPI::class.java)
  }

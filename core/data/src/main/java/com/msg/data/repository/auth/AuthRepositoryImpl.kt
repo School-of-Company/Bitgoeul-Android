@@ -2,6 +2,7 @@ package com.msg.data.repository.auth
 
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.model.remote.model.auth.AuthTokenModel
+import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.auth.LoginRequest
 import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
@@ -12,8 +13,6 @@ import com.msg.model.remote.request.auth.SignUpStudentRequest
 import com.msg.network.datasource.auth.AuthDataSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toLocalDateTime
 
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
@@ -28,9 +27,9 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun saveToken(data: AuthTokenModel) {
         data.let { loginResponse ->
             localDataSource.setAccessToken(loginResponse.accessToken)
-            localDataSource.setAccessTokenExp(loginResponse.accessExpiredAt.toLocalDateTime())
+            localDataSource.setAccessTokenExp(loginResponse.accessExpiredAt)
             localDataSource.setRefreshToken(loginResponse.refreshToken)
-            localDataSource.setRefreshTokenExp(loginResponse.refreshExpiredAt.toLocalDateTime())
+            localDataSource.setRefreshTokenExp(loginResponse.refreshExpiredAt)
             localDataSource.setAuthority(loginResponse.authority)
         }
     }
@@ -71,6 +70,11 @@ class AuthRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun findPassword(body: FindPasswordRequest): Flow<Unit> {
+        return authDataSource.findPassword(
+            body = body
+        )
+    }
     override suspend fun logout(): Flow<Unit> {
         return authDataSource.logout()
     }

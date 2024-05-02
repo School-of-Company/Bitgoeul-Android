@@ -2,7 +2,6 @@ package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
 import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,10 +17,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,24 +36,25 @@ import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
 import com.msg.model.remote.request.auth.LoginRequest
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun LoginRoute(
     onSignUpClick: () -> Unit,
+    onFindPasswordClick: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LoginScreen(
         onSignUpClick = onSignUpClick,
+        onFindPasswordClick = onFindPasswordClick,
         onLoginClick = {
             viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
             observeLoginEvent(lifecycleOwner = lifecycleOwner, viewModel = viewModel)
         },
         setLoginData = { email, password ->
             viewModel.setLoginData(email = email, password = password)
-        }
+        },
     )
 }
 
@@ -77,9 +75,11 @@ fun observeLoginEvent(
                     Log.e("토큰 저장 실패", "토큰이 유효하지 않습니다.")
                 }
             }
+
             is Event.UnKnown -> {
                 Log.e("Unknown Event", "Unknown 이벤트가 발생했습니다.")
             }
+
             else -> {
                 Log.e("토큰 저장 실패", "이벤트 타입이 올바르지 않습니다.")
             }
@@ -92,6 +92,7 @@ fun observeLoginEvent(
 fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
+    onFindPasswordClick: () -> Unit,
     setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -170,7 +171,9 @@ fun LoginScreen(
                         onValueChange = {
                             passwordState.value = it
                         },
-                        onClickLink = {},
+                        onClickLink = {
+                            onFindPasswordClick()
+                        },
                         isError = isPasswordErrorStatus.value,
                         isLinked = true,
                         linkText = stringResource(id = R.string.find_password),
@@ -218,9 +221,4 @@ fun LoginScreen(
             }
         }
     }
-}
-
-@Composable
-fun preview() {
-    LoginScreen(onSignUpClick = {})
 }

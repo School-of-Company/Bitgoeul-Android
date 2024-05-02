@@ -106,7 +106,7 @@ fun CloseIcon(
 @Composable
 fun PickerArrowIcon(
     modifier: Modifier = Modifier,
-    isSelected: Boolean
+    isSelected: Boolean,
 ) {
     Image(
         painter = painterResource(id = if (isSelected) R.drawable.ic_picker_arrow_selected else R.drawable.ic_picker_arrow),
@@ -119,7 +119,7 @@ fun PickerArrowIcon(
 
 @Composable
 fun SuccessIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_success),
@@ -130,7 +130,7 @@ fun SuccessIcon(
 
 @Composable
 fun MedicalIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.mipmap.ic_banner_medical),
@@ -142,7 +142,7 @@ fun MedicalIcon(
 
 @Composable
 fun AiIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.mipmap.ic_banner_ai),
@@ -155,7 +155,7 @@ fun AiIcon(
 
 @Composable
 fun EnergyIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.mipmap.ic_banner_energy),
@@ -168,7 +168,7 @@ fun EnergyIcon(
 
 @Composable
 fun FutureTransportIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.mipmap.ic_banner_future),
@@ -180,7 +180,7 @@ fun FutureTransportIcon(
 
 @Composable
 fun GwangjuIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -203,7 +203,7 @@ fun GwangjuIcon(
 
 @Composable
 fun OfficeOfEducationIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_banner_education),
@@ -244,10 +244,53 @@ fun HelpIcon() {
 }
 
 @Composable
+fun BlackCloseIcon(
+    modifier: Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_black_close),
+        contentDescription = "Black Close Icon",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun SearchIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_bitgoeul_search),
+        contentDescription = "Search Icon",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun DeleteIcon(
+    modifier: Modifier
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_delete),
+        contentDescription = "Delete Icon",
+        modifier = modifier
+    )
+}
+@Composable
 fun ChatIcon() {
     Image(
         painter = painterResource(id = R.drawable.ic_chat),
         contentDescription = "White chat icon"
+    )
+}
+
+@Composable
+fun EmptyBoxIcon(
+    modifier: Modifier
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_empty_box),
+        contentDescription = "Empty Box Icon",
+        modifier = modifier
     )
 }
 

@@ -6,3 +6,6 @@ plugins {
 android {
     namespace = "com.msg.lecture"
 }
+
+dependencies {
+}
