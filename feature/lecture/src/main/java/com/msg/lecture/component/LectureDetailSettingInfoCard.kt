@@ -1,18 +1,20 @@
 package com.msg.lecture.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.msg.design_system.component.bottomsheet.SelectedIndicator
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.response.lecture.Instructors
 import java.util.UUID
 
@@ -21,35 +23,32 @@ fun LectureDetailSettingInfoCard(
     modifier: Modifier,
     searchProfessorData: Instructors?,
     searchLineData: String?,
-    division: Division,
+    division: String,
     keyword: String,
-    onClick: (UUID, String) -> Unit
+    onClick: (UUID, String, String) -> Unit
 ) {
+    val isSelected = remember { mutableStateOf(false) }
+
     BitgoeulAndroidTheme { colors, typography ->
-        Surface {
+        Box {
             Card(
                 modifier = modifier
                     .background(color = colors.WHITE)
                     .fillMaxWidth()
-                    .clickable {
-                        if (searchProfessorData != null) {
-                            onClick(searchProfessorData.id, searchLineData.toString())
-                        }
-                    }
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                    .padding(vertical = 14.dp),
                 colors = CardDefaults.cardColors(containerColor = colors.WHITE)
             ) {
                 if (searchProfessorData != null) {
                     Text(
                         text = searchProfessorData.name,
                         color = colors.BLACK,
-                        style = typography.labelLarge
+                        style = typography.headlineMedium
                     )
 
                     Text(
                         text = searchProfessorData.organization,
                         color = colors.G2,
-                        style = typography.bodySmall
+                        style = typography.labelMedium
                     )
                 } else if (searchLineData != null) {
                     Text(
@@ -59,15 +58,9 @@ fun LectureDetailSettingInfoCard(
                     )
 
                     Text(
-                        text = when (division) {
-                            Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
-                            Division.ENERGY_INDUSTRY -> "에너지 산업"
-                            Division.MEDICAL_HEALTHCARE -> "의료•헬스"
-                            Division.AI_CONVERGENCE -> "A.I 융•복합"
-                            Division.CULTURAL_INDUSTRY -> "문화 산업"
-                        },
+                        text = division,
                         color = colors.G2,
-                        style = typography.bodySmall
+                        style = typography.labelMedium
                     )
                 } else {
                     Text(
@@ -77,18 +70,23 @@ fun LectureDetailSettingInfoCard(
                     )
 
                     Text(
-                        text = when (division) {
-                            Division.AUTOMOBILE_INDUSTRY -> "자동차 산업에 추가하기..."
-                            Division.ENERGY_INDUSTRY -> "에너지 산업에 추가하기..."
-                            Division.MEDICAL_HEALTHCARE -> "의료•헬스에 추가하기..."
-                            Division.AI_CONVERGENCE -> "A.I 융•복합에 추가하기..."
-                            Division.CULTURAL_INDUSTRY -> "문화 산업에 추가하기..."
-                        },
+                        text = division + "에 추가하기...",
                         color = colors.G2,
-                        style = typography.bodySmall
+                        style = typography.labelMedium
                     )
                 }
             }
+
+            SelectedIndicator(
+                modifier = modifier.align(Alignment.CenterEnd),
+                isSelected = isSelected.value,
+                onClick = {
+                    isSelected.value = true
+                    if (searchProfessorData != null) {
+                        onClick(searchProfessorData.id, searchLineData.toString(), searchProfessorData.name)
+                    }
+                }
+            )
         }
     }
 }

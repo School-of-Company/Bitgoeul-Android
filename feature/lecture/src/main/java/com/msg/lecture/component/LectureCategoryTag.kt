@@ -23,8 +23,7 @@ fun LectureCategoryTag(
     line: String,
     division: String,
     department: String,
-
-    ) {
+) {
     BitgoeulAndroidTheme { colors, type ->
         Row(
             modifier = modifier

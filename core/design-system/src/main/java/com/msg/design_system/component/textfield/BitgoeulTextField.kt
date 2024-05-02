@@ -431,6 +431,53 @@ fun TrailingIconTextField(
 }
 
 @Composable
+fun LectureDetailSettingTextField(
+    modifier: Modifier = Modifier,
+    list: List<String>,
+    selectedItem: String,
+    onItemChange: (item: String) -> Unit,
+) {
+    val isFocused = remember { mutableStateOf(false) }
+
+    BitgoeulAndroidTheme { colors, typography ->
+        Row(
+            modifier = modifier
+                .border(
+                    width = 1.dp,
+                    color = if (isFocused.value) colors.P5 else colors.G1,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .background(color = colors.WHITE)
+                .padding(vertical = 15.dp, horizontal = 20.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    isFocused.value = true
+                },
+        ) {
+            Text(
+                text = selectedItem,
+                style = typography.bodySmall,
+                color = colors.G2
+            )
+
+            if (isFocused.value) {
+                SelectorBottomSheet(
+                    list = list,
+                    selectedItem = selectedItem,
+                    itemChange = onItemChange,
+                    onQuit = {
+                        isFocused.value = false
+                    },
+                    firstItem = {}
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun PickerTextField(
     modifier: Modifier = Modifier,
     text: String,
@@ -491,8 +538,6 @@ fun PickerTextField(
                     firstItem = {}
                 )
             }
-
-
         }
     }
 }

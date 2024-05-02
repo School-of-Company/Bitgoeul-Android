@@ -11,15 +11,15 @@ import java.util.UUID
 data class OpenLectureRequest(
     val name: String,
     val content: String,
-    val semester: Semester,
-    val division: Division,
+    val semester: String,
+    val division: String,
     val department: String,
     val line: String,
     val userId: UUID,
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
     val lectureDates: List<LectureDates>,
-    val lectureType: LectureType,
+    val lectureType: String,
     val credit: Int,
     val maxRegisteredUser: Int,
 )

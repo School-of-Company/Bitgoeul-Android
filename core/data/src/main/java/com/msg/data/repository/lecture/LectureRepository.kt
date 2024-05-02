@@ -1,6 +1,5 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
@@ -18,6 +17,6 @@ interface LectureRepository {
     suspend fun lectureApplication(id: UUID): Flow<Unit>
     suspend fun lectureApplicationCancel(id: UUID): Flow<Unit>
     suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse>
-    suspend fun searchLine(keyword: String, division: Division): Flow<SearchLineResponse>
+    suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse>
     suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse>
 }

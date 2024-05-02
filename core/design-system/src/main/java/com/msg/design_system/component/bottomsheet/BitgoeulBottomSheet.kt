@@ -51,28 +51,34 @@ fun SelectorBottomSheet(
     firstItem: @Composable (() -> Unit) = {},
     lastItem: @Composable (() -> Unit) = {},
 ) {
-    ModalBottomSheet(
-        onDismissRequest = {
-            onQuit()
-        },
+    BitgoeulAndroidTheme { colors, _ ->
+        ModalBottomSheet(
+            onDismissRequest = {
+                onQuit()
+            },
+            containerColor = colors.WHITE
 
         ) {
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 28.dp)
-        ) {
-            item {
-                firstItem()
-            }
-            items(list.size) {
-                Selector(
-                    value = list[it],
-                    isSelected = selectedItem == list[it]
-                ) {
-                    itemChange(list[it])
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 28.dp)
+            ) {
+                item {
+                    firstItem()
                 }
-            }
-            item {
-                Spacer(modifier = Modifier.height(72.dp))
+                items(list.size) {
+                    Selector(
+                        value = list[it],
+                        isSelected = selectedItem == list[it]
+                    ) {
+                        itemChange(list[it])
+                    }
+                }
+                item {
+                    lastItem()
+                }
+                item {
+                    Spacer(modifier = Modifier.height(72.dp))
+                }
             }
         }
     }

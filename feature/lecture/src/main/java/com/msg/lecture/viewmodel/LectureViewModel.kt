@@ -1,5 +1,6 @@
 package com.msg.lecture.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -196,10 +197,10 @@ class LectureViewModel @Inject constructor(
     var maxRegisteredUser = mutableIntStateOf(0)
         private set
 
-    var semester = mutableStateOf(Semester.FIRST_YEAR_FALL_SEMESTER)
+    var semester = mutableStateOf("")
         private set
 
-    var division = mutableStateOf(Division.AUTOMOBILE_INDUSTRY)
+    var division = mutableStateOf("")
         private set
 
     var department = mutableStateOf("")
@@ -211,7 +212,7 @@ class LectureViewModel @Inject constructor(
     var userId = mutableStateOf(UUID.randomUUID())
         private set
 
-    var lectureType = mutableStateOf(LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM)
+    var lectureType = mutableStateOf("")
         private set
 
     var startDate = mutableStateOf<LocalDateTime?>(null)
@@ -277,14 +278,14 @@ class LectureViewModel @Inject constructor(
     fun openLecture(
         name: String,
         content: String,
-        semester: Semester,
-        division: Division,
+        semester: String,
+        division: String,
         department: String,
         line: String,
         userId: UUID,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
-        lectureType: LectureType,
+        lectureType: String,
         credit: Int,
         maxRegisteredUser: Int,
     ) = viewModelScope.launch {
@@ -324,6 +325,9 @@ class LectureViewModel @Inject constructor(
                     endTime = endTime.value!!
                 )
             )
+            Log.e("completeDate", completeDate.value.toString())
+            Log.e("startTime", startTime.value.toString())
+            Log.e("endTime", endTime.value.toString())
         }
     }
 
@@ -389,7 +393,7 @@ class LectureViewModel @Inject constructor(
 
     fun searchLine(
         keyword: String,
-        division: Division
+        division: String
     ) = viewModelScope.launch {
         searchLineUseCase(
             keyword = keyword,

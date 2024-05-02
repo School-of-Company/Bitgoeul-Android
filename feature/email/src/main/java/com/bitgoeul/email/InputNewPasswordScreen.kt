@@ -94,9 +94,9 @@ fun InputNewPasswordScreen(
                     onValueChange = { inputPassword ->
                         firstInputPassword.value = inputPassword
                     },
-                    errorText = "",
+                    errorText = "비밀번호는 8~24자 영문, 숫자, 특수문자 1개 이상이어야 합니다.",
                     isDisabled = false,
-                    isError = false,
+                    isError = !passwordPattern.matches(firstInputPassword.value) && firstInputPassword.value.isNotEmpty(),
                     isLinked = false,
                     isReverseTrailingIcon = false,
                     onClickButton = {},

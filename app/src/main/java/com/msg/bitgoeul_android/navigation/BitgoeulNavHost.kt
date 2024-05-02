@@ -61,7 +61,7 @@ fun BitgoeulNavHost(
         modifier = modifier
     ) {
         loginScreen(
-            onSignUpClick = navController::navigateToSignUp,
+            onSignUpClick = navController::navigateToLectureOpen,
             onFindPasswordClick = navController::navigateToInputEmail
         )
         inputEmailScreen(

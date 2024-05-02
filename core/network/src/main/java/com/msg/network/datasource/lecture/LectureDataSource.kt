@@ -18,6 +18,6 @@ interface LectureDataSource {
     suspend fun lectureApplication(id: UUID): Flow<Unit>
     suspend fun lectureApplicationCancel(id: UUID): Flow<Unit>
     suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse>
-    suspend fun searchLine(keyword: String, division: Division): Flow<SearchLineResponse>
+    suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse>
     suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse>
 }
