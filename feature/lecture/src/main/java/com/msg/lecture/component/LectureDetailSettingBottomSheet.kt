@@ -39,8 +39,8 @@ fun LectureDetailSettingSearchBottomSheet(
     searchPlaceHolder: String,
     division: String,
     searchAPIType: String,
-    onSearchButtonClick: (String, String) -> Unit,
-    onProfessorListClick: (UUID, String) -> Unit,
+    onSearchButtonClick: (keyword: String, division: String) -> Unit,
+    onProfessorListClick: (professorUUID: UUID, professorName: String) -> Unit,
     onDepartmentListClick: (String) -> Unit,
     onLineListClick: (String) -> Unit,
     onQuit: () -> Unit,
@@ -125,7 +125,7 @@ fun LectureDetailSettingSearchBottomSheet(
 @Composable
 fun LectureDetailSettingLectureDatesBottomSheet(
     modifier: Modifier = Modifier,
-    onQuit: (String, String, String) -> Unit,
+    onQuit: (completeDates: String, startTime: String, endTime: String) -> Unit,
 ) {
     val completeDates = remember { mutableStateOf("") }
     val startTime = remember { mutableStateOf("") }
