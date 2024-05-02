@@ -36,23 +36,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.DeleteIcon
+import com.msg.design_system.component.text.BitgoeulSubjectText
+import com.msg.design_system.component.textfield.LectureDetailSettingTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.AddLectureDatesButton
 import com.msg.lecture.component.LectureDetailSettingInputTextField
-import com.msg.lecture.component.LectureDetailSettingLectureDatesBottomSheet
 import com.msg.lecture.component.LectureDetailSettingLectureDatesTextField
 import com.msg.lecture.component.LectureDetailSettingSearchBottomSheet
-import com.msg.lecture.component.LectureDetailSettingSection
+import com.msg.lecture.component.LectureDetailSettingSearchTextField
 import com.msg.lecture.util.Event
-import com.msg.lecture.util.toLocalDate
-import com.msg.lecture.util.toLocalTime
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
-import com.msg.ui.util.toKoreanFormat
-import com.msg.ui.util.toLocalTimeFormat
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -115,13 +112,9 @@ internal fun LectureDetailSettingRoute(
         onLectureDatesRemoveClicked = {
             viewModel.removeLectureDates()
         },
-        onCompleteDateChanged = { completeDate ->
+        onLectureDatesChanged = { completeDate, startTIme, endTime ->
             viewModel.completeDate.value = completeDate
-        },
-        onStartTimeChanged = { starTime ->
-            viewModel.startTime.value = starTime
-        },
-        onEndTimeChanged = { endTime ->
+            viewModel.startTime.value = startTIme
             viewModel.endTime.value = endTime
         },
         lectureDates = viewModel.lectureDates,
@@ -205,10 +198,8 @@ fun LectureDetailSettingScreen(
     onSearchProfessorClicked: (String) -> Unit,
     onSearchLineClicked: (String, String) -> Unit,
     onSearchDepartmentClicked: (String) -> Unit,
-    onCompleteDateChanged: (completeDate: LocalDate) -> Unit,
-    onStartTimeChanged: (startTIme: LocalTime) -> Unit,
-    onEndTimeChanged: (endTime: LocalTime) -> Unit,
-    lectureDates: MutableList<LectureDates>,
+    onLectureDatesChanged: (completeDate: LocalDate, startTIme: LocalTime, endTime: LocalTime) -> Unit,
+    lectureDates: List<LectureDates>,
     startDateForConversion: LocalDate?,
     endDateForConversion: LocalDate?,
     savedLectureType: String,
@@ -225,14 +216,8 @@ fun LectureDetailSettingScreen(
     savedEndTime: LocalTime?,
     savedMaxRegisteredUser: Int,
 ) {
-    val isLectureDatesBottomSheetVisible = remember { mutableStateOf(false) }
     val isSearchBottomSheetVisible = remember { mutableStateOf(false) }
     val isClickedPickerType = remember { mutableStateOf("") }
-    val isLectureCategoryTagSelected = remember { mutableStateOf("0") }
-    val isLectureSemesterAttendedTagSelected = remember { mutableStateOf("0") }
-    val isLectureDivisionTagSelected = remember { mutableStateOf("0") }
-    val isLectureCreditTagSelected = remember { mutableStateOf("0") }
-    val isShowDeleteIcon = remember { mutableStateOf(false) }
 
     val semesterList = listOf("1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기")
     val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램", "기타")
@@ -300,173 +285,189 @@ fun LectureDetailSettingScreen(
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.semester_attended),
+                )
+
+                LectureDetailSettingTextField(
+                    modifier = modifier.fillMaxWidth(),
                     list = semesterList,
                     selectedItem = semester.value.ifEmpty { "학기 선택" },
                     onItemChange = { selectedSemester ->
                         if (semester.value != selectedSemester) semester.value =
                             selectedSemester else semester.value = "학기 선택"
                     },
-                    type = "Selector"
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.lecture_category),
+                )
+
+                LectureDetailSettingTextField(
+                    modifier = modifier.fillMaxWidth(),
                     list = lectureTypeList,
                     selectedItem = lectureType.value.ifEmpty { "유형 선택" },
                     onItemChange = { selectedLectureType ->
                         if (lectureType.value != selectedLectureType) lectureType.value =
                             selectedLectureType else lectureType.value = "유형 선택"
                     },
-                    type = "Selector"
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.lecture_division),
+                )
+
+                LectureDetailSettingTextField(
+                    modifier = modifier.fillMaxWidth(),
                     list = divisionList,
                     selectedItem = division.value.ifEmpty { "구분 선택" },
                     onItemChange = { selectedDivision ->
                         if (division.value != selectedDivision) division.value =
                             selectedDivision else division.value = "구분 선택"
                     },
-                    type = "Selector"
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.lecture_series),
-                    list = listOf(),
-                    selectedItem = lectureLineForShow.value.ifEmpty { "강의 선택" },
-                    onItemChange = {},
-                    type = "Search",
-                    onClick = {
-                        isSearchBottomSheetVisible.value = true
-                        isClickedPickerType.value = "강의 계열"
-                    }
+                )
+
+                LectureDetailSettingSearchTextField(
+                    modifier = modifier.fillMaxWidth(),
+                    placeholder = lectureLineForShow.value.ifEmpty { "강의 선택" },
+                    division = division.value,
+                    onLineItemClick = { selectedLineData ->
+                        line.value = selectedLineData
+                        lectureLineForShow.value = selectedLineData
+                    },
+                    isClickedPickerType = "강의 계열",
+                    onSearchLineClicked = { keyword, division ->
+                        onSearchLineClicked(keyword, division)
+                    },
+                    searchLineData = searchLineData,
+                    searchDepartmentData = searchDepartmentData,
+                    searchProfessorData = searchProfessorData,
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.department),
-                    list = listOf(),
-                    selectedItem = lectureDepartmentForShow.value.ifEmpty { "학과 선택" },
-                    onItemChange = {},
-                    type = "Search",
-                    onClick = {
-                        isSearchBottomSheetVisible.value = true
-                        isClickedPickerType.value = "학과"
-                    }
+                )
+
+                LectureDetailSettingSearchTextField(
+                    modifier = modifier.fillMaxWidth(),
+                    placeholder = lectureDepartmentForShow.value.ifEmpty { "학과 선택" },
+                    isClickedPickerType = "학과",
+                    onDepartmentItemClick = { selectedDepartmentData ->
+                        department.value = selectedDepartmentData
+                        lectureDepartmentForShow.value = selectedDepartmentData
+                    },
+                    onSearchDepartmentClicked = { keyword ->
+                        onSearchDepartmentClicked(keyword)
+                    },
+                    searchLineData = searchLineData,
+                    searchDepartmentData = searchDepartmentData,
+                    searchProfessorData = searchProfessorData,
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.teacher_in_charge),
-                    list = listOf(),
-                    selectedItem = lectureTeacherInChargeForShow.value.ifEmpty { "담당 강사 선택" },
-                    onItemChange = {},
-                    type = "Search",
-                    onClick = {
-                        isSearchBottomSheetVisible.value = true
-                        isClickedPickerType.value = "담당 교수"
-                    }
+                )
+
+                LectureDetailSettingSearchTextField(
+                    modifier = modifier.fillMaxWidth(),
+                    placeholder = lectureTeacherInChargeForShow.value.ifEmpty { "담당 강사 선택" },
+                    isClickedPickerType = "담당 교수",
+                    onProfessorItemClick = { selectedProfessorUUID, selectedProfessorName ->
+                        userId.value = selectedProfessorUUID
+                        lectureTeacherInChargeForShow.value = selectedProfessorName
+                    },
+                    onSearchProfessorClicked = { keyword ->
+                        onSearchProfessorClicked(keyword)
+                    },
+                    searchLineData = searchLineData,
+                    searchDepartmentData = searchDepartmentData,
+                    searchProfessorData = searchProfessorData,
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.application_start_date),
-                    list = listOf(),
-                    selectedItem = "예시: ○○○○년 ○○월 ○○일",
+                )
+
+                LectureDetailSettingInputTextField(
+                    modifier = modifier.fillMaxWidth(),
+                    placeholder = "예시: ○○○○년 ○○월 ○○일",
                     onItemChange = { inputApplicationStartDate ->
                         applicationStartDateForShow.value = inputApplicationStartDate
                     },
-                    type = "Input"
                 )
 
-                LectureDetailSettingSection(
+                LectureDetailSettingInputTextField(
                     modifier = modifier.fillMaxWidth(),
-                    subjectText = "",
-                    list = listOf(),
-                    selectedItem = "○○시 ○○분",
+                    placeholder = "○○시 ○○분",
                     onItemChange = { inputApplicationStartTime ->
                         applicationStartTimeForShow.value = inputApplicationStartTime
                     },
-                    type = "Input"
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
-
             }
 
             item {
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
+                BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.application_deadline_date),
-                    list = listOf(),
-                    selectedItem = "예시: ○○○○년 ○○월 ○○일",
+                )
+
+                LectureDetailSettingInputTextField(
+                    modifier = modifier.fillMaxWidth(),
+                    placeholder = "예시: ○○○○년 ○○월 ○○일",
                     onItemChange = { inputApplicationEndDate ->
                         applicationEndDateForShow.value = inputApplicationEndDate
                     },
-                    type = "Input"
                 )
 
-                LectureDetailSettingSection(
+                LectureDetailSettingInputTextField(
                     modifier = modifier.fillMaxWidth(),
-                    subjectText = "",
-                    list = listOf(),
-                    selectedItem = "○○시 ○○분",
+                    placeholder = "○○시 ○○분",
                     onItemChange = { inputApplicationEndTime ->
                         applicationEndTimeForShow.value = inputApplicationEndTime
                     },
-                    type = "Input"
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
-
-                Text(
-                    text = stringResource(id = R.string.lecture_attendance_date),
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
+            }
+            item {
+                BitgoeulSubjectText(
+                    subjectText = stringResource(id = R.string.lecture_attendance_date),
                 )
-
-                Spacer(modifier = modifier.height(8.dp))
 
                 LectureDetailSettingLectureDatesTextField(
                     modifier = modifier.fillMaxWidth(),
                     selectedItem = "수강일 입력(필수)",
-                    onClick = {
-                        isLectureDatesBottomSheetVisible.value = true
-                        Log.e(
-                            "lectureDates onClick 실행",
-                            isLectureDatesBottomSheetVisible.value.toString()
-                        )
+                    onLectureDatesChanged = { completeDate, startTIme, endTime ->
+
                     }
                 )
 
@@ -479,12 +480,8 @@ fun LectureDetailSettingScreen(
                     LectureDetailSettingLectureDatesTextField(
                         modifier = modifier.fillMaxWidth(),
                         selectedItem = "수강일 입력(선택)",
-                        onClick = {
-                            isLectureDatesBottomSheetVisible.value = true
-                            Log.e(
-                                "lectureDates onClick 실행",
-                                isLectureDatesBottomSheetVisible.value.toString()
-                            )
+                        onLectureDatesChanged = { completeDate, startTIme, endTime ->
+                            onLectureDatesChanged(completeDate, startTIme, endTime)
                         }
                     )
 
@@ -510,21 +507,20 @@ fun LectureDetailSettingScreen(
                 }
 
                 Spacer(modifier = modifier.height(24.dp))
-
             }
 
             item {
-                LectureDetailSettingSection(
+                BitgoeulSubjectText(subjectText = "수강 인원")
+
+                LectureDetailSettingInputTextField(
                     modifier = modifier.fillMaxWidth(),
-                    subjectText = stringResource(id = R.string.maximum_number_students),
-                    list = listOf(),
-                    selectedItem = stringResource(id = R.string.enter_maximum_number_students),
-                    onItemChange = {},
-                    type = "Input"
+                    placeholder = "수강 인원 입력 (5~10명)",
+                    onItemChange = { inputMaxRegisteredUser ->
+                        maxRegisteredUser.value = inputMaxRegisteredUser.toInt()
+                    },
                 )
 
                 Spacer(modifier = modifier.height(200.dp))
-
             }
         }
 
@@ -561,69 +557,5 @@ fun LectureDetailSettingScreen(
                 }
             }
         }
-
-        LectureDetailSettingLectureDatesBottomSheet(
-            isVisible = isLectureDatesBottomSheetVisible.value,
-            onDismissRequest = {
-                isLectureDatesBottomSheetVisible.value = false
-            },
-            onQuit = { completeDates, startTime, endTime ->
-                onCompleteDateChanged(completeDates.toLocalDate())
-                onStartTimeChanged(startTime.toLocalTime())
-                onEndTimeChanged(endTime.toLocalTime())
-            },
-        )
-
-        LectureDetailSettingSearchBottomSheet(
-            isVisible = isSearchBottomSheetVisible.value,
-            searchPlaceHolder = when (isClickedPickerType.value) {
-                "강의 계열" -> stringResource(id = R.string.lecture_series_placeholder)
-                "학과" -> stringResource(id = R.string.department_placeholder)
-                "담당 교수" -> stringResource(id = R.string.professor_in_charge_placeholder)
-                else -> ""
-            },
-            onSearchButtonClick = { keyword, division ->
-                when (isClickedPickerType.value) {
-                    "강의 계열" -> {
-                        onSearchLineClicked(keyword, division)
-                    }
-
-                    "학과" -> {
-                        onSearchDepartmentClicked(keyword)
-                    }
-
-                    "담당 교수" -> {
-                        onSearchProfessorClicked(keyword)
-                    }
-
-                    else -> {}
-                }
-            },
-            searchAPIType = when (isClickedPickerType.value) {
-                "학과" -> "학과"
-                "강의 계열" -> "강의 계열"
-                "담당 교수" -> "담당 교수"
-                else -> ""
-            },
-            onProfessorListClick = { selectedProfessorUUID ->
-                userId.value = selectedProfessorUUID
-            },
-            division = division.value,
-            searchProfessorData = searchProfessorData,
-            searchLineData = searchLineData,
-            searchDepartmentData = searchDepartmentData,
-            onDepartmentListClick = { selectedDepartmentData ->
-                department.value = selectedDepartmentData
-            },
-            onLineListClick = { selectedLineData ->
-                line.value = selectedLineData
-            },
-            onQuit = { selectedData ->
-                isSearchBottomSheetVisible.value = false
-                lectureTeacherInChargeForShow.value = selectedData
-                lectureDepartmentForShow.value = selectedData
-                lectureLineForShow.value = selectedData
-            }
-        )
     }
 }

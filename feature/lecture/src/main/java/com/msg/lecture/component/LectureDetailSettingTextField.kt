@@ -16,76 +16,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.msg.design_system.R
 import com.msg.design_system.component.textfield.DefaultTextField
-import com.msg.design_system.component.textfield.LectureDetailSettingTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.util.toLocalDate
+import com.msg.lecture.util.toLocalTime
+import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchLineResponse
+import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import java.time.LocalDate
+import java.time.LocalTime
+import java.util.UUID
 
-@Composable
-fun LectureDetailSettingSection(
-    modifier: Modifier,
-    subjectText: String,
-    list: List<String>,
-    selectedItem: String,
-    onItemChange: (item: String) -> Unit,
-    type: String,
-    onClick: () -> Unit = {},
-) {
-    BitgoeulAndroidTheme { colors, typography ->
-        Column(
-            modifier = modifier.background(color = colors.WHITE)
-        ) {
-            if (subjectText.isNotEmpty()) {
-                Text(
-                    text = subjectText,
-                    color = colors.BLACK,
-                    style = typography.bodyLarge,
-                )
-            }
-
-            when (type) {
-                "Selector" -> {
-                    Spacer(modifier = modifier.height(8.dp))
-
-                    LectureDetailSettingTextField(
-                        modifier = modifier.fillMaxWidth(),
-                        list = list,
-                        selectedItem = selectedItem,
-                        onItemChange = onItemChange,
-                    )
-                }
-
-                "Search" -> {
-                    Spacer(modifier = modifier.height(8.dp))
-
-                    LectureDetailSettingSearchTextField(
-                        modifier = modifier.fillMaxWidth(),
-                        placeholder = selectedItem,
-                        onClick = onClick
-                    )
-                }
-
-                "Input" -> {
-                    LectureDetailSettingInputTextField(
-                        modifier = modifier.fillMaxWidth(),
-                        placeholder = selectedItem,
-                        onItemChange = { inputString ->
-                            onItemChange(inputString)
-                        }
-                    )
-                }
-
-                "LectureDates" -> {
-                    LectureDetailSettingLectureDatesTextField(
-                        modifier = modifier.fillMaxWidth(),
-                        selectedItem = selectedItem,
-                        onClick = onClick
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun LectureDetailSettingInputTextField(
@@ -120,7 +64,17 @@ fun LectureDetailSettingInputTextField(
 fun LectureDetailSettingSearchTextField(
     modifier: Modifier,
     placeholder: String,
-    onClick: () -> Unit,
+    division: String = "",
+    onSearchLineClicked: (String, String) -> Unit = { _, _ -> },
+    onSearchDepartmentClicked: (String) -> Unit = {},
+    onSearchProfessorClicked: (String) -> Unit = {},
+    onProfessorItemClick: (UUID, String) -> Unit = { _, _ -> },
+    onDepartmentItemClick: (String) -> Unit = {},
+    onLineItemClick: (String) -> Unit = {},
+    isClickedPickerType: String,
+    searchProfessorData: SearchProfessorResponse,
+    searchLineData: SearchLineResponse,
+    searchDepartmentData: SearchDepartmentResponse,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -139,13 +93,56 @@ fun LectureDetailSettingSearchTextField(
                     indication = null
                 ) {
                     isFocused.value = true
-                    onClick()
                 },
         ) {
             Text(
                 text = placeholder,
                 style = typography.bodySmall,
                 color = colors.G2
+            )
+        }
+        if (isFocused.value) {
+            LectureDetailSettingSearchBottomSheet(
+                searchPlaceHolder = when (isClickedPickerType) {
+                    "강의 계열" -> stringResource(id = R.string.lecture_series_placeholder)
+                    "학과" -> stringResource(id = R.string.department_placeholder)
+                    "담당 교수" -> stringResource(id = R.string.professor_in_charge_placeholder)
+                    else -> ""
+                },
+                onSearchButtonClick = { keyword, division ->
+                    when (isClickedPickerType) {
+                        "강의 계열" -> {
+                            onSearchLineClicked(keyword, division)
+                        }
+
+                        "학과" -> {
+                            onSearchDepartmentClicked(keyword)
+                        }
+
+                        "담당 교수" -> {
+                            onSearchProfessorClicked(keyword)
+                        }
+
+                        else -> {}
+                    }
+                },
+                searchAPIType = isClickedPickerType,
+                onProfessorListClick = { selectedProfessorUUID, selectedProfessorName ->
+                    onProfessorItemClick(selectedProfessorUUID, selectedProfessorName)
+                },
+                division = division,
+                searchProfessorData = searchProfessorData,
+                searchLineData = searchLineData,
+                searchDepartmentData = searchDepartmentData,
+                onDepartmentListClick = { selectedDepartmentData ->
+                    onDepartmentItemClick(selectedDepartmentData)
+                },
+                onLineListClick = { selectedLineData ->
+                    onLineItemClick(selectedLineData)
+                },
+                onQuit = {
+                    isFocused.value = false
+                }
             )
         }
     }
@@ -155,7 +152,7 @@ fun LectureDetailSettingSearchTextField(
 fun LectureDetailSettingLectureDatesTextField(
     modifier: Modifier,
     selectedItem: String,
-    onClick: () -> Unit,
+    onLectureDatesChanged: (completeDate: LocalDate, startTIme: LocalTime, endTime: LocalTime) -> Unit,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -174,13 +171,23 @@ fun LectureDetailSettingLectureDatesTextField(
                     indication = null
                 ) {
                     isFocused.value = true
-                    onClick()
                 },
         ) {
             Text(
                 text = selectedItem,
                 style = typography.bodySmall,
                 color = colors.G2
+            )
+        }
+        if (isFocused.value) {
+            LectureDetailSettingLectureDatesBottomSheet(
+                onQuit = { completeDates, startTime, endTime ->
+                    onLectureDatesChanged(
+                        completeDates.toLocalDate(),
+                        startTime.toLocalTime(),
+                        endTime.toLocalTime()
+                    )
+                },
             )
         }
     }

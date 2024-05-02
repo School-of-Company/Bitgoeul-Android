@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,94 +39,87 @@ fun LectureDetailSettingSearchBottomSheet(
     searchDepartmentData: SearchDepartmentResponse,
     modifier: Modifier = Modifier,
     searchPlaceHolder: String,
-    isVisible: Boolean,
     division: String,
     searchAPIType: String,
     onSearchButtonClick: (String, String) -> Unit,
-    onProfessorListClick: (UUID) -> Unit,
+    onProfessorListClick: (UUID, String) -> Unit,
     onDepartmentListClick: (String) -> Unit,
     onLineListClick: (String) -> Unit,
-    onQuit: (String) -> Unit,
+    onQuit: () -> Unit,
 ) {
     val keywordState = remember { mutableStateOf("") }
-    val selectedItem = remember { mutableStateOf("") }
 
-    if (isVisible) {
-        BitgoeulAndroidTheme { colors, _ ->
-            ModalBottomSheet(
-                onDismissRequest = {
-                    onQuit(selectedItem.value)
-                },
-                containerColor = colors.WHITE
+    BitgoeulAndroidTheme { colors, _ ->
+        ModalBottomSheet(
+            onDismissRequest = {
+                onQuit()
+            },
+            containerColor = colors.WHITE
+        ) {
+            LaunchedEffect(true) {
+                onSearchButtonClick("", "")
+            }
+            Column(
+                modifier = modifier
+                    .wrapContentSize()
+                    .background(color = colors.WHITE)
+                    .padding(horizontal = 28.dp, vertical = 24.dp)
             ) {
-                LaunchedEffect(true) {
-                    onSearchButtonClick("", "")
-                }
-                Column(
+                TrailingIconTextField(
                     modifier = modifier
-                        .wrapContentSize()
-                        .background(color = colors.WHITE)
-                        .padding(horizontal = 28.dp, vertical = 24.dp)
-                ) {
-                    TrailingIconTextField(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        placeholder = searchPlaceHolder,
-                        value = keywordState.value,
-                        onValueChange = { keyword ->
-                            keywordState.value = keyword
-                        },
-                        isDisabled = false,
-                        onClickButton = {
-                            onSearchButtonClick(keywordState.value, division)
-                        },
-                    )
+                        .fillMaxWidth(),
+                    placeholder = searchPlaceHolder,
+                    value = keywordState.value,
+                    onValueChange = { keyword ->
+                        keywordState.value = keyword
+                    },
+                    isDisabled = false,
+                    onClickButton = {
+                        onSearchButtonClick(keywordState.value, division)
+                    },
+                )
 
-                    Spacer(modifier = modifier.height(8.dp))
-                    if (searchProfessorData.instructors.isNotEmpty() || searchDepartmentData.departments.isNotEmpty() || searchLineData.lines.isNotEmpty()) {
-                        when (searchAPIType) {
-                            "강의 계열" -> {
-                                LectureLineList(
-                                    modifier = modifier,
-                                    onClick = { selectedLineData ->
-                                        onLineListClick(selectedLineData)
-                                        selectedItem.value = selectedLineData
-                                    },
-                                    searchLineData = searchLineData,
-                                    division = division,
-                                    keyword = keywordState.value
-                                )
-                            }
+                Spacer(modifier = modifier.height(8.dp))
+                if (searchProfessorData.instructors.isNotEmpty() || searchDepartmentData.departments.isNotEmpty() || searchLineData.lines.isNotEmpty()) {
+                    when (searchAPIType) {
+                        "강의 계열" -> {
+                            LectureLineList(
+                                modifier = modifier,
+                                onClick = { selectedLineData ->
+                                    onLineListClick(selectedLineData)
+                                },
+                                searchLineData = searchLineData,
+                                division = division,
+                                keyword = keywordState.value
+                            )
+                        }
 
-                            "담당 교수" -> {
-                                LectureProfessorList(
-                                    modifier = modifier,
-                                    onClick = { professor, selectedProfessorName ->
-                                        onProfessorListClick(professor)
-                                        selectedItem.value = selectedProfessorName
-                                    },
-                                    searchProfessorData = searchProfessorData,
-                                    division = division,
-                                    keyword = keywordState.value
-                                )
-                            }
+                        "담당 교수" -> {
+                            LectureProfessorList(
+                                modifier = modifier,
+                                onClick = { professor, selectedProfessorName ->
+                                    onProfessorListClick(professor, selectedProfessorName)
+                                },
+                                searchProfessorData = searchProfessorData,
+                                division = division,
+                                keyword = keywordState.value
+                            )
+                        }
 
-                            "학과" -> {
-                                LectureDepartmentList(
-                                    modifier = modifier,
-                                    onClick = { department ->
-                                        onDepartmentListClick(department)
-                                        selectedItem.value = department
-                                    },
-                                    data = searchDepartmentData
-                                )
-                            }
+                        "학과" -> {
+                            LectureDepartmentList(
+                                modifier = modifier,
+                                onClick = { department ->
+                                    onDepartmentListClick(department)
+                                },
+                                data = searchDepartmentData
+                            )
                         }
                     }
                 }
             }
-
         }
+
     }
 }
 
@@ -133,36 +127,42 @@ fun LectureDetailSettingSearchBottomSheet(
 @Composable
 fun LectureDetailSettingLectureDatesBottomSheet(
     modifier: Modifier = Modifier,
-    isVisible: Boolean,
-    onDismissRequest: () -> Unit,
     onQuit: (String, String, String) -> Unit,
 ) {
     val completeDates = remember { mutableStateOf("") }
     val startTime = remember { mutableStateOf("") }
     val endTime = remember { mutableStateOf("") }
-
-    if (isVisible) {
-        BitgoeulAndroidTheme { colors, typography ->
-            ModalBottomSheet(
-                modifier = modifier.background(color = colors.WHITE),
-                onDismissRequest = {
-                    if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
-                        onQuit(completeDates.value, startTime.value, endTime.value)
-                    }
-                    onDismissRequest()
-                }) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    BitgoeulAndroidTheme { colors, typography ->
+        ModalBottomSheet(
+            containerColor = colors.WHITE,
+            onDismissRequest = {
+                if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
+                    onQuit(completeDates.value, startTime.value, endTime.value)
+                }
+            },
+            sheetState = bottomSheetState
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(color = colors.WHITE)
+                    .padding(horizontal = 28.dp, vertical = 24.dp)
+            ) {
+                Row {
                     Text(
                         text = "강의 수강일",
                         color = colors.BLACK,
                         style = typography.labelLarge
                     )
 
+                    Spacer(modifier = modifier.weight(1f))
+
                     CloseIcon(
                         modifier.clickable {
-                            onDismissRequest()
+                            if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
+                                onQuit(completeDates.value, startTime.value, endTime.value)
+                            }
                         }
                     )
                 }
@@ -170,7 +170,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                 LectureDetailSettingInputTextField(
                     modifier = modifier.fillMaxWidth(),
-                    placeholder = "강의 수강일을 입력해주세요 | ○○○○년 ○○월 ○○일",
+                    placeholder = "○○○○년 ○○월 ○○일",
                     onItemChange = { inputCompleteDates ->
                         completeDates.value = inputCompleteDates
                     },
@@ -180,7 +180,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                 LectureDetailSettingInputTextField(
                     modifier = modifier.fillMaxWidth(),
-                    placeholder = "강의 시작 시간을 입력해주세요 | ○○시 ○○분",
+                    placeholder = "○○시 ○○분 시작",
                     onItemChange = { inputStartTime ->
                         startTime.value = inputStartTime
                     },
@@ -190,13 +190,13 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                 LectureDetailSettingInputTextField(
                     modifier = modifier.fillMaxWidth(),
-                    placeholder = "강의 종료 시간을 입력해주세요 | ○○시 ○○분",
+                    placeholder = "○○시 ○○분 종료",
                     onItemChange = { inputEndTime ->
                         endTime.value = inputEndTime
                     },
                 )
 
-                Spacer(modifier = modifier.height(152.dp))
+                Spacer(modifier = modifier.height(80.dp))
 
                 BitgoeulButton(
                     modifier = modifier.fillMaxWidth(),
