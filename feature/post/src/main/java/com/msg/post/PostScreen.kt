@@ -42,8 +42,6 @@ internal fun PostScreenRoute(
     val role = viewModel.role
     var state = FeedType.EMPLOYMENT
 
-
-
     LaunchedEffect(true, state) {
         viewModel.getPostList(
             type = state

@@ -30,7 +30,6 @@ fun ClubChipView(
             maxLines = 1
         )
     }
-
 }
 
 @Preview
