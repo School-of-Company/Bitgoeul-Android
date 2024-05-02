@@ -29,6 +29,8 @@ import com.msg.lecture.navigation.lectureOpenScreen
 import com.msg.lecture.navigation.navigateToLectureDetail
 import com.msg.lecture.navigation.navigateToLectureDetailSetting
 import com.msg.lecture.navigation.navigateToLectureOpen
+import com.msg.main.navigation.mainPageScreen
+import com.msg.main.navigation.navigateToMainPage
 import com.msg.post.navigation.navigateToPostAddPage
 import com.msg.post.navigation.navigateToPostDetailPage
 import com.msg.post.navigation.navigateToPostDetailSettingPage
@@ -146,8 +148,10 @@ fun BitgoeulNavHost(
         )
         clubDetailScreen(
             onBackClickedByAdmin = navController::popBackStack,
-            //onBackClicked = navController::navigateToMainPage
-            onBackClicked = navController::popBackStack
+            onBackClicked = navController::navigateToMainPage
+        )
+        mainPageScreen(
+            onLoginClicked = navController::navigateToLogin
         )
     }
 }

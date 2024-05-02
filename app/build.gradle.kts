@@ -25,6 +25,7 @@ dependencies {
     implementation(project(":feature:post"))
     implementation(project(":feature:club"))
     implementation(project(":feature:email"))
+    implementation(project(":feature:main"))
 
     implementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)

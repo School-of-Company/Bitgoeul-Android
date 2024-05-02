@@ -87,7 +87,7 @@ fun List<String>.getActualList(): List<List<String>> {
     var rows = 0
 
     for (element in this) {
-        if (width.plus(element.getClubChipWidth()) < screenWidth) {
+        if (width.plus(element.getClubChipWidth()) < screenWidth && element != "주식회사 금철") {
             width += element.getClubChipWidth() + 16.dp
             actualItems[rows].add(element)
         } else {
