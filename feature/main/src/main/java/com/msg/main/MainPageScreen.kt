@@ -1,6 +1,7 @@
 package com.msg.main
 
 import android.app.Activity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -151,33 +153,6 @@ fun MainPageScreen(
     val answerValue = remember { mutableStateOf("") }
 
     BitgoeulAndroidTheme { colors, typography ->
-        when (event) {
-            is Event.Success -> {}
-            is Event.Unauthorized -> {
-                BitgoeulAlertDialog(
-                    title = "오류",
-                    msg = "토큰이 만료되었습니다, 로그아웃 후 다시 로그인해주세요.",
-                    onQuit = {},
-                    onButtonClicked = onDialogButtonClicked
-                )
-            }
-            is Event.BadRequest -> {
-                BitgoeulAlertDialog(
-                    title = "오류",
-                    msg = "요청을 보내는 중 문제가 발생했습니다.",
-                    onQuit = {},
-                    onButtonClicked = onDialogButtonClicked
-                )
-            }
-            else -> {
-                BitgoeulAlertDialog(
-                    title = "오류",
-                    msg = "알 수 없는 오류가 발생했습니다. (${errorCode})",
-                    onQuit = {},
-                    onButtonClicked = onDialogButtonClicked
-                )
-            }
-        }
         Surface(
             modifier = modifier
                 .fillMaxSize()
@@ -187,13 +162,11 @@ fun MainPageScreen(
                     .verticalScroll(scrollState)
                     .background(color = colors.WHITE)
             ) {
-                AsyncImage(
+                Image(
                     modifier = modifier
                         .height(332.dp)
                         .fillMaxWidth(),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(R.mipmap.banner_main)
-                        .build(),
+                    painter = painterResource(id = R.mipmap.banner_main),
                     contentDescription = "Banner image of main page",
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.BottomCenter
@@ -380,6 +353,33 @@ fun MainPageScreen(
                         color = colors.WHITE
                     )
                     Spacer(modifier = modifier.height(40.dp))
+                }
+            }
+            when (event) {
+                is Event.Success -> {}
+                is Event.Unauthorized -> {
+                    BitgoeulAlertDialog(
+                        title = "오류",
+                        msg = "토큰이 만료되었습니다, 로그아웃 후 다시 로그인해주세요.",
+                        onQuit = {},
+                        onButtonClicked = onDialogButtonClicked
+                    )
+                }
+                is Event.BadRequest -> {
+                    BitgoeulAlertDialog(
+                        title = "오류",
+                        msg = "요청을 보내는 중 문제가 발생했습니다.",
+                        onQuit = {},
+                        onButtonClicked = onDialogButtonClicked
+                    )
+                }
+                else -> {
+                    BitgoeulAlertDialog(
+                        title = "오류",
+                        msg = "알 수 없는 오류가 발생했습니다. (${errorCode})",
+                        onQuit = {},
+                        onButtonClicked = onDialogButtonClicked
+                    )
                 }
             }
         }
