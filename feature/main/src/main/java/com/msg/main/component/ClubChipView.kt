@@ -26,7 +26,8 @@ fun ClubChipView(
                 .padding(vertical = 8.dp, horizontal = 16.dp),
             text = clubName,
             style = typography.bodySmall,
-            color = colors.WHITE
+            color = colors.WHITE,
+            maxLines = 1
         )
     }
 
