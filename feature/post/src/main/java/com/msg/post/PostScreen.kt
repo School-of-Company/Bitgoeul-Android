@@ -42,11 +42,12 @@ internal fun PostScreenRoute(
     val role = viewModel.role
     var state = FeedType.EMPLOYMENT
 
-    viewModel.getPostList(
-        type = FeedType.EMPLOYMENT
-    )
+
 
     LaunchedEffect(true, state) {
+        viewModel.getPostList(
+            type = state
+        )
         getPostList(
             viewModel = viewModel,
             onSuccess = {
@@ -93,6 +94,7 @@ suspend fun getPostList(
             is Event.Success -> {
                 onSuccess(response.data!!)
             }
+
             else -> {
                 onFailure()
             }

@@ -1,5 +1,6 @@
 package com.msg.main
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.msg.main.component.BitgoeulInfoCardView
@@ -30,14 +33,17 @@ import com.msg.main.component.CollegeCardViewList
 import com.msg.main.component.HighSchoolCardView
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
+import com.msg.design_system.component.dialog.BitgoeulAlertDialog
 import com.msg.design_system.component.icon.GwangjuIcon
 import com.msg.design_system.component.icon.OfficeOfEducationIcon
 import com.msg.main.component.AddFaqItem
 import com.msg.main.component.FaqSection
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
+import com.msg.main.util.Event
+import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.HighSchool
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
+import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData
 import com.msg.model.ui.HNCollegeData
@@ -47,9 +53,81 @@ import com.msg.model.ui.SYCollegeData
 import com.msg.ui.DevicePreviews
 
 @Composable
+fun MainPageScreenRoute(
+    viewModel: FaqViewModel = hiltViewModel(),
+    onLoginClicked: () -> Unit
+) {
+    val role = viewModel.role
+    var error: Event<List<GetFAQDetailResponse>> = Event.Loading
+    var isReLaunched = false
+    val activity = LocalContext.current as Activity
+
+    viewModel.getFaq()
+    
+    LaunchedEffect(true, isReLaunched) {
+        getFaqList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.faqList.addAll(it)
+                error = Event.Success()
+            },
+            onFailure = {
+                error = it
+            }
+        )
+    }
+
+    MainPageScreen(
+        data = viewModel.faqList,
+        event = error,
+        role = Authority.valueOf(role.toString()),
+        onAddClicked = { question, answer ->
+            viewModel.addFaq(
+                question = question,
+                answer = answer
+            )
+        },
+        onDialogButtonClicked = {
+            when (error) {
+                is Event.Success -> {}
+                is Event.Unauthorized -> onLoginClicked()
+                is Event.BadRequest -> {
+                    isReLaunched = !isReLaunched
+                }
+                else -> {
+                    activity.finish()
+                }
+            }
+        }
+    )
+}
+
+suspend fun getFaqList(
+    viewModel: FaqViewModel,
+    onSuccess: (data: List<GetFAQDetailResponse>) -> Unit,
+    onFailure: (error: Event<List<GetFAQDetailResponse>>) -> Unit
+) {
+    viewModel.getFaqListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {
+                onFailure(response)
+            }
+        }
+    }
+}
+
+@Composable
 fun MainPageScreen(
     modifier: Modifier = Modifier,
-    data: List<GetFrequentlyAskedQuestionDetailResponse>
+    data: List<GetFAQDetailResponse>,
+    event: Event<List<GetFAQDetailResponse>>,
+    role: Authority,
+    errorCode: Int? = null,
+    onAddClicked: (question: String, answer: String) -> Unit,
+    onDialogButtonClicked: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val highSchoolScrollState = rememberScrollState()
@@ -73,6 +151,33 @@ fun MainPageScreen(
     val answerValue = remember { mutableStateOf("") }
 
     BitgoeulAndroidTheme { colors, typography ->
+        when (event) {
+            is Event.Success -> {}
+            is Event.Unauthorized -> {
+                BitgoeulAlertDialog(
+                    title = "오류",
+                    msg = "토큰이 만료되었습니다, 로그아웃 후 다시 로그인해주세요.",
+                    onQuit = {},
+                    onButtonClicked = onDialogButtonClicked
+                )
+            }
+            is Event.BadRequest -> {
+                BitgoeulAlertDialog(
+                    title = "오류",
+                    msg = "요청을 보내는 중 문제가 발생했습니다.",
+                    onQuit = {},
+                    onButtonClicked = onDialogButtonClicked
+                )
+            }
+            else -> {
+                BitgoeulAlertDialog(
+                    title = "오류",
+                    msg = "알 수 없는 오류가 발생했습니다. (${errorCode})",
+                    onQuit = {},
+                    onButtonClicked = onDialogButtonClicked
+                )
+            }
+        }
         Surface(
             modifier = modifier
                 .fillMaxSize()
@@ -244,16 +349,19 @@ fun MainPageScreen(
                 )
                 Spacer(modifier = modifier.height(64.dp))
                 FaqSection(data = data)
-                AddFaqItem(
-                    questionValue = questionValue.value,
-                    onQuestionValueChanged = {
-                        questionValue.value = it
-                    },
-                    answerValue = answerValue.value,
-                    onAnswerValueChanged = {
-                        answerValue.value = it
-                    }
-                )
+                if (role == Authority.ROLE_ADMIN) {
+                    AddFaqItem(
+                        questionValue = questionValue.value,
+                        onQuestionValueChanged = {
+                            questionValue.value = it
+                        },
+                        answerValue = answerValue.value,
+                        onAnswerValueChanged = {
+                            answerValue.value = it
+                        },
+                        onAddClicked = { onAddClicked(questionValue.value, answerValue.value) }
+                    )
+                }
                 Spacer(modifier = modifier.height(24.dp))
                 Column(
                     modifier = modifier
@@ -283,11 +391,15 @@ fun MainPageScreen(
 fun MainPageScreenPre() {
     MainPageScreen(
         data = listOf(
-            GetFrequentlyAskedQuestionDetailResponse(
+            GetFAQDetailResponse(
                 id = 0,
                 question = "학원에서 자격증 과정을 운영할 수 있나요?",
                 answer = "불가능 합니다. 그러나, 학교 주관으로 학원강사를 섭외할 수는 있고, 학원시설 이용비, 학원강사 수당 지급은 가능 합니다."
             )
-        )
+        ),
+        onAddClicked = {_,_->},
+        role = Authority.ROLE_ADMIN,
+        event = Event.Success(),
+        onDialogButtonClicked = {}
     )
 }

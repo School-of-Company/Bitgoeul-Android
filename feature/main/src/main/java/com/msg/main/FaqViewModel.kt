@@ -33,6 +33,9 @@ class FaqViewModel @Inject constructor(
     var faqList = mutableStateListOf<GetFAQDetailResponse>()
         private set
 
+    var errorCode: Int = 200
+        private set
+
     fun addFaq(
         question: String,
         answer: String
@@ -45,11 +48,14 @@ class FaqViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _addFaqResponse.value = remoteError.errorHandling()
+                errorCode = remoteError.hashCode()
             }.collect {
                 _addFaqResponse.value = Event.Success()
+                errorCode = 200
             }
         }.onFailure { error ->
             _addFaqResponse.value = error.errorHandling()
+            errorCode = error.hashCode()
         }
     }
 
