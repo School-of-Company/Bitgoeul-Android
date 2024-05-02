@@ -35,12 +35,8 @@ fun AddFaqItem(
     onAddClicked: () -> Unit
 ) {
     val isSelected = remember { mutableStateOf(false) }
-    val questionHintVisible = remember {
-        derivedStateOf { questionValue.isEmpty() }
-    }
-    val answerHintVisible = remember {
-        derivedStateOf { answerValue.isEmpty() }
-    }
+    val questionHintVisible = remember { derivedStateOf { questionValue.isEmpty() } }
+    val answerHintVisible = remember { derivedStateOf { answerValue.isEmpty() } }
     val interactionSource = remember { MutableInteractionSource() }
 
     BitgoeulAndroidTheme { colors, typography ->
