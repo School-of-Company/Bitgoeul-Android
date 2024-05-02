@@ -33,26 +33,12 @@ fun LectureDepartmentList(
             modifier = modifier.background(color = colors.WHITE)
         ) {
                 items(data.departments.size) { index ->
-                    Spacer(
-                        modifier = modifier
-                            .height(1.dp)
-                            .fillMaxWidth()
-                            .background(color = colors.G9)
-                    )
-
                     LectureDetailSettingDepartmentCard(
                         modifier = modifier,
                         onClick = { department ->
                             onClick(department)
                         },
                         data = data.departments[index]
-                    )
-
-                    Spacer(
-                        modifier = Modifier
-                            .height(1.dp)
-                            .fillMaxWidth()
-                            .background(color = colors.G9)
                     )
                 }
             }
@@ -92,17 +78,10 @@ fun LectureLineList(
                 modifier = modifier.background(color = Color.Transparent)
             ) {
                 items(searchLineData.lines.size) { index ->
-                    Spacer(
-                        modifier = modifier
-                            .height(1.dp)
-                            .fillMaxWidth()
-                            .background(color = colors.G9)
-                    )
-
                     searchLineData.lines.getOrNull(index)?.let { linesData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
-                            onClick = { _, searchLineData ->
+                            onClick = { _, searchLineData, _ ->
                                 onClick(searchLineData)
                             },
                             searchProfessorData = null,
@@ -111,13 +90,6 @@ fun LectureLineList(
                             keyword = keyword
                         )
                     }
-
-                    Spacer(
-                        modifier = Modifier
-                            .height(1.dp)
-                            .fillMaxWidth()
-                            .background(color = colors.G9)
-                    )
                 }
             }
         } else {
@@ -148,7 +120,7 @@ fun LectureProfessorList(
     keyword: String,
     modifier: Modifier,
     division: String,
-    onClick: (UUID) -> Unit
+    onClick: (UUID, String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (searchProfessorData.instructors.isNotEmpty()) {
@@ -156,18 +128,11 @@ fun LectureProfessorList(
                 modifier = modifier.background(color = Color.Transparent),
             ) {
                 items(searchProfessorData.instructors.size) { index ->
-                    Spacer(
-                        modifier = modifier
-                            .height(1.dp)
-                            .fillMaxWidth()
-                            .background(color = colors.G9)
-                    )
-
                     searchProfessorData.instructors.getOrNull(index)?.let {
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
-                            onClick = { professor, _ ->
-                                onClick(professor)
+                            onClick = { professorUUID, _, selectedProfessorName ->
+                                onClick(professorUUID, selectedProfessorName)
                             },
                             searchProfessorData = searchProfessorData.instructors[index],
                             searchLineData = null,
@@ -175,13 +140,6 @@ fun LectureProfessorList(
                             keyword = keyword
                         )
                     }
-
-                    Spacer(
-                        modifier = modifier
-                            .height(1.dp)
-                            .fillMaxWidth()
-                            .background(color = colors.G9)
-                    )
                 }
             }
         } else {

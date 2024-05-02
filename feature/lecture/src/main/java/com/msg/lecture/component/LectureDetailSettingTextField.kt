@@ -1,12 +1,20 @@
 package com.msg.lecture.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.textfield.DefaultTextField
@@ -44,12 +52,12 @@ fun LectureDetailSettingSection(
                         list = list,
                         selectedItem = selectedItem,
                         onItemChange = onItemChange,
-                        selectorBottomSheet = true,
-                        searchBottomSheet = false
                     )
                 }
 
                 "Search" -> {
+                    Spacer(modifier = modifier.height(8.dp))
+
                     LectureDetailSettingSearchTextField(
                         modifier = modifier.fillMaxWidth(),
                         placeholder = selectedItem,
@@ -70,7 +78,7 @@ fun LectureDetailSettingSection(
                 "LectureDates" -> {
                     LectureDetailSettingLectureDatesTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = selectedItem,
+                        selectedItem = selectedItem,
                         onClick = onClick
                     )
                 }
@@ -114,19 +122,30 @@ fun LectureDetailSettingSearchTextField(
     placeholder: String,
     onClick: () -> Unit,
 ) {
-    BitgoeulAndroidTheme { colors, _ ->
-        Column(
-            modifier = modifier.background(color = colors.WHITE)
-        ) {
-            Spacer(modifier = modifier.height(8.dp))
+    val isFocused = remember { mutableStateOf(false) }
 
-            LectureDetailSettingTextField(
-                modifier = modifier.fillMaxWidth(),
-                list = listOf(),
-                selectedItem = placeholder,
-                onItemChange = {},
-                selectorBottomSheet = false,
-                searchBottomSheet = true
+    BitgoeulAndroidTheme { colors, typography ->
+        Row(
+            modifier = modifier
+                .border(
+                    width = 1.dp,
+                    color = if (isFocused.value) colors.P5 else colors.G1,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .background(color = colors.WHITE)
+                .padding(vertical = 15.dp, horizontal = 20.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    isFocused.value = true
+                    onClick()
+                },
+        ) {
+            Text(
+                text = placeholder,
+                style = typography.bodySmall,
+                color = colors.G2
             )
         }
     }
@@ -135,8 +154,34 @@ fun LectureDetailSettingSearchTextField(
 @Composable
 fun LectureDetailSettingLectureDatesTextField(
     modifier: Modifier,
-    placeholder: String,
+    selectedItem: String,
     onClick: () -> Unit,
 ) {
+    val isFocused = remember { mutableStateOf(false) }
 
+    BitgoeulAndroidTheme { colors, typography ->
+        Row(
+            modifier = modifier
+                .border(
+                    width = 1.dp,
+                    color = if (isFocused.value) colors.P5 else colors.G1,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .background(color = colors.WHITE)
+                .padding(vertical = 15.dp, horizontal = 20.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    isFocused.value = true
+                    onClick()
+                },
+        ) {
+            Text(
+                text = selectedItem,
+                style = typography.bodySmall,
+                color = colors.G2
+            )
+        }
+    }
 }

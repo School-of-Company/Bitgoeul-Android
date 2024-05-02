@@ -436,8 +436,6 @@ fun LectureDetailSettingTextField(
     list: List<String>,
     selectedItem: String,
     onItemChange: (item: String) -> Unit,
-    selectorBottomSheet: Boolean,
-    searchBottomSheet: Boolean
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -464,7 +462,7 @@ fun LectureDetailSettingTextField(
                 color = colors.G2
             )
 
-            if (isFocused.value && selectorBottomSheet) {
+            if (isFocused.value) {
                 SelectorBottomSheet(
                     list = list,
                     selectedItem = selectedItem,
@@ -474,8 +472,6 @@ fun LectureDetailSettingTextField(
                     },
                     firstItem = {}
                 )
-            } else if (isFocused.value && searchBottomSheet) {
-
             }
         }
     }

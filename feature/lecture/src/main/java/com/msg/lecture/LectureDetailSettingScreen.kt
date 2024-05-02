@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,12 +35,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
+import com.msg.design_system.component.icon.DeleteIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.AddLectureDatesButton
 import com.msg.lecture.component.LectureDetailSettingInputTextField
+import com.msg.lecture.component.LectureDetailSettingLectureDatesBottomSheet
+import com.msg.lecture.component.LectureDetailSettingLectureDatesTextField
 import com.msg.lecture.component.LectureDetailSettingSearchBottomSheet
 import com.msg.lecture.component.LectureDetailSettingSection
 import com.msg.lecture.util.Event
+import com.msg.lecture.util.toLocalDate
+import com.msg.lecture.util.toLocalTime
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
@@ -57,7 +63,7 @@ import java.util.UUID
 internal fun LectureDetailSettingRoute(
     onCloseClicked: () -> Unit,
     onApplyClicked: () -> Unit,
-    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val coroutineScope = rememberCoroutineScope()
     LectureDetailSettingScreen(
@@ -219,6 +225,7 @@ fun LectureDetailSettingScreen(
     savedEndTime: LocalTime?,
     savedMaxRegisteredUser: Int,
 ) {
+    val isLectureDatesBottomSheetVisible = remember { mutableStateOf(false) }
     val isSearchBottomSheetVisible = remember { mutableStateOf(false) }
     val isClickedPickerType = remember { mutableStateOf("") }
     val isLectureCategoryTagSelected = remember { mutableStateOf("0") }
@@ -246,12 +253,14 @@ fun LectureDetailSettingScreen(
     val endTime = remember { mutableStateOf(savedEndTime) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
-    val completeDatesComponentWeight = remember { mutableFloatStateOf(1f) }
-
     val applicationStartTimeForShow = remember { mutableStateOf("") }
     val applicationEndTimeForShow = remember { mutableStateOf("") }
     val applicationStartDateForShow = remember { mutableStateOf("") }
     val applicationEndDateForShow = remember { mutableStateOf("") }
+
+    val lectureLineForShow = remember { mutableStateOf("") }
+    val lectureDepartmentForShow = remember { mutableStateOf("") }
+    val lectureTeacherInChargeForShow = remember { mutableStateOf("") }
 
     val lectureAttendCompleteDateListForShow = remember { mutableStateListOf("") }
     val lectureAttendStartTimeListForShow = remember { mutableStateListOf("") }
@@ -343,7 +352,7 @@ fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     subjectText = stringResource(id = R.string.lecture_series),
                     list = listOf(),
-                    selectedItem = "강의 선택",
+                    selectedItem = lectureLineForShow.value.ifEmpty { "강의 선택" },
                     onItemChange = {},
                     type = "Search",
                     onClick = {
@@ -360,7 +369,7 @@ fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     subjectText = stringResource(id = R.string.department),
                     list = listOf(),
-                    selectedItem = "학과 선택",
+                    selectedItem = lectureDepartmentForShow.value.ifEmpty { "학과 선택" },
                     onItemChange = {},
                     type = "Search",
                     onClick = {
@@ -377,7 +386,7 @@ fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     subjectText = stringResource(id = R.string.teacher_in_charge),
                     list = listOf(),
-                    selectedItem = "담당 강사 선택",
+                    selectedItem = lectureTeacherInChargeForShow.value.ifEmpty { "담당 강사 선택" },
                     onItemChange = {},
                     type = "Search",
                     onClick = {
@@ -446,28 +455,62 @@ fun LectureDetailSettingScreen(
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                 )
+
+                Spacer(modifier = modifier.height(8.dp))
+
+                LectureDetailSettingLectureDatesTextField(
+                    modifier = modifier.fillMaxWidth(),
+                    selectedItem = "수강일 입력(필수)",
+                    onClick = {
+                        isLectureDatesBottomSheetVisible.value = true
+                        Log.e(
+                            "lectureDates onClick 실행",
+                            isLectureDatesBottomSheetVisible.value.toString()
+                        )
+                    }
+                )
+
+                Spacer(modifier = modifier.height(8.dp))
             }
 
 
             itemsIndexed(lectureDates) { index, lectureDatesItem ->
-                LectureDetailSettingSection(
-                    modifier = modifier.fillMaxWidth(),
-                    subjectText = "",
-                    list = listOf(),
-                    selectedItem = if (index > 0) "수강일 입력(선택)" else "수강일 입력(필수)",
-                    onItemChange = { inputLectureAttendCompleteDate ->
-                        lectureAttendCompleteDateListForShow[index] = inputLectureAttendCompleteDate
-                    },
-                    type = "Input"
-                )
+                Row {
+                    LectureDetailSettingLectureDatesTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        selectedItem = "수강일 입력(선택)",
+                        onClick = {
+                            isLectureDatesBottomSheetVisible.value = true
+                            Log.e(
+                                "lectureDates onClick 실행",
+                                isLectureDatesBottomSheetVisible.value.toString()
+                            )
+                        }
+                    )
+
+                    if (index > 0) {
+                        Spacer(modifier = modifier.width(12.dp))
+
+                        DeleteIcon(
+                            modifier = modifier.clickable {
+                                onLectureDatesRemoveClicked()
+                            }
+                        )
+                    }
+                }
+
+                Spacer(modifier = modifier.height(8.dp))
             }
 
             item {
                 AddLectureDatesButton(
                     modifier = modifier.fillMaxWidth()
                 ) {
-
+                    onLectureDatesAddClicked()
                 }
+
+                Spacer(modifier = modifier.height(24.dp))
+
             }
 
             item {
@@ -479,6 +522,9 @@ fun LectureDetailSettingScreen(
                     onItemChange = {},
                     type = "Input"
                 )
+
+                Spacer(modifier = modifier.height(200.dp))
+
             }
         }
 
@@ -500,10 +546,6 @@ fun LectureDetailSettingScreen(
                         .height(52.dp)
                         .padding(horizontal = 24.dp),
                 ) {
-                    if (lectureDates.size == 0) {
-                        onLectureDatesAddClicked()
-                    }
-
                     onApplyClicked(
                         lectureType.value,
                         semester.value,
@@ -519,6 +561,19 @@ fun LectureDetailSettingScreen(
                 }
             }
         }
+
+        LectureDetailSettingLectureDatesBottomSheet(
+            isVisible = isLectureDatesBottomSheetVisible.value,
+            onDismissRequest = {
+                isLectureDatesBottomSheetVisible.value = false
+            },
+            onQuit = { completeDates, startTime, endTime ->
+                onCompleteDateChanged(completeDates.toLocalDate())
+                onStartTimeChanged(startTime.toLocalTime())
+                onEndTimeChanged(endTime.toLocalTime())
+            },
+        )
+
         LectureDetailSettingSearchBottomSheet(
             isVisible = isSearchBottomSheetVisible.value,
             searchPlaceHolder = when (isClickedPickerType.value) {
@@ -563,8 +618,11 @@ fun LectureDetailSettingScreen(
             onLineListClick = { selectedLineData ->
                 line.value = selectedLineData
             },
-            onQuit = {
+            onQuit = { selectedData ->
                 isSearchBottomSheetVisible.value = false
+                lectureTeacherInChargeForShow.value = selectedData
+                lectureDepartmentForShow.value = selectedData
+                lectureLineForShow.value = selectedData
             }
         )
     }
