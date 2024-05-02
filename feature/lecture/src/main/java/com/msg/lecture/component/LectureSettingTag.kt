@@ -21,7 +21,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun LectureSettingTag(
     isSelected: Boolean,
     onClick: (() -> Unit)?,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     text: String,
 ) {
     val interactionSource = remember { mutableStateOf(MutableInteractionSource()) }

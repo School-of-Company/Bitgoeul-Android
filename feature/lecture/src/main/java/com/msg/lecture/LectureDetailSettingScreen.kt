@@ -44,6 +44,7 @@ import com.msg.lecture.component.LectureDetailSettingInputTextField
 import com.msg.lecture.component.LectureDetailSettingLectureDatesTextField
 import com.msg.lecture.component.LectureDetailSettingSearchBottomSheet
 import com.msg.lecture.component.LectureDetailSettingSearchTextField
+import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.model.lecture.LectureDates
@@ -216,12 +217,11 @@ fun LectureDetailSettingScreen(
     savedEndTime: LocalTime?,
     savedMaxRegisteredUser: Int,
 ) {
-    val isSearchBottomSheetVisible = remember { mutableStateOf(false) }
-    val isClickedPickerType = remember { mutableStateOf("") }
-
     val semesterList = listOf("1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기")
     val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램", "기타")
     val divisionList = listOf("자동차 산업", "에너지 산업", "의료•헬스케어", "AI융•복합", "문화 산업")
+
+    val isRequiredCourse = remember { mutableStateOf("0") }
 
     val lectureType = remember { mutableStateOf(savedLectureType) }
     val division = remember { mutableStateOf(savedDivision) }
@@ -284,6 +284,33 @@ fun LectureDetailSettingScreen(
                 Spacer(modifier = modifier.height(28.dp))
             }
 
+            item {
+                BitgoeulSubjectText(
+                    subjectText = "필수 수강 여부",
+                )
+
+                Row {
+                    LectureSettingTag(
+                        text = "필수",
+                        isSelected = isRequiredCourse.value == "0",
+                        onClick = {
+                            isRequiredCourse.value = "0"
+                        },
+                    )
+
+                    Spacer(modifier = modifier.width(16.dp))
+
+                    LectureSettingTag(
+                        text = "선택",
+                        isSelected = isRequiredCourse.value == "1",
+                        onClick = {
+                            isRequiredCourse.value = "1"
+                        },
+                    )
+                }
+
+                Spacer(modifier = modifier.height(24.dp))
+            }
             item {
                 BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.semester_attended),
