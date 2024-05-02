@@ -52,6 +52,7 @@ fun AiFusionAndIntegrationBanner(
                     style = typography.titleMedium,
                     color = colors.WHITE
                 )
+                Spacer(modifier = modifier.height(24.dp))
                 AutoIndustryGridView(
                     rowItems = listOf(
                         "(주)서치",
