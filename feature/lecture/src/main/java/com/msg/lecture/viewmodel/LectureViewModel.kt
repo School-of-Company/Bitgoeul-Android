@@ -99,15 +99,16 @@ class LectureViewModel @Inject constructor(
                         content = "",
                         startDate = LocalDateTime.now().toString(),
                         endDate = LocalDateTime.now().toString(),
-                        lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+                        lectureType = "",
                         lectureStatus = LectureStatus.OPEN,
                         headCount = 0,
                         maxRegisteredUser = 0,
                         lecturer = "",
                         department = "",
-                        semester = Semester.SECOND_YEAR_FALL_SEMESTER,
-                        division = Division.AI_CONVERGENCE,
-                        line = ""
+                        semester = "",
+                        division = "",
+                        line = "",
+                        essentialComplete = false
                     )
                 )
             )
@@ -151,8 +152,8 @@ class LectureViewModel @Inject constructor(
         DetailLectureResponse(
             name = "",
             content = "",
-            semester = Semester.SECOND_YEAR_FALL_SEMESTER,
-            division = Division.AI_CONVERGENCE,
+            semester = "",
+            division = "",
             department = "",
             line = "",
             createAt = LocalDate.now(),
@@ -165,13 +166,14 @@ class LectureViewModel @Inject constructor(
                     endTime = LocalTime.now()
                 )
             ),
-            lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+            lectureType = "",
             lectureStatus = LectureStatus.OPEN,
             headCount = 0,
             maxRegisteredUser = 0,
             isRegistered = true,
             lecturer = "",
-            credit = 0
+            credit = 0,
+            essentialComplete = false
         )
     )
         private set
@@ -288,6 +290,7 @@ class LectureViewModel @Inject constructor(
         lectureType: String,
         credit: Int,
         maxRegisteredUser: Int,
+        essentialComplete: Boolean,
     ) = viewModelScope.launch {
         openLectureUseCase(
             OpenLectureRequest(
@@ -303,7 +306,8 @@ class LectureViewModel @Inject constructor(
                 lectureDates = lectureDates,
                 lectureType = lectureType,
                 credit = credit,
-                maxRegisteredUser = maxRegisteredUser
+                maxRegisteredUser = maxRegisteredUser,
+                essentialComplete = essentialComplete
             )
         ).onSuccess {
             it.catch { remoteError ->

@@ -1,9 +1,6 @@
 package com.msg.model.remote.response.lecture
 
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.enumdatatype.LectureType
-import com.msg.model.remote.enumdatatype.Semester
 import java.util.UUID
 
 data class LectureListResponse(
