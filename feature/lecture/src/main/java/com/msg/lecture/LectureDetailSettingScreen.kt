@@ -61,6 +61,7 @@ internal fun LectureDetailSettingRoute(
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val coroutineScope = rememberCoroutineScope()
+
     LectureDetailSettingScreen(
         onCloseClicked = {
             onCloseClicked()

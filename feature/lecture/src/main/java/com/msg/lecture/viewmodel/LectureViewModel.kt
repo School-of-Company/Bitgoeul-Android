@@ -7,12 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
+import com.msg.domain.lecture.EditPostUseCase
 import com.msg.domain.lecture.GetDetailLectureUseCase
 import com.msg.domain.lecture.GetLectureListUseCase
+import com.msg.domain.lecture.GetLectureSignUpHistoryUseCase
+import com.msg.domain.lecture.GetTakingLectureStudentListUseCase
 import com.msg.domain.lecture.LectureApplicationCancelUseCase
 import com.msg.domain.lecture.LectureApplicationUseCase
 import com.msg.domain.lecture.OpenLectureUseCase
 import com.msg.domain.lecture.SearchDepartmentUseCase
+import com.msg.domain.lecture.SearchDivisionUseCase
 import com.msg.domain.lecture.SearchLineUseCase
 import com.msg.domain.lecture.SearchProfessorUseCase
 import com.msg.lecture.util.Event
@@ -25,12 +29,17 @@ import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
+import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.Instructors
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.Lectures
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.model.remote.response.lecture.SignUpLectures
+import com.msg.model.remote.response.lecture.Students
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,18 +62,20 @@ class LectureViewModel @Inject constructor(
     private val searchProfessorUseCase: SearchProfessorUseCase,
     private val searchLineUseCase: SearchLineUseCase,
     private val searchDepartmentUseCase: SearchDepartmentUseCase,
+    private val searchDivisionUseCase: SearchDivisionUseCase,
+    private val getLectureSignUpHistoryUseCase: GetLectureSignUpHistoryUseCase,
+    private val getTakingLectureStudentListUseCase: GetTakingLectureStudentListUseCase,
+    private val editPostUseCase: EditPostUseCase,
 ) : ViewModel() {
 
     suspend fun getRole(): Authority {
         return Authority.authorityOf(authTokenDataSource.getAuthority())
     }
 
-    private val _getLectureListResponse =
-        MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
+    private val _getLectureListResponse = MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse =
-        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -76,16 +87,26 @@ class LectureViewModel @Inject constructor(
     private val _lectureApplicationCancelResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val lectureApplicationCancelResponse = _lectureApplicationCancelResponse.asStateFlow()
 
-    private val _searchProfessorResponse =
-        MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
+    private val _searchProfessorResponse = MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
     val searchProfessorResponse = _searchProfessorResponse.asStateFlow()
 
     private val _searchLineResponse = MutableStateFlow<Event<SearchLineResponse>>(Event.Loading)
     val searchLineResponse = _searchLineResponse.asStateFlow()
 
-    private val _searchDepartmentResponse =
-        MutableStateFlow<Event<SearchDepartmentResponse>>(Event.Loading)
+    private val _searchDepartmentResponse = MutableStateFlow<Event<SearchDepartmentResponse>>(Event.Loading)
     val searchDepartmentResponse = _searchDepartmentResponse.asStateFlow()
+
+    private val _searchDivisionResponse = MutableStateFlow<Event<SearchDivisionResponse>>(Event.Loading)
+    val searchDivisionResponse = _searchDivisionResponse.asStateFlow()
+
+    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryResponse>>(Event.Loading)
+    val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
+
+    private val _getTakingLectureStudentListResponse = MutableStateFlow<Event<GetTakingLectureStudentListResponse>>(Event.Loading)
+    val getTakingLectureStudentListResponse = _getTakingLectureStudentListResponse.asStateFlow()
+
+    private val _editPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val editPostResponse = _editPostResponse.asStateFlow()
 
     var lectureList = mutableStateOf(
         LectureListResponse(
@@ -113,6 +134,36 @@ class LectureViewModel @Inject constructor(
         )
     )
         private set
+
+    var lectureSingUpHistoryList = mutableStateOf(
+        GetLectureSignUpHistoryResponse(
+            lectures = listOf(
+                SignUpLectures(
+                    id = UUID.randomUUID(),
+                    name = "",
+                    lectureType = "",
+                    currentCompletedDate = LocalDate.now(),
+                    lecturer = "",
+                    isComplete = false
+                )
+            )
+        )
+    )
+
+    var takingLectureStudentList = mutableStateOf(
+        GetTakingLectureStudentListResponse(
+            students = listOf(
+                Students(
+                    id = UUID.randomUUID(),
+                    name = "",
+                    lectureType = "",
+                    currentCompletedDate = LocalDate.now(),
+                    lecturer = "",
+                    isCompleted = false
+                )
+            )
+        )
+    )
 
     var searchProfessorData = mutableStateOf(
         SearchProfessorResponse(
@@ -145,6 +196,14 @@ class LectureViewModel @Inject constructor(
         )
     )
         private set
+
+    var searchDivisionData = mutableStateOf(
+        SearchDivisionResponse(
+            division = listOf(
+                ""
+            )
+        )
+    )
 
     var lectureDetailData = mutableStateOf(
         DetailLectureResponse(
@@ -349,7 +408,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun lectureApplication(
-        id: UUID
+        id: UUID,
     ) = viewModelScope.launch {
         lectureApplicationUseCase(
             id = id
@@ -365,7 +424,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun lectureApplicationCancel(
-        id: UUID
+        id: UUID,
     ) = viewModelScope.launch {
         lectureApplicationCancelUseCase(
             id = id
@@ -398,7 +457,7 @@ class LectureViewModel @Inject constructor(
 
     fun searchLine(
         keyword: String,
-        division: String
+        division: String,
     ) = viewModelScope.launch {
         searchLineUseCase(
             keyword = keyword,
