@@ -22,15 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.msg.design_system.R
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Division
-import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.enumdatatype.LectureType
-import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.response.lecture.ContentArray
 import java.util.UUID
 
@@ -66,10 +61,7 @@ fun LectureCard(
                     )
 
                     Text(
-                        text = when (data.lectureType) {
-                            LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM -> "상호학점인정교육과정"
-                            LectureType.UNIVERSITY_EXPLORATION_PROGRAM -> "대학탐방프로그램"
-                        },
+                        text = data.lectureType,
                         modifier = modifier
                             .wrapContentWidth()
                             .wrapContentHeight(),
@@ -126,12 +118,7 @@ fun LectureCard(
                         )
 
                         Text(
-                            text = when (data.semester) {
-                                Semester.FIRST_YEAR_FALL_SEMESTER -> "1학년 2학기"
-                                Semester.SECOND_YEAR_SPRING_SEMESTER -> "2학년 1학기"
-                                Semester.SECOND_YEAR_FALL_SEMESTER -> "2학년 2학기"
-                                Semester.THIRD_YEAR_SPRING_SEMESTER -> "3학년 1학기"
-                            },
+                            text = data.semester,
                             modifier = modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
@@ -157,13 +144,7 @@ fun LectureCard(
                     Row {
                         LectureCategoryTag(
                             line = data.line,
-                            division = when (data.division) {
-                                Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
-                                Division.ENERGY_INDUSTRY -> "에너지 산업"
-                                Division.MEDICAL_HEALTHCARE -> "의료헬스케어"
-                                Division.AI_CONVERGENCE -> "AI 융복합"
-                                Division.CULTURAL_INDUSTRY -> "문화 산업"
-                            },
+                            division = data.division,
                             department = data.department
                         )
                     }
@@ -173,29 +154,4 @@ fun LectureCard(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun LectureCardPre() {
-    LectureCard(
-        modifier = Modifier,
-        data = ContentArray(
-            id = UUID.randomUUID(),
-            name = "유저 리서치 - 사용자 경험 개선하기",
-            content = "청춘! 이는 듣기만 하여도 가슴이 설레는 말이다. 청춘! 너의 두 손을 가슴에 대고, 물방아 같은 심박주홍박주홍박주홍박주홍박주홍박주홍박주홍박주홍박주홍",
-            semester = Semester.SECOND_YEAR_SPRING_SEMESTER,
-            division = Division.AI_CONVERGENCE,
-            department = "컴퓨터공학과",
-            startDate = "2021-03-02",
-            endDate = "2021-06-02",
-            lectureType = LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM,
-            lectureStatus = LectureStatus.OPEN,
-            headCount = 10,
-            maxRegisteredUser = 20,
-            lecturer = "모시깽이 교수",
-            line = "전기전자"
-        ),
-        onClick = {},
-    )
 }

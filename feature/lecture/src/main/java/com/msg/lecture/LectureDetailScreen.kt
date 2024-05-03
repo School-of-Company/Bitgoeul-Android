@@ -133,13 +133,7 @@ fun LectureDetailScreen(
                     modifier = modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = when (data.division) {
-                            Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
-                            Division.ENERGY_INDUSTRY -> "에너지 산업"
-                            Division.MEDICAL_HEALTHCARE -> "의료헬스케어"
-                            Division.AI_CONVERGENCE -> "AI 융복합"
-                            Division.CULTURAL_INDUSTRY -> "문화 산업"
-                        },
+                        text = data.division,
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -195,12 +189,7 @@ fun LectureDetailScreen(
                 ) {
 
                     Text(
-                        text = when (data.semester) {
-                            Semester.FIRST_YEAR_FALL_SEMESTER -> "1학년 2학기"
-                            Semester.SECOND_YEAR_SPRING_SEMESTER -> "2학년 1학기"
-                            Semester.SECOND_YEAR_FALL_SEMESTER -> "2학년 2학기"
-                            Semester.THIRD_YEAR_SPRING_SEMESTER -> "3학년 1학기"
-                        },
+                        text = data.semester,
                         color = colors.G2,
                         style = typography.labelMedium
                     )

@@ -241,6 +241,9 @@ class LectureViewModel @Inject constructor(
     var lectureDates = mutableStateListOf<LectureDates>()
         private set
 
+    var essentialComplete = mutableStateOf(false)
+        private set
+
     fun getLectureList(
         page: Int,
         size: Int,

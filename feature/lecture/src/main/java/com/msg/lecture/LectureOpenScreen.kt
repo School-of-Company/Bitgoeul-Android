@@ -53,6 +53,7 @@ fun LectureOpenRoute(
                 lectureType = viewModel.lectureType.value,
                 credit = viewModel.credit.value,
                 maxRegisteredUser = viewModel.maxRegisteredUser.value,
+                essentialComplete = viewModel.essentialComplete.value
             )
             onActionClicked()
         },
