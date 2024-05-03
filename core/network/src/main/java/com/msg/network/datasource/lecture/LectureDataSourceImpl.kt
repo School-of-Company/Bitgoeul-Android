@@ -4,8 +4,11 @@ import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
+import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.network.api.LectureAPI
@@ -79,13 +82,14 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> = flow {
-        emit(
-            BitgoeulApiHandler<SearchLineResponse>()
-                .httpRequest { lectureAPI.searchLine(keyword = keyword, division = division) }
-                .sendRequest()
-        )
-    }.flowOn(Dispatchers.IO)
+    override suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> =
+        flow {
+            emit(
+                BitgoeulApiHandler<SearchLineResponse>()
+                    .httpRequest { lectureAPI.searchLine(keyword = keyword, division = division) }
+                    .sendRequest()
+            )
+        }.flowOn(Dispatchers.IO)
 
     override suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> = flow {
         emit(
@@ -94,4 +98,45 @@ class LectureDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun searchDivision(keyword: String): Flow<SearchDivisionResponse> = flow {
+        emit(
+            BitgoeulApiHandler<SearchDivisionResponse>()
+                .httpRequest { lectureAPI.searchDivision(keyword = keyword) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> =
+        flow {
+            emit(
+                BitgoeulApiHandler<GetLectureSignUpHistoryResponse>()
+                    .httpRequest { lectureAPI.getLectureSignUpHistory(studentId = studentId) }
+                    .sendRequest()
+            )
+        }.flowOn(Dispatchers.IO)
+
+    override suspend fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse> =
+        flow {
+            emit(
+                BitgoeulApiHandler<GetTakingLectureStudentListResponse>()
+                    .httpRequest { lectureAPI.getTakingLectureStudentList(id = id) }
+                    .sendRequest()
+            )
+        }.flowOn(Dispatchers.IO)
+
+    override suspend fun editPost(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> =
+        flow {
+            emit(
+                BitgoeulApiHandler<Unit>()
+                    .httpRequest {
+                        lectureAPI.editPost(
+                            id = id,
+                            studentId = studentId,
+                            isComplete = isComplete
+                        )
+                    }
+                    .sendRequest()
+            )
+        }.flowOn(Dispatchers.IO)
 }
