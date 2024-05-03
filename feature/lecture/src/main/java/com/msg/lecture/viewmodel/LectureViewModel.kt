@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
-import com.msg.domain.lecture.EditPostUseCase
+import com.msg.domain.lecture.EditLectureCourseCompletionStatusUseCase
 import com.msg.domain.lecture.GetDetailLectureUseCase
 import com.msg.domain.lecture.GetLectureListUseCase
 import com.msg.domain.lecture.GetLectureSignUpHistoryUseCase
@@ -65,7 +65,7 @@ class LectureViewModel @Inject constructor(
     private val searchDivisionUseCase: SearchDivisionUseCase,
     private val getLectureSignUpHistoryUseCase: GetLectureSignUpHistoryUseCase,
     private val getTakingLectureStudentListUseCase: GetTakingLectureStudentListUseCase,
-    private val editPostUseCase: EditPostUseCase,
+    private val editLectureCourseCompletionStatusUseCase: EditLectureCourseCompletionStatusUseCase,
 ) : ViewModel() {
 
     suspend fun getRole(): Authority {
@@ -487,6 +487,74 @@ class LectureViewModel @Inject constructor(
             }
         }.onFailure { error ->
             _searchDepartmentResponse.value = error.errorHandling()
+        }
+    }
+
+    fun searchDivision(
+        keyword: String,
+    ) = viewModelScope.launch {
+        searchDivisionUseCase(
+            keyword = keyword,
+        ).onSuccess {
+            it.catch { remoteError ->
+                _searchDivisionResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _searchDivisionResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _searchDivisionResponse.value = error.errorHandling()
+        }
+    }
+
+    fun getLectureSignUpHistory(
+        studentId: UUID
+    ) = viewModelScope.launch {
+        getLectureSignUpHistoryUseCase(
+            studentId = studentId
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getLectureSignUpHistoryResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getLectureSignUpHistoryResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getLectureSignUpHistoryResponse.value = error.errorHandling()
+        }
+    }
+
+    fun getTakingLectureStudentList(
+        id: UUID
+    ) = viewModelScope.launch {
+        getTakingLectureStudentListUseCase(
+            id = id
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getTakingLectureStudentListResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getTakingLectureStudentListResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getTakingLectureStudentListResponse.value = error.errorHandling()
+        }
+    }
+
+    fun editLectureCourseCompletionStatus(
+        id: UUID,
+        studentId: UUID,
+        isComplete: Boolean,
+    ) = viewModelScope.launch {
+        editLectureCourseCompletionStatusUseCase(
+            id = id,
+            studentId = studentId,
+            isComplete = isComplete
+        ).onSuccess {
+            it.catch { remoteError ->
+                _editPostResponse.value = remoteError.errorHandling()
+            }.collect {
+                _editPostResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _editPostResponse.value = error.errorHandling()
         }
     }
 }

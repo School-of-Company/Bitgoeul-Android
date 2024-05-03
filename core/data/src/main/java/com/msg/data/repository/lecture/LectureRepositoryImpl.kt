@@ -91,8 +91,8 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun editPost(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
-        return lectureDataSource.editPost(
+    override suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
+        return lectureDataSource.editLectureCourseCompletionStatus(
             id = id,
             studentId = studentId,
             isComplete = isComplete

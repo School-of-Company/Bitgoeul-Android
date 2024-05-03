@@ -80,7 +80,7 @@ interface LectureAPI {
     ): GetTakingLectureStudentListResponse
 
     @PATCH("{id}/{student_id}")
-    suspend fun editPost(
+    suspend fun editLectureCourseCompletionStatus(
         @Path("id") id: UUID,
         @Path("student_id") studentId: UUID,
         @Query("isComplete") isComplete: Boolean,

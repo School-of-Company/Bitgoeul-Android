@@ -25,6 +25,6 @@ interface LectureRepository {
     suspend fun searchDivision(keyword: String): Flow<SearchDivisionResponse>
     suspend fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse>
     suspend fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse>
-    suspend fun editPost(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>
+    suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>
 
 }

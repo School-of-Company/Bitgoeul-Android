@@ -124,12 +124,12 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun editPost(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> =
+    override suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> =
         flow {
             emit(
                 BitgoeulApiHandler<Unit>()
                     .httpRequest {
-                        lectureAPI.editPost(
+                        lectureAPI.editLectureCourseCompletionStatus(
                             id = id,
                             studentId = studentId,
                             isComplete = isComplete
