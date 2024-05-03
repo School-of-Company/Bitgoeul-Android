@@ -12,7 +12,6 @@ import com.msg.domain.post.GetPostListUseCase
 import com.msg.domain.post.SendPostUseCase
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.FeedType
-import com.msg.model.remote.model.post.PostModel
 import com.msg.model.remote.request.post.WritePostRequest
 import com.msg.model.remote.response.post.GetDetailPostResponse
 import com.msg.model.remote.response.post.GetPostListResponse

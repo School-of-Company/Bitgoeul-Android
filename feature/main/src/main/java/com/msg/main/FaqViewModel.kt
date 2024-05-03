@@ -4,17 +4,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
-import com.msg.domain.faq.AddFrequentlyAskedQuestionUseCase as AddFAQUseCase
-import com.msg.domain.faq.GetFrequentlyAskedQuestionsListUseCase as GetFAQUseCase
 import com.msg.main.util.Event
 import com.msg.main.util.errorHandling
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
-import com.msg.model.remote.request.faq.AddFrequentlyAskedQuestionsRequest as AddFAQRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.msg.domain.faq.AddFrequentlyAskedQuestionUseCase as AddFAQUseCase
+import com.msg.domain.faq.GetFrequentlyAskedQuestionsListUseCase as GetFAQUseCase
+import com.msg.model.remote.request.faq.AddFrequentlyAskedQuestionsRequest as AddFAQRequest
+import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
 
 class FaqViewModel @Inject constructor(
     private val addFAQUseCase: AddFAQUseCase,

@@ -18,9 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.msg.main.component.AutoSchoolClubGridView
 import com.msg.design_system.R
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.main.component.AutoSchoolClubGridView
 import com.msg.ui.DevicePreviews
 
 @Composable

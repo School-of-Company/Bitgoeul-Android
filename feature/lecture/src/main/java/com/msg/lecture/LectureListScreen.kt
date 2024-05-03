@@ -25,10 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.PlusIcon
+import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureFilterDialog
 import com.msg.lecture.component.LectureList
 import com.msg.lecture.util.Event

@@ -38,7 +38,6 @@ import com.msg.post.navigation.postAddScreen
 import com.msg.post.navigation.postDetailScreen
 import com.msg.post.navigation.postDetailSettingScreen
 import com.msg.post.navigation.postScreen
-import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.sign_up.navigation.signUpScreen
 import com.msg.student_activity.navigation.navigateToAddActivity
 import com.msg.student_activity.navigation.navigateToDetailSettingActivity
