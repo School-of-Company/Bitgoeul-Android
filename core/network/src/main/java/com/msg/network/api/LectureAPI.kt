@@ -1,16 +1,19 @@
 package com.msg.network.api
 
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
+import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -26,7 +29,7 @@ interface LectureAPI {
     suspend fun getLectureList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("type") type: LectureType?
+        @Query("type") type: LectureType?,
     ): LectureListResponse
 
     @GET("lecture/{id}")
@@ -60,4 +63,26 @@ interface LectureAPI {
     suspend fun searchDepartment(
         @Query("keyword") keyword: String,
     ): SearchDepartmentResponse
+
+    @GET("lecture/division")
+    suspend fun searchDivision(
+        @Query("keyword") keyword: String,
+    ): SearchDivisionResponse
+
+    @GET("lecture/{student_id}}/signup")
+    suspend fun getLectureSignUpHistory(
+        @Path("student_id") studentId: UUID,
+    ): GetLectureSignUpHistoryResponse
+
+    @GET("lecture/student/{id}")
+    suspend fun getTakingLectureStudentList(
+        @Path("id") id: UUID,
+    ): GetTakingLectureStudentListResponse
+
+    @PATCH("{id}/{student_id}")
+    suspend fun editPost(
+        @Path("id") id: UUID,
+        @Path("student_id") studentId: UUID,
+        @Query("isComplete") isComplete: Boolean,
+    )
 }

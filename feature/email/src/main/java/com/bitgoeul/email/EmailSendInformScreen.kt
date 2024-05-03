@@ -24,10 +24,10 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.bitgoeul.email.util.Event
 import com.bitgoeul.email.viewmodel.EmailViewModel
+import com.msg.design_system.R
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.design_system.R
 import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
 import kotlinx.coroutines.launch
 

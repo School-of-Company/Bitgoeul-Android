@@ -5,13 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitgoeul.email.util.Event
 import com.bitgoeul.email.util.errorHandling
-import com.msg.domain.activity.ChangePasswordUseCase
 import com.msg.domain.auth.FindPasswordUseCase
 import com.msg.domain.email.GetEmailAuthenticateStatusUseCase
 import com.msg.domain.email.SendLinkToEmailUseCase
 import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.email.SendLinkToEmailRequest
-import com.msg.model.remote.request.user.ChangePasswordRequest
 import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

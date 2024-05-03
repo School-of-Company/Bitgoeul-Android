@@ -19,10 +19,8 @@ import com.msg.lecture.util.Event
 import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.Authority
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
-import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
@@ -99,15 +97,16 @@ class LectureViewModel @Inject constructor(
                         content = "",
                         startDate = LocalDateTime.now().toString(),
                         endDate = LocalDateTime.now().toString(),
-                        lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+                        lectureType = "",
                         lectureStatus = LectureStatus.OPEN,
                         headCount = 0,
                         maxRegisteredUser = 0,
                         lecturer = "",
                         department = "",
-                        semester = Semester.SECOND_YEAR_FALL_SEMESTER,
-                        division = Division.AI_CONVERGENCE,
-                        line = ""
+                        semester = "",
+                        division = "",
+                        line = "",
+                        essentialComplete = false
                     )
                 )
             )
@@ -151,8 +150,8 @@ class LectureViewModel @Inject constructor(
         DetailLectureResponse(
             name = "",
             content = "",
-            semester = Semester.SECOND_YEAR_FALL_SEMESTER,
-            division = Division.AI_CONVERGENCE,
+            semester = "",
+            division = "",
             department = "",
             line = "",
             createAt = LocalDate.now(),
@@ -165,13 +164,14 @@ class LectureViewModel @Inject constructor(
                     endTime = LocalTime.now()
                 )
             ),
-            lectureType = LectureType.UNIVERSITY_EXPLORATION_PROGRAM,
+            lectureType = "",
             lectureStatus = LectureStatus.OPEN,
             headCount = 0,
             maxRegisteredUser = 0,
             isRegistered = true,
             lecturer = "",
-            credit = 0
+            credit = 0,
+            essentialComplete = false
         )
     )
         private set
@@ -239,6 +239,9 @@ class LectureViewModel @Inject constructor(
     var lectureDates = mutableStateListOf<LectureDates>()
         private set
 
+    var essentialComplete = mutableStateOf(false)
+        private set
+
     fun getLectureList(
         page: Int,
         size: Int,
@@ -288,6 +291,7 @@ class LectureViewModel @Inject constructor(
         lectureType: String,
         credit: Int,
         maxRegisteredUser: Int,
+        essentialComplete: Boolean,
     ) = viewModelScope.launch {
         openLectureUseCase(
             OpenLectureRequest(
@@ -303,7 +307,8 @@ class LectureViewModel @Inject constructor(
                 lectureDates = lectureDates,
                 lectureType = lectureType,
                 credit = credit,
-                maxRegisteredUser = maxRegisteredUser
+                maxRegisteredUser = maxRegisteredUser,
+                essentialComplete = essentialComplete
             )
         ).onSuccess {
             it.catch { remoteError ->

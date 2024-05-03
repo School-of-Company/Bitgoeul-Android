@@ -5,18 +5,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.msg.design_system.component.pager.PagerIndicator
-import com.msg.main.banner.club.*
-import com.msg.main.banner.industry.*
+import com.msg.main.banner.club.AiFusionAndIntegrationClubBanner
+import com.msg.main.banner.club.CultureIndustryClubBanner
+import com.msg.main.banner.club.EnergyIndustryClubBanner
+import com.msg.main.banner.club.FutureTransportClubBanner
+import com.msg.main.banner.club.MedicalHealthClubBanner
+import com.msg.main.banner.industry.AiFusionAndIntegrationBanner
+import com.msg.main.banner.industry.CultureIndustryBanner
+import com.msg.main.banner.industry.EnergyIndustryBanner
+import com.msg.main.banner.industry.FutureTransportationBanner
+import com.msg.main.banner.industry.MedicalHealthBanner
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)

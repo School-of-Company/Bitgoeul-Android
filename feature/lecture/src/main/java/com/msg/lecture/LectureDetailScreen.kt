@@ -35,9 +35,7 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
@@ -133,13 +131,7 @@ fun LectureDetailScreen(
                     modifier = modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = when (data.division) {
-                            Division.AUTOMOBILE_INDUSTRY -> "자동차 산업"
-                            Division.ENERGY_INDUSTRY -> "에너지 산업"
-                            Division.MEDICAL_HEALTHCARE -> "의료헬스케어"
-                            Division.AI_CONVERGENCE -> "AI 융복합"
-                            Division.CULTURAL_INDUSTRY -> "문화 산업"
-                        },
+                        text = data.division,
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -195,12 +187,7 @@ fun LectureDetailScreen(
                 ) {
 
                     Text(
-                        text = when (data.semester) {
-                            Semester.FIRST_YEAR_FALL_SEMESTER -> "1학년 2학기"
-                            Semester.SECOND_YEAR_SPRING_SEMESTER -> "2학년 1학기"
-                            Semester.SECOND_YEAR_FALL_SEMESTER -> "2학년 2학기"
-                            Semester.THIRD_YEAR_SPRING_SEMESTER -> "3학년 1학기"
-                        },
+                        text = data.semester,
                         color = colors.G2,
                         style = typography.labelMedium
                     )

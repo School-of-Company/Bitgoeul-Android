@@ -1,6 +1,5 @@
 package com.msg.lecture
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,10 +17,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import com.msg.design_system.R
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.DeleteIcon
@@ -42,7 +40,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.AddLectureDatesButton
 import com.msg.lecture.component.LectureDetailSettingInputTextField
 import com.msg.lecture.component.LectureDetailSettingLectureDatesTextField
-import com.msg.lecture.component.LectureDetailSettingSearchBottomSheet
 import com.msg.lecture.component.LectureDetailSettingSearchTextField
 import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.util.Event

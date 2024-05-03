@@ -27,25 +27,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.msg.main.component.BitgoeulInfoCardView
-import com.msg.main.component.ClubInfoCardViewList
-import com.msg.main.component.CollegeCardViewList
-import com.msg.main.component.HighSchoolCardView
-import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.dialog.BitgoeulAlertDialog
 import com.msg.design_system.component.icon.GwangjuIcon
 import com.msg.design_system.component.icon.OfficeOfEducationIcon
+import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.main.component.AddFaqItem
+import com.msg.main.component.BitgoeulInfoCardView
+import com.msg.main.component.ClubInfoCardViewList
+import com.msg.main.component.CollegeCardViewList
 import com.msg.main.component.FaqSection
+import com.msg.main.component.HighSchoolCardView
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.main.util.Event
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.HighSchool
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData
 import com.msg.model.ui.HNCollegeData
@@ -53,6 +50,7 @@ import com.msg.model.ui.NBCollegeData
 import com.msg.model.ui.SWCollegeData
 import com.msg.model.ui.SYCollegeData
 import com.msg.ui.DevicePreviews
+import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
 
 @Composable
 fun MainPageScreenRoute(

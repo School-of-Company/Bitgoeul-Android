@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import com.msg.student_activity.ActivityDetailRoute
 import com.msg.student_activity.ActivityDetailSettingRoute
 import com.msg.student_activity.AddActivityRoute
-import com.msg.student_activity.AddActivityScreen
 import com.msg.student_activity.StudentActivityRoute
 import java.util.UUID
 

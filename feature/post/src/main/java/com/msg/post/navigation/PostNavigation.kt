@@ -8,7 +8,6 @@ import com.msg.post.PostAddScreenRoute
 import com.msg.post.PostDetailScreenRoute
 import com.msg.post.PostDetailSettingScreenRoute
 import com.msg.post.PostScreenRoute
-import java.util.UUID
 
 const val postRoute = "post_route"
 const val postDetailRoute = "post_detail_route"

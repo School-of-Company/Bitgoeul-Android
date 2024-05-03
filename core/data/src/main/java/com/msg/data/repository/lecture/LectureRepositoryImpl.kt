@@ -1,11 +1,13 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.enumdatatype.Division
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
+import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import com.msg.network.datasource.lecture.LectureDataSource
@@ -68,6 +70,32 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> {
         return lectureDataSource.searchDepartment(
             keyword = keyword
+        )
+    }
+
+    override suspend fun searchDivision(keyword: String): Flow<SearchDivisionResponse> {
+        return lectureDataSource.searchDivision(
+            keyword = keyword
+        )
+    }
+
+    override suspend fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> {
+        return lectureDataSource.getLectureSignUpHistory(
+            studentId = studentId
+        )
+    }
+
+    override suspend fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse> {
+        return lectureDataSource.getTakingLectureStudentList(
+            id = id
+        )
+    }
+
+    override suspend fun editPost(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
+        return lectureDataSource.editPost(
+            id = id,
+            studentId = studentId,
+            isComplete = isComplete
         )
     }
 }

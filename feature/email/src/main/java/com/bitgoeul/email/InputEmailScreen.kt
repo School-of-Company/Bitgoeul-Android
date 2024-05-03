@@ -19,13 +19,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bitgoeul.email.viewmodel.EmailViewModel
-import com.msg.design_system.component.icon.GoBackIcon
-import com.msg.design_system.component.topbar.GoBackTopBar
-import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
+import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.textfield.DefaultTextField
+import com.msg.design_system.component.topbar.GoBackTopBar
+import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun InputEmailRoute(
