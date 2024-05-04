@@ -46,8 +46,10 @@ import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -177,6 +179,21 @@ suspend fun getDepartmentSearchData(
         when (response) {
             is Event.Success -> {
                 onDepartmentSuccess(response.data!!)
+            }
+
+            else -> {}
+        }
+    }
+}
+
+suspend fun getDivisionSearchData(
+    viewModel: LectureViewModel,
+    onSearchDivisionData: (data: SearchDivisionResponse) -> Unit,
+) {
+    viewModel.searchDivisionResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSearchDivisionData(response.data!!)
             }
 
             else -> {}
