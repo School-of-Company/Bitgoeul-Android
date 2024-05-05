@@ -77,8 +77,8 @@ internal fun LectureDetailSettingRoute(
             viewModel.line.value = line
             viewModel.userId.value = userId
             viewModel.credit.value = credit
-            viewModel.endDate.value = endDate
             viewModel.startDate.value = startDate
+            viewModel.endDate.value = endDate
             viewModel.maxRegisteredUser.value = maxRegisteredUser
             onApplyClicked()
         },
@@ -105,7 +105,15 @@ internal fun LectureDetailSettingRoute(
                     viewModel.searchDepartmentData.value = data
                 })
             }
+        },
+        onSearchDivisionClicked = { keyword ->
+            viewModel.searchDivision(keyword = keyword)
+            coroutineScope.launch {
+                getDivisionSearchData(viewModel = viewModel, onSearchDivisionData = { data ->
+                    viewModel.searchDivisionData.value = data
+                })
 
+            }
         },
         onLectureDatesAddClicked = {
             viewModel.addLectureDates()
@@ -124,6 +132,7 @@ internal fun LectureDetailSettingRoute(
         searchLineData = viewModel.searchLineData.value,
         searchProfessorData = viewModel.searchProfessorData.value,
         searchDepartmentData = viewModel.searchDepartmentData.value,
+        searchDivisionData = viewModel.searchDivisionData.value,
         savedCreditPoint = viewModel.credit.value,
         savedStartTime = viewModel.startTime.value,
         savedEndTime = viewModel.endTime.value,
@@ -207,13 +216,15 @@ fun LectureDetailSettingScreen(
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
     searchDepartmentData: SearchDepartmentResponse,
+    searchDivisionData: SearchDivisionResponse,
     onCloseClicked: () -> Unit,
     onLectureDatesAddClicked: () -> Unit,
     onLectureDatesRemoveClicked: () -> Unit,
-    onApplyClicked: (String, String, String, String, String, UUID, Int, LocalDateTime?, LocalDateTime?, Int) -> Unit,
+    onApplyClicked: (lectureType: String, semester: String, division: String, department: String, line: String, userId: UUID, credit: Int, startDate: LocalDateTime?, endDate: LocalDateTime?, maxRegisteredUser: Int) -> Unit,
     onSearchProfessorClicked: (String) -> Unit,
     onSearchLineClicked: (String, String) -> Unit,
     onSearchDepartmentClicked: (String) -> Unit,
+    onSearchDivisionClicked: (String) -> Unit,
     onLectureDatesChanged: (completeDate: LocalDate, startTIme: LocalTime, endTime: LocalTime) -> Unit,
     lectureDates: List<LectureDates>,
     startDateForConversion: LocalDate?,
@@ -234,7 +245,6 @@ fun LectureDetailSettingScreen(
 ) {
     val semesterList = listOf("1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기")
     val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램", "기타")
-    val divisionList = listOf("자동차 산업", "에너지 산업", "의료•헬스케어", "AI융•복합", "문화 산업")
 
     val isRequiredCourse = remember { mutableStateOf("0") }
 
@@ -261,6 +271,7 @@ fun LectureDetailSettingScreen(
     val lectureLineForShow = remember { mutableStateOf("") }
     val lectureDepartmentForShow = remember { mutableStateOf("") }
     val lectureTeacherInChargeForShow = remember { mutableStateOf("") }
+    val lectureDivisionForShow = remember { mutableStateOf("") }
 
     val lectureAttendCompleteDateListForShow = remember { mutableStateListOf("") }
     val lectureAttendStartTimeListForShow = remember { mutableStateListOf("") }
@@ -367,14 +378,22 @@ fun LectureDetailSettingScreen(
                     subjectText = stringResource(id = R.string.lecture_division),
                 )
 
-                LectureDetailSettingTextField(
+                LectureDetailSettingSearchTextField(
                     modifier = modifier.fillMaxWidth(),
-                    list = divisionList,
-                    selectedItem = division.value.ifEmpty { "구분 선택" },
-                    onItemChange = { selectedDivision ->
-                        if (division.value != selectedDivision) division.value =
-                            selectedDivision else division.value = "구분 선택"
+                    placeholder = lectureDivisionForShow.value.ifEmpty { "구분 선택" },
+                    division = division.value,
+                    onDivisionItemClick = { selectedDivisionData ->
+                        division.value = selectedDivisionData
+                        lectureDivisionForShow.value = selectedDivisionData
                     },
+                    isClickedPickerType = "구분",
+                    onSearchDivisionClicked = { keyword ->
+                        onSearchDivisionClicked(keyword)
+                    },
+                    searchLineData = searchLineData,
+                    searchDepartmentData = searchDepartmentData,
+                    searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -400,6 +419,7 @@ fun LectureDetailSettingScreen(
                     searchLineData = searchLineData,
                     searchDepartmentData = searchDepartmentData,
                     searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -424,6 +444,7 @@ fun LectureDetailSettingScreen(
                     searchLineData = searchLineData,
                     searchDepartmentData = searchDepartmentData,
                     searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -448,6 +469,7 @@ fun LectureDetailSettingScreen(
                     searchLineData = searchLineData,
                     searchDepartmentData = searchDepartmentData,
                     searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))

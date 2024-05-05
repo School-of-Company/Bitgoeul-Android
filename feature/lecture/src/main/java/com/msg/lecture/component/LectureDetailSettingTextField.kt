@@ -24,6 +24,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.util.toLocalDate
 import com.msg.lecture.util.toLocalTime
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.time.LocalDate
@@ -68,13 +69,16 @@ fun LectureDetailSettingSearchTextField(
     onSearchLineClicked: (String, String) -> Unit = { _, _ -> },
     onSearchDepartmentClicked: (String) -> Unit = {},
     onSearchProfessorClicked: (String) -> Unit = {},
-    onProfessorItemClick: (UUID, String) -> Unit = { _, _ -> },
+    onSearchDivisionClicked: (String) -> Unit = {},
+    onProfessorItemClick: (userId: UUID, professorName: String) -> Unit = { _, _ -> },
     onDepartmentItemClick: (String) -> Unit = {},
     onLineItemClick: (String) -> Unit = {},
+    onDivisionItemClick: (String) -> Unit = {},
     isClickedPickerType: String,
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
     searchDepartmentData: SearchDepartmentResponse,
+    searchDivisionData: SearchDivisionResponse,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -123,6 +127,10 @@ fun LectureDetailSettingSearchTextField(
                             onSearchProfessorClicked(keyword)
                         }
 
+                        "구분" -> {
+                            onSearchDivisionClicked(keyword)
+                        }
+
                         else -> {}
                     }
                 },
@@ -131,18 +139,22 @@ fun LectureDetailSettingSearchTextField(
                     onProfessorItemClick(selectedProfessorUUID, selectedProfessorName)
                 },
                 division = division,
-                searchProfessorData = searchProfessorData,
-                searchLineData = searchLineData,
-                searchDepartmentData = searchDepartmentData,
                 onDepartmentListClick = { selectedDepartmentData ->
                     onDepartmentItemClick(selectedDepartmentData)
                 },
                 onLineListClick = { selectedLineData ->
                     onLineItemClick(selectedLineData)
                 },
+                onDivisionListClick = {selectedDivisionData ->
+                    onDivisionItemClick(selectedDivisionData)
+                },
                 onQuit = {
                     isFocused.value = false
-                }
+                },
+                searchProfessorData = searchProfessorData,
+                searchLineData = searchLineData,
+                searchDepartmentData = searchDepartmentData,
+                searchDivisionData = searchDivisionData
             )
         }
     }

@@ -25,6 +25,7 @@ import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
@@ -35,6 +36,7 @@ fun LectureDetailSettingSearchBottomSheet(
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
     searchDepartmentData: SearchDepartmentResponse,
+    searchDivisionData: SearchDivisionResponse,
     modifier: Modifier = Modifier,
     searchPlaceHolder: String,
     division: String,
@@ -43,6 +45,7 @@ fun LectureDetailSettingSearchBottomSheet(
     onProfessorListClick: (professorUUID: UUID, professorName: String) -> Unit,
     onDepartmentListClick: (String) -> Unit,
     onLineListClick: (String) -> Unit,
+    onDivisionListClick: (String) -> Unit,
     onQuit: () -> Unit,
 ) {
     val keywordState = remember { mutableStateOf("") }
@@ -112,6 +115,10 @@ fun LectureDetailSettingSearchBottomSheet(
                                 },
                                 data = searchDepartmentData
                             )
+                        }
+
+                        "구분" -> {
+
                         }
                     }
                 }
