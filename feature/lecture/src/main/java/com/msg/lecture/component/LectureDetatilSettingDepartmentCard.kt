@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun LectureDetailSettingDepartmentCard(
+fun LectureDetailSettingDepartmentAndDivisionCard(
     data: String,
     modifier: Modifier,
     onClick: (String) -> Unit

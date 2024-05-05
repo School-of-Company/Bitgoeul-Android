@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.icon.EmptyBoxIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
@@ -32,7 +33,7 @@ fun LectureDepartmentList(
             modifier = modifier.background(color = colors.WHITE)
         ) {
                 items(data.departments.size) { index ->
-                    LectureDetailSettingDepartmentCard(
+                    LectureDetailSettingDepartmentAndDivisionCard(
                         modifier = modifier,
                         onClick = { department ->
                             onClick(department)
@@ -65,19 +66,19 @@ fun LectureDepartmentList(
 
 @Composable
 fun LectureLineList(
-    searchLineData: SearchLineResponse,
+    data: SearchLineResponse,
     keyword: String,
     modifier: Modifier,
     division: String,
     onClick: (String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
-        if (searchLineData.lines.isNotEmpty()) {
+        if (data.lines.isNotEmpty()) {
             LazyColumn(
                 modifier = modifier.background(color = Color.Transparent)
             ) {
-                items(searchLineData.lines.size) { index ->
-                    searchLineData.lines.getOrNull(index)?.let { linesData ->
+                items(data.lines.size) { index ->
+                    data.lines.getOrNull(index)?.let { linesData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
                             onClick = { _, searchLineData, _ ->
@@ -115,25 +116,25 @@ fun LectureLineList(
 
 @Composable
 fun LectureProfessorList(
-    searchProfessorData: SearchProfessorResponse,
+    data: SearchProfessorResponse,
     keyword: String,
     modifier: Modifier,
     division: String,
     onClick: (UUID, String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
-        if (searchProfessorData.instructors.isNotEmpty()) {
+        if (data.instructors.isNotEmpty()) {
             LazyColumn(
                 modifier = modifier.background(color = Color.Transparent),
             ) {
-                items(searchProfessorData.instructors.size) { index ->
-                    searchProfessorData.instructors.getOrNull(index)?.let {
+                items(data.instructors.size) { index ->
+                    data.instructors.getOrNull(index)?.let { professorData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
                             onClick = { professorUUID, _, selectedProfessorName ->
                                 onClick(professorUUID, selectedProfessorName)
                             },
-                            searchProfessorData = searchProfessorData.instructors[index],
+                            searchProfessorData = professorData,
                             searchLineData = null,
                             division = division,
                             keyword = keyword
@@ -158,6 +159,32 @@ fun LectureProfessorList(
                     style = typography.labelMedium,
                     color = colors.G2
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun LectureDivisionList(
+    data: SearchDivisionResponse,
+    modifier: Modifier,
+    onClick: (String) -> Unit
+) {
+    BitgoeulAndroidTheme { colors, typography ->
+        LazyColumn(
+            modifier = modifier.background(color = Color.Transparent)
+        ) {
+            items(data.division.size) {index ->
+                data.division.getOrNull(index)?.let {
+                    LectureDetailSettingDepartmentAndDivisionCard(
+                        modifier = modifier.background(color = Color.Transparent),
+                        onClick = { division ->
+                            onClick(division)
+                        },
+                        data = data.division[index]
+
+                    )
+                }
             }
         }
     }

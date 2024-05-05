@@ -89,7 +89,7 @@ fun LectureDetailSettingSearchBottomSheet(
                                 onClick = { selectedLineData ->
                                     onLineListClick(selectedLineData)
                                 },
-                                searchLineData = searchLineData,
+                                data = searchLineData,
                                 division = division,
                                 keyword = keywordState.value
                             )
@@ -101,7 +101,7 @@ fun LectureDetailSettingSearchBottomSheet(
                                 onClick = { professor, selectedProfessorName ->
                                     onProfessorListClick(professor, selectedProfessorName)
                                 },
-                                searchProfessorData = searchProfessorData,
+                                data = searchProfessorData,
                                 division = division,
                                 keyword = keywordState.value
                             )
@@ -118,7 +118,13 @@ fun LectureDetailSettingSearchBottomSheet(
                         }
 
                         "구분" -> {
-
+                            LectureDivisionList(
+                                modifier = modifier,
+                                onClick = { division ->
+                                    onDivisionListClick(division)
+                                },
+                                data = searchDivisionData
+                            )
                         }
                     }
                 }
