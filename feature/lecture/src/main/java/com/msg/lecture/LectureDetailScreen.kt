@@ -44,6 +44,7 @@ import com.msg.ui.util.toLocalTimeFormat
 @Composable
 fun LectureDetailRoute(
     onBackClicked: () -> Unit,
+    onLectureTakingStudentListScreenClick: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val id = viewModel.selectedLectureId.value
@@ -64,6 +65,7 @@ fun LectureDetailRoute(
         role = role.value,
         data = viewModel.lectureDetailData.value,
         onBackClicked = onBackClicked,
+        onLectureTakingStudentListScreenClick = onLectureTakingStudentListScreenClick,
         onApplicationCancelClick = {
             viewModel.lectureApplicationCancel(viewModel.selectedLectureId.value)
         },
@@ -96,6 +98,7 @@ fun LectureDetailScreen(
     onBackClicked: () -> Unit,
     onApplicationClick: () -> Unit,
     onApplicationCancelClick: () -> Unit,
+    onLectureTakingStudentListScreenClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val isPositiveActionDialogVisible = remember { mutableStateOf(false) }

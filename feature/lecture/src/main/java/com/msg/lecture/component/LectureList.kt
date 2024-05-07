@@ -67,7 +67,7 @@ fun LectureTakingStudentList(
     BitgoeulAndroidTheme { colors, typography ->
         LazyColumn(
             modifier = modifier
-                .padding(horizontal = 28.dp, vertical = 24.dp)
+                .padding(vertical = 24.dp)
                 .fillMaxSize()
         ){
             if (data != null) {
@@ -79,6 +79,8 @@ fun LectureTakingStudentList(
                             onChangeCompleteState(isCompleteStatus, selectedStudentId)
                         }
                     )
+                    
+                    Spacer(modifier = modifier.height(12.dp))
                 }
             }
         }
