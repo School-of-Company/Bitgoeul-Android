@@ -2,25 +2,18 @@ package com.msg.lecture
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.msg.design_system.component.icon.CircledAddIcon
-import com.msg.design_system.component.icon.CircledGroupIcon
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -33,7 +26,7 @@ import java.util.UUID
 @Composable
 fun LectureTakingStudentListRoute(
     onBackClicked: () -> Unit,
-    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     LaunchedEffect(true) {
         viewModel.getTakingLectureStudentList()
@@ -57,22 +50,23 @@ suspend fun getTakingLectureStudentList(
     viewModel: LectureViewModel,
     onSuccess: (data: GetTakingLectureStudentListResponse) -> Unit,
 ) {
-   viewModel.getTakingLectureStudentListResponse.collect { response ->
-       when (response) {
-           is Event.Success -> {
-               onSuccess(response.data!!)
-           }
+    viewModel.getTakingLectureStudentListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
 
-           else -> {}
-       }
-   }
+            else -> {}
+        }
+    }
 }
+
 @Composable
 fun LectureTakingStudentListScreen(
     data: GetTakingLectureStudentListResponse? = null,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onChangeCompleteState: (isComplete: Boolean, studentId: UUID ) -> Unit
+    onChangeCompleteState: (isComplete: Boolean, studentId: UUID) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -91,34 +85,11 @@ fun LectureTakingStudentListScreen(
 
             Spacer(modifier = modifier.height(8.dp))
 
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "강의 신청자 명단",
-                    style = typography.titleMedium,
-                    color = colors.BLACK
-                )
-
-                Spacer(modifier = modifier.weight(1f))
-
-                CircledGroupIcon(
-                    modifier = modifier
-                        .clickable {
-
-                        }
-                )
-
-                Spacer(modifier = modifier.width(24.dp))
-
-                CircledAddIcon(
-                    modifier = modifier
-                        .clickable {
-
-                        }
-                )
-            }
+            Text(
+                text = "강의 신청자 명단",
+                style = typography.titleMedium,
+                color = colors.BLACK
+            )
 
             Spacer(modifier = modifier.height(8.dp))
 

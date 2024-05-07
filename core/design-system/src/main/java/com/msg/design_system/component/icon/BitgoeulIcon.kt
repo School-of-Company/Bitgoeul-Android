@@ -320,28 +320,6 @@ fun BigAlertIcon() {
 }
 
 @Composable
-fun CircledGroupIcon(
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        modifier = modifier,
-        painter = painterResource(id = R.drawable.ic_circled_group),
-        contentDescription = "Circled group icon"
-    )
-}
-
-@Composable
-fun CircledAddIcon(
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        modifier = modifier,
-        painter = painterResource(id = R.drawable.ic_circled_add),
-        contentDescription = "Circled add icon"
-    )
-}
-
-@Composable
 fun DivideRectangleIcon() {
     Image(
         painter = painterResource(id = R.drawable.ic_divide_rectangle),
