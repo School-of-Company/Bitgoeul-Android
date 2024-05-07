@@ -23,6 +23,7 @@ import com.msg.lecture.util.Event
 import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.Authority
+import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.model.lecture.LectureDates
@@ -155,10 +156,15 @@ class LectureViewModel @Inject constructor(
             students = listOf(
                 Students(
                     id = UUID.randomUUID(),
+                    email = "",
                     name = "",
-                    lectureType = "",
-                    currentCompletedDate = LocalDate.now(),
-                    lecturer = "",
+                    grade = 1,
+                    classNumber = 1,
+                    number = 1,
+                    phoneNumber = "010-2714-1053",
+                    school = HighSchool.GWANGJU_AUTOMATIC_EQUIPMENT_TECHNICAL_HIGH_SCHOOL,
+                    clubName = "",
+                    cohort = 1,
                     isCompleted = false
                 )
             )
@@ -522,11 +528,9 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun getTakingLectureStudentList(
-        id: UUID
-    ) = viewModelScope.launch {
+    fun getTakingLectureStudentList() = viewModelScope.launch {
         getTakingLectureStudentListUseCase(
-            id = id
+            id = selectedLectureId.value
         ).onSuccess {
             it.catch { remoteError ->
                 _getTakingLectureStudentListResponse.value = remoteError.errorHandling()
@@ -539,12 +543,11 @@ class LectureViewModel @Inject constructor(
     }
 
     fun editLectureCourseCompletionStatus(
-        id: UUID,
         studentId: UUID,
         isComplete: Boolean,
     ) = viewModelScope.launch {
         editLectureCourseCompletionStatusUseCase(
-            id = id,
+            id = selectedLectureId.value,
             studentId = studentId,
             isComplete = isComplete
         ).onSuccess {

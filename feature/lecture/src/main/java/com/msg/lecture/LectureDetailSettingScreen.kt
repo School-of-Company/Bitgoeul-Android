@@ -273,11 +273,6 @@ fun LectureDetailSettingScreen(
     val lectureTeacherInChargeForShow = remember { mutableStateOf("") }
     val lectureDivisionForShow = remember { mutableStateOf("") }
 
-    val lectureAttendCompleteDateListForShow = remember { mutableStateListOf("") }
-    val lectureAttendStartTimeListForShow = remember { mutableStateListOf("") }
-    val lectureAttendEndTimeListForShow = remember { mutableStateListOf("") }
-
-
     BitgoeulAndroidTheme { colors, typography ->
         LazyColumn(
             modifier = modifier
@@ -531,7 +526,7 @@ fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     selectedItem = "수강일 입력(필수)",
                     onLectureDatesChanged = { completeDate, startTIme, endTime ->
-
+                        onLectureDatesChanged(completeDate, startTIme, endTime)
                     }
                 )
 

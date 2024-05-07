@@ -267,7 +267,7 @@ fun SearchIcon(
 
 @Composable
 fun DeleteIcon(
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_delete),
@@ -275,6 +275,7 @@ fun DeleteIcon(
         modifier = modifier
     )
 }
+
 @Composable
 fun ChatIcon() {
     Image(
@@ -285,7 +286,7 @@ fun ChatIcon() {
 
 @Composable
 fun EmptyBoxIcon(
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_empty_box),
@@ -304,7 +305,8 @@ fun GreySettingIcon() {
 
 @Composable
 fun DashIcon() {
-    Image(painter = painterResource(id = R.drawable.ic_dash),
+    Image(
+        painter = painterResource(id = R.drawable.ic_dash),
         contentDescription = "Grey dash icon"
     )
 }
@@ -314,5 +316,35 @@ fun BigAlertIcon() {
     Image(
         painter = painterResource(id = R.drawable.ic_big_alert),
         contentDescription = "Big alert icon"
+    )
+}
+
+@Composable
+fun CircledGroupIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        modifier = modifier,
+        painter = painterResource(id = R.drawable.ic_circled_group),
+        contentDescription = "Circled group icon"
+    )
+}
+
+@Composable
+fun CircledAddIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        modifier = modifier,
+        painter = painterResource(id = R.drawable.ic_circled_add),
+        contentDescription = "Circled add icon"
+    )
+}
+
+@Composable
+fun DivideRectangleIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_divide_rectangle),
+        contentDescription = "Divide rectangle icon"
     )
 }

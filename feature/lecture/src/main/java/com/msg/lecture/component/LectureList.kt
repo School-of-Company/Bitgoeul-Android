@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.lecture.ContentArray
+import com.msg.model.remote.response.lecture.Students
 import java.util.UUID
 
 @Composable
@@ -42,7 +44,7 @@ fun LectureList(
 
                     Spacer(modifier = modifier.height(12.dp))
 
-                    LectureCard(
+                    LectureListCard(
                         modifier = modifier,
                         data = item,
                         onClick = onClick,
@@ -51,6 +53,33 @@ fun LectureList(
                     Spacer(modifier = modifier.height(12.dp))
                 }
 
+            }
+        }
+    }
+}
+
+@Composable
+fun LectureTakingStudentList(
+    modifier: Modifier,
+    data: List<Students>?,
+    onChangeCompleteState: (isComplete: Boolean, studentId: UUID) -> Unit,
+) {
+    BitgoeulAndroidTheme { colors, typography ->
+        LazyColumn(
+            modifier = modifier
+                .padding(horizontal = 28.dp, vertical = 24.dp)
+                .fillMaxSize()
+        ){
+            if (data != null) {
+                items(data) {item ->
+                    LectureTakingStudentCard(
+                        modifier = modifier,
+                        data = item,
+                        onChangeCompleteState = { isCompleteStatus, selectedStudentId ->
+                            onChangeCompleteState(isCompleteStatus, selectedStudentId)
+                        }
+                    )
+                }
             }
         }
     }
