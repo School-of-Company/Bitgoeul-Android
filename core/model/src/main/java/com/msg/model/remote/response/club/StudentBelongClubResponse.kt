@@ -2,7 +2,7 @@ package com.msg.model.remote.response.club
 
 data class StudentBelongClubResponse(
     val name: String,
-    val phoneNumber: Int,
+    val phoneNumber: String,
     val email: String,
     val credit: Int
 )
