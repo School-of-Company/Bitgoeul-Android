@@ -202,7 +202,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                     LectureDetailSettingInputTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "○○○○년 ○○월 ○○일",
+                        placeholder = "예) 2024년 02월 04일",
                         onItemChange = { inputCompleteDates ->
                             completeDates.value = inputCompleteDates
                         },
@@ -212,7 +212,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                     LectureDetailSettingInputTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "○○시 ○○분 시작",
+                        placeholder = "예) 13시 50분 시작",
                         onItemChange = { inputStartTime ->
                             startTime.value = inputStartTime
                         },
@@ -222,7 +222,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                     LectureDetailSettingInputTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "○○시 ○○분 종료",
+                        placeholder = "예) 15시 30분 종료",
                         onItemChange = { inputEndTime ->
                             endTime.value = inputEndTime
                         },
