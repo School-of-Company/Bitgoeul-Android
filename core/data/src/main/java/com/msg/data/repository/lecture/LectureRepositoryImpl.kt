@@ -26,7 +26,7 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun getLectureList(
         page: Int,
         size: Int,
-        type: LectureType?,
+        type: String?,
     ): Flow<LectureListResponse> {
         return lectureDataSource.getLectureList(
             page = page,

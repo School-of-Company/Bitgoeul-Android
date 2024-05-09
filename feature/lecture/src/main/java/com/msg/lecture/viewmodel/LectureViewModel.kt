@@ -297,7 +297,7 @@ class LectureViewModel @Inject constructor(
     fun getLectureList(
         page: Int,
         size: Int,
-        type: LectureType?,
+        type: String?,
     ) = viewModelScope.launch {
         getLectureListUseCase(
             page = page,

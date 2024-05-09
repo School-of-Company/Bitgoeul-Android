@@ -28,7 +28,7 @@ interface LectureAPI {
     suspend fun getLectureList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("type") type: LectureType?,
+        @Query("type") type: String?,
     ): LectureListResponse
 
     @GET("lecture/{id}")

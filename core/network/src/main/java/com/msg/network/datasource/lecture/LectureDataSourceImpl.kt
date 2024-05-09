@@ -32,7 +32,7 @@ class LectureDataSourceImpl @Inject constructor(
     override suspend fun getLectureList(
         page: Int,
         size: Int,
-        type: LectureType?,
+        type: String?,
     ): Flow<LectureListResponse> = flow {
         emit(
             BitgoeulApiHandler<LectureListResponse>()

@@ -14,7 +14,7 @@ import java.util.UUID
 
 interface LectureRepository {
     suspend fun openLecture(body: OpenLectureRequest): Flow<Unit>
-    suspend fun getLectureList(page: Int, size: Int, type: LectureType?): Flow<LectureListResponse>
+    suspend fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListResponse>
     suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
     suspend fun lectureApplication(id: UUID): Flow<Unit>
     suspend fun lectureApplicationCancel(id: UUID): Flow<Unit>

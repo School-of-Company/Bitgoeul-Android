@@ -110,7 +110,7 @@ fun LectureListScreen(
     onOpenClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit,
-    onFilterChanged: (type: LectureType?) -> Unit,
+    onFilterChanged: (type: String?) -> Unit,
     role: Authority,
 ) {
     val isFilterDialogVisible = remember { mutableStateOf(false) }
