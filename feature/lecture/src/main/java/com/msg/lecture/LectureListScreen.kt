@@ -34,7 +34,6 @@ import com.msg.lecture.component.LectureList
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Authority
-import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.Lectures
 import java.util.UUID

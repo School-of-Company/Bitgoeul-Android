@@ -24,7 +24,6 @@ import androidx.compose.ui.window.Dialog
 import com.msg.design_system.component.bottomsheet.SelectedIndicator
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.LectureType
 
 @Composable
 fun LectureFilterDialog(

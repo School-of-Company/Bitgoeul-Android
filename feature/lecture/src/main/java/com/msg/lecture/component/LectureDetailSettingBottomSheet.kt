@@ -30,6 +30,7 @@ import com.msg.model.remote.response.lecture.SearchDepartmentResponse
 import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -142,7 +143,6 @@ fun LectureDetailSettingSearchBottomSheet(
 fun LectureDetailSettingLectureDatesBottomSheet(
     modifier: Modifier = Modifier,
     onQuit: (completeDates: String, startTime: String, endTime: String) -> Unit,
-    onDismissQuest: () -> Unit = {},
 ) {
     val completeDates = remember { mutableStateOf("") }
     val startTime = remember { mutableStateOf("") }
@@ -162,13 +162,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
                 onDismissRequest = {
                     if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
                         onQuit(completeDates.value, startTime.value, endTime.value)
-                    } else {
-                        onDismissQuest()
-                        Log.e("dismiss request else on", "dismiss request else on")
                     }
-                    Log.e("input completeDates", completeDates.toString())
-                    Log.e("input startTime", startTime.toString())
-                    Log.e("input endTime", endTime.toString())
                 },
             ) {
                 Column(
@@ -202,7 +196,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                     LectureDetailSettingInputTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "예) 2024년 02월 04일",
+                        placeholder = "수강일 예) 2024년 02월 04일",
                         onItemChange = { inputCompleteDates ->
                             completeDates.value = inputCompleteDates
                         },
@@ -212,7 +206,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                     LectureDetailSettingInputTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "예) 13시 50분 시작",
+                        placeholder = "시작 시간 입력 예) 13시 50분",
                         onItemChange = { inputStartTime ->
                             startTime.value = inputStartTime
                         },
@@ -222,7 +216,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                     LectureDetailSettingInputTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "예) 15시 30분 종료",
+                        placeholder = "종료 시간 입력 예) 15시 30분",
                         onItemChange = { inputEndTime ->
                             endTime.value = inputEndTime
                         },
@@ -235,6 +229,9 @@ fun LectureDetailSettingLectureDatesBottomSheet(
                         onClick = {
                             if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
                                 onQuit(completeDates.value, startTime.value, endTime.value)
+                                coroutineScope.launch {
+                                    bottomSheetState.hide()
+                                }
                             }
                         },
                         text = "적용하기",

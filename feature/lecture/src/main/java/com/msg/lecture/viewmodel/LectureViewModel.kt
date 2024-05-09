@@ -25,7 +25,6 @@ import com.msg.lecture.util.errorHandling
 import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
@@ -250,13 +249,7 @@ class LectureViewModel @Inject constructor(
     var content = mutableStateOf("")
         private set
 
-    var lecturer = mutableStateOf("")
-        private set
-
     var credit = mutableIntStateOf(1)
-        private set
-
-    var headCount = mutableIntStateOf(0)
         private set
 
     var maxRegisteredUser = mutableIntStateOf(0)
@@ -284,12 +277,6 @@ class LectureViewModel @Inject constructor(
         private set
 
     var endDate = mutableStateOf<LocalDateTime?>(null)
-        private set
-
-    var startDateForConversion = mutableStateOf<LocalDate?>(null)
-        private set
-
-    var endDateForConversion = mutableStateOf<LocalDate?>(null)
         private set
 
     var completeDate = mutableStateOf<LocalDate?>(null)

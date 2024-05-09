@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,7 +48,6 @@ import com.msg.model.remote.response.lecture.SearchDepartmentResponse
 import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -125,18 +123,14 @@ internal fun LectureDetailSettingRoute(
             viewModel.completeDate.value = completeDate
             viewModel.startTime.value = startTIme
             viewModel.endTime.value = endTime
+            viewModel.addLectureDates()
         },
         lectureDates = viewModel.lectureDates,
-        startDateForConversion = viewModel.startDateForConversion.value,
-        endDateForConversion = viewModel.endDateForConversion.value,
         searchLineData = viewModel.searchLineData.value,
         searchProfessorData = viewModel.searchProfessorData.value,
         searchDepartmentData = viewModel.searchDepartmentData.value,
         searchDivisionData = viewModel.searchDivisionData.value,
         savedCreditPoint = viewModel.credit.value,
-        savedStartTime = viewModel.startTime.value,
-        savedEndTime = viewModel.endTime.value,
-        savedCompleteDate = viewModel.completeDate.value,
         savedStartDate = viewModel.startDate.value,
         savedEndDate = viewModel.endDate.value,
         savedMaxRegisteredUser = viewModel.maxRegisteredUser.value,
@@ -227,8 +221,6 @@ fun LectureDetailSettingScreen(
     onSearchDivisionClicked: (String) -> Unit,
     onLectureDatesChanged: (completeDate: LocalDate, startTIme: LocalTime, endTime: LocalTime) -> Unit,
     lectureDates: List<LectureDates>,
-    startDateForConversion: LocalDate?,
-    endDateForConversion: LocalDate?,
     savedLectureType: String,
     savedSemester: String,
     savedDivision: String,
@@ -238,9 +230,6 @@ fun LectureDetailSettingScreen(
     savedCreditPoint: Int,
     savedStartDate: LocalDateTime?,
     savedEndDate: LocalDateTime?,
-    savedCompleteDate: LocalDate?,
-    savedStartTime: LocalTime?,
-    savedEndTime: LocalTime?,
     savedMaxRegisteredUser: Int,
 ) {
     val semesterList = listOf("1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기")
@@ -257,10 +246,6 @@ fun LectureDetailSettingScreen(
     val semester = remember { mutableStateOf(savedSemester) }
     val startDate = remember { mutableStateOf(savedStartDate) }
     val endDate = remember { mutableStateOf(savedEndDate) }
-    val startDateForConversion = remember { mutableStateOf(startDateForConversion) }
-    val endDateForConversion = remember { mutableStateOf(endDateForConversion) }
-    val startTime = remember { mutableStateOf(savedStartTime) }
-    val endTime = remember { mutableStateOf(savedEndTime) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
     val applicationStartTimeForShow = remember { mutableStateOf("") }
@@ -272,6 +257,7 @@ fun LectureDetailSettingScreen(
     val lectureDepartmentForShow = remember { mutableStateOf("") }
     val lectureTeacherInChargeForShow = remember { mutableStateOf("") }
     val lectureDivisionForShow = remember { mutableStateOf("") }
+    val lectureDatesForShow = remember { mutableStateOf("") }
 
     BitgoeulAndroidTheme { colors, typography ->
         LazyColumn(
@@ -281,7 +267,6 @@ fun LectureDetailSettingScreen(
                 .padding(top = 24.dp)
                 .padding(horizontal = 24.dp)
         ) {
-
             item {
                 Row(
                     modifier = modifier
@@ -332,6 +317,7 @@ fun LectureDetailSettingScreen(
 
                 Spacer(modifier = modifier.height(24.dp))
             }
+
             item {
                 BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.semester_attended),
@@ -524,15 +510,15 @@ fun LectureDetailSettingScreen(
 
                 LectureDetailSettingLectureDatesTextField(
                     modifier = modifier.fillMaxWidth(),
-                    selectedItem = "수강일 입력(필수)",
-                    onLectureDatesChanged = { completeDate, startTIme, endTime ->
-                        onLectureDatesChanged(completeDate, startTIme, endTime)
+                    selectedItem = lectureDatesForShow.value.ifEmpty { "수강일 입력(필수)" },
+                    onLectureDatesChanged = { completeDate, startTime, endTime ->
+                        onLectureDatesChanged(completeDate, startTime, endTime)
+                        lectureDatesForShow.value = completeDate.toString() + startTime.toString() + endTime.toString()
                     }
                 )
 
                 Spacer(modifier = modifier.height(8.dp))
             }
-
 
             itemsIndexed(lectureDates) { index, lectureDatesItem ->
                 Row {
