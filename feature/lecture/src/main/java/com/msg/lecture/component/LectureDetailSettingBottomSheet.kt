@@ -1,5 +1,6 @@
 package com.msg.lecture.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.button.BitgoeulButton
@@ -28,6 +30,7 @@ import com.msg.model.remote.response.lecture.SearchDepartmentResponse
 import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -139,85 +142,104 @@ fun LectureDetailSettingSearchBottomSheet(
 fun LectureDetailSettingLectureDatesBottomSheet(
     modifier: Modifier = Modifier,
     onQuit: (completeDates: String, startTime: String, endTime: String) -> Unit,
+    onDismissQuest: () -> Unit = {},
 ) {
     val completeDates = remember { mutableStateOf("") }
     val startTime = remember { mutableStateOf("") }
     val endTime = remember { mutableStateOf("") }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val coroutineScope = rememberCoroutineScope()
+
     BitgoeulAndroidTheme { colors, typography ->
-        ModalBottomSheet(
-            containerColor = colors.WHITE,
-            onDismissRequest = {
-                if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
-                    onQuit(completeDates.value, startTime.value, endTime.value)
-                }
-            },
-            sheetState = bottomSheetState
-        ) {
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(color = colors.WHITE)
-                    .padding(horizontal = 28.dp, vertical = 24.dp)
+        LaunchedEffect(key1 = Unit) {
+            bottomSheetState.expand()
+        }
+
+        if (bottomSheetState.isVisible) {
+            ModalBottomSheet(
+                containerColor = colors.WHITE,
+                sheetState = bottomSheetState,
+                onDismissRequest = {
+                    if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
+                        onQuit(completeDates.value, startTime.value, endTime.value)
+                    } else {
+                        onDismissQuest()
+                        Log.e("dismiss request else on", "dismiss request else on")
+                    }
+                    Log.e("input completeDates", completeDates.toString())
+                    Log.e("input startTime", startTime.toString())
+                    Log.e("input endTime", endTime.toString())
+                },
             ) {
-                Row {
-                    Text(
-                        text = "강의 수강일",
-                        color = colors.BLACK,
-                        style = typography.labelLarge
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .background(color = colors.WHITE)
+                        .padding(horizontal = 28.dp, vertical = 24.dp)
+                ) {
+                    Row {
+                        Text(
+                            text = "강의 수강일",
+                            color = colors.BLACK,
+                            style = typography.labelLarge
+                        )
+
+                        Spacer(modifier = modifier.weight(1f))
+
+                        CloseIcon(
+                            modifier.clickable {
+                                if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
+                                    onQuit(completeDates.value, startTime.value, endTime.value)
+                                } else {
+                                    coroutineScope.launch {
+                                        bottomSheetState.hide()
+                                    }
+                                }
+                            }
+                        )
+                    }
+                    Spacer(modifier = modifier.height(24.dp))
+
+                    LectureDetailSettingInputTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        placeholder = "○○○○년 ○○월 ○○일",
+                        onItemChange = { inputCompleteDates ->
+                            completeDates.value = inputCompleteDates
+                        },
                     )
 
-                    Spacer(modifier = modifier.weight(1f))
+                    Spacer(modifier = modifier.height(16.dp))
 
-                    CloseIcon(
-                        modifier.clickable {
+                    LectureDetailSettingInputTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        placeholder = "○○시 ○○분 시작",
+                        onItemChange = { inputStartTime ->
+                            startTime.value = inputStartTime
+                        },
+                    )
+
+                    Spacer(modifier = modifier.height(16.dp))
+
+                    LectureDetailSettingInputTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        placeholder = "○○시 ○○분 종료",
+                        onItemChange = { inputEndTime ->
+                            endTime.value = inputEndTime
+                        },
+                    )
+
+                    Spacer(modifier = modifier.height(80.dp))
+
+                    BitgoeulButton(
+                        modifier = modifier.fillMaxWidth(),
+                        onClick = {
                             if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
                                 onQuit(completeDates.value, startTime.value, endTime.value)
                             }
-                        }
+                        },
+                        text = "적용하기",
                     )
                 }
-                Spacer(modifier = modifier.height(24.dp))
-
-                LectureDetailSettingInputTextField(
-                    modifier = modifier.fillMaxWidth(),
-                    placeholder = "○○○○년 ○○월 ○○일",
-                    onItemChange = { inputCompleteDates ->
-                        completeDates.value = inputCompleteDates
-                    },
-                )
-
-                Spacer(modifier = modifier.height(16.dp))
-
-                LectureDetailSettingInputTextField(
-                    modifier = modifier.fillMaxWidth(),
-                    placeholder = "○○시 ○○분 시작",
-                    onItemChange = { inputStartTime ->
-                        startTime.value = inputStartTime
-                    },
-                )
-
-                Spacer(modifier = modifier.height(16.dp))
-
-                LectureDetailSettingInputTextField(
-                    modifier = modifier.fillMaxWidth(),
-                    placeholder = "○○시 ○○분 종료",
-                    onItemChange = { inputEndTime ->
-                        endTime.value = inputEndTime
-                    },
-                )
-
-                Spacer(modifier = modifier.height(80.dp))
-
-                BitgoeulButton(
-                    modifier = modifier.fillMaxWidth(),
-                    onClick = {
-                        if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
-                            onQuit(completeDates.value, startTime.value, endTime.value)
-                        }
-                    },
-                    text = "적용하기",
-                )
             }
         }
     }

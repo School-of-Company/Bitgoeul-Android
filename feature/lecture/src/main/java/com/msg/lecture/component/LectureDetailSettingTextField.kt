@@ -145,7 +145,7 @@ fun LectureDetailSettingSearchTextField(
                 onLineListClick = { selectedLineData ->
                     onLineItemClick(selectedLineData)
                 },
-                onDivisionListClick = {selectedDivisionData ->
+                onDivisionListClick = { selectedDivisionData ->
                     onDivisionItemClick(selectedDivisionData)
                 },
                 onQuit = {
@@ -194,11 +194,13 @@ fun LectureDetailSettingLectureDatesTextField(
         if (isFocused.value) {
             LectureDetailSettingLectureDatesBottomSheet(
                 onQuit = { completeDates, startTime, endTime ->
-                    onLectureDatesChanged(
-                        completeDates.toLocalDate(),
-                        startTime.toLocalTime(),
-                        endTime.toLocalTime()
-                    )
+                    if (completeDates.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty()) {
+                        onLectureDatesChanged(
+                            completeDates.toLocalDate(),
+                            startTime.toLocalTime(),
+                            endTime.toLocalTime()
+                        )
+                    }
                 },
             )
         }
