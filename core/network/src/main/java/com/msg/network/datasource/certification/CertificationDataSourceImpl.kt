@@ -41,7 +41,6 @@ class CertificationDataSourceImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun editCertification(
-        studentId: UUID,
         id: UUID,
         body: WriteCertificationRequest,
     ): Flow<Unit> = flow {
@@ -49,7 +48,6 @@ class CertificationDataSourceImpl @Inject constructor(
             BitgoeulApiHandler<Unit>()
                 .httpRequest {
                     certificationAPI.editCertification(
-                        studentId = studentId,
                         id = id,
                         body = body
                     )
