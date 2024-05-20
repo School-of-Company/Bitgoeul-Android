@@ -382,9 +382,17 @@ class LectureViewModel @Inject constructor(
                     endTime = endTime.value!!
                 )
             )
-            Log.e("completeDate", completeDate.value.toString())
-            Log.e("startTime", startTime.value.toString())
-            Log.e("endTime", endTime.value.toString())
+            completeDate.value = null
+            startTime.value = null
+            endTime.value = null
+        } else {
+            lectureDates.add(
+                LectureDates(
+                    completeDate = LocalDate.now(),
+                    startTime = LocalTime.now(),
+                    endTime = LocalTime.now()
+                )
+            )
         }
     }
 

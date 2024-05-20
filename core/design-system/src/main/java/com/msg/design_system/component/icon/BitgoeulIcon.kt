@@ -203,9 +203,7 @@ fun GwangjuIcon(
 }
 
 @Composable
-fun OfficeOfEducationIcon(
-    modifier: Modifier = Modifier,
-) {
+fun OfficeOfEducationIcon() {
     Image(
         painter = painterResource(id = R.drawable.ic_banner_education),
         contentDescription = "Gwangju Metropolitan office of education logo"
@@ -213,7 +211,9 @@ fun OfficeOfEducationIcon(
 }
 
 @Composable
-fun KebabIcon() {
+fun KebabIcon(
+    modifier: Modifier = Modifier
+) {
     Image(
         painter = painterResource(id = R.drawable.ic_kebab),
         contentDescription = "Kebab Icon"
@@ -325,5 +325,25 @@ fun DivideRectangleIcon() {
     Image(
         painter = painterResource(id = R.drawable.ic_divide_rectangle),
         contentDescription = "Divide rectangle icon"
+    )
+}
+
+@Composable
+fun FileIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_file),
+        contentDescription = "File Icon"
+    )
+}
+
+@Composable
+fun RedCloseIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_red_close),
+        contentDescription = "Red Close Icon"
     )
 }

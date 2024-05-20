@@ -2,6 +2,7 @@ package com.msg.lecture
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,8 +32,10 @@ import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
+import com.msg.design_system.component.icon.KebabIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.component.LectureExcelDownloadBottomSheet
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.remote.enumdatatype.Authority
@@ -71,6 +74,9 @@ fun LectureDetailRoute(
         },
         onApplicationClick = {
             viewModel.lectureApplication(viewModel.selectedLectureId.value)
+        },
+        onDownloadButtonClick = {
+
         }
     )
 }
@@ -99,8 +105,10 @@ fun LectureDetailScreen(
     onApplicationClick: () -> Unit,
     onApplicationCancelClick: () -> Unit,
     onLectureTakingStudentListScreenClick: () -> Unit,
+    onDownloadButtonClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val isExcelDownloadSheetVisible = remember { mutableStateOf(false) }
     val isPositiveActionDialogVisible = remember { mutableStateOf(false) }
     val isNegativeDialogVisible = remember { mutableStateOf(false) }
     val isApplicationState = remember { mutableStateOf(false) }
@@ -119,12 +127,21 @@ fun LectureDetailScreen(
             ) {
 
                 Spacer(modifier = modifier.height(20.dp))
+                Row {
+                    GoBackTopBar(
+                        icon = { GoBackIcon() },
+                        text = "돌아가기",
+                        onClick = { onBackClicked() }
+                    )
 
-                GoBackTopBar(
-                    icon = { GoBackIcon() },
-                    text = "돌아가기",
-                    onClick = { onBackClicked() }
-                )
+                    Spacer(modifier = modifier.weight(1f))
+
+                    KebabIcon(
+                        modifier.clickable {
+                            isExcelDownloadSheetVisible.value = true
+                        }
+                    )
+                }
 
                 Spacer(modifier = modifier.height(24.dp))
 
@@ -310,7 +327,7 @@ fun LectureDetailScreen(
                             .align(Alignment.BottomCenter),
                         state = ButtonState.Enable
                     ) {
-
+                        onLectureTakingStudentListScreenClick()
                     }
                 }
                 else -> {}
@@ -411,6 +428,17 @@ fun LectureDetailScreen(
             onActionClicked = {
                 onApplicationCancelClick()
                 isNegativeDialogVisible.value = false
+            }
+        )
+
+        LectureExcelDownloadBottomSheet(
+            isVisible = isExcelDownloadSheetVisible.value,
+            onDownloadButtonClick = {
+                onDownloadButtonClick()
+                isExcelDownloadSheetVisible.value = false
+            },
+            onQuit = {
+                isExcelDownloadSheetVisible.value = false
             }
         )
     }

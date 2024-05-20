@@ -9,6 +9,6 @@ fun LocalTime.toLocalTimeFormat(): String {
 }
 
 fun LocalTime.toKoreanFormat(): String {
-    val dateTimeFormatter = DateTimeFormatter.ofPattern("HH시 MM분")
+    val dateTimeFormatter = DateTimeFormatter.ofPattern("HH시 mm분")
     return this.format(dateTimeFormatter)
 }

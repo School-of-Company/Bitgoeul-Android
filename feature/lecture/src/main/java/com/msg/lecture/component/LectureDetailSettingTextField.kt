@@ -187,8 +187,8 @@ fun LectureDetailSettingLectureDatesTextField(
         ) {
             Text(
                 text = selectedItem,
-                style = typography.bodySmall,
-                color = colors.G2
+                style = typography.labelMedium,
+                color = colors.G2,
             )
         }
         if (isFocused.value) {

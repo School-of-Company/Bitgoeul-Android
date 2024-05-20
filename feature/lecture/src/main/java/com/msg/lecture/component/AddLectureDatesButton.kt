@@ -30,7 +30,7 @@ fun AddLectureDatesButton(
                 )
                 .padding(vertical = 12.dp, horizontal = 20.dp)
                 .clickable(
-                    onClick = { onAddClick }
+                    onClick = { onAddClick() }
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
