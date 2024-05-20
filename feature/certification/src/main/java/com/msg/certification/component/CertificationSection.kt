@@ -25,7 +25,7 @@ import java.util.UUID
 fun CertificationSection(
     modifier: Modifier = Modifier,
     onPlusClicked: () -> Unit,
-    onEditClicked: (UUID) -> Unit,
+    onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,
     data: List<CertificationListResponse>
 ) {
     BitgoeulAndroidTheme { colors, typography ->
@@ -71,7 +71,7 @@ fun CertificationSection(
 fun CertificationSectionPre() {
     CertificationSection(
         onPlusClicked = {},
-        onEditClicked = {},
+        onEditClicked = {_,_,_->},
         data = listOf(
             CertificationListResponse(
                 certificationId = UUID.randomUUID(),

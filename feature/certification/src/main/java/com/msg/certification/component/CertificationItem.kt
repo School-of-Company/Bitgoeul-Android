@@ -22,13 +22,14 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.design_system.R
 import com.msg.ui.util.toDotFormat
+import java.time.LocalDate
 import java.util.UUID
 
 @Composable
 fun CertificationItem(
     modifier: Modifier = Modifier,
     data: CertificationListResponse,
-    onEditClicked: (UUID) -> Unit
+    onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->  
         Column(
@@ -47,7 +48,7 @@ fun CertificationItem(
                 Spacer(modifier = modifier.weight(1f))
                 Text(
                     modifier = modifier.clickable {
-                        onEditClicked(data.certificationId)
+                        onEditClicked(data.certificationId, data.name, data.acquisitionDate)
                     },
                     text = "수정",
                     style = TextStyle(

@@ -1,5 +1,6 @@
 package com.msg.certification
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,12 +15,16 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.certification.component.CertificationSection
 import com.msg.certification.component.FinishedLectureSection
 import com.msg.certification.component.StudentInfoSection
+import com.msg.certification.util.Event
 import com.msg.design_system.component.icon.HumanIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.certification.CertificationListResponse
@@ -31,10 +36,105 @@ import java.time.LocalDate
 import java.util.UUID
 
 @Composable
+fun CertificationScreenRoute(
+    viewModel: CertificationViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onHumanIconClicked: () -> Unit,
+    onEditClicked: () -> Unit
+) {
+    viewModel.getCertificationList()
+    viewModel.getStudentBelong()
+    viewModel.getLectureSignUpHistory()
+
+    LaunchedEffect(true) {
+        getCertificationList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.certificationList.addAll(it)
+            },
+            onFailure = {}
+        )
+        getStudentData(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.studentData.value = it
+            },
+            onFailure = {}
+        )
+        getLectureData(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.lectureData.value = it
+            },
+            onFailure = {}
+        )
+    }
+
+    CertificationScreen(
+        onHumanIconClicked = onHumanIconClicked,
+        onEditClicked = { id, title, date ->
+            viewModel.selectedCertificationId.value = id
+            viewModel.selectedTitle.value = title
+            viewModel.selectedDate.value = date
+            onEditClicked()
+        },
+        onPlusClicked = onEditClicked,
+        studentData = viewModel.studentData.value,
+        certificationData = viewModel.certificationList,
+        lectureData = viewModel.lectureData.value
+    )
+}
+
+suspend fun getCertificationList(
+    viewModel: CertificationViewModel,
+    onSuccess: (data: List<CertificationListResponse>) -> Unit,
+    onFailure: () -> Unit
+) {
+    viewModel.getCertificationListResponse.collect { response ->
+        when(response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> onFailure()
+        }
+    }
+}
+
+suspend fun getStudentData(
+    viewModel: CertificationViewModel,
+    onSuccess: (data: StudentBelongClubResponse) -> Unit,
+    onFailure: () -> Unit
+) {
+    viewModel.getStudentBelongResponse.collect { response ->
+        when(response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> onFailure()
+        }
+    }
+}
+
+suspend fun getLectureData(
+    viewModel: CertificationViewModel,
+    onSuccess: (data: GetLectureSignUpHistoryResponse) -> Unit,
+    onFailure: () -> Unit
+) {
+    viewModel.getLectureSignUpHistoryResponse.collect { response ->
+        when(response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> onFailure()
+        }
+    }
+}
+
+@Composable
 fun CertificationScreen(
     modifier: Modifier = Modifier,
     onHumanIconClicked: () -> Unit,
-    onEditClicked: () -> Unit,
+    onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,
+    onPlusClicked: () -> Unit,
     studentData: StudentBelongClubResponse,
     certificationData: List<CertificationListResponse>,
     lectureData: GetLectureSignUpHistoryResponse
@@ -77,9 +177,9 @@ fun CertificationScreen(
                 )
                 Spacer(modifier = modifier.height(24.dp))
                 CertificationSection(
-                    onPlusClicked = onEditClicked,
-                    onEditClicked =  {
-                        onEditClicked()
+                    onPlusClicked = onPlusClicked,
+                    onEditClicked =  { id, title, date ->
+                        onEditClicked(id, title, date)
                     },
                     data = certificationData
                 )
@@ -95,7 +195,8 @@ fun CertificationScreen(
 fun CertificationScreenPre() {
     CertificationScreen(
         onHumanIconClicked = {},
-        onEditClicked = {},
+        onEditClicked = {_,_,_->},
+        onPlusClicked = {},
         studentData = StudentBelongClubResponse(
             name = "채종인",
             phoneNumber = "010-1234-5678",
