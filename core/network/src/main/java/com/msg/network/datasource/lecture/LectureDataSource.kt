@@ -2,6 +2,7 @@ package com.msg.network.datasource.lecture
 
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -25,4 +26,5 @@ interface LectureDataSource {
     suspend fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse>
     suspend fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse>
     suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>
+    suspend fun downloadExcelFile(): Flow<DownloadExcelFileResponse>
 }

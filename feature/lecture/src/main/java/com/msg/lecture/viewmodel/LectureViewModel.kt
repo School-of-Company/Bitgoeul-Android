@@ -555,4 +555,8 @@ class LectureViewModel @Inject constructor(
             _editPostResponse.value = error.errorHandling()
         }
     }
+
+    fun downloadLectureExcel() = viewModelScope.launch{
+
+    }
 }

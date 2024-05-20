@@ -2,6 +2,7 @@ package com.msg.network.datasource.lecture
 
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -137,4 +138,14 @@ class LectureDataSourceImpl @Inject constructor(
                     .sendRequest()
             )
         }.flowOn(Dispatchers.IO)
+
+    override suspend fun downloadExcelFile(): Flow<DownloadExcelFileResponse> = flow {
+        emit(
+            BitgoeulApiHandler<DownloadExcelFileResponse>()
+                .httpRequest {
+                    lectureAPI.downloadExcelFile()
+                }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }

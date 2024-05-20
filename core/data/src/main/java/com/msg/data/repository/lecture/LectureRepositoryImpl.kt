@@ -2,6 +2,7 @@ package com.msg.data.repository.lecture
 
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -96,5 +97,9 @@ class LectureRepositoryImpl @Inject constructor(
             studentId = studentId,
             isComplete = isComplete
         )
+    }
+
+    override suspend fun downloadExcelFile(): Flow<DownloadExcelFileResponse> {
+        return lectureDataSource.downloadExcelFile()
     }
 }
