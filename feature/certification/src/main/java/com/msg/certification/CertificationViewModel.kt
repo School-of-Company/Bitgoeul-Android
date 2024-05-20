@@ -1,5 +1,6 @@
 package com.msg.certification
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -41,11 +42,8 @@ class CertificationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _getCertificationListForTeacherResponse = MutableStateFlow<Event<List<CertificationListResponse>>>(Event.Loading)
-    val getCertificationListResponse = _getCertificationListForTeacherResponse.asStateFlow()
-
-    private val _getCertificationListForStudentResponse = MutableStateFlow<Event<List<CertificationListResponse>>>(Event.Loading)
-    val getCertificationListForStudentResponse = _getCertificationListForStudentResponse.asStateFlow()
+    private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListResponse>>>(Event.Loading)
+    val getCertificationListResponse = _getCertificationListResponse.asStateFlow()
 
     private val _writeCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val writeCertificationResponse = _writeCertificationResponse.asStateFlow()
@@ -63,33 +61,60 @@ class CertificationViewModel @Inject constructor(
         return@runBlocking authTokenDataSource.getAuthority().first()
     }
 
-    private val studentId: UUID? = savedStateHandle.get<UUID>("studentId")
+    private val studentId = UUID.fromString(savedStateHandle.get<String>("studentId"))
 
     private val clubId: Long? = savedStateHandle.get<Long>("clubId")
 
-    var selectedCertificationId = mutableStateOf(UUID.fromString(""))
+    var selectedCertificationId = mutableStateOf<UUID?>(null)
+        private set
+
+    var selectedTitle = mutableStateOf("")
+        private set
+
+    var selectedDate = mutableStateOf<LocalDate?>(null)
+        private set
+
+    var certificationList = mutableStateListOf<CertificationListResponse>()
+        private set
+
+    var studentData = mutableStateOf(
+        StudentBelongClubResponse(
+            name = "",
+            phoneNumber = "",
+            email = "",
+            credit = 0
+        )
+    )
+        private set
+
+    var lectureData = mutableStateOf(
+        GetLectureSignUpHistoryResponse(
+            lectures = listOf()
+        )
+    )
+        private set
 
     fun getCertificationList() = viewModelScope.launch {
         if (getRole() == Authority.ROLE_STUDENT) {
             getCertificationListForStudentUseCase().onSuccess {
                 it.catch { remoteError ->
-                    _getCertificationListForStudentResponse.value = remoteError.errorHandling()
+                    _getCertificationListResponse.value = remoteError.errorHandling()
                 }.collect { response ->
-                    _getCertificationListForStudentResponse.value = Event.Success(data = response)
+                    _getCertificationListResponse.value = Event.Success(data = response)
                 }
             }.onFailure { error ->
-                _getCertificationListForStudentResponse.value = error.errorHandling()
+                _getCertificationListResponse.value = error.errorHandling()
             }
         } else {
             if (studentId != null) {
                 getCertificationListForTeacherUseCase(studentId).onSuccess {
                     it.catch { remoteError ->
-                        _getCertificationListForTeacherResponse.value = remoteError.errorHandling()
+                        _getCertificationListResponse.value = remoteError.errorHandling()
                     }.collect { response ->
-                        _getCertificationListForTeacherResponse.value = Event.Success(data = response)
+                        _getCertificationListResponse.value = Event.Success(data = response)
                     }
                 }.onFailure { error ->
-                    _getCertificationListForTeacherResponse.value = error.errorHandling()
+                    _getCertificationListResponse.value = error.errorHandling()
                 }
             }
         }
@@ -120,7 +145,7 @@ class CertificationViewModel @Inject constructor(
         acquisitionDate: LocalDate
     ) = viewModelScope.launch {
         editCertificationUseCase(
-            id = selectedCertificationId.value,
+            id = selectedCertificationId.value!!,
             body = WriteCertificationRequest(
                 name = name,
                 acquisitionDate = acquisitionDate
