@@ -19,6 +19,9 @@ import com.example.my_page.navigation.myPageScreen
 import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.certification.navigation.addCertificationScreen
+import com.msg.certification.navigation.certificationScreen
+import com.msg.certification.navigation.navigateToAddCertificationPage
 import com.msg.club.navigation.clubDetailScreen
 import com.msg.club.navigation.clubScreen
 import com.msg.club.navigation.navigateToClubDetailPage
@@ -151,6 +154,13 @@ fun BitgoeulNavHost(
         )
         mainPageScreen(
             onLoginClicked = navController::navigateToLogin
+        )
+        certificationScreen(
+            onHumanClicked = navController::navigateToMyPage,
+            onEditClicked = navController::navigateToAddCertificationPage
+        )
+        addCertificationScreen(
+            onBackClicked = navController::popBackStack
         )
     }
 }

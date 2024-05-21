@@ -67,7 +67,7 @@ class ClubViewModel @Inject constructor(
     var studentBelongClub = mutableStateOf(
         StudentBelongClubResponse(
             name = "",
-            phoneNumber = 0,
+            phoneNumber = "",
             email = "",
             credit = 0
         )

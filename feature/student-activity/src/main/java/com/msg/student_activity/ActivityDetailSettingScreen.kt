@@ -55,7 +55,7 @@ fun ActivityDetailSettingScreen(
 ) {
     val creditList = listOf("1점", "2점")
 
-    val creditPointForShow = remember { mutableStateOf("{$savedCreditPoint}점") }
+    val creditPointForShow = remember { mutableStateOf("${savedCreditPoint}점") }
     val creditPoint = remember { mutableIntStateOf(if (creditPointForShow.value == "1점") 1 else if (creditPointForShow.value == "2점") 2 else 0) }
     val activityDateForShow = remember { mutableStateOf(savedActivityDate?.toKoreanFormat() ?: "") }
     val activityDate = remember { mutableStateOf(savedActivityDate) }

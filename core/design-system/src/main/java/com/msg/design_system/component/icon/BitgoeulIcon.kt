@@ -316,3 +316,11 @@ fun BigAlertIcon() {
         contentDescription = "Big alert icon"
     )
 }
+
+@Composable
+fun HumanIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_human),
+        contentDescription = "Human upper body icon"
+    )
+}
