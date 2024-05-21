@@ -1,5 +1,6 @@
 package com.msg.lecture.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,13 +26,13 @@ import java.util.UUID
 fun LectureDepartmentList(
     data: SearchDepartmentResponse,
     modifier: Modifier,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.departments.isNotEmpty()) {
-        LazyColumn(
-            modifier = modifier.background(color = colors.WHITE)
-        ) {
+            LazyColumn(
+                modifier = modifier.background(color = colors.WHITE)
+            ) {
                 items(data.departments.size) { index ->
                     LectureDetailSettingDepartmentAndDivisionCard(
                         modifier = modifier,
@@ -70,7 +71,7 @@ fun LectureLineList(
     keyword: String,
     modifier: Modifier,
     division: String,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.lines.isNotEmpty()) {
@@ -120,7 +121,7 @@ fun LectureProfessorList(
     keyword: String,
     modifier: Modifier,
     division: String,
-    onClick: (UUID, String) -> Unit
+    onClick: (UUID, String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.instructors.isNotEmpty()) {
@@ -168,23 +169,43 @@ fun LectureProfessorList(
 fun LectureDivisionList(
     data: SearchDivisionResponse,
     modifier: Modifier,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
-        LazyColumn(
-            modifier = modifier.background(color = Color.Transparent)
-        ) {
-            items(data.division.size) {index ->
-                data.division.getOrNull(index)?.let {
-                    LectureDetailSettingDepartmentAndDivisionCard(
-                        modifier = modifier.background(color = Color.Transparent),
-                        onClick = { division ->
-                            onClick(division)
-                        },
-                        data = data.division[index]
-
-                    )
+        if (data.divisions.isNotEmpty()) {
+            LazyColumn(
+                modifier = modifier.background(color = Color.Transparent)
+            ) {
+                items(data.divisions.size) { index ->
+                    Log.e("divisionList items 함수 진입", data.divisions.toString())
+                    data.divisions.getOrNull(index)?.let { divisionData ->
+                        LectureDetailSettingDepartmentAndDivisionCard(
+                            modifier = modifier.background(color = Color.Transparent),
+                            onClick = { division ->
+                                onClick(division)
+                            },
+                            data = divisionData
+                        )
+                    }
                 }
+            }
+        } else {
+            Column(
+                modifier = modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                EmptyBoxIcon(
+                    modifier = modifier
+                )
+
+                Spacer(modifier = modifier.height(8.dp))
+
+                Text(
+                    text = "검색 결과가 없습니다.",
+                    style = typography.labelMedium,
+                    color = colors.G2
+                )
             }
         }
     }

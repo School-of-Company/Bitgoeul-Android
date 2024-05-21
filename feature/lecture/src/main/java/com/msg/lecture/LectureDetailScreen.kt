@@ -76,7 +76,7 @@ fun LectureDetailRoute(
             viewModel.lectureApplication(viewModel.selectedLectureId.value)
         },
         onDownloadButtonClick = {
-
+            viewModel.downloadLectureExcel()
         }
     )
 }

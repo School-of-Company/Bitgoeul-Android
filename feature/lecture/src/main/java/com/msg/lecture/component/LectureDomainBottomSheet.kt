@@ -1,5 +1,6 @@
 package com.msg.lecture.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -88,7 +89,7 @@ fun LectureDetailSettingSearchBottomSheet(
                 )
 
                 Spacer(modifier = modifier.height(8.dp))
-                if (searchProfessorData.instructors.isNotEmpty() || searchDepartmentData.departments.isNotEmpty() || searchLineData.lines.isNotEmpty()) {
+                if (searchProfessorData.instructors.isNotEmpty() || searchDepartmentData.departments.isNotEmpty() || searchLineData.lines.isNotEmpty() || searchDivisionData.divisions.isNotEmpty()) {
                     when (searchAPIType) {
                         "강의 계열" -> {
                             LectureLineList(
@@ -125,6 +126,7 @@ fun LectureDetailSettingSearchBottomSheet(
                         }
 
                         "구분" -> {
+                            Log.e("searchDivisionData1", searchDivisionData.toString())
                             LectureDivisionList(
                                 modifier = modifier,
                                 onClick = { division ->
@@ -132,12 +134,12 @@ fun LectureDetailSettingSearchBottomSheet(
                                 },
                                 data = searchDivisionData
                             )
+                            Log.e("searchDivisionData2", searchDivisionData.toString())
                         }
                     }
                 }
             }
         }
-
     }
 }
 
@@ -251,7 +253,7 @@ fun LectureExcelDownloadBottomSheet(
     isVisible: Boolean,
     modifier: Modifier = Modifier,
     onDownloadButtonClick: () -> Unit,
-    onQuit: () -> Unit
+    onQuit: () -> Unit,
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()

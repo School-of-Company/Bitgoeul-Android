@@ -45,7 +45,6 @@ import com.msg.lecture.component.LectureDetailSettingSearchTextField
 import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
 import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
@@ -56,7 +55,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
-import kotlin.concurrent.thread
 
 @Composable
 internal fun LectureDetailSettingRoute(
@@ -111,10 +109,10 @@ internal fun LectureDetailSettingRoute(
         onSearchDivisionClicked = { keyword ->
             viewModel.searchDivision(keyword = keyword)
             coroutineScope.launch {
-                getDivisionSearchData(viewModel = viewModel, onSearchDivisionData = { data ->
+                getDivisionSearchData(viewModel = viewModel, onDivisionSuccess = { data ->
                     viewModel.searchDivisionData.value = data
+                    Log.e("searchDivisionData in Screen onSearchDivisionClicked", data.toString())
                 })
-
             }
         },
         onLectureDatesAddClicked = {
@@ -194,12 +192,13 @@ suspend fun getDepartmentSearchData(
 
 suspend fun getDivisionSearchData(
     viewModel: LectureViewModel,
-    onSearchDivisionData: (data: SearchDivisionResponse) -> Unit,
+    onDivisionSuccess: (data: SearchDivisionResponse) -> Unit,
 ) {
     viewModel.searchDivisionResponse.collect { response ->
         when (response) {
             is Event.Success -> {
-                onSearchDivisionData(response.data!!)
+                Log.e("getDivisionSearchData suspend fun 실행", response.toString())
+                onDivisionSuccess(response.data!!)
             }
 
             else -> {}

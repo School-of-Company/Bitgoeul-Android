@@ -111,6 +111,7 @@ fun LectureDetailSettingSearchTextField(
                     "강의 계열" -> stringResource(id = R.string.lecture_series_placeholder)
                     "학과" -> stringResource(id = R.string.department_placeholder)
                     "담당 교수" -> stringResource(id = R.string.professor_in_charge_placeholder)
+                    "구분" -> stringResource(id = R.string.division_placeholder)
                     else -> ""
                 },
                 onSearchButtonClick = { keyword, division ->

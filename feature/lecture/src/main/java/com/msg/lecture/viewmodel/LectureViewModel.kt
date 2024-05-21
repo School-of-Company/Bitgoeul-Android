@@ -1,5 +1,6 @@
 package com.msg.lecture.viewmodel
 
+import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -7,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
+import com.msg.domain.lecture.DownloadExcelFileUseCase
 import com.msg.domain.lecture.EditLectureCourseCompletionStatusUseCase
 import com.msg.domain.lecture.GetDetailLectureUseCase
 import com.msg.domain.lecture.GetLectureListUseCase
@@ -29,6 +31,7 @@ import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.Instructors
@@ -45,6 +48,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -66,6 +70,7 @@ class LectureViewModel @Inject constructor(
     private val getLectureSignUpHistoryUseCase: GetLectureSignUpHistoryUseCase,
     private val getTakingLectureStudentListUseCase: GetTakingLectureStudentListUseCase,
     private val editLectureCourseCompletionStatusUseCase: EditLectureCourseCompletionStatusUseCase,
+    private val downloadExcelFileUseCase: DownloadExcelFileUseCase,
 ) : ViewModel() {
 
     suspend fun getRole(): Authority {
@@ -107,6 +112,10 @@ class LectureViewModel @Inject constructor(
 
     private val _editPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val editPostResponse = _editPostResponse.asStateFlow()
+
+    private val _downloadExcelFileResponse =
+        MutableStateFlow<Event<DownloadExcelFileResponse>>(Event.Loading)
+    val downloadExcelFileResponse = _downloadExcelFileResponse.asStateFlow()
 
     var lectureList = mutableStateOf(
         LectureListResponse(
@@ -204,7 +213,7 @@ class LectureViewModel @Inject constructor(
 
     var searchDivisionData = mutableStateOf(
         SearchDivisionResponse(
-            division = listOf(
+            divisions = listOf(
                 ""
             )
         )
@@ -385,14 +394,6 @@ class LectureViewModel @Inject constructor(
             completeDate.value = null
             startTime.value = null
             endTime.value = null
-        } else {
-            lectureDates.add(
-                LectureDates(
-                    completeDate = LocalDate.now(),
-                    startTime = LocalTime.now(),
-                    endTime = LocalTime.now()
-                )
-            )
         }
     }
 
@@ -501,6 +502,7 @@ class LectureViewModel @Inject constructor(
                 _searchDivisionResponse.value = remoteError.errorHandling()
             }.collect { response ->
                 _searchDivisionResponse.value = Event.Success(data = response)
+                Log.e("viewModel searchDivision Response", response.toString())
             }
         }.onFailure { error ->
             _searchDivisionResponse.value = error.errorHandling()
@@ -508,7 +510,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun getLectureSignUpHistory(
-        studentId: UUID
+        studentId: UUID,
     ) = viewModelScope.launch {
         getLectureSignUpHistoryUseCase(
             studentId = studentId
@@ -556,7 +558,30 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun downloadLectureExcel() = viewModelScope.launch{
+    fun downloadLectureExcel() = viewModelScope.launch {
+        downloadExcelFileUseCase()
+            .onSuccess {
+                it.catch { remoteError ->
+                    _downloadExcelFileResponse.value = remoteError.errorHandling()
+                }.collect { response ->
+                    _downloadExcelFileResponse.value = Event.Success(data = response)
+                    saveFileToStorage(response)
+                }
+            }.onFailure { error ->
+                _downloadExcelFileResponse.value = error.errorHandling()
+            }
+    }
 
+    private fun saveFileToStorage(response: DownloadExcelFileResponse) {
+        try {
+            val fileName = response.fileName
+            val fileContents = response.file
+            val context = Application()
+
+            val file = File(context.getExternalFilesDir(null), fileName)
+            file.writeBytes(fileContents)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
