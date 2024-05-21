@@ -502,7 +502,6 @@ class LectureViewModel @Inject constructor(
                 _searchDivisionResponse.value = remoteError.errorHandling()
             }.collect { response ->
                 _searchDivisionResponse.value = Event.Success(data = response)
-                Log.e("viewModel searchDivision Response", response.toString())
             }
         }.onFailure { error ->
             _searchDivisionResponse.value = error.errorHandling()

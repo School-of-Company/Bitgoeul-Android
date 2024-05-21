@@ -177,7 +177,6 @@ fun LectureDivisionList(
                 modifier = modifier.background(color = Color.Transparent)
             ) {
                 items(data.divisions.size) { index ->
-                    Log.e("divisionList items 함수 진입", data.divisions.toString())
                     data.divisions.getOrNull(index)?.let { divisionData ->
                         LectureDetailSettingDepartmentAndDivisionCard(
                             modifier = modifier.background(color = Color.Transparent),

@@ -126,7 +126,6 @@ fun LectureDetailSettingSearchBottomSheet(
                         }
 
                         "구분" -> {
-                            Log.e("searchDivisionData1", searchDivisionData.toString())
                             LectureDivisionList(
                                 modifier = modifier,
                                 onClick = { division ->
@@ -134,7 +133,6 @@ fun LectureDetailSettingSearchBottomSheet(
                                 },
                                 data = searchDivisionData
                             )
-                            Log.e("searchDivisionData2", searchDivisionData.toString())
                         }
                     }
                 }

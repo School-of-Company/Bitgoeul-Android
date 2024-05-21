@@ -111,7 +111,6 @@ internal fun LectureDetailSettingRoute(
             coroutineScope.launch {
                 getDivisionSearchData(viewModel = viewModel, onDivisionSuccess = { data ->
                     viewModel.searchDivisionData.value = data
-                    Log.e("searchDivisionData in Screen onSearchDivisionClicked", data.toString())
                 })
             }
         },
@@ -197,7 +196,6 @@ suspend fun getDivisionSearchData(
     viewModel.searchDivisionResponse.collect { response ->
         when (response) {
             is Event.Success -> {
-                Log.e("getDivisionSearchData suspend fun 실행", response.toString())
                 onDivisionSuccess(response.data!!)
             }
 
