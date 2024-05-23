@@ -64,7 +64,8 @@ fun BitgoeulNavHost(
     ) {
         loginScreen(
             onSignUpClick = navController::navigateToLectureOpen,
-            onFindPasswordClick = navController::navigateToInputEmail
+            onFindPasswordClick = navController::navigateToInputEmail,
+            onLoginClick = navController::navigateToMainPage
         )
         inputEmailScreen(
             onBackClicked = navController::navigateToLogin,

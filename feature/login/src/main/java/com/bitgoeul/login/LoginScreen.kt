@@ -2,6 +2,7 @@ package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -41,16 +43,25 @@ import com.msg.model.remote.request.auth.LoginRequest
 fun LoginRoute(
     onSignUpClick: () -> Unit,
     onFindPasswordClick: () -> Unit,
+    onLoginClick: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
     LoginScreen(
         onSignUpClick = onSignUpClick,
         onFindPasswordClick = onFindPasswordClick,
         onLoginClick = {
             viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
-            observeLoginEvent(lifecycleOwner = lifecycleOwner, viewModel = viewModel)
+            observeLoginEvent(
+                lifecycleOwner = lifecycleOwner,
+                viewModel = viewModel,
+                onSuccess = onLoginClick,
+                onFailure = {
+                    Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                }
+            )
         },
         setLoginData = { email, password ->
             viewModel.setLoginData(email = email, password = password)
@@ -61,6 +72,8 @@ fun LoginRoute(
 fun observeLoginEvent(
     viewModel: AuthViewModel,
     lifecycleOwner: LifecycleOwner,
+    onSuccess: () -> Unit,
+    onFailure: () -> Unit
 ) {
     viewModel.loginRequest.observe(lifecycleOwner) { event ->
         Log.e("event", event.toString())
@@ -71,17 +84,21 @@ fun observeLoginEvent(
                 if (data != null && data.accessToken.isNotEmpty()) {
                     Log.e("토큰 저장", "토큰 저장 성공: $data")
                     viewModel.saveTokenData(data)
+                    onSuccess()
                 } else {
                     Log.e("토큰 저장 실패", "토큰이 유효하지 않습니다.")
+                    onFailure()
                 }
             }
 
             is Event.UnKnown -> {
                 Log.e("Unknown Event", "Unknown 이벤트가 발생했습니다.")
+                onFailure()
             }
 
             else -> {
                 Log.e("토큰 저장 실패", "이벤트 타입이 올바르지 않습니다.")
+                onFailure()
             }
         }
     }
