@@ -22,8 +22,8 @@ class AuthInterceptor @Inject constructor(
         val request = chain.request()
         val builder = request.newBuilder()
         val currentTime = System.currentTimeMillis().toLocalDateTime()
-        val ignorePath = listOf("/auth")
-        val ignoreMethod = listOf("POST")
+        val ignorePath = listOf("/auth", "/faq")
+        val ignoreMethod = listOf("POST", "GET")
         val path = request.url.encodedPath
         val method = request.method
 
@@ -32,6 +32,7 @@ class AuthInterceptor @Inject constructor(
                 return chain.proceed(request)
             }
         }
+
 
         runBlocking {
             val refreshTime = dataSource.getRefreshTokenExp().toString()

@@ -6,23 +6,28 @@ import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.main.util.Event
 import com.msg.main.util.errorHandling
+import com.msg.model.remote.enumdatatype.Authority
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import com.msg.domain.faq.AddFrequentlyAskedQuestionUseCase as AddFAQUseCase
 import com.msg.domain.faq.GetFrequentlyAskedQuestionsListUseCase as GetFAQUseCase
 import com.msg.model.remote.request.faq.AddFrequentlyAskedQuestionsRequest as AddFAQRequest
 import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
 
+@HiltViewModel
 class FaqViewModel @Inject constructor(
     private val addFAQUseCase: AddFAQUseCase,
     private val getFAQUseCase: GetFAQUseCase,
-    authTokenDataSource: AuthTokenDataSource
+    private val authTokenDataSource: AuthTokenDataSource
 ) : ViewModel() {
 
-    val role = authTokenDataSource.getAuthority()
+    val role = getRole().toString()
 
     private val _addFaqResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val addFaqResponse = _addFaqResponse.asStateFlow()
@@ -33,8 +38,7 @@ class FaqViewModel @Inject constructor(
     var faqList = mutableStateListOf<GetFAQDetailResponse>()
         private set
 
-    var errorCode: Int = 200
-        private set
+    private var errorCode: Int = 200
 
     fun addFaq(
         question: String,
@@ -69,5 +73,9 @@ class FaqViewModel @Inject constructor(
         }.onFailure { error ->
             _addFaqResponse.value = error.errorHandling()
         }
+    }
+
+    private fun getRole(): Authority = runBlocking {
+        return@runBlocking authTokenDataSource.getAuthority().first()
     }
 }

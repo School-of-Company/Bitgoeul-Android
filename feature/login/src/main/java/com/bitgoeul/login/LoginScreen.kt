@@ -40,7 +40,7 @@ import com.msg.design_system.util.checkPasswordRegex
 import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
-fun LoginRoute(
+internal fun LoginRoute(
     onSignUpClick: () -> Unit,
     onFindPasswordClick: () -> Unit,
     onLoginClick: () -> Unit,
@@ -79,27 +79,16 @@ fun observeLoginEvent(
         Log.e("event", event.toString())
         when (event) {
             is Event.Success -> {
-                Log.e("토큰 저장", "실행")
                 val data = event.data
                 if (data != null && data.accessToken.isNotEmpty()) {
-                    Log.e("토큰 저장", "토큰 저장 성공: $data")
                     viewModel.saveTokenData(data)
                     onSuccess()
                 } else {
-                    Log.e("토큰 저장 실패", "토큰이 유효하지 않습니다.")
                     onFailure()
                 }
             }
 
-            is Event.UnKnown -> {
-                Log.e("Unknown Event", "Unknown 이벤트가 발생했습니다.")
-                onFailure()
-            }
-
-            else -> {
-                Log.e("토큰 저장 실패", "이벤트 타입이 올바르지 않습니다.")
-                onFailure()
-            }
+            else -> {}
         }
     }
 }
@@ -119,6 +108,7 @@ fun LoginScreen(
     var isTextStatus = ""
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
+
     BitgoeulAndroidTheme { color, type ->
         Surface {
             Column(

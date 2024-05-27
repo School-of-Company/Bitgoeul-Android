@@ -80,7 +80,7 @@ fun MainPageScreenRoute(
     MainPageScreen(
         data = viewModel.faqList,
         event = error,
-        role = Authority.valueOf(role.toString()),
+        role = Authority.valueOf(role),
         onAddClicked = { question, answer ->
             viewModel.addFaq(
                 question = question,
@@ -125,7 +125,6 @@ fun MainPageScreen(
     data: List<GetFAQDetailResponse>,
     event: Event<List<GetFAQDetailResponse>>,
     role: Authority,
-    errorCode: Int? = null,
     onAddClicked: (question: String, answer: String) -> Unit,
     onDialogButtonClicked: () -> Unit
 ) {
@@ -371,14 +370,7 @@ fun MainPageScreen(
                         onButtonClicked = onDialogButtonClicked
                     )
                 }
-                else -> {
-                    BitgoeulAlertDialog(
-                        title = "오류",
-                        msg = "알 수 없는 오류가 발생했습니다. (${errorCode})",
-                        onQuit = {},
-                        onButtonClicked = onDialogButtonClicked
-                    )
-                }
+                else -> {}
             }
         }
     }

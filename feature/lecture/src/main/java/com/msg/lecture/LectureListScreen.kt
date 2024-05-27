@@ -42,14 +42,12 @@ import java.util.UUID
 fun LectureListRoute(
     onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
-    onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
-    val role = remember { mutableStateOf(Authority.ROLE_USER) }
+    val role = viewModel.role
     val type = remember { mutableStateOf(null) }
 
     LaunchedEffect(true) {
-        role.value = viewModel.getRole()
         viewModel.getLectureList(
             page = 0,
             size = 10,
@@ -82,8 +80,7 @@ fun LectureListRoute(
                 type = type
             )
         },
-        onBackClicked = onBackClicked,
-        role = role.value,
+        role = role,
     )
 }
 
@@ -109,9 +106,8 @@ fun LectureListScreen(
     data: LectureListResponse? = null,
     onOpenClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
-    onBackClicked: () -> Unit,
     onFilterChanged: (type: String?) -> Unit,
-    role: Authority,
+    role: String,
 ) {
     val isFilterDialogVisible = remember { mutableStateOf(false) }
 
@@ -145,7 +141,7 @@ fun LectureListScreen(
 
                     Spacer(modifier = modifier.weight(1f))
 
-                    if (role == Authority.ROLE_ADMIN) {
+                    if (role == "ROLE_ADMIN") {
                         IconButton(
                             onClick = onOpenClicked,
                             modifier = modifier.padding(top = 4.dp),
@@ -164,7 +160,7 @@ fun LectureListScreen(
                             }
                     )
 
-                    if (role != Authority.ROLE_ADMIN) {
+                    if (role != "ROLE_ADMIN") {
                         Text(
                             text = "필터",
                             color = colors.G1,
@@ -194,20 +190,7 @@ fun LectureListScreen(
                 ) { lectureType ->
                     onFilterChanged(lectureType)
                 }
-
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun LectureListPagePreview() {
-    LectureListScreen(
-        onBackClicked = {},
-        onItemClicked = {},
-        onOpenClicked = {},
-        onFilterChanged = {},
-        role = Authority.ROLE_STUDENT,
-    )
 }

@@ -47,7 +47,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -73,9 +75,7 @@ class LectureViewModel @Inject constructor(
     private val downloadExcelFileUseCase: DownloadExcelFileUseCase,
 ) : ViewModel() {
 
-    suspend fun getRole(): Authority {
-        return Authority.authorityOf(authTokenDataSource.getAuthority())
-    }
+    val role = getRole().toString()
 
     private val _getLectureListResponse = MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
@@ -582,5 +582,9 @@ class LectureViewModel @Inject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun getRole(): Authority = runBlocking {
+        return@runBlocking authTokenDataSource.getAuthority().first()
     }
 }

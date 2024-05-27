@@ -42,13 +42,11 @@ fun NavController.navigateToLectureTakingStudentList(navOptions: NavOptions? = n
 fun NavGraphBuilder.lectureListScreen(
     onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
-    onBackClicked: () -> Unit,
 ) {
     composable(route = lectureListRoute) {
         LectureListRoute(
             onOpenClicked = onOpenClicked,
             onItemClicked = onItemClicked,
-            onBackClicked = onBackClicked,
         )
     }
 }

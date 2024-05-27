@@ -7,11 +7,11 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface FaqAPI {
-    @POST("FAQ")
+    @POST("faq")
     suspend fun addFrequentlyAskedQuestions(
         @Body body: AddFrequentlyAskedQuestionsRequest,
     )
 
-    @GET("FAQ")
+    @GET("faq")
     suspend fun getFrequentlyAskedQuestionsList(): List<GetFrequentlyAskedQuestionDetailResponse>
 }

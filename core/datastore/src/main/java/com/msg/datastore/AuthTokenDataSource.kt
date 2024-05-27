@@ -50,9 +50,9 @@ class AuthTokenDataSource @Inject constructor(
     }
 
     fun getRefreshTokenExp(): Flow<LocalDateTime> =
-        authToken.data.mapNotNull { it.refreshExp }.map { refreshExp ->
+        authToken.data.mapNotNull { it.refreshExp?.let { refreshExp ->
             LocalDateTime.parse(refreshExp)
-        }
+        } }
 
 
     suspend fun setRefreshTokenExp(refreshTokenExp: String) {

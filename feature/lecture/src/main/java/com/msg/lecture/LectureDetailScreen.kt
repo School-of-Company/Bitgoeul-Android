@@ -51,10 +51,9 @@ fun LectureDetailRoute(
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val id = viewModel.selectedLectureId.value
-    val role = remember { mutableStateOf(Authority.ROLE_USER) }
+    val role = viewModel.role
 
     LaunchedEffect(true) {
-        role.value = viewModel.getRole()
         viewModel.getDetailLecture(id = id)
         getLectureDetailData(
             viewModel = viewModel,
@@ -65,7 +64,7 @@ fun LectureDetailRoute(
     }
 
     LectureDetailScreen(
-        role = role.value,
+        role = role,
         data = viewModel.lectureDetailData.value,
         onBackClicked = onBackClicked,
         onLectureTakingStudentListScreenClick = onLectureTakingStudentListScreenClick,
@@ -98,7 +97,7 @@ suspend fun getLectureDetailData(
 
 @Composable
 fun LectureDetailScreen(
-    role: Authority,
+    role: String,
     data: DetailLectureResponse,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
@@ -317,7 +316,7 @@ fun LectureDetailScreen(
                 )
             }
             when(role) {
-                Authority.ROLE_ADMIN -> {
+                "ROLE_ADMIN" -> {
                     BitgoeulButton(
                         text = "수강 명단 확인",
                         modifier = modifier
