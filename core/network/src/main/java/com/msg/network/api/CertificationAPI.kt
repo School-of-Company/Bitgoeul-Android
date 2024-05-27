@@ -23,9 +23,8 @@ interface CertificationAPI {
         @Body body: WriteCertificationRequest,
     )
 
-    @PATCH("certification/{student_id}/{id}")
+    @PATCH("certification/{id}")
     suspend fun editCertification(
-        @Path("student_id") studentId: UUID,
         @Path("id") id: UUID,
         @Body body: WriteCertificationRequest
     )

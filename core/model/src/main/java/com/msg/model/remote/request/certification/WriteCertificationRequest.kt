@@ -4,5 +4,5 @@ import java.time.LocalDate
 
 data class WriteCertificationRequest(
     val name: String,
-    val acquisitionData: LocalDate
+    val acquisitionDate: LocalDate
 )

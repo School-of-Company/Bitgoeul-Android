@@ -436,6 +436,7 @@ fun LectureDetailSettingTextField(
     list: List<String>,
     selectedItem: String,
     onItemChange: (item: String) -> Unit,
+    isLectureType: Boolean = false,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -470,7 +471,23 @@ fun LectureDetailSettingTextField(
                     onQuit = {
                         isFocused.value = false
                     },
-                    firstItem = {}
+                    firstItem = {},
+                    lastItem = {
+                        if (isLectureType) {
+                            Column {
+                                Text(
+                                    text = "기타",
+                                    style = typography.bodyMedium,
+                                    color = colors.BLACK
+                                )
+                                Text(
+                                    text = "직접 작성하기",
+                                    style = typography.labelMedium,
+                                    color = colors.G2
+                                )
+                            }
+                        }
+                    }
                 )
             }
         }
@@ -489,7 +506,6 @@ fun PickerTextField(
     isLocalDateTimePicker: Boolean = false,
     onDatePickerQuit: (LocalDate?) -> Unit = {},
     onTimePickerQuit: (LocalTime?) -> Unit = {},
-    onLocalDateTimePickerQuit: (LocalDateTime?) -> Unit = {},
 ) {
     val isFocused = remember { mutableStateOf(false) }
 

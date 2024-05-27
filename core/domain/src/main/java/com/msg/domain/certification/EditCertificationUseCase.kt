@@ -8,7 +8,7 @@ import javax.inject.Inject
 class EditCertificationUseCase @Inject constructor(
     private val certificationRepository: CertificationRepository
 ) {
-    suspend operator fun invoke(studentId: UUID, id: UUID, body: WriteCertificationRequest) = runCatching {
-        certificationRepository.editCertification(studentId = studentId, id = id, body = body)
+    suspend operator fun invoke(id: UUID, body: WriteCertificationRequest) = runCatching {
+        certificationRepository.editCertification(id = id, body = body)
     }
 }

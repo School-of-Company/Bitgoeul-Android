@@ -347,3 +347,11 @@ fun RedCloseIcon(
         contentDescription = "Red Close Icon"
     )
 }
+
+@Composable
+fun HumanIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_human),
+        contentDescription = "Human upper body icon"
+    )
+}

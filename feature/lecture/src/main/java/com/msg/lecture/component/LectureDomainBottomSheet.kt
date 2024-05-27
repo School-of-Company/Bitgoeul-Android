@@ -114,7 +114,7 @@ fun LectureDetailSettingSearchBottomSheet(
                                 keyword = keywordState.value
                             )
                         }
-
+                        
                         "학과" -> {
                             LectureDepartmentList(
                                 modifier = modifier,

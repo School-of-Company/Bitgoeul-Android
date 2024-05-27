@@ -25,12 +25,10 @@ class CertificationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun editCertification(
-        studentId: UUID,
         id: UUID,
         body: WriteCertificationRequest,
     ): Flow<Unit> {
         return certificationDataSource.editCertification(
-            studentId = studentId,
             id = id,
             body = body
         )

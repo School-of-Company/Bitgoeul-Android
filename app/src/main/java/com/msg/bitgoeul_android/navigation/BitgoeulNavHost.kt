@@ -19,6 +19,9 @@ import com.example.my_page.navigation.myPageScreen
 import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.certification.navigation.addCertificationScreen
+import com.msg.certification.navigation.certificationScreen
+import com.msg.certification.navigation.navigateToAddCertificationPage
 import com.msg.club.navigation.clubDetailScreen
 import com.msg.club.navigation.clubScreen
 import com.msg.club.navigation.navigateToClubDetailPage
@@ -40,6 +43,7 @@ import com.msg.post.navigation.postAddScreen
 import com.msg.post.navigation.postDetailScreen
 import com.msg.post.navigation.postDetailSettingScreen
 import com.msg.post.navigation.postScreen
+import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.sign_up.navigation.signUpScreen
 import com.msg.student_activity.navigation.navigateToAddActivity
 import com.msg.student_activity.navigation.navigateToDetailSettingActivity
@@ -62,8 +66,9 @@ fun BitgoeulNavHost(
         modifier = modifier
     ) {
         loginScreen(
-            onSignUpClick = navController::navigateToLectureOpen,
-            onFindPasswordClick = navController::navigateToInputEmail
+            onSignUpClick = navController::navigateToSignUp,
+            onFindPasswordClick = navController::navigateToInputEmail,
+            onLoginClick = navController::navigateToMainPage
         )
         inputEmailScreen(
             onBackClicked = navController::navigateToLogin,
@@ -157,6 +162,13 @@ fun BitgoeulNavHost(
         )
         mainPageScreen(
             onLoginClicked = navController::navigateToLogin
+        )
+        certificationScreen(
+            onHumanClicked = navController::navigateToMyPage,
+            onEditClicked = navController::navigateToAddCertificationPage
+        )
+        addCertificationScreen(
+            onBackClicked = navController::popBackStack
         )
     }
 }

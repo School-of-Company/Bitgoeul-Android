@@ -232,7 +232,7 @@ fun LectureDetailSettingScreen(
     savedMaxRegisteredUser: Int,
 ) {
     val semesterList = listOf("1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기")
-    val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램", "기타")
+    val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램")
 
     val isRequiredCourse = remember { mutableStateOf("0") }
 
@@ -348,6 +348,7 @@ fun LectureDetailSettingScreen(
                         if (lectureType.value != selectedLectureType) lectureType.value =
                             selectedLectureType else lectureType.value = "유형 선택"
                     },
+                    isLectureType = true
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -515,8 +516,7 @@ fun LectureDetailSettingScreen(
                         Log.e("0 index completeDates", completeDates.toString())
                         Log.e("0 index startTime", startTime.toString())
                         Log.e("0 index endTime", endTime.toString())
-                        lectureDatesForShow[0] =
-                            completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
+                        lectureDatesForShow[0] = completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
                     }
                 )
 
@@ -529,12 +529,11 @@ fun LectureDetailSettingScreen(
                 ) {
                     LectureDetailSettingLectureDatesTextField(
                         modifier = modifier.weight(0.9f),
-                        selectedItem = lectureDatesForShow.getOrNull(index) ?: "엘비스 연산자 실행",
+                        selectedItem = lectureDatesForShow[index].ifEmpty { "수강일 입력(선택)" },
                         onLectureDatesChanged = { completeDates, startTime, endTime ->
                             onLectureDatesChanged(completeDates, startTime, endTime)
                             lectureDatesForShow.getOrNull(index)?.let {
-                                lectureDatesForShow[index] =
-                                    completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
+                                lectureDatesForShow[index] = completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
                             }
                         }
                     )
@@ -545,6 +544,11 @@ fun LectureDetailSettingScreen(
                         modifier = modifier
                             .clickable {
                                 onLectureDatesRemoveClicked()
+                                lectureDatesForShow.forEachIndexed { index, _ ->
+                                    lectureDatesForShow.removeAt(
+                                        index
+                                    )
+                                }
                             }
                     )
                 }
