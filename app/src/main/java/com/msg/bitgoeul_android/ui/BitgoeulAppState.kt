@@ -13,7 +13,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.bitgoeul.login.navigation.loginRoute
 import com.example.my_page.navigation.myPageRoute
 import com.example.my_page.navigation.navigateToMyPage
 import com.msg.bitgoeul_android.navigation.TopLevelDestination
@@ -25,8 +24,6 @@ import com.msg.main.navigation.mainPageRoute
 import com.msg.main.navigation.navigateToMainPage
 import com.msg.post.navigation.navigateToPostPage
 import com.msg.post.navigation.postRoute
-import com.msg.sign_up.navigation.signUpRoute
-import com.msg.student_activity.navigation.studentActivityRoute
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -81,8 +78,6 @@ class BitgoeulAppState(
                 }
                 launchSingleTop = true
                 restoreState = true
-
-
             }
             when (topLevelDestination) {
                 TopLevelDestination.LECTURE -> navController.navigateToLecture(topLevelNavOptions)
