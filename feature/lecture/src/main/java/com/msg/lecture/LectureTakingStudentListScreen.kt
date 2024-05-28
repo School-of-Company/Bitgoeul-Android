@@ -101,7 +101,6 @@ fun LectureTakingStudentListScreen(
 
             if (data != null) {
                 LectureTakingStudentList(
-                    modifier = modifier,
                     data = data.students,
                     onChangeCompleteState = { isComplete, studentId ->
                         onChangeCompleteState(isComplete, studentId)

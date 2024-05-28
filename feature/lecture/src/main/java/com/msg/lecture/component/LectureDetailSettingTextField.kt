@@ -34,7 +34,7 @@ import java.util.UUID
 
 @Composable
 fun LectureDetailSettingInputTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     placeholder: String,
     onItemChange: (item: String) -> Unit,
 ) {
@@ -63,7 +63,7 @@ fun LectureDetailSettingInputTextField(
 
 @Composable
 fun LectureDetailSettingSearchTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     placeholder: String,
     division: String = "",
     onSearchLineClicked: (String, String) -> Unit = { _, _ -> },
@@ -163,7 +163,7 @@ fun LectureDetailSettingSearchTextField(
 
 @Composable
 fun LectureDetailSettingLectureDatesTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     selectedItem: String,
     onLectureDatesChanged: (completeDate: LocalDate, startTIme: LocalTime, endTime: LocalTime) -> Unit,
 ) {

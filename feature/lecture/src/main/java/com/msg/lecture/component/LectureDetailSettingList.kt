@@ -1,6 +1,5 @@
 package com.msg.lecture.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,7 @@ import java.util.UUID
 @Composable
 fun LectureDepartmentList(
     data: SearchDepartmentResponse,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onClick: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
@@ -69,7 +68,7 @@ fun LectureDepartmentList(
 fun LectureLineList(
     data: SearchLineResponse,
     keyword: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     division: String,
     onClick: (String) -> Unit,
 ) {
@@ -119,7 +118,7 @@ fun LectureLineList(
 fun LectureProfessorList(
     data: SearchProfessorResponse,
     keyword: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     division: String,
     onClick: (UUID, String) -> Unit,
 ) {
@@ -168,7 +167,7 @@ fun LectureProfessorList(
 @Composable
 fun LectureDivisionList(
     data: SearchDivisionResponse,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onClick: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->

@@ -27,7 +27,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun LectureFilterDialog(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     isVisible: Boolean,
     onCloseButtonClick: () -> Unit,
     onFilterButtonClick: (String?) -> Unit?,

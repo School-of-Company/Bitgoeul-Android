@@ -16,7 +16,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 @Composable
 fun LectureDetailSettingDepartmentAndDivisionCard(
     data: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onClick: (String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->

@@ -17,7 +17,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun AddLectureDatesButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onAddClick: () -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->

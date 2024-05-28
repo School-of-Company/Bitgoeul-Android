@@ -37,7 +37,7 @@ import java.util.UUID
 
 @Composable
 fun LectureListCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     data: ContentArray,
     onClick: (UUID) -> Unit,
 ) {

@@ -20,7 +20,7 @@ import java.util.UUID
 
 @Composable
 fun LectureList(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     data: List<ContentArray>?,
     onClick: (UUID) -> Unit,
 ) {
@@ -45,7 +45,6 @@ fun LectureList(
                     Spacer(modifier = modifier.height(12.dp))
 
                     LectureListCard(
-                        modifier = modifier,
                         data = item,
                         onClick = onClick,
                     )
@@ -60,7 +59,7 @@ fun LectureList(
 
 @Composable
 fun LectureTakingStudentList(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     data: List<Students>?,
     onChangeCompleteState: (isComplete: Boolean, studentId: UUID) -> Unit,
 ) {

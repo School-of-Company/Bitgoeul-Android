@@ -20,7 +20,7 @@ import java.util.UUID
 
 @Composable
 fun LectureDetailSettingInfoCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     searchProfessorData: Instructors?,
     searchLineData: String?,
     division: String,
