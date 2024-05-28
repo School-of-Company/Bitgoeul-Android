@@ -40,7 +40,7 @@ fun BitgoeulApp(
 ) {
     val isBottomBarVisible = remember { mutableStateOf(true) }
     val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
-    val topLevelDestinationRoute = listOf(
+    val topLevelDestinationRoute = arrayOf(
         lectureListRoute,
         clubRoute,
         mainPageRoute,
