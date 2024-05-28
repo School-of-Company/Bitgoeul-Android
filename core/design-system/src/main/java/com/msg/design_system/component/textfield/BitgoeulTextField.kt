@@ -45,7 +45,6 @@ import com.msg.design_system.component.icon.SeeableIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -292,8 +291,6 @@ fun InputTitleTextField(
     placeholder: String,
     maxTextLength: Int,
     onValueChange: (String) -> Unit,
-    onClickButton: () -> Unit,
-    onClick: (() -> Unit)? = null,
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -338,8 +335,6 @@ fun InputMainContentTextField(
     placeholder: String,
     maxTextLength: Int,
     onValueChange: (String) -> Unit,
-    onClickButton: () -> Unit,
-    onClick: (() -> Unit)? = null,
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -503,7 +498,6 @@ fun PickerTextField(
     onItemChange: (item: String) -> Unit,
     isDatePicker: Boolean = false,
     isTimePicker: Boolean = false,
-    isLocalDateTimePicker: Boolean = false,
     onDatePickerQuit: (LocalDate?) -> Unit = {},
     onTimePickerQuit: (LocalTime?) -> Unit = {},
 ) {
@@ -639,8 +633,6 @@ fun TextFieldPre() {
                 .width(304.dp)
                 .wrapContentHeight(),
             placeholder = "강의 제목 (100자 이내)",
-            onClick = {},
-            onClickButton = {},
             onValueChange = {},
             maxTextLength = 100
         )

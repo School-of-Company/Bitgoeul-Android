@@ -14,6 +14,7 @@ android {
 
     defaultConfig {
         buildConfigField("String", "BASE_URL",  getApiKey("BASE_URL"))
+        buildConfigField("String", "ENCRYPTION_KEY", getApiKey("ENCRYPTION_KEY"))
     }
 
     namespace = "com.msg.network"
@@ -22,6 +23,8 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
+    implementation("com.google.guava:guava:11.0.2")
+
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)

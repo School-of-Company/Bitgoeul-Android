@@ -36,6 +36,7 @@ import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.DeleteIcon
 import com.msg.design_system.component.text.BitgoeulSubjectText
+import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.LectureDetailSettingTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.AddLectureDatesButton
@@ -346,11 +347,28 @@ fun LectureDetailSettingScreen(
                     selectedItem = lectureType.value.ifEmpty { "유형 선택" },
                     onItemChange = { selectedLectureType ->
                         if (lectureType.value != selectedLectureType) lectureType.value =
-                            selectedLectureType else lectureType.value = "유형 선택"
+                            selectedLectureType
                     },
                     isLectureType = true
                 )
 
+                if (lectureType.value == "기타") {
+                    Spacer(modifier = modifier.height(8.dp))
+
+                    DefaultTextField(
+                        modifier = modifier.fillMaxSize(),
+                        placeholder = "",
+                        onValueChange = { inputString ->
+                            lectureType.value = inputString
+                        },
+                        errorText = "",
+                        isDisabled = false,
+                        isError = false,
+                        isLinked = false,
+                        isReverseTrailingIcon = false,
+                        onClickButton = {}
+                    )
+                }
                 Spacer(modifier = modifier.height(24.dp))
             }
 
@@ -516,7 +534,8 @@ fun LectureDetailSettingScreen(
                         Log.e("0 index completeDates", completeDates.toString())
                         Log.e("0 index startTime", startTime.toString())
                         Log.e("0 index endTime", endTime.toString())
-                        lectureDatesForShow[0] = completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
+                        lectureDatesForShow[0] =
+                            completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
                     }
                 )
 
@@ -533,7 +552,8 @@ fun LectureDetailSettingScreen(
                         onLectureDatesChanged = { completeDates, startTime, endTime ->
                             onLectureDatesChanged(completeDates, startTime, endTime)
                             lectureDatesForShow.getOrNull(index)?.let {
-                                lectureDatesForShow[index] = completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
+                                lectureDatesForShow[index] =
+                                    completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
                             }
                         }
                     )

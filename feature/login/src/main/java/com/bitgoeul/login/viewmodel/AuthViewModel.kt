@@ -1,5 +1,6 @@
 package com.bitgoeul.login.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -9,9 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.bitgoeul.login.viewmodel.util.Event
 import com.bitgoeul.login.viewmodel.util.errorHandling
 import com.msg.domain.auth.LoginUseCase
-import com.msg.domain.auth.LogoutUseCase
 import com.msg.domain.auth.SaveTokenUseCase
-import com.msg.domain.auth.WithdrawUseCase
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,9 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val logoutUseCase: LogoutUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
-    private val withdrawUseCase: WithdrawUseCase,
 ) : ViewModel() {
     private val _saveTokenRequest = MutableLiveData<Event<Nothing>>()
     val saveTokenRequest: LiveData<Event<Nothing>> get() = _saveTokenRequest
