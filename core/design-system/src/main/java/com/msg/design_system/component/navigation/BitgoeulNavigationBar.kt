@@ -1,6 +1,8 @@
 package com.msg.design_system.component.navigation
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -50,12 +52,19 @@ fun BitgoeulNavigationBar(
     content: @Composable RowScope.() -> Unit
 ) {
     BitgoeulAndroidTheme { colors, _ ->
-        NavigationBar(
-            modifier = modifier,
-            contentColor = colors.G1,
-            tonalElevation = 0.dp,
-            content = content
-        )
+        Column {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = colors.G9
+            )
+            NavigationBar(
+                modifier = modifier,
+                containerColor = colors.WHITE,
+                contentColor = colors.G1,
+                tonalElevation = 0.dp,
+                content = content
+            )
+        }
     }
 }
 
