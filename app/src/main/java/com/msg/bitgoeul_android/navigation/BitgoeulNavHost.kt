@@ -41,6 +41,8 @@ import com.msg.post.navigation.postAddScreen
 import com.msg.post.navigation.postDetailScreen
 import com.msg.post.navigation.postDetailSettingScreen
 import com.msg.post.navigation.postScreen
+import com.msg.sign_up.navigation.navigateToSignUpFinish
+import com.msg.sign_up.navigation.signUpFinishScreen
 import com.msg.sign_up.navigation.signUpScreen
 import com.msg.student_activity.navigation.navigateToAddActivity
 import com.msg.student_activity.navigation.navigateToDetailSettingActivity
@@ -83,7 +85,11 @@ fun BitgoeulNavHost(
             onBackClicked = navController::navigateToLogin
         )
         signUpScreen(
-            onBackClick = navController::popBackStack
+            onBackClick = navController::popBackStack,
+            onEnterFinished = navController::navigateToSignUpFinish
+        )
+        signUpFinishScreen(
+            onBackClicked = navController::navigateToLogin
         )
         studentActivityScreen(
             onAddClick = navController::navigateToAddActivity,
