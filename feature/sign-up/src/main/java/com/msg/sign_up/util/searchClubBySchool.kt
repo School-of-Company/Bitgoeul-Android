@@ -9,9 +9,9 @@ fun String.searchClubBySchool(): List<String> {
     return listOf("error")
 }
 
-fun String.searchEngSchoolNameByKrSchoolName(): String {
+fun String.searchEngSchoolNameByKrSchoolName(): HighSchool {
     HighSchool.entries.forEach {
-        return if (this == it.school) it.toString() else "Error"
+        if (this == it.school) return it
     }
-    return "Error"
+    return HighSchool.DONGIL_HIGH_SCHOOL_OF_FUTURE_SCIENCE_HIGH_SCHOOL
 }

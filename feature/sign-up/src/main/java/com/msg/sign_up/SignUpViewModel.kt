@@ -76,9 +76,9 @@ class SignUpViewModel @Inject constructor(
                         password = password.value,
                         highSchool = school.value.searchEngSchoolNameByKrSchoolName(),
                         clubName = club.value,
-                        grade = gradeAndNumber.value[0].code,
-                        classRoom = gradeAndNumber.value[1].code,
-                        number = gradeAndNumber.value.substring(2, 3).toInt(),
+                        grade = gradeAndNumber.value.substring(0, 1).toInt(),
+                        classRoom = gradeAndNumber.value.substring(1, 2).toInt(),
+                        number = gradeAndNumber.value.substring(2).toInt(),
                         admissionNumber = enrollment.intValue
                     )
                 ).onSuccess {

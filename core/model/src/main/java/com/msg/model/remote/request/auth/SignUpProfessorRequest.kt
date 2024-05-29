@@ -7,7 +7,7 @@ data class SignUpProfessorRequest(
     val name: String,
     val phoneNumber: String,
     val password: String,
-    val highSchool: String,
+    val highSchool: HighSchool,
     val clubName: String,
     val university: String
 )
