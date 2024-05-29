@@ -8,3 +8,10 @@ fun String.searchClubBySchool(): List<String> {
     }
     return listOf("error")
 }
+
+fun String.searchEngSchoolNameByKrSchoolName(): String {
+    HighSchool.entries.forEach {
+        return if (this == it.school) it.toString() else "Error"
+    }
+    return "Error"
+}
