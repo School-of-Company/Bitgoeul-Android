@@ -9,9 +9,7 @@ import com.msg.model.remote.request.auth.SignUpGovernmentRequest
 import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
 import com.msg.model.remote.request.auth.SignUpProfessorRequest
 import com.msg.model.remote.request.auth.SignUpStudentRequest
-import com.msg.network.BuildConfig
 import com.msg.network.api.AuthAPI
-import com.msg.network.util.AESCryptUtil
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,12 +21,9 @@ class AuthDataSourceImpl @Inject constructor(
     private val authAPI: AuthAPI
 ) : AuthDataSource {
     override suspend fun login(body: LoginRequest): Flow<AuthTokenModel> = flow {
-        val encryptedPassword = AESCryptUtil.encryptAES(body.password, BuildConfig.ENCRYPTION_KEY)
-        val encryptedBody = body.copy(password = encryptedPassword)
-
         emit(
             BitgoeulApiHandler<AuthTokenModel>()
-                .httpRequest { authAPI.login(body = encryptedBody) }
+                .httpRequest { authAPI.login(body = body) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)

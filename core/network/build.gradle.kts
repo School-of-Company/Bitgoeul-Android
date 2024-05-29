@@ -14,7 +14,6 @@ android {
 
     defaultConfig {
         buildConfigField("String", "BASE_URL",  getApiKey("BASE_URL"))
-        buildConfigField("String", "ENCRYPTION_KEY", getApiKey("ENCRYPTION_KEY"))
     }
 
     namespace = "com.msg.network"
