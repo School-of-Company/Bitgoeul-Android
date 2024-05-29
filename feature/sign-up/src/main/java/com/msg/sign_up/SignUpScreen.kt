@@ -192,13 +192,15 @@ fun SignUpScreen(
     val gradeAndNumber = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val rePassword = remember { mutableStateOf("") }
+    val rePassword = remember { mutableStateOf("a") }
 
     var belongListForSearch = BelongList
     val outsideJobListForSearch = OutsideJobList
     val schoolJobListForSearch = SchoolJobList
     val schoolListForSearch = remember { mutableStateOf(HighSchoolList) }
     val clubListForSearch = remember { mutableStateOf(school.value.searchClubBySchool()) }
+
+    val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,24}$")
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
@@ -447,7 +449,7 @@ fun SignUpScreen(
                                 style = typography.titleLarge
                             )
                             Text(
-                                text = "비밀번호를 입력해 주세요!",
+                                text = "8~24자 이내의 영문 / 숫자, 특수문자 1개 이상",
                                 style = typography.bodySmall,
                                 color = colors.G2
                             )
@@ -466,20 +468,23 @@ fun SignUpScreen(
                             )
                         }
 
-                        Loading -> onEnterFinished(
-                            job.value,
-                            school.value,
-                            club.value,
-                            name.value,
-                            phoneNumber.value,
-                            college.value,
-                            enrollment.intValue,
-                            enterprise.value,
-                            government.value,
-                            gradeAndNumber.value,
-                            email.value,
-                            password.value
-                        )
+                        Loading ->
+                            if (password.value == rePassword.value) {
+                                onEnterFinished(
+                                    job.value,
+                                    school.value,
+                                    club.value,
+                                    name.value,
+                                    phoneNumber.value,
+                                    college.value,
+                                    enrollment.intValue,
+                                    enterprise.value,
+                                    government.value,
+                                    gradeAndNumber.value,
+                                    email.value,
+                                    password.value
+                                )
+                            }
                     }
                     Spacer(modifier = Modifier.height(32.dp))
                     val scrollState = rememberScrollState()
@@ -530,12 +535,12 @@ fun SignUpScreen(
                                             continueToNextField(signUpState.value, job.value)
                                     },
                                 placeholder = "비밀번호",
-                                errorText = "비밀번호는 (정규식)으로 해주세요",
+                                errorText = "비밀번호는 규칙에 맞게 입력해주세요",
                                 onValueChange = {
                                     password.value = it
                                 },
                                 onClickLink = {},
-                                isError = false,
+                                isError = !passwordRegex.matches(password.value),
                                 isLinked = false,
                                 isDisabled = false,
                                 onClick = {
@@ -1030,9 +1035,9 @@ fun continueToNextField(
         GradeAndNumber -> return PhoneNumber
         Password -> return RePassword
         RePassword -> return Loading
-        Loading -> TODO()
-        PhoneNumber -> TODO()
-        Email -> TODO()
+        Loading -> return Loading
+        PhoneNumber -> return Email
+        Email -> return Password
     }
     return Loading
 }
@@ -1042,6 +1047,6 @@ fun continueToNextField(
 fun SignUpScreenPre() {
     SignUpScreen(
         onBackClick = {},
-        onEnterFinished = {_,_,_,_,_,_,_,_,_,_,_,_->}
+        onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _ -> }
     )
 }
