@@ -57,6 +57,8 @@ enum class SignUpState {
     Government,
     Enrollment,
     GradeAndNumber,
+    Position,
+    Sectors,
     PhoneNumber,
     Email,
     Password,
@@ -102,7 +104,7 @@ fun SignUpRoute(
 ) {
     SignUpScreen(
         onBackClick = onBackClick,
-        onEnterFinished = { job: String, school: String, club: String, name: String, phoneNumber: String, college: String, enrollment: Int, enterprise: String, government: String, gradeAndNumber: String, email: String, password: String ->
+        onEnterFinished = { job: String, school: String, club: String, name: String, phoneNumber: String, college: String, enrollment: Int, enterprise: String, government: String, gradeAndNumber: String, email: String, password: String, position: String, sectors: String ->
             viewModel.job.value = job
             viewModel.school.value = school
             viewModel.club.value = club
@@ -113,6 +115,8 @@ fun SignUpRoute(
             viewModel.enterprise.value = enterprise
             viewModel.government.value = government
             viewModel.gradeAndNumber.value = gradeAndNumber
+            viewModel.position.value = position
+            viewModel.sectors.value = sectors
             viewModel.email.value = email
             viewModel.password.value = password
             viewModel.signUp()
@@ -136,7 +140,9 @@ fun SignUpScreen(
         government: String,
         gradeAndNumber: String,
         email: String,
-        password: String
+        password: String,
+        position: String,
+        sectors: String
     ) -> Unit
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -154,10 +160,10 @@ fun SignUpScreen(
     val showGovernmentTextField = remember { mutableStateOf(false) }
     val showEnrollmentTextField = remember { mutableStateOf(false) }
     val showGradeAndNumberTextField = remember { mutableStateOf(false) }
+    val showPositionTextField = remember { mutableStateOf(false) }
+    val showSectorsTextField = remember { mutableStateOf(false) }
     val showPhoneNumberTextField = remember { mutableStateOf(false) }
-    val showAuthenticationTextField = remember { mutableStateOf(false) }
     val showEmailTextField = remember { mutableStateOf(false) }
-    val showEmailAuthenticationTextField = remember { mutableStateOf(false) }
     val showPasswordTextField = remember { mutableStateOf(false) }
     val showRePasswordTextField = remember { mutableStateOf(false) }
     val isLoading = remember { mutableStateOf(false) }
@@ -173,6 +179,8 @@ fun SignUpScreen(
     val isSelectedEnterprise = remember { mutableStateOf(false) }
     val isSelectedGovernment = remember { mutableStateOf(false) }
     val isSelectedGradeAndNumber = remember { mutableStateOf(false) }
+    val isSelectedPosition = remember { mutableStateOf(false) }
+    val isSelectedSectors = remember { mutableStateOf(false) }
     val isSelectedEmail = remember { mutableStateOf(false) }
     val isSelectedPassword = remember { mutableStateOf(false) }
     val isSelectedRePassword = remember { mutableStateOf(false) }
@@ -190,6 +198,8 @@ fun SignUpScreen(
     val enterprise = remember { mutableStateOf("") }
     val government = remember { mutableStateOf("") }
     val gradeAndNumber = remember { mutableStateOf("") }
+    val position = remember { mutableStateOf("") }
+    val sectors = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val rePassword = remember { mutableStateOf("a") }
@@ -354,8 +364,8 @@ fun SignUpScreen(
 
                         Government -> {
                             if (isSelectedGovernment.value) {
-                                showPhoneNumberTextField.value = false
-                                phoneNumber.value = ""
+                                showPositionTextField.value = false
+                                sectors.value = ""
                             }
                             showGovernmentTextField.value = true
                             Text(
@@ -404,9 +414,43 @@ fun SignUpScreen(
                             )
                         }
 
+                        Position -> {
+                            if (isSelectedPosition.value) {
+                                showSectorsTextField.value = false
+                                position.value = ""
+                            }
+                            showPositionTextField.value = true
+                            Text(
+                                text = "업종 입력",
+                                style = typography.titleLarge
+                            )
+                            Text(
+                                text = "소속하신 기관의 업종을 입력해 주세요!",
+                                style = typography.bodySmall,
+                                color = colors.G2
+                            )
+                        }
+
+                        Sectors -> {
+                            if (isSelectedSectors.value) {
+                                showPhoneNumberTextField.value = false
+                                phoneNumber.value = ""
+                            }
+                            showSectorsTextField.value = true
+                            Text(
+                                text = "직책 입력",
+                                style = typography.titleLarge
+                            )
+                            Text(
+                                text = "본인의 직책을 입력해 주세요!",
+                                style = typography.bodySmall,
+                                color = colors.G2
+                            )
+                        }
+
                         PhoneNumber -> {
                             if (isSelectedPhoneNumber.value) {
-                                showAuthenticationTextField.value = false
+                                showEmailTextField.value = false
                                 email.value = ""
                             }
                             showPhoneNumberTextField.value = true
@@ -423,7 +467,7 @@ fun SignUpScreen(
 
                         Email -> {
                             if (isSelectedEmail.value) {
-                                showEmailAuthenticationTextField.value = false
+                                showPasswordTextField.value = false
                                 password.value = ""
                             }
                             showEmailTextField.value = true
@@ -482,7 +526,9 @@ fun SignUpScreen(
                                     government.value,
                                     gradeAndNumber.value,
                                     email.value,
-                                    password.value
+                                    password.value,
+                                    position.value,
+                                    sectors.value
                                 )
                             }
                     }
@@ -644,6 +690,71 @@ fun SignUpScreen(
                                         GradeAndNumber
                                     isActivatedBeforePhoneNumber.value = true
                                     showPhoneNumberTextField.value = false
+                                    isClicked.value = true
+                                }
+                            )
+                        }
+                        if (showSectorsTextField.value && showPositionTextField.value) {
+                            val isClicked = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) {
+                                focusManager.clearFocus()
+                            }
+                            isSelectedSectors.value = true
+                            DefaultTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .onFocusChanged {
+                                        if (!it.isFocused && isClicked.value) signUpState.value =
+                                            continueToNextField(signUpState.value, job.value)
+                                    },
+                                placeholder = "직책 입력",
+                                isError = false,
+                                isLinked = false,
+                                isDisabled = false,
+                                isReverseTrailingIcon = false,
+                                errorText = "",
+                                onValueChange = {
+                                    position.value = it
+                                },
+                                onClickButton = { position.value = "" },
+                                isReadOnly = false,
+                                onClick = {
+                                    if (signUpState.value != Sectors) signUpState.value =
+                                        Sectors
+                                    isActivatedBeforePhoneNumber.value = true
+                                    showPhoneNumberTextField.value = false
+                                    isClicked.value = true
+                                }
+                            )
+                        }
+                        if (showPositionTextField.value && showGovernmentTextField.value) {
+                            val isClicked = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) {
+                                focusManager.clearFocus()
+                            }
+                            isSelectedPosition.value = true
+                            DefaultTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .onFocusChanged {
+                                        if (!it.isFocused && isClicked.value) signUpState.value =
+                                            continueToNextField(signUpState.value, job.value)
+                                    },
+                                placeholder = "소속 기관의 업종",
+                                isError = false,
+                                isLinked = false,
+                                isDisabled = false,
+                                isReverseTrailingIcon = false,
+                                errorText = "",
+                                onValueChange = {
+                                    sectors.value = it
+                                },
+                                onClickButton = { sectors.value = "" },
+                                isReadOnly = false,
+                                onClick = {
+                                    if (signUpState.value != Position) signUpState.value =
+                                        Position
+                                    showSectorsTextField.value = false
                                     isClicked.value = true
                                 }
                             )
@@ -1026,13 +1137,14 @@ fun continueToNextField(
 
         College -> return PhoneNumber
         Enterprise -> return PhoneNumber
-        Government -> return PhoneNumber
+        Government -> return Position
         Enrollment -> {
             Log.d("TAG", "here")
             return GradeAndNumber
         }
-
         GradeAndNumber -> return PhoneNumber
+        Position -> return Sectors
+        Sectors -> return PhoneNumber
         Password -> return RePassword
         RePassword -> return Loading
         Loading -> return Loading
@@ -1047,6 +1159,6 @@ fun continueToNextField(
 fun SignUpScreenPre() {
     SignUpScreen(
         onBackClick = {},
-        onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _ -> }
+        onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _, _, _-> }
     )
 }

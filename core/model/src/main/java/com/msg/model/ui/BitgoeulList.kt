@@ -19,21 +19,21 @@ val GETHSClubList = listOf(
     "ECT",
     "Tesla",
     "발자국",
-    "\"M lab\"= 메이커(maker) 연구소"
+    "\"M lab\"= 메이커 연구소"
 )
 
 val KTHSClubList = listOf(
     "레프리",
-    "블라썸(blossom)",
+    "블라썸",
     "유선통신",
     "전기꿈나무",
-    "어썸(awesome)",
-    "다이나믹(Dynamic)",
+    "어썸",
+    "다이나믹",
     "금호로80 베이커리"
 )
 
 val DHSofFSClubList = listOf(
-    "놀고잡고(놀GO잡GO)",
+    "놀고잡고",
     "믿고잡고",
     "따고잡고",
     "쓰고잡고",
@@ -90,7 +90,7 @@ val GNSHSClubList = listOf(
     "DCT",
     "뉴쿡",
     "베이커리 카페 CEO",
-    "우(리들의)아(름다운)행(복)"
+    "우아행"
 )
 
 val SWCollegeData = CollegeData(

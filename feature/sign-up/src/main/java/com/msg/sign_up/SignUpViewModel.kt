@@ -60,6 +60,10 @@ class SignUpViewModel @Inject constructor(
         private set
     var gradeAndNumber = mutableStateOf("")
         private set
+    var position = mutableStateOf("")
+        private set
+    var sectors = mutableStateOf("")
+        private set
     var email = mutableStateOf("")
         private set
     var password = mutableStateOf("")
@@ -162,7 +166,9 @@ class SignUpViewModel @Inject constructor(
                         password = password.value,
                         highSchool = school.value.searchEngSchoolNameByKrSchoolName(),
                         clubName = club.value,
-                        governmentName = government.value
+                        governmentName = government.value,
+                        position = position.value,
+                        sectors = sectors.value,
                     )
                 ).onSuccess {
                     it.catch { remoteError ->
