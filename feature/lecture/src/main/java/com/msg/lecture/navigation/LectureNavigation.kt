@@ -8,6 +8,7 @@ import com.msg.lecture.LectureDetailRoute
 import com.msg.lecture.LectureDetailSettingRoute
 import com.msg.lecture.LectureListRoute
 import com.msg.lecture.LectureOpenRoute
+import com.msg.lecture.LectureTakingStudentListRoute
 
 const val lectureListRoute = "lecture_list_route"
 
@@ -16,6 +17,8 @@ const val lectureDetailRoute = "lecture_detail_route"
 const val lectureDetailSettingRoute = "lecture_detail_setting_route"
 
 const val lectureOpenRoute = "lecture_open_route"
+
+const val lectureTakingStudentListRoute = "lecture_taking_student_list_route"
 fun NavController.navigateToLecture(navOptions: NavOptions? = null) {
     this.navigate(lectureListRoute, navOptions)
 }
@@ -32,26 +35,30 @@ fun NavController.navigateToLectureDetailSetting(navOptions: NavOptions? = null)
     this.navigate(lectureDetailSettingRoute, navOptions)
 }
 
+fun NavController.navigateToLectureTakingStudentList(navOptions: NavOptions? = null) {
+    this.navigate(lectureTakingStudentListRoute, navOptions)
+}
+
 fun NavGraphBuilder.lectureListScreen(
     onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
-    onBackClicked: () -> Unit,
 ) {
     composable(route = lectureListRoute) {
         LectureListRoute(
             onOpenClicked = onOpenClicked,
             onItemClicked = onItemClicked,
-            onBackClicked = onBackClicked,
         )
     }
 }
 
 fun NavGraphBuilder.lectureDetailScreen(
     onBackClicked: () -> Unit,
+    onLectureTakingStudentListScreenClicked: () -> Unit,
 ) {
     composable(route = lectureDetailRoute) {
         LectureDetailRoute(
-          onBackClicked = onBackClicked,
+            onBackClicked = onBackClicked,
+            onLectureTakingStudentListScreenClick = onLectureTakingStudentListScreenClicked,
         )
     }
 }
@@ -78,6 +85,16 @@ fun NavGraphBuilder.lectureDetailSettingScreen(
         LectureDetailSettingRoute(
             onCloseClicked = onCloseClicked,
             onApplyClicked = onApplyClicked,
+        )
+    }
+}
+
+fun NavGraphBuilder.lectureTakingStudentListScreen(
+    onBackClicked: () -> Unit,
+) {
+    composable(route = lectureTakingStudentListRoute) {
+        LectureTakingStudentListRoute(
+            onBackClicked = onBackClicked,
         )
     }
 }

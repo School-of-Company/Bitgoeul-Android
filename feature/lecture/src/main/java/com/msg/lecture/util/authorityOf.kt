@@ -1,9 +1,10 @@
 package com.msg.lecture.util
 
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 
-suspend fun Authority.Companion.authorityOf(authority: Flow<Authority>): Authority {
-    return authority.firstOrNull() ?: Authority.ROLE_USER
+fun Authority.Companion.authorityOf(authority: Flow<Authority>): Flow<Authority> = flow {
+    emit(authority.firstOrNull() ?: Authority.ROLE_USER)
 }

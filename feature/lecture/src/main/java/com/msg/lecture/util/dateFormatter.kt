@@ -4,6 +4,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 fun String.toLocalDate(): LocalDate {
-    val dateString = this
-    return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
+    return LocalDate.parse(this, formatter)
 }

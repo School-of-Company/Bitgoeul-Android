@@ -45,7 +45,6 @@ import com.msg.design_system.component.icon.SeeableIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LastPasswordVisibleVisualTransformation
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -292,8 +291,6 @@ fun InputTitleTextField(
     placeholder: String,
     maxTextLength: Int,
     onValueChange: (String) -> Unit,
-    onClickButton: () -> Unit,
-    onClick: (() -> Unit)? = null,
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -338,8 +335,6 @@ fun InputMainContentTextField(
     placeholder: String,
     maxTextLength: Int,
     onValueChange: (String) -> Unit,
-    onClickButton: () -> Unit,
-    onClick: (() -> Unit)? = null,
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -436,6 +431,7 @@ fun LectureDetailSettingTextField(
     list: List<String>,
     selectedItem: String,
     onItemChange: (item: String) -> Unit,
+    isLectureType: Boolean = false,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -470,7 +466,23 @@ fun LectureDetailSettingTextField(
                     onQuit = {
                         isFocused.value = false
                     },
-                    firstItem = {}
+                    firstItem = {},
+                    lastItem = {
+                        if (isLectureType) {
+                            Column {
+                                Text(
+                                    text = "기타",
+                                    style = typography.bodyMedium,
+                                    color = colors.BLACK
+                                )
+                                Text(
+                                    text = "직접 작성하기",
+                                    style = typography.labelMedium,
+                                    color = colors.G2
+                                )
+                            }
+                        }
+                    }
                 )
             }
         }
@@ -486,10 +498,8 @@ fun PickerTextField(
     onItemChange: (item: String) -> Unit,
     isDatePicker: Boolean = false,
     isTimePicker: Boolean = false,
-    isLocalDateTimePicker: Boolean = false,
     onDatePickerQuit: (LocalDate?) -> Unit = {},
     onTimePickerQuit: (LocalTime?) -> Unit = {},
-    onLocalDateTimePickerQuit: (LocalDateTime?) -> Unit = {},
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -623,8 +633,6 @@ fun TextFieldPre() {
                 .width(304.dp)
                 .wrapContentHeight(),
             placeholder = "강의 제목 (100자 이내)",
-            onClick = {},
-            onClickButton = {},
             onValueChange = {},
             maxTextLength = 100
         )

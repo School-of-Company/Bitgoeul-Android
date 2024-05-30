@@ -1,8 +1,8 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -15,7 +15,7 @@ import java.util.UUID
 
 interface LectureRepository {
     suspend fun openLecture(body: OpenLectureRequest): Flow<Unit>
-    suspend fun getLectureList(page: Int, size: Int, type: LectureType?): Flow<LectureListResponse>
+    suspend fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListResponse>
     suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
     suspend fun lectureApplication(id: UUID): Flow<Unit>
     suspend fun lectureApplicationCancel(id: UUID): Flow<Unit>
@@ -25,6 +25,6 @@ interface LectureRepository {
     suspend fun searchDivision(keyword: String): Flow<SearchDivisionResponse>
     suspend fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse>
     suspend fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse>
-    suspend fun editPost(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>
-
+    suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>
+    suspend fun downloadExcelFile(): Flow<DownloadExcelFileResponse>
 }

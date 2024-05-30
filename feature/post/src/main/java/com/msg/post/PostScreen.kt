@@ -23,7 +23,7 @@ import com.msg.design_system.component.icon.HelpIcon
 import com.msg.design_system.component.icon.MegaphoneIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.model.post.PostModel
 import com.msg.model.remote.response.post.GetPostListResponse
@@ -103,7 +103,7 @@ suspend fun getPostList(
 @Composable
 fun PostScreen(
     modifier: Modifier = Modifier,
-    role: Authority,
+    role: String,
     onAddClicked: (feedType: FeedType) -> Unit,
     onItemClicked: (UUID) -> Unit,
     onViewChangeClicked: (type: FeedType) -> Unit,
@@ -111,11 +111,11 @@ fun PostScreen(
     feedType: FeedType = FeedType.EMPLOYMENT
 ) {
     val roleField = listOf(
-        Authority.ROLE_ADMIN,
-        Authority.ROLE_BBOZZAK,
-        Authority.ROLE_PROFESSOR,
-        Authority.ROLE_COMPANY_INSTRUCTOR,
-        Authority.ROLE_GOVERNMENT
+        Authority.ROLE_ADMIN.toString(),
+        Authority.ROLE_BBOZZAK.toString(),
+        Authority.ROLE_PROFESSOR.toString(),
+        Authority.ROLE_COMPANY_INSTRUCTOR.toString(),
+        Authority.ROLE_GOVERNMENT.toString()
     )
 
     var viewState: FeedType = feedType
@@ -172,24 +172,4 @@ fun PostScreen(
             )
         }
     }
-}
-
-@DevicePreviews
-@Composable
-fun PostScreenPre() {
-    PostScreen(
-        role = Authority.ROLE_STUDENT,
-        onAddClicked = {},
-        onItemClicked = {},
-        onViewChangeClicked = {},
-        data = GetPostListResponse(
-            listOf(
-                PostModel(
-                    id = UUID.randomUUID(),
-                    title = "Test Text",
-                    modifiedAt = LocalDateTime.now()
-                )
-            )
-        )
-    )
 }

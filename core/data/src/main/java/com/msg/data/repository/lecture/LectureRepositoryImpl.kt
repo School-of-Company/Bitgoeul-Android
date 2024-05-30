@@ -1,8 +1,8 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -27,7 +27,7 @@ class LectureRepositoryImpl @Inject constructor(
     override suspend fun getLectureList(
         page: Int,
         size: Int,
-        type: LectureType?,
+        type: String?,
     ): Flow<LectureListResponse> {
         return lectureDataSource.getLectureList(
             page = page,
@@ -91,11 +91,15 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun editPost(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
-        return lectureDataSource.editPost(
+    override suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
+        return lectureDataSource.editLectureCourseCompletionStatus(
             id = id,
             studentId = studentId,
             isComplete = isComplete
         )
+    }
+
+    override suspend fun downloadExcelFile(): Flow<DownloadExcelFileResponse> {
+        return lectureDataSource.downloadExcelFile()
     }
 }

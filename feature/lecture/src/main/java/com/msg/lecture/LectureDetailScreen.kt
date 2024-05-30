@@ -2,6 +2,7 @@ package com.msg.lecture
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,10 +32,13 @@ import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
+import com.msg.design_system.component.icon.KebabIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.lecture.component.LectureExcelDownloadBottomSheet
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
+import Authority
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.ui.util.toKoreanFormat
@@ -43,9 +47,11 @@ import com.msg.ui.util.toLocalTimeFormat
 @Composable
 fun LectureDetailRoute(
     onBackClicked: () -> Unit,
-    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+    onLectureTakingStudentListScreenClick: () -> Unit,
+    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val id = viewModel.selectedLectureId.value
+    val role = viewModel.role
 
     LaunchedEffect(true) {
         viewModel.getDetailLecture(id = id)
@@ -58,20 +64,25 @@ fun LectureDetailRoute(
     }
 
     LectureDetailScreen(
+        role = role,
         data = viewModel.lectureDetailData.value,
         onBackClicked = onBackClicked,
+        onLectureTakingStudentListScreenClick = onLectureTakingStudentListScreenClick,
         onApplicationCancelClick = {
             viewModel.lectureApplicationCancel(viewModel.selectedLectureId.value)
         },
         onApplicationClick = {
             viewModel.lectureApplication(viewModel.selectedLectureId.value)
+        },
+        onDownloadButtonClick = {
+            viewModel.downloadLectureExcel()
         }
     )
 }
 
 suspend fun getLectureDetailData(
     viewModel: LectureViewModel,
-    onSuccess: (data: DetailLectureResponse) -> Unit
+    onSuccess: (data: DetailLectureResponse) -> Unit,
 ) {
     viewModel.getDetailLectureResponse.collect { response ->
         when (response) {
@@ -86,13 +97,17 @@ suspend fun getLectureDetailData(
 
 @Composable
 fun LectureDetailScreen(
+    role: String,
     data: DetailLectureResponse,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     onApplicationClick: () -> Unit,
-    onApplicationCancelClick: () -> Unit
+    onApplicationCancelClick: () -> Unit,
+    onLectureTakingStudentListScreenClick: () -> Unit,
+    onDownloadButtonClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val isExcelDownloadSheetVisible = remember { mutableStateOf(false) }
     val isPositiveActionDialogVisible = remember { mutableStateOf(false) }
     val isNegativeDialogVisible = remember { mutableStateOf(false) }
     val isApplicationState = remember { mutableStateOf(false) }
@@ -111,16 +126,26 @@ fun LectureDetailScreen(
             ) {
 
                 Spacer(modifier = modifier.height(20.dp))
+                Row {
+                    GoBackTopBar(
+                        icon = { GoBackIcon() },
+                        text = "돌아가기",
+                        onClick = { onBackClicked() }
+                    )
 
-                GoBackTopBar(
-                    icon = { GoBackIcon() },
-                    text = "돌아가기",
-                    onClick = { onBackClicked() }
-                )
+                    Spacer(modifier = modifier.weight(1f))
+
+                    KebabIcon(
+                        modifier.clickable {
+                            isExcelDownloadSheetVisible.value = true
+                        }
+                    )
+                }
 
                 Spacer(modifier = modifier.height(24.dp))
+
                 Text(
-                    text = "# " + "${data.lectureType}",
+                    text = "# " + data.lectureType,
                     color = colors.P3,
                     style = typography.labelMedium,
                 )
@@ -289,103 +314,131 @@ fun LectureDetailScreen(
                     color = colors.G2,
                     style = typography.bodySmall
                 )
-                when (data.lectureStatus) {
-                    LectureStatus.OPEN -> {
-                        Column(
-                            modifier = modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Bottom
-                        ) {
-                            Box(
-                                modifier = modifier
-                                    .fillMaxWidth()
-                            ) {
-                                when (isApplicationState.value) {
-                                    true -> {
-                                        ApplicationDoneButton(
-                                            text = "수강 신청 완료",
-                                            modifier = modifier
-                                                .padding(bottom = 40.dp)
-                                                .fillMaxWidth()
-                                                .height(52.dp)
-                                                .align(Alignment.BottomCenter),
-                                            onClick = {
-                                                isNegativeDialogVisible.value = true
-                                            }
-                                        )
-                                    }
+            }
+            when(role) {
+                "ROLE_ADMIN" -> {
+                    BitgoeulButton(
+                        text = "수강 명단 확인",
+                        modifier = modifier
+                            .padding(bottom = 40.dp)
+                            .fillMaxWidth()
+                            .height(52.dp)
+                            .align(Alignment.BottomCenter),
+                        state = ButtonState.Enable
+                    ) {
+                        onLectureTakingStudentListScreenClick()
+                    }
+                }
+                else -> {}
+            }
 
-                                    false -> {
-                                        BitgoeulButton(
-                                            text = "수강 신청 하기",
-                                            modifier = modifier
-                                                .padding(bottom = 40.dp)
-                                                .fillMaxWidth()
-                                                .height(52.dp)
-                                                .align(Alignment.BottomCenter),
-                                            state = when (isPositiveActionDialogVisible.value) {
-                                                true -> ButtonState.Disable
-                                                false -> ButtonState.Enable
-                                            }
-                                        ) {
-                                            isPositiveActionDialogVisible.value = !isPositiveActionDialogVisible.value
+            when (data.lectureStatus) {
+                LectureStatus.OPEN -> {
+                    Column(
+                        modifier = modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Bottom
+                    ) {
+                        Box(
+                            modifier = modifier
+                                .fillMaxWidth()
+                        ) {
+                            when (isApplicationState.value) {
+                                true -> {
+                                    ApplicationDoneButton(
+                                        text = "수강 신청 완료",
+                                        modifier = modifier
+                                            .padding(bottom = 40.dp)
+                                            .fillMaxWidth()
+                                            .height(52.dp)
+                                            .align(Alignment.BottomCenter),
+                                        onClick = {
+                                            isNegativeDialogVisible.value = true
                                         }
-                                    }
+                                    )
                                 }
 
+                                false -> {
+                                    BitgoeulButton(
+                                        text = "수강 신청 하기",
+                                        modifier = modifier
+                                            .padding(bottom = 40.dp)
+                                            .fillMaxWidth()
+                                            .height(52.dp)
+                                            .align(Alignment.BottomCenter),
+                                        state = when (isPositiveActionDialogVisible.value) {
+                                            true -> ButtonState.Disable
+                                            false -> ButtonState.Enable
+                                        }
+                                    ) {
+                                        isPositiveActionDialogVisible.value =
+                                            !isPositiveActionDialogVisible.value
+                                    }
+                                }
                             }
                         }
                     }
+                }
 
-                    LectureStatus.CLOSE -> {
-                        Column(
-                            modifier = modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Bottom
+                LectureStatus.CLOSE -> {
+                    Column(
+                        modifier = modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Bottom
+                    ) {
+                        Box(
+                            modifier = modifier
+                                .fillMaxWidth()
                         ) {
-                            Box(
+                            BitgoeulButton(
+                                text = "수강 신청 불가",
                                 modifier = modifier
+                                    .padding(bottom = 40.dp)
                                     .fillMaxWidth()
-                            ) {
-                                BitgoeulButton(
-                                    text = "수강 신청 불가",
-                                    modifier = modifier
-                                        .padding(bottom = 40.dp)
-                                        .fillMaxWidth()
-                                        .height(52.dp)
-                                        .align(Alignment.BottomCenter),
-                                    state = ButtonState.Disable,
-                                ) {}
-                            }
+                                    .height(52.dp)
+                                    .align(Alignment.BottomCenter),
+                                state = ButtonState.Disable,
+                            ) {}
                         }
                     }
                 }
             }
-
-            PositiveActionDialog(
-                title = "수강 신청하시겠습니까?",
-                content = data.name,
-                positiveAction = "신청",
-                onQuit = {
-                    isPositiveActionDialogVisible.value = false
-                },
-                onActionClicked = {
-                    onApplicationClick()
-                    isPositiveActionDialogVisible.value = false
-                    isApplicationState.value = true
-                },
-                isVisible = isPositiveActionDialogVisible.value,
-            )
-
-            NegativeActionDialog(
-                title = "수강 취소하시겠습니까?",
-                negativeAction = "확인",
-                content = data.content,
-                isVisible = isNegativeDialogVisible.value,
-                onQuit = { isNegativeDialogVisible.value = false },
-                onActionClicked = {
-                    onApplicationCancelClick()
-                    isNegativeDialogVisible.value = false
-                }
-            )
         }
+
+        PositiveActionDialog(
+            title = "수강 신청하시겠습니까?",
+            content = data.name,
+            positiveAction = "신청",
+            onQuit = {
+                isPositiveActionDialogVisible.value = false
+            },
+            onActionClicked = {
+                onApplicationClick()
+                isPositiveActionDialogVisible.value = false
+                isApplicationState.value = true
+            },
+            isVisible = isPositiveActionDialogVisible.value,
+        )
+
+        NegativeActionDialog(
+            title = "수강 취소하시겠습니까?",
+            negativeAction = "확인",
+            content = data.content,
+            isVisible = isNegativeDialogVisible.value,
+            onQuit = { isNegativeDialogVisible.value = false },
+            onActionClicked = {
+                onApplicationCancelClick()
+                isNegativeDialogVisible.value = false
+            }
+        )
+
+        LectureExcelDownloadBottomSheet(
+            isVisible = isExcelDownloadSheetVisible.value,
+            onDownloadButtonClick = {
+                onDownloadButtonClick()
+                isExcelDownloadSheetVisible.value = false
+            },
+            onQuit = {
+                isExcelDownloadSheetVisible.value = false
+            }
+        )
     }
 }

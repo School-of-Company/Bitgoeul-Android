@@ -12,39 +12,46 @@ import com.msg.domain.club.GetClubDetailUseCase
 import com.msg.domain.club.GetClubListUseCase
 import com.msg.domain.club.GetMyClubDetailUseCase
 import com.msg.domain.club.GetStudentBelongClubUseCase
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.response.club.ClubDetailResponse
 import com.msg.model.remote.response.club.ClubListResponse
 import com.msg.model.remote.response.club.StudentBelongClubResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.UUID
 import javax.inject.Inject
 
+@HiltViewModel
 class ClubViewModel @Inject constructor(
     private val getClubDetailUseCase: GetClubDetailUseCase,
     private val getClubListUseCase: GetClubListUseCase,
     private val getMyClubDetailUseCase: GetMyClubDetailUseCase,
     private val getStudentBelongClubUseCase: GetStudentBelongClubUseCase,
-    authTokenDataSource: AuthTokenDataSource
+    private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
 
     private val _getClubDetailResponse = MutableStateFlow<Event<ClubDetailResponse>>(Event.Loading)
     val getClubDetailResponse = _getClubDetailResponse.asStateFlow()
 
-    private val _getClubListResponse = MutableStateFlow<Event<List<ClubListResponse>>>(Event.Loading)
+    private val _getClubListResponse =
+        MutableStateFlow<Event<List<ClubListResponse>>>(Event.Loading)
     val getClubListResponse = _getClubListResponse.asStateFlow()
 
-    private val _getMyClubDetailResponse = MutableStateFlow<Event<ClubDetailResponse>>(Event.Loading)
+    private val _getMyClubDetailResponse =
+        MutableStateFlow<Event<ClubDetailResponse>>(Event.Loading)
     val getMyClubDetailResponse = _getMyClubDetailResponse.asStateFlow()
 
-    private val _getStudentBelongClubResponse = MutableStateFlow<Event<StudentBelongClubResponse>>(Event.Loading)
+    private val _getStudentBelongClubResponse =
+        MutableStateFlow<Event<StudentBelongClubResponse>>(Event.Loading)
     val getStudentBelongClubResponse = _getStudentBelongClubResponse.asStateFlow()
 
-    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
+    val role = getRole().toString()
 
     var detailClub = mutableStateOf(
         ClubDetailResponse(
@@ -90,7 +97,7 @@ class ClubViewModel @Inject constructor(
     }
 
     fun getClubList(
-        highSchool: HighSchool
+        highSchool: HighSchool,
     ) = viewModelScope.launch {
         getClubListUseCase(highSchool = highSchool).onSuccess {
             it.catch { remoteError ->
@@ -113,23 +120,28 @@ class ClubViewModel @Inject constructor(
         }.onFailure { error ->
             _getMyClubDetailResponse.value = error.errorHandling()
         }
+    }
 
-        fun getStudentBelongClub(
-            id: Long,
-            studentId: UUID
-        ) = viewModelScope.launch {
-            getStudentBelongClubUseCase(
-                id = id,
-                studentId = studentId
-            ).onSuccess {
-                it.catch { remoteError ->
-                    _getStudentBelongClubResponse.value = remoteError.errorHandling()
-                }.collect { response ->
-                    _getStudentBelongClubResponse.value = Event.Success(data = response)
-                }
-            }.onFailure { error ->
-                _getStudentBelongClubResponse.value = error.errorHandling()
+    fun getStudentBelongClub(
+        id: Long,
+        studentId: UUID,
+    ) = viewModelScope.launch {
+        getStudentBelongClubUseCase(
+            id = id,
+            studentId = studentId
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getStudentBelongClubResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getStudentBelongClubResponse.value = Event.Success(data = response)
             }
+        }.onFailure { error ->
+            _getStudentBelongClubResponse.value = error.errorHandling()
         }
+    }
+
+
+    private fun getRole(): Authority = runBlocking {
+        return@runBlocking authTokenDataSource.getAuthority().first()
     }
 }

@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.ApproveStatus
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDate

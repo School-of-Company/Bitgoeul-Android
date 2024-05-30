@@ -14,13 +14,11 @@ import com.msg.domain.certification.GetCertificationListForTeacherUseCase
 import com.msg.domain.certification.WriteCertificationUseCase
 import com.msg.domain.club.GetStudentBelongClubUseCase
 import com.msg.domain.lecture.GetLectureSignUpHistoryUseCase
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.request.certification.WriteCertificationRequest
 import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.model.remote.response.club.StudentBelongClubResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch

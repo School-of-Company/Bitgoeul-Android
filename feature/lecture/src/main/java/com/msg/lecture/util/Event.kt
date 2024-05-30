@@ -1,10 +1,10 @@
 package com.msg.lecture.util
 
-
 //추후 리팩토링을 통해 다른 모듈? 혹은 패키지로 이동 예정
 sealed class Event<out T>(
     val data: T? = null,
 ) {
+
 
     object Loading : Event<Nothing>()
 

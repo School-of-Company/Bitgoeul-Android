@@ -1,5 +1,6 @@
 package com.msg.lecture.viewmodel
 
+import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -7,35 +8,49 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
+import com.msg.domain.lecture.DownloadExcelFileUseCase
+import com.msg.domain.lecture.EditLectureCourseCompletionStatusUseCase
 import com.msg.domain.lecture.GetDetailLectureUseCase
 import com.msg.domain.lecture.GetLectureListUseCase
+import com.msg.domain.lecture.GetLectureSignUpHistoryUseCase
+import com.msg.domain.lecture.GetTakingLectureStudentListUseCase
 import com.msg.domain.lecture.LectureApplicationCancelUseCase
 import com.msg.domain.lecture.LectureApplicationUseCase
 import com.msg.domain.lecture.OpenLectureUseCase
 import com.msg.domain.lecture.SearchDepartmentUseCase
+import com.msg.domain.lecture.SearchDivisionUseCase
 import com.msg.domain.lecture.SearchLineUseCase
 import com.msg.domain.lecture.SearchProfessorUseCase
 import com.msg.lecture.util.Event
-import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
+import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.enumdatatype.LectureType
+import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
+import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
+import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.Instructors
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.Lectures
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.model.remote.response.lecture.SignUpLectures
+import com.msg.model.remote.response.lecture.Students
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -53,18 +68,19 @@ class LectureViewModel @Inject constructor(
     private val searchProfessorUseCase: SearchProfessorUseCase,
     private val searchLineUseCase: SearchLineUseCase,
     private val searchDepartmentUseCase: SearchDepartmentUseCase,
+    private val searchDivisionUseCase: SearchDivisionUseCase,
+    private val getLectureSignUpHistoryUseCase: GetLectureSignUpHistoryUseCase,
+    private val getTakingLectureStudentListUseCase: GetTakingLectureStudentListUseCase,
+    private val editLectureCourseCompletionStatusUseCase: EditLectureCourseCompletionStatusUseCase,
+    private val downloadExcelFileUseCase: DownloadExcelFileUseCase,
 ) : ViewModel() {
 
-    suspend fun getRole(): Authority {
-        return Authority.authorityOf(authTokenDataSource.getAuthority())
-    }
+    val role = getRole().toString()
 
-    private val _getLectureListResponse =
-        MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
+    private val _getLectureListResponse = MutableStateFlow<Event<LectureListResponse>>(Event.Loading)
     val getLectureListResponse = _getLectureListResponse.asStateFlow()
 
-    private val _getDetailLectureResponse =
-        MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
+    private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureResponse>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
     private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -76,16 +92,30 @@ class LectureViewModel @Inject constructor(
     private val _lectureApplicationCancelResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val lectureApplicationCancelResponse = _lectureApplicationCancelResponse.asStateFlow()
 
-    private val _searchProfessorResponse =
-        MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
+    private val _searchProfessorResponse = MutableStateFlow<Event<SearchProfessorResponse>>(Event.Loading)
     val searchProfessorResponse = _searchProfessorResponse.asStateFlow()
 
     private val _searchLineResponse = MutableStateFlow<Event<SearchLineResponse>>(Event.Loading)
     val searchLineResponse = _searchLineResponse.asStateFlow()
 
-    private val _searchDepartmentResponse =
-        MutableStateFlow<Event<SearchDepartmentResponse>>(Event.Loading)
+    private val _searchDepartmentResponse = MutableStateFlow<Event<SearchDepartmentResponse>>(Event.Loading)
     val searchDepartmentResponse = _searchDepartmentResponse.asStateFlow()
+
+    private val _searchDivisionResponse = MutableStateFlow<Event<SearchDivisionResponse>>(Event.Loading)
+    val searchDivisionResponse = _searchDivisionResponse.asStateFlow()
+
+    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryResponse>>(Event.Loading)
+    val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
+
+    private val _getTakingLectureStudentListResponse = MutableStateFlow<Event<GetTakingLectureStudentListResponse>>(Event.Loading)
+    val getTakingLectureStudentListResponse = _getTakingLectureStudentListResponse.asStateFlow()
+
+    private val _editPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val editPostResponse = _editPostResponse.asStateFlow()
+
+    private val _downloadExcelFileResponse =
+        MutableStateFlow<Event<DownloadExcelFileResponse>>(Event.Loading)
+    val downloadExcelFileResponse = _downloadExcelFileResponse.asStateFlow()
 
     var lectureList = mutableStateOf(
         LectureListResponse(
@@ -103,7 +133,7 @@ class LectureViewModel @Inject constructor(
                         maxRegisteredUser = 0,
                         lecturer = "",
                         department = "",
-                        semester = "",
+                        semester = Semester.FIRST_YEAR_FALL_SEMESTER,
                         division = "",
                         line = "",
                         essentialComplete = false
@@ -113,6 +143,41 @@ class LectureViewModel @Inject constructor(
         )
     )
         private set
+
+    var lectureSingUpHistoryList = mutableStateOf(
+        GetLectureSignUpHistoryResponse(
+            lectures = listOf(
+                SignUpLectures(
+                    id = UUID.randomUUID(),
+                    name = "",
+                    lectureType = "",
+                    currentCompletedDate = LocalDate.now(),
+                    lecturer = "",
+                    isComplete = false
+                )
+            )
+        )
+    )
+
+    var takingLectureStudentList = mutableStateOf(
+        GetTakingLectureStudentListResponse(
+            students = listOf(
+                Students(
+                    id = UUID.randomUUID(),
+                    email = "",
+                    name = "",
+                    grade = 1,
+                    classNumber = 1,
+                    number = 1,
+                    phoneNumber = "010-2714-1053",
+                    school = HighSchool.GWANGJU_AUTOMATIC_EQUIPMENT_TECHNICAL_HIGH_SCHOOL,
+                    clubName = "",
+                    cohort = 1,
+                    isCompleted = false
+                )
+            )
+        )
+    )
 
     var searchProfessorData = mutableStateOf(
         SearchProfessorResponse(
@@ -145,6 +210,14 @@ class LectureViewModel @Inject constructor(
         )
     )
         private set
+
+    var searchDivisionData = mutableStateOf(
+        SearchDivisionResponse(
+            divisions = listOf(
+                ""
+            )
+        )
+    )
 
     var lectureDetailData = mutableStateOf(
         DetailLectureResponse(
@@ -185,13 +258,7 @@ class LectureViewModel @Inject constructor(
     var content = mutableStateOf("")
         private set
 
-    var lecturer = mutableStateOf("")
-        private set
-
     var credit = mutableIntStateOf(1)
-        private set
-
-    var headCount = mutableIntStateOf(0)
         private set
 
     var maxRegisteredUser = mutableIntStateOf(0)
@@ -221,12 +288,6 @@ class LectureViewModel @Inject constructor(
     var endDate = mutableStateOf<LocalDateTime?>(null)
         private set
 
-    var startDateForConversion = mutableStateOf<LocalDate?>(null)
-        private set
-
-    var endDateForConversion = mutableStateOf<LocalDate?>(null)
-        private set
-
     var completeDate = mutableStateOf<LocalDate?>(null)
         private set
 
@@ -245,7 +306,7 @@ class LectureViewModel @Inject constructor(
     fun getLectureList(
         page: Int,
         size: Int,
-        type: LectureType?,
+        type: String?,
     ) = viewModelScope.launch {
         getLectureListUseCase(
             page = page,
@@ -330,9 +391,9 @@ class LectureViewModel @Inject constructor(
                     endTime = endTime.value!!
                 )
             )
-            Log.e("completeDate", completeDate.value.toString())
-            Log.e("startTime", startTime.value.toString())
-            Log.e("endTime", endTime.value.toString())
+            completeDate.value = null
+            startTime.value = null
+            endTime.value = null
         }
     }
 
@@ -349,7 +410,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun lectureApplication(
-        id: UUID
+        id: UUID,
     ) = viewModelScope.launch {
         lectureApplicationUseCase(
             id = id
@@ -365,7 +426,7 @@ class LectureViewModel @Inject constructor(
     }
 
     fun lectureApplicationCancel(
-        id: UUID
+        id: UUID,
     ) = viewModelScope.launch {
         lectureApplicationCancelUseCase(
             id = id
@@ -398,7 +459,7 @@ class LectureViewModel @Inject constructor(
 
     fun searchLine(
         keyword: String,
-        division: String
+        division: String,
     ) = viewModelScope.launch {
         searchLineUseCase(
             keyword = keyword,
@@ -429,5 +490,101 @@ class LectureViewModel @Inject constructor(
         }.onFailure { error ->
             _searchDepartmentResponse.value = error.errorHandling()
         }
+    }
+
+    fun searchDivision(
+        keyword: String,
+    ) = viewModelScope.launch {
+        searchDivisionUseCase(
+            keyword = keyword,
+        ).onSuccess {
+            it.catch { remoteError ->
+                _searchDivisionResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _searchDivisionResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _searchDivisionResponse.value = error.errorHandling()
+        }
+    }
+
+    fun getLectureSignUpHistory(
+        studentId: UUID,
+    ) = viewModelScope.launch {
+        getLectureSignUpHistoryUseCase(
+            studentId = studentId
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getLectureSignUpHistoryResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getLectureSignUpHistoryResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getLectureSignUpHistoryResponse.value = error.errorHandling()
+        }
+    }
+
+    fun getTakingLectureStudentList() = viewModelScope.launch {
+        getTakingLectureStudentListUseCase(
+            id = selectedLectureId.value
+        ).onSuccess {
+            it.catch { remoteError ->
+                _getTakingLectureStudentListResponse.value = remoteError.errorHandling()
+            }.collect { response ->
+                _getTakingLectureStudentListResponse.value = Event.Success(data = response)
+            }
+        }.onFailure { error ->
+            _getTakingLectureStudentListResponse.value = error.errorHandling()
+        }
+    }
+
+    fun editLectureCourseCompletionStatus(
+        studentId: UUID,
+        isComplete: Boolean,
+    ) = viewModelScope.launch {
+        editLectureCourseCompletionStatusUseCase(
+            id = selectedLectureId.value,
+            studentId = studentId,
+            isComplete = isComplete
+        ).onSuccess {
+            it.catch { remoteError ->
+                _editPostResponse.value = remoteError.errorHandling()
+            }.collect {
+                _editPostResponse.value = Event.Success()
+            }
+        }.onFailure { error ->
+            _editPostResponse.value = error.errorHandling()
+        }
+    }
+
+    fun downloadLectureExcel() = viewModelScope.launch {
+        downloadExcelFileUseCase()
+            .onSuccess {
+                it.catch { remoteError ->
+                    _downloadExcelFileResponse.value = remoteError.errorHandling()
+                }.collect { response ->
+                    _downloadExcelFileResponse.value = Event.Success(data = response)
+                    saveFileToStorage(response)
+                }
+            }.onFailure { error ->
+                _downloadExcelFileResponse.value = error.errorHandling()
+            }
+    }
+
+    private fun saveFileToStorage(response: DownloadExcelFileResponse) {
+        try {
+            val fileName = response.fileName
+            val fileContents = response.file
+            val context = Application()
+
+            val file = File(context.getExternalFilesDir(null), fileName)
+            file.writeBytes(fileContents)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getRole(): Authority = runBlocking {
+        return@runBlocking authTokenDataSource.getAuthority().first()
     }
 }

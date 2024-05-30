@@ -24,6 +24,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.util.toLocalDate
 import com.msg.lecture.util.toLocalTime
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.time.LocalDate
@@ -33,7 +34,7 @@ import java.util.UUID
 
 @Composable
 fun LectureDetailSettingInputTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     placeholder: String,
     onItemChange: (item: String) -> Unit,
 ) {
@@ -62,19 +63,22 @@ fun LectureDetailSettingInputTextField(
 
 @Composable
 fun LectureDetailSettingSearchTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     placeholder: String,
     division: String = "",
     onSearchLineClicked: (String, String) -> Unit = { _, _ -> },
     onSearchDepartmentClicked: (String) -> Unit = {},
     onSearchProfessorClicked: (String) -> Unit = {},
-    onProfessorItemClick: (UUID, String) -> Unit = { _, _ -> },
+    onSearchDivisionClicked: (String) -> Unit = {},
+    onProfessorItemClick: (userId: UUID, professorName: String) -> Unit = { _, _ -> },
     onDepartmentItemClick: (String) -> Unit = {},
     onLineItemClick: (String) -> Unit = {},
+    onDivisionItemClick: (String) -> Unit = {},
     isClickedPickerType: String,
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
     searchDepartmentData: SearchDepartmentResponse,
+    searchDivisionData: SearchDivisionResponse,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -107,6 +111,7 @@ fun LectureDetailSettingSearchTextField(
                     "강의 계열" -> stringResource(id = R.string.lecture_series_placeholder)
                     "학과" -> stringResource(id = R.string.department_placeholder)
                     "담당 교수" -> stringResource(id = R.string.professor_in_charge_placeholder)
+                    "구분" -> stringResource(id = R.string.division_placeholder)
                     else -> ""
                 },
                 onSearchButtonClick = { keyword, division ->
@@ -123,6 +128,10 @@ fun LectureDetailSettingSearchTextField(
                             onSearchProfessorClicked(keyword)
                         }
 
+                        "구분" -> {
+                            onSearchDivisionClicked(keyword)
+                        }
+
                         else -> {}
                     }
                 },
@@ -131,18 +140,22 @@ fun LectureDetailSettingSearchTextField(
                     onProfessorItemClick(selectedProfessorUUID, selectedProfessorName)
                 },
                 division = division,
-                searchProfessorData = searchProfessorData,
-                searchLineData = searchLineData,
-                searchDepartmentData = searchDepartmentData,
                 onDepartmentListClick = { selectedDepartmentData ->
                     onDepartmentItemClick(selectedDepartmentData)
                 },
                 onLineListClick = { selectedLineData ->
                     onLineItemClick(selectedLineData)
                 },
+                onDivisionListClick = { selectedDivisionData ->
+                    onDivisionItemClick(selectedDivisionData)
+                },
                 onQuit = {
                     isFocused.value = false
-                }
+                },
+                searchProfessorData = searchProfessorData,
+                searchLineData = searchLineData,
+                searchDepartmentData = searchDepartmentData,
+                searchDivisionData = searchDivisionData
             )
         }
     }
@@ -150,7 +163,7 @@ fun LectureDetailSettingSearchTextField(
 
 @Composable
 fun LectureDetailSettingLectureDatesTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     selectedItem: String,
     onLectureDatesChanged: (completeDate: LocalDate, startTIme: LocalTime, endTime: LocalTime) -> Unit,
 ) {
@@ -175,18 +188,20 @@ fun LectureDetailSettingLectureDatesTextField(
         ) {
             Text(
                 text = selectedItem,
-                style = typography.bodySmall,
-                color = colors.G2
+                style = typography.labelMedium,
+                color = colors.G2,
             )
         }
         if (isFocused.value) {
             LectureDetailSettingLectureDatesBottomSheet(
                 onQuit = { completeDates, startTime, endTime ->
-                    onLectureDatesChanged(
-                        completeDates.toLocalDate(),
-                        startTime.toLocalTime(),
-                        endTime.toLocalTime()
-                    )
+                    if (completeDates.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty()) {
+                        onLectureDatesChanged(
+                            completeDates.toLocalDate(),
+                            startTime.toLocalTime(),
+                            endTime.toLocalTime()
+                        )
+                    }
                 },
             )
         }

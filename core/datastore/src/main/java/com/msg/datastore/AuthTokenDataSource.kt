@@ -1,7 +1,7 @@
 package com.msg.datastore
 
 import androidx.datastore.core.DataStore
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -50,9 +50,9 @@ class AuthTokenDataSource @Inject constructor(
     }
 
     fun getRefreshTokenExp(): Flow<LocalDateTime> =
-        authToken.data.mapNotNull { it.refreshExp }.map { refreshExp ->
+        authToken.data.mapNotNull { it.refreshExp?.let { refreshExp ->
             LocalDateTime.parse(refreshExp)
-        }
+        } }
 
 
     suspend fun setRefreshTokenExp(refreshTokenExp: String) {

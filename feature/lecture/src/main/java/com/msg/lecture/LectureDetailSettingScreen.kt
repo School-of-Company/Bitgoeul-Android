@@ -1,5 +1,6 @@
 package com.msg.lecture
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,6 +36,7 @@ import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.DeleteIcon
 import com.msg.design_system.component.text.BitgoeulSubjectText
+import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.LectureDetailSettingTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.AddLectureDatesButton
@@ -44,10 +46,11 @@ import com.msg.lecture.component.LectureDetailSettingSearchTextField
 import com.msg.lecture.component.LectureSettingTag
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.ui.util.toKoreanFormat
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -61,6 +64,7 @@ internal fun LectureDetailSettingRoute(
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val coroutineScope = rememberCoroutineScope()
+
     LectureDetailSettingScreen(
         onCloseClicked = {
             onCloseClicked()
@@ -74,8 +78,8 @@ internal fun LectureDetailSettingRoute(
             viewModel.line.value = line
             viewModel.userId.value = userId
             viewModel.credit.value = credit
-            viewModel.endDate.value = endDate
             viewModel.startDate.value = startDate
+            viewModel.endDate.value = endDate
             viewModel.maxRegisteredUser.value = maxRegisteredUser
             onApplyClicked()
         },
@@ -102,7 +106,14 @@ internal fun LectureDetailSettingRoute(
                     viewModel.searchDepartmentData.value = data
                 })
             }
-
+        },
+        onSearchDivisionClicked = { keyword ->
+            viewModel.searchDivision(keyword = keyword)
+            coroutineScope.launch {
+                getDivisionSearchData(viewModel = viewModel, onDivisionSuccess = { data ->
+                    viewModel.searchDivisionData.value = data
+                })
+            }
         },
         onLectureDatesAddClicked = {
             viewModel.addLectureDates()
@@ -114,17 +125,13 @@ internal fun LectureDetailSettingRoute(
             viewModel.completeDate.value = completeDate
             viewModel.startTime.value = startTIme
             viewModel.endTime.value = endTime
+            viewModel.addLectureDates()
         },
-        lectureDates = viewModel.lectureDates,
-        startDateForConversion = viewModel.startDateForConversion.value,
-        endDateForConversion = viewModel.endDateForConversion.value,
         searchLineData = viewModel.searchLineData.value,
         searchProfessorData = viewModel.searchProfessorData.value,
         searchDepartmentData = viewModel.searchDepartmentData.value,
+        searchDivisionData = viewModel.searchDivisionData.value,
         savedCreditPoint = viewModel.credit.value,
-        savedStartTime = viewModel.startTime.value,
-        savedEndTime = viewModel.endTime.value,
-        savedCompleteDate = viewModel.completeDate.value,
         savedStartDate = viewModel.startDate.value,
         savedEndDate = viewModel.endDate.value,
         savedMaxRegisteredUser = viewModel.maxRegisteredUser.value,
@@ -183,23 +190,37 @@ suspend fun getDepartmentSearchData(
     }
 }
 
+suspend fun getDivisionSearchData(
+    viewModel: LectureViewModel,
+    onDivisionSuccess: (data: SearchDivisionResponse) -> Unit,
+) {
+    viewModel.searchDivisionResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onDivisionSuccess(response.data!!)
+            }
+
+            else -> {}
+        }
+    }
+}
+
 @Composable
 fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
     searchDepartmentData: SearchDepartmentResponse,
+    searchDivisionData: SearchDivisionResponse,
     onCloseClicked: () -> Unit,
     onLectureDatesAddClicked: () -> Unit,
     onLectureDatesRemoveClicked: () -> Unit,
-    onApplyClicked: (String, String, String, String, String, UUID, Int, LocalDateTime?, LocalDateTime?, Int) -> Unit,
+    onApplyClicked: (lectureType: String, semester: String, division: String, department: String, line: String, userId: UUID, credit: Int, startDate: LocalDateTime?, endDate: LocalDateTime?, maxRegisteredUser: Int) -> Unit,
     onSearchProfessorClicked: (String) -> Unit,
     onSearchLineClicked: (String, String) -> Unit,
     onSearchDepartmentClicked: (String) -> Unit,
+    onSearchDivisionClicked: (String) -> Unit,
     onLectureDatesChanged: (completeDate: LocalDate, startTIme: LocalTime, endTime: LocalTime) -> Unit,
-    lectureDates: List<LectureDates>,
-    startDateForConversion: LocalDate?,
-    endDateForConversion: LocalDate?,
     savedLectureType: String,
     savedSemester: String,
     savedDivision: String,
@@ -209,14 +230,10 @@ fun LectureDetailSettingScreen(
     savedCreditPoint: Int,
     savedStartDate: LocalDateTime?,
     savedEndDate: LocalDateTime?,
-    savedCompleteDate: LocalDate?,
-    savedStartTime: LocalTime?,
-    savedEndTime: LocalTime?,
     savedMaxRegisteredUser: Int,
 ) {
     val semesterList = listOf("1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기")
-    val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램", "기타")
-    val divisionList = listOf("자동차 산업", "에너지 산업", "의료•헬스케어", "AI융•복합", "문화 산업")
+    val lectureTypeList = listOf("상호학점인정교육과정", "유관기관프로그램", "대학탐방프로그램", "기업산학연계직업체험프로그램")
 
     val isRequiredCourse = remember { mutableStateOf("0") }
 
@@ -229,10 +246,6 @@ fun LectureDetailSettingScreen(
     val semester = remember { mutableStateOf(savedSemester) }
     val startDate = remember { mutableStateOf(savedStartDate) }
     val endDate = remember { mutableStateOf(savedEndDate) }
-    val startDateForConversion = remember { mutableStateOf(startDateForConversion) }
-    val endDateForConversion = remember { mutableStateOf(endDateForConversion) }
-    val startTime = remember { mutableStateOf(savedStartTime) }
-    val endTime = remember { mutableStateOf(savedEndTime) }
     val maxRegisteredUser = remember { mutableIntStateOf(savedMaxRegisteredUser) }
 
     val applicationStartTimeForShow = remember { mutableStateOf("") }
@@ -243,11 +256,8 @@ fun LectureDetailSettingScreen(
     val lectureLineForShow = remember { mutableStateOf("") }
     val lectureDepartmentForShow = remember { mutableStateOf("") }
     val lectureTeacherInChargeForShow = remember { mutableStateOf("") }
-
-    val lectureAttendCompleteDateListForShow = remember { mutableStateListOf("") }
-    val lectureAttendStartTimeListForShow = remember { mutableStateListOf("") }
-    val lectureAttendEndTimeListForShow = remember { mutableStateListOf("") }
-
+    val lectureDivisionForShow = remember { mutableStateOf("") }
+    val lectureDatesForShow = remember { mutableStateListOf("") }
 
     BitgoeulAndroidTheme { colors, typography ->
         LazyColumn(
@@ -257,7 +267,6 @@ fun LectureDetailSettingScreen(
                 .padding(top = 24.dp)
                 .padding(horizontal = 24.dp)
         ) {
-
             item {
                 Row(
                     modifier = modifier
@@ -308,6 +317,7 @@ fun LectureDetailSettingScreen(
 
                 Spacer(modifier = modifier.height(24.dp))
             }
+
             item {
                 BitgoeulSubjectText(
                     subjectText = stringResource(id = R.string.semester_attended),
@@ -337,10 +347,28 @@ fun LectureDetailSettingScreen(
                     selectedItem = lectureType.value.ifEmpty { "유형 선택" },
                     onItemChange = { selectedLectureType ->
                         if (lectureType.value != selectedLectureType) lectureType.value =
-                            selectedLectureType else lectureType.value = "유형 선택"
+                            selectedLectureType
                     },
+                    isLectureType = true
                 )
 
+                if (lectureType.value == "기타") {
+                    Spacer(modifier = modifier.height(8.dp))
+
+                    DefaultTextField(
+                        modifier = modifier.fillMaxSize(),
+                        placeholder = "",
+                        onValueChange = { inputString ->
+                            lectureType.value = inputString
+                        },
+                        errorText = "",
+                        isDisabled = false,
+                        isError = false,
+                        isLinked = false,
+                        isReverseTrailingIcon = false,
+                        onClickButton = {}
+                    )
+                }
                 Spacer(modifier = modifier.height(24.dp))
             }
 
@@ -349,14 +377,22 @@ fun LectureDetailSettingScreen(
                     subjectText = stringResource(id = R.string.lecture_division),
                 )
 
-                LectureDetailSettingTextField(
+                LectureDetailSettingSearchTextField(
                     modifier = modifier.fillMaxWidth(),
-                    list = divisionList,
-                    selectedItem = division.value.ifEmpty { "구분 선택" },
-                    onItemChange = { selectedDivision ->
-                        if (division.value != selectedDivision) division.value =
-                            selectedDivision else division.value = "구분 선택"
+                    placeholder = lectureDivisionForShow.value.ifEmpty { "구분 선택" },
+                    division = division.value,
+                    onDivisionItemClick = { selectedDivisionData ->
+                        division.value = selectedDivisionData
+                        lectureDivisionForShow.value = selectedDivisionData
                     },
+                    isClickedPickerType = "구분",
+                    onSearchDivisionClicked = { keyword ->
+                        onSearchDivisionClicked(keyword)
+                    },
+                    searchLineData = searchLineData,
+                    searchDepartmentData = searchDepartmentData,
+                    searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -382,6 +418,7 @@ fun LectureDetailSettingScreen(
                     searchLineData = searchLineData,
                     searchDepartmentData = searchDepartmentData,
                     searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -406,6 +443,7 @@ fun LectureDetailSettingScreen(
                     searchLineData = searchLineData,
                     searchDepartmentData = searchDepartmentData,
                     searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -430,6 +468,7 @@ fun LectureDetailSettingScreen(
                     searchLineData = searchLineData,
                     searchDepartmentData = searchDepartmentData,
                     searchProfessorData = searchProfessorData,
+                    searchDivisionData = searchDivisionData
                 )
 
                 Spacer(modifier = modifier.height(24.dp))
@@ -489,35 +528,49 @@ fun LectureDetailSettingScreen(
 
                 LectureDetailSettingLectureDatesTextField(
                     modifier = modifier.fillMaxWidth(),
-                    selectedItem = "수강일 입력(필수)",
-                    onLectureDatesChanged = { completeDate, startTIme, endTime ->
-
+                    selectedItem = lectureDatesForShow[0].ifEmpty { "수강일 입력(필수)" },
+                    onLectureDatesChanged = { completeDates, startTime, endTime ->
+                        onLectureDatesChanged(completeDates, startTime, endTime)
+                        Log.e("0 index completeDates", completeDates.toString())
+                        Log.e("0 index startTime", startTime.toString())
+                        Log.e("0 index endTime", endTime.toString())
+                        lectureDatesForShow[0] =
+                            completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
                     }
                 )
 
                 Spacer(modifier = modifier.height(8.dp))
             }
 
-
-            itemsIndexed(lectureDates) { index, lectureDatesItem ->
-                Row {
+            itemsIndexed(lectureDatesForShow) { index, _ ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     LectureDetailSettingLectureDatesTextField(
-                        modifier = modifier.fillMaxWidth(),
-                        selectedItem = "수강일 입력(선택)",
-                        onLectureDatesChanged = { completeDate, startTIme, endTime ->
-                            onLectureDatesChanged(completeDate, startTIme, endTime)
+                        modifier = modifier.weight(0.9f),
+                        selectedItem = lectureDatesForShow[index].ifEmpty { "수강일 입력(선택)" },
+                        onLectureDatesChanged = { completeDates, startTime, endTime ->
+                            onLectureDatesChanged(completeDates, startTime, endTime)
+                            lectureDatesForShow.getOrNull(index)?.let {
+                                lectureDatesForShow[index] =
+                                    completeDates.toKoreanFormat() + " " + startTime.toKoreanFormat() + " ~ " + endTime.toKoreanFormat()
+                            }
                         }
                     )
 
-                    if (index > 0) {
-                        Spacer(modifier = modifier.width(12.dp))
+                    Spacer(modifier = modifier.width(12.dp))
 
-                        DeleteIcon(
-                            modifier = modifier.clickable {
+                    DeleteIcon(
+                        modifier = modifier
+                            .clickable {
                                 onLectureDatesRemoveClicked()
+                                lectureDatesForShow.forEachIndexed { index, _ ->
+                                    lectureDatesForShow.removeAt(
+                                        index
+                                    )
+                                }
                             }
-                        )
-                    }
+                    )
                 }
 
                 Spacer(modifier = modifier.height(8.dp))
@@ -527,6 +580,7 @@ fun LectureDetailSettingScreen(
                 AddLectureDatesButton(
                     modifier = modifier.fillMaxWidth()
                 ) {
+                    lectureDatesForShow.add("")
                     onLectureDatesAddClicked()
                 }
 

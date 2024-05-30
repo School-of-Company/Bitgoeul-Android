@@ -1,6 +1,5 @@
 package com.bitgoeul.login.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -12,7 +11,6 @@ import com.bitgoeul.login.viewmodel.util.errorHandling
 import com.msg.domain.auth.LoginUseCase
 import com.msg.domain.auth.LogoutUseCase
 import com.msg.domain.auth.SaveTokenUseCase
-import com.msg.domain.auth.WithdrawUseCase
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,13 +23,15 @@ class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
-    private val withdrawUseCase: WithdrawUseCase,
 ) : ViewModel() {
     private val _saveTokenRequest = MutableLiveData<Event<Nothing>>()
     val saveTokenRequest: LiveData<Event<Nothing>> get() = _saveTokenRequest
 
     private val _loginRequest = MutableLiveData<Event<AuthTokenModel>>()
     val loginRequest: LiveData<Event<AuthTokenModel>> get() = _loginRequest
+
+    private val _logoutRequest = MutableLiveData<Event<Nothing>>()
+    val logoutRequest = MutableLiveData<Event<Nothing>>()
 
     private val _email = mutableStateOf("")
     val email: State<String> = _email
@@ -44,7 +44,6 @@ class AuthViewModel @Inject constructor(
             body = body
         ).onSuccess {
             it.catch { remoteError ->
-                Log.e("viewModel Login 함수 구문  remoteError Catch 실행", "as")
                 _loginRequest.value = remoteError.errorHandling()
             }.collect { response ->
                 _loginRequest.value = Event.Success(data = response)
@@ -53,7 +52,6 @@ class AuthViewModel @Inject constructor(
             _loginRequest.value = it.errorHandling()
         }
     }
-
     fun saveTokenData(data: AuthTokenModel) = viewModelScope.launch {
         saveTokenUseCase(
             data = data

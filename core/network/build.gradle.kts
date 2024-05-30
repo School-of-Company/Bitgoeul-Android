@@ -22,6 +22,8 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
+    implementation("com.google.guava:guava:11.0.2")
+
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)

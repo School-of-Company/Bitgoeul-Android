@@ -41,7 +41,7 @@ import com.msg.main.component.HighSchoolCardView
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.main.util.Event
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData
@@ -80,7 +80,7 @@ fun MainPageScreenRoute(
     MainPageScreen(
         data = viewModel.faqList,
         event = error,
-        role = Authority.valueOf(role.toString()),
+        role = Authority.valueOf(role),
         onAddClicked = { question, answer ->
             viewModel.addFaq(
                 question = question,
@@ -125,7 +125,6 @@ fun MainPageScreen(
     data: List<GetFAQDetailResponse>,
     event: Event<List<GetFAQDetailResponse>>,
     role: Authority,
-    errorCode: Int? = null,
     onAddClicked: (question: String, answer: String) -> Unit,
     onDialogButtonClicked: () -> Unit
 ) {
@@ -350,7 +349,7 @@ fun MainPageScreen(
                         style = typography.labelMedium,
                         color = colors.WHITE
                     )
-                    Spacer(modifier = modifier.height(40.dp))
+                    Spacer(modifier = modifier.height(140.dp))
                 }
             }
             when (event) {
@@ -371,14 +370,7 @@ fun MainPageScreen(
                         onButtonClicked = onDialogButtonClicked
                     )
                 }
-                else -> {
-                    BitgoeulAlertDialog(
-                        title = "오류",
-                        msg = "알 수 없는 오류가 발생했습니다. (${errorCode})",
-                        onQuit = {},
-                        onButtonClicked = onDialogButtonClicked
-                    )
-                }
+                else -> {}
             }
         }
     }

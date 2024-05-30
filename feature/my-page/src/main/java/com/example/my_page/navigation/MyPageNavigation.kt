@@ -14,11 +14,16 @@ fun NavController.navigateToMyPage(navOptions: NavOptions? = null) {
     this.navigate(myPageRoute, navOptions)
 }
 
-fun NavGraphBuilder.myPageScreen(onPasswordChangeClicked: () -> Unit, onWithdrawClicked: () -> Unit) {
+fun NavGraphBuilder.myPageScreen(
+    onPasswordChangeClicked: () -> Unit,
+    onWithdrawClicked: () -> Unit,
+    onLogoutClicked: () -> Unit,
+) {
     composable(route = myPageRoute) {
         MyPageRoute(
             onPasswordChangeClicked = onPasswordChangeClicked,
-            onWithdrawClicked = onWithdrawClicked
+            onWithdrawClicked = onWithdrawClicked,
+            onLogoutClicked = onLogoutClicked
         )
     }
 }
@@ -27,7 +32,10 @@ fun NavController.navigateToPasswordChange(navOptions: NavOptions? = null) {
     this.navigate(passwordChangeRoute, navOptions)
 }
 
-fun NavGraphBuilder.changePasswordScreen(onSuccessScreenButtonClicked: () -> Unit, onBackClicked: () -> Unit) {
+fun NavGraphBuilder.changePasswordScreen(
+    onSuccessScreenButtonClicked: () -> Unit,
+    onBackClicked: () -> Unit,
+) {
     composable(route = passwordChangeRoute) {
         PasswordChangeRoute(
             onSuccessScreenButtonClicked = onSuccessScreenButtonClicked,

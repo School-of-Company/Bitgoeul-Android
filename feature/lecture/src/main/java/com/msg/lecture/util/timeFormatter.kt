@@ -1,9 +1,10 @@
 package com.msg.lecture.util
 
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 fun String.toLocalTime(): LocalTime {
-    val timeString = this
-    return LocalTime.parse(timeString, DateTimeFormatter.ofPattern("HH:mm:ss"))
+    val formatter = DateTimeFormatter.ofPattern("HH시 mm분")
+    return LocalTime.parse(this, formatter)
 }

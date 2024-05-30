@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.icon.EmptyBoxIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.lecture.SearchDepartmentResponse
+import com.msg.model.remote.response.lecture.SearchDivisionResponse
 import com.msg.model.remote.response.lecture.SearchLineResponse
 import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
@@ -23,16 +24,16 @@ import java.util.UUID
 @Composable
 fun LectureDepartmentList(
     data: SearchDepartmentResponse,
-    modifier: Modifier,
-    onClick: (String) -> Unit
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.departments.isNotEmpty()) {
-        LazyColumn(
-            modifier = modifier.background(color = colors.WHITE)
-        ) {
+            LazyColumn(
+                modifier = modifier.background(color = colors.WHITE)
+            ) {
                 items(data.departments.size) { index ->
-                    LectureDetailSettingDepartmentCard(
+                    LectureDetailSettingDepartmentAndDivisionCard(
                         modifier = modifier,
                         onClick = { department ->
                             onClick(department)
@@ -65,19 +66,19 @@ fun LectureDepartmentList(
 
 @Composable
 fun LectureLineList(
-    searchLineData: SearchLineResponse,
+    data: SearchLineResponse,
     keyword: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     division: String,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
-        if (searchLineData.lines.isNotEmpty()) {
+        if (data.lines.isNotEmpty()) {
             LazyColumn(
                 modifier = modifier.background(color = Color.Transparent)
             ) {
-                items(searchLineData.lines.size) { index ->
-                    searchLineData.lines.getOrNull(index)?.let { linesData ->
+                items(data.lines.size) { index ->
+                    data.lines.getOrNull(index)?.let { linesData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
                             onClick = { _, searchLineData, _ ->
@@ -115,28 +116,73 @@ fun LectureLineList(
 
 @Composable
 fun LectureProfessorList(
-    searchProfessorData: SearchProfessorResponse,
+    data: SearchProfessorResponse,
     keyword: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     division: String,
-    onClick: (UUID, String) -> Unit
+    onClick: (UUID, String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
-        if (searchProfessorData.instructors.isNotEmpty()) {
+        if (data.instructors.isNotEmpty()) {
             LazyColumn(
                 modifier = modifier.background(color = Color.Transparent),
             ) {
-                items(searchProfessorData.instructors.size) { index ->
-                    searchProfessorData.instructors.getOrNull(index)?.let {
+                items(data.instructors.size) { index ->
+                    data.instructors.getOrNull(index)?.let { professorData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
                             onClick = { professorUUID, _, selectedProfessorName ->
                                 onClick(professorUUID, selectedProfessorName)
                             },
-                            searchProfessorData = searchProfessorData.instructors[index],
+                            searchProfessorData = professorData,
                             searchLineData = null,
                             division = division,
                             keyword = keyword
+                        )
+                    }
+                }
+            }
+        } else {
+            Column(
+                modifier = modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                EmptyBoxIcon(
+                    modifier = modifier
+                )
+
+                Spacer(modifier = modifier.height(8.dp))
+
+                Text(
+                    text = "검색 결과가 없습니다.",
+                    style = typography.labelMedium,
+                    color = colors.G2
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LectureDivisionList(
+    data: SearchDivisionResponse,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit,
+) {
+    BitgoeulAndroidTheme { colors, typography ->
+        if (data.divisions.isNotEmpty()) {
+            LazyColumn(
+                modifier = modifier.background(color = Color.Transparent)
+            ) {
+                items(data.divisions.size) { index ->
+                    data.divisions.getOrNull(index)?.let { divisionData ->
+                        LectureDetailSettingDepartmentAndDivisionCard(
+                            modifier = modifier.background(color = Color.Transparent),
+                            onClick = { division ->
+                                onClick(division)
+                            },
+                            data = divisionData
                         )
                     }
                 }

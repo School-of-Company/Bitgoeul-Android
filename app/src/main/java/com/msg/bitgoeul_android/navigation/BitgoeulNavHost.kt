@@ -29,9 +29,11 @@ import com.msg.lecture.navigation.lectureDetailScreen
 import com.msg.lecture.navigation.lectureDetailSettingScreen
 import com.msg.lecture.navigation.lectureListScreen
 import com.msg.lecture.navigation.lectureOpenScreen
+import com.msg.lecture.navigation.lectureTakingStudentListScreen
 import com.msg.lecture.navigation.navigateToLectureDetail
 import com.msg.lecture.navigation.navigateToLectureDetailSetting
 import com.msg.lecture.navigation.navigateToLectureOpen
+import com.msg.lecture.navigation.navigateToLectureTakingStudentList
 import com.msg.main.navigation.mainPageScreen
 import com.msg.main.navigation.navigateToMainPage
 import com.msg.post.navigation.navigateToPostAddPage
@@ -114,9 +116,12 @@ fun BitgoeulNavHost(
         lectureListScreen(
             onOpenClicked = navController::navigateToLectureOpen,
             onItemClicked = navController::navigateToLectureDetail,
-            onBackClicked = navController::popBackStack,
         )
         lectureDetailScreen(
+            onBackClicked = navController::popBackStack,
+            onLectureTakingStudentListScreenClicked = navController::navigateToLectureTakingStudentList
+        )
+        lectureTakingStudentListScreen(
             onBackClicked = navController::popBackStack,
         )
         lectureOpenScreen(
@@ -130,7 +135,8 @@ fun BitgoeulNavHost(
         )
         myPageScreen(
             onPasswordChangeClicked = navController::navigateToPasswordChange,
-            onWithdrawClicked = navController::navigateToLogin
+            onWithdrawClicked = navController::navigateToLogin,
+            onLogoutClicked = navController::navigateToLogin
         )
         changePasswordScreen(
             onSuccessScreenButtonClicked = navController::navigateToMyPage,

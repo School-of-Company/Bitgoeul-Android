@@ -1,5 +1,6 @@
 package com.msg.model.remote.response.lecture
 
+import com.msg.model.remote.enumdatatype.HighSchool
 import java.time.LocalDate
 import java.util.UUID
 
@@ -9,9 +10,14 @@ data class GetTakingLectureStudentListResponse(
 
 data class Students(
     val id: UUID,
+    val email: String,
     val name: String,
-    val lectureType: String,
-    val currentCompletedDate: LocalDate,
-    val lecturer: String,
+    val grade: Int,
+    val classNumber: Int,
+    val number: Int,
+    val phoneNumber: String,
+    val school: HighSchool,
+    val clubName: String,
+    val cohort: Int,
     val isCompleted: Boolean,
 )

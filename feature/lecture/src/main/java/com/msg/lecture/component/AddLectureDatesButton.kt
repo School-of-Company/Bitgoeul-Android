@@ -17,7 +17,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 fun AddLectureDatesButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onAddClick: () -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
@@ -30,7 +30,7 @@ fun AddLectureDatesButton(
                 )
                 .padding(vertical = 12.dp, horizontal = 20.dp)
                 .clickable(
-                    onClick = { onAddClick }
+                    onClick = { onAddClick() }
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {

@@ -1,6 +1,7 @@
 package com.msg.design_system.component.icon
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -202,9 +203,7 @@ fun GwangjuIcon(
 }
 
 @Composable
-fun OfficeOfEducationIcon(
-    modifier: Modifier = Modifier,
-) {
+fun OfficeOfEducationIcon() {
     Image(
         painter = painterResource(id = R.drawable.ic_banner_education),
         contentDescription = "Gwangju Metropolitan office of education logo"
@@ -212,7 +211,9 @@ fun OfficeOfEducationIcon(
 }
 
 @Composable
-fun KebabIcon() {
+fun KebabIcon(
+    modifier: Modifier = Modifier
+) {
     Image(
         painter = painterResource(id = R.drawable.ic_kebab),
         contentDescription = "Kebab Icon"
@@ -267,7 +268,7 @@ fun SearchIcon(
 
 @Composable
 fun DeleteIcon(
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_delete),
@@ -275,6 +276,7 @@ fun DeleteIcon(
         modifier = modifier
     )
 }
+
 @Composable
 fun ChatIcon() {
     Image(
@@ -285,7 +287,7 @@ fun ChatIcon() {
 
 @Composable
 fun EmptyBoxIcon(
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_empty_box),
@@ -304,7 +306,8 @@ fun GreySettingIcon() {
 
 @Composable
 fun DashIcon() {
-    Image(painter = painterResource(id = R.drawable.ic_dash),
+    Image(
+        painter = painterResource(id = R.drawable.ic_dash),
         contentDescription = "Grey dash icon"
     )
 }
@@ -314,6 +317,34 @@ fun BigAlertIcon() {
     Image(
         painter = painterResource(id = R.drawable.ic_big_alert),
         contentDescription = "Big alert icon"
+    )
+}
+
+@Composable
+fun DivideRectangleIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_divide_rectangle),
+        contentDescription = "Divide rectangle icon"
+    )
+}
+
+@Composable
+fun FileIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_file),
+        contentDescription = "File Icon"
+    )
+}
+
+@Composable
+fun RedCloseIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_red_close),
+        contentDescription = "Red Close Icon"
     )
 }
 

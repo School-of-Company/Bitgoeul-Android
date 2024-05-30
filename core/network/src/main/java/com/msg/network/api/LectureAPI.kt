@@ -1,8 +1,8 @@
 package com.msg.network.api
 
-import com.msg.model.remote.enumdatatype.LectureType
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
 import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.model.remote.response.lecture.LectureListResponse
@@ -29,7 +29,7 @@ interface LectureAPI {
     suspend fun getLectureList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("type") type: LectureType?,
+        @Query("type") type: String?,
     ): LectureListResponse
 
     @GET("lecture/{id}")
@@ -80,9 +80,12 @@ interface LectureAPI {
     ): GetTakingLectureStudentListResponse
 
     @PATCH("{id}/{student_id}")
-    suspend fun editPost(
+    suspend fun editLectureCourseCompletionStatus(
         @Path("id") id: UUID,
         @Path("student_id") studentId: UUID,
         @Query("isComplete") isComplete: Boolean,
     )
+
+    @GET("lecture/excel")
+    suspend fun downloadExcelFile(): DownloadExcelFileResponse
 }

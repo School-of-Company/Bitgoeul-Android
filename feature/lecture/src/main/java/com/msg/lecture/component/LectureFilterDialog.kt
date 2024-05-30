@@ -24,14 +24,13 @@ import androidx.compose.ui.window.Dialog
 import com.msg.design_system.component.bottomsheet.SelectedIndicator
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.LectureType
 
 @Composable
 fun LectureFilterDialog(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     isVisible: Boolean,
     onCloseButtonClick: () -> Unit,
-    onFilterButtonClick: (LectureType?) -> Unit?,
+    onFilterButtonClick: (String?) -> Unit?,
 ) {
     val isFilterSelected = remember { mutableStateOf("0") }
     if (isVisible) {
@@ -93,7 +92,7 @@ fun LectureFilterDialog(
                                 modifier = modifier.size(20.dp),
                                 isSelected = isFilterSelected.value == "1",
                                 onClick = {
-                                    onFilterButtonClick(LectureType.MUTUAL_CREDIT_RECOGNITION_PROGRAM)
+                                    onFilterButtonClick("상호학점인정교육과정")
                                     isFilterSelected.value = "1"
                                 }
                             )
@@ -116,7 +115,7 @@ fun LectureFilterDialog(
                                 modifier = modifier.size(20.dp),
                                 isSelected = isFilterSelected.value == "2",
                                 onClick = {
-                                    onFilterButtonClick(LectureType.UNIVERSITY_EXPLORATION_PROGRAM)
+                                    onFilterButtonClick("대학탐방프로그램")
                                     isFilterSelected.value = "2"
                                 }
                             )

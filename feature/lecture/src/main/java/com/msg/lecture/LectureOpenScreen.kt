@@ -2,8 +2,10 @@ package com.msg.lecture
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -36,7 +39,7 @@ fun LectureOpenRoute(
     onActionClicked: () -> Unit,
     onBackClicked: () -> Unit,
     onSettingClicked: () -> Unit,
-    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+    viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     LectureOpenScreen(
         onActionClicked = {
@@ -75,7 +78,7 @@ fun LectureOpenScreen(
     onSettingClicked: (name: String, content: String) -> Unit,
     savedName: String,
     savedContent: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val name = remember { mutableStateOf(savedName) }
     val content = remember { mutableStateOf(savedContent) }
@@ -88,15 +91,17 @@ fun LectureOpenScreen(
     val scrollState = rememberScrollState()
 
     BitgoeulAndroidTheme { colors, typography ->
-        Surface(
-            modifier = modifier.fillMaxSize()
+        Box(
+            modifier = modifier
+                .background(color = colors.WHITE)
+                .padding(horizontal = 28.dp)
         ) {
             Column(
                 modifier = modifier
                     .fillMaxSize()
                     .background(color = colors.WHITE)
             ) {
-                Spacer(modifier =  modifier.height(20.dp))
+                Spacer(modifier = modifier.height(20.dp))
 
                 GoBackTopBar(
                     icon = { GoBackIcon() },
@@ -109,9 +114,8 @@ fun LectureOpenScreen(
 
                 Column(
                     modifier = modifier
-                        .padding(horizontal = 28.dp)
                         .verticalScroll(scrollState)
-                        .weight(1f)
+                        .fillMaxHeight()
                 ) {
                     BasicTextField(
                         modifier = modifier
@@ -154,50 +158,50 @@ fun LectureOpenScreen(
                         }
                     )
                 }
+            }
 
-                Column(
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+            ) {
+                HorizontalDivider(
+                    modifier = modifier.fillMaxWidth(),
+                    thickness = 1.dp,
+                    color = colors.G9
+                )
+
+                Spacer(modifier = modifier.height(24.dp))
+
+                DetailSettingButton(
                     modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 28.dp)
+                        .fillMaxWidth(),
+                    type = "강의"
                 ) {
-                    HorizontalDivider(
-                        modifier = modifier.fillMaxWidth(),
-                        thickness = 1.dp,
-                        color = colors.G9
-                    )
-
-                    Spacer(modifier = modifier.height(24.dp))
-
-                    DetailSettingButton(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        type = "강의"
-                    ) {
-                        onSettingClicked(name.value, content.value)
-                    }
-
-                    Spacer(modifier = modifier.height(8.dp))
-
-                    BitgoeulButton(
-                        text = "강의 개설 신청",
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        state = if (name.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
-                    ) {
-                        isDialogVisible.value = true
-                    }
-                    Spacer(modifier = modifier.height(16.dp))
+                    onSettingClicked(name.value, content.value)
                 }
 
-                PositiveActionDialog(
-                    title = "강의 개설하시겠습니까?",
-                    positiveAction = "개설",
-                    content = name.value,
-                    isVisible = isDialogVisible.value,
-                    onQuit = { isDialogVisible.value = false },
-                    onActionClicked = onActionClicked
-                )
+                Spacer(modifier = modifier.height(8.dp))
+
+                BitgoeulButton(
+                    text = "강의 개설 신청",
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    state = if (name.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
+                ) {
+                    isDialogVisible.value = true
+                }
+                Spacer(modifier = modifier.height(16.dp))
             }
+
+            PositiveActionDialog(
+                title = "강의 개설하시겠습니까?",
+                positiveAction = "개설",
+                content = name.value,
+                isVisible = isDialogVisible.value,
+                onQuit = { isDialogVisible.value = false },
+                onActionClicked = onActionClicked
+            )
         }
     }
 }

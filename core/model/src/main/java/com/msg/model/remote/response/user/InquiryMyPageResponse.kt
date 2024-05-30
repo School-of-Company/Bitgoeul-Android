@@ -1,6 +1,6 @@
 package com.msg.model.remote.response.user
 
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 
 data class InquiryMyPageResponse(
     val name: String,

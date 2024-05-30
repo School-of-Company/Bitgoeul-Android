@@ -35,7 +35,7 @@ import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.response.post.GetDetailPostResponse
 import com.msg.post.util.Event
