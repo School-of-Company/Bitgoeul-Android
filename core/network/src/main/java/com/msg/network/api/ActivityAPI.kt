@@ -1,8 +1,8 @@
 package com.msg.network.api
 
 import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
+import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
+import com.msg.model.remote.response.activity.GetStudentActivityListResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -40,29 +40,26 @@ interface ActivityAPI {
     )
 
     @GET("activity/my")
-    suspend fun inquiryMyStudentActivityInfoList(
+    suspend fun getMyStudentActivityInfoList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("sort") sort: String
-    ): InquiryStudentActivityListResponse
+    ): GetStudentActivityListResponse
 
     @GET("activity/{student_id}")
-    suspend fun inquiryStudentActivityInfoList(
+    suspend fun getStudentActivityInfoList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("sort") sort: String,
         @Path("student_id") id: UUID
-    ): InquiryStudentActivityListResponse
+    ): GetStudentActivityListResponse
 
     @GET("activity")
-    suspend fun inquiryEntireStudentActivityInfoList(
+    suspend fun getEntireStudentActivityInfoList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("sort") sort: String
-    ): InquiryStudentActivityListResponse
+    ): GetStudentActivityListResponse
 
     @GET("activity/{id}/detail")
-    suspend fun inquiryDetailStudentActivityInfo(
+    suspend fun getDetailStudentActivityInfo(
         @Path("id") id: UUID
-    ): InquiryDetailStudentActivityInfoResponse
+    ): GetDetailStudentActivityInfoResponse
 }
