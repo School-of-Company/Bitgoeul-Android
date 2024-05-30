@@ -24,7 +24,7 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.model.activity.InquiryStudentActivityModel
+import com.msg.model.remote.model.activity.GetStudentActivityModel
 import com.msg.student_activity.util.Event
 import com.msg.student_activity.viewmodel.StudentActivityViewModel
 import com.msg.ui.StudentActivityList
@@ -40,7 +40,7 @@ fun StudentActivityRoute(
 ) {
     val role = viewModel.role
 
-    viewModel.inquiryStudentActivityList(
+    viewModel.getStudentActivityList(
         role = from(role),
         page = 1,
         size = 20,
@@ -69,7 +69,7 @@ fun StudentActivityRoute(
 
 suspend fun getActivityList(
     viewModel: StudentActivityViewModel,
-    onSuccess: (data: List<InquiryStudentActivityModel>) -> Unit
+    onSuccess: (data: List<GetStudentActivityModel>) -> Unit
 ) {
     viewModel.getStudentActivityListResponse.collect { response ->
         when (response) {
@@ -84,7 +84,7 @@ suspend fun getActivityList(
 
 @Composable
 fun StudentActivityScreen(
-    data: List<InquiryStudentActivityModel>? = null,
+    data: List<GetStudentActivityModel>? = null,
     onAddClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit,

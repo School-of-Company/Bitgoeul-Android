@@ -4,7 +4,7 @@ import com.msg.model.remote.enumdatatype.ApproveStatus
 import java.time.LocalDate
 import java.util.UUID
 
-data class InquiryStudentActivityModel (
+data class GetStudentActivityModel (
     val activityId: UUID,
     val title: String,
     val activityDate: LocalDate,

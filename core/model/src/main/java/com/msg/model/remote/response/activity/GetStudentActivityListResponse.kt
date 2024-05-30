@@ -1,9 +1,9 @@
 package com.msg.model.remote.response.activity
 
-import com.msg.model.remote.model.activity.InquiryStudentActivityModel
+import com.msg.model.remote.model.activity.GetStudentActivityModel
 
-data class InquiryStudentActivityListResponse (
-    val content: List<InquiryStudentActivityModel>,
+data class GetStudentActivityListResponse (
+    val content: List<GetStudentActivityModel>,
     val pageable: Pageable,
     val totalPages: Int,
     val totalElements: Int,

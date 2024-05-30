@@ -5,7 +5,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
-data class InquiryDetailStudentActivityInfoResponse(
+data class GetDetailStudentActivityInfoResponse(
     val id: UUID,
     val title: String,
     val content: String,
