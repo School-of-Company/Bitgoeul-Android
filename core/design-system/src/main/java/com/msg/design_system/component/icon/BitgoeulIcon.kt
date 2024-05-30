@@ -355,3 +355,11 @@ fun HumanIcon() {
         contentDescription = "Human upper body icon"
     )
 }
+
+@Composable
+fun BigCheckIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.ic_big_check),
+        contentDescription = "Big blue check icon"
+    )
+}

@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Rect
 import android.util.Log
 import android.view.ViewTreeObserver
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,33 +25,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
-import com.msg.sign_up.SignUpState.Authentication
-import com.msg.sign_up.SignUpState.Belong
-import com.msg.sign_up.SignUpState.Club
-import com.msg.sign_up.SignUpState.College
-import com.msg.sign_up.SignUpState.Email
-import com.msg.sign_up.SignUpState.EmailAuthentication
-import com.msg.sign_up.SignUpState.Enrollment
-import com.msg.sign_up.SignUpState.Enterprise
-import com.msg.sign_up.SignUpState.Government
-import com.msg.sign_up.SignUpState.GradeAndNumber
-import com.msg.sign_up.SignUpState.Job
-import com.msg.sign_up.SignUpState.Loading
-import com.msg.sign_up.SignUpState.Name
-import com.msg.sign_up.SignUpState.Password
-import com.msg.sign_up.SignUpState.PhoneNumber
-import com.msg.sign_up.SignUpState.RePassword
-import com.msg.sign_up.SignUpState.School
+import com.msg.sign_up.SignUpState.*
 import com.msg.sign_up.component.SignUpBottomSheet
 import com.msg.sign_up.data.BelongList
 import com.msg.sign_up.data.HighSchoolList
@@ -70,10 +57,10 @@ enum class SignUpState {
     Government,
     Enrollment,
     GradeAndNumber,
+    Position,
+    Sectors,
     PhoneNumber,
-    Authentication,
     Email,
-    EmailAuthentication,
     Password,
     RePassword,
     Loading
@@ -111,14 +98,52 @@ fun keyboardAsState(): State<Keyboard> {
 
 @Composable
 fun SignUpRoute(
-    onBackClick: () -> Unit
+    viewModel: SignUpViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onBackClick: () -> Unit,
+    onEnterFinished: () -> Unit
 ) {
-    SignUpScreen(onBackClick = onBackClick)
+    SignUpScreen(
+        onBackClick = onBackClick,
+        onEnterFinished = { job: String, school: String, club: String, name: String, phoneNumber: String, college: String, enrollment: Int, enterprise: String, government: String, gradeAndNumber: String, email: String, password: String, position: String, sectors: String ->
+            viewModel.job.value = job
+            viewModel.school.value = school
+            viewModel.club.value = club
+            viewModel.name.value = name
+            viewModel.phoneNumber.value = phoneNumber
+            viewModel.college.value = college
+            viewModel.enrollment.intValue = enrollment
+            viewModel.enterprise.value = enterprise
+            viewModel.government.value = government
+            viewModel.gradeAndNumber.value = gradeAndNumber
+            viewModel.position.value = position
+            viewModel.sectors.value = sectors
+            viewModel.email.value = email
+            viewModel.password.value = password
+            viewModel.signUp()
+            onEnterFinished()
+        }
+    )
 }
 
 @Composable
 fun SignUpScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onEnterFinished: (
+        job: String,
+        school: String,
+        club: String,
+        name: String,
+        phoneNumber: String,
+        college: String,
+        enrollment: Int,
+        enterprise: String,
+        government: String,
+        gradeAndNumber: String,
+        email: String,
+        password: String,
+        position: String,
+        sectors: String
+    ) -> Unit
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val focusManager = LocalFocusManager.current
@@ -135,10 +160,10 @@ fun SignUpScreen(
     val showGovernmentTextField = remember { mutableStateOf(false) }
     val showEnrollmentTextField = remember { mutableStateOf(false) }
     val showGradeAndNumberTextField = remember { mutableStateOf(false) }
+    val showPositionTextField = remember { mutableStateOf(false) }
+    val showSectorsTextField = remember { mutableStateOf(false) }
     val showPhoneNumberTextField = remember { mutableStateOf(false) }
-    val showAuthenticationTextField = remember { mutableStateOf(false) }
     val showEmailTextField = remember { mutableStateOf(false) }
-    val showEmailAuthenticationTextField = remember { mutableStateOf(false) }
     val showPasswordTextField = remember { mutableStateOf(false) }
     val showRePasswordTextField = remember { mutableStateOf(false) }
     val isLoading = remember { mutableStateOf(false) }
@@ -154,9 +179,9 @@ fun SignUpScreen(
     val isSelectedEnterprise = remember { mutableStateOf(false) }
     val isSelectedGovernment = remember { mutableStateOf(false) }
     val isSelectedGradeAndNumber = remember { mutableStateOf(false) }
-    val isSelectedAuthentication = remember { mutableStateOf(false) }
+    val isSelectedPosition = remember { mutableStateOf(false) }
+    val isSelectedSectors = remember { mutableStateOf(false) }
     val isSelectedEmail = remember { mutableStateOf(false) }
-    val isSelectedEmailAuthentication = remember { mutableStateOf(false) }
     val isSelectedPassword = remember { mutableStateOf(false) }
     val isSelectedRePassword = remember { mutableStateOf(false) }
     val isActivatedBeforePhoneNumber = remember { mutableStateOf(false) }
@@ -172,18 +197,20 @@ fun SignUpScreen(
     val enrollment = remember { mutableIntStateOf(0) }
     val enterprise = remember { mutableStateOf("") }
     val government = remember { mutableStateOf("") }
-    val gradeAndNumber = remember { mutableIntStateOf(0) }
-    val authentication = remember { mutableIntStateOf(0) }
+    val gradeAndNumber = remember { mutableStateOf("") }
+    val position = remember { mutableStateOf("") }
+    val sectors = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
-    val emailAuthentication = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val rePassword = remember { mutableStateOf("") }
+    val rePassword = remember { mutableStateOf("a") }
 
     var belongListForSearch = BelongList
     val outsideJobListForSearch = OutsideJobList
     val schoolJobListForSearch = SchoolJobList
-    val schoolListForSearch = remember { mutableStateOf(HighSchoolList)  }
+    val schoolListForSearch = remember { mutableStateOf(HighSchoolList) }
     val clubListForSearch = remember { mutableStateOf(school.value.searchClubBySchool()) }
+
+    val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,24}$")
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
@@ -194,6 +221,7 @@ fun SignUpScreen(
             Column(
                 modifier = Modifier
                     .background(colors.WHITE)
+                    .padding(horizontal = 28.dp)
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
                 GoBackTopBar(
@@ -204,7 +232,6 @@ fun SignUpScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 28.dp)
                 ) {
                     Spacer(
                         modifier = Modifier.height(16.dp)
@@ -337,8 +364,8 @@ fun SignUpScreen(
 
                         Government -> {
                             if (isSelectedGovernment.value) {
-                                showPhoneNumberTextField.value = false
-                                phoneNumber.value = ""
+                                showPositionTextField.value = false
+                                sectors.value = ""
                             }
                             showGovernmentTextField.value = true
                             Text(
@@ -356,7 +383,7 @@ fun SignUpScreen(
                             Log.d("TAG", "hello")
                             if (isSelectedEnrollment.value) {
                                 showGradeAndNumberTextField.value = false
-                                gradeAndNumber.value = 0
+                                gradeAndNumber.value = ""
                             }
                             showEnrollmentTextField.value = true
                             Text(
@@ -387,10 +414,44 @@ fun SignUpScreen(
                             )
                         }
 
+                        Position -> {
+                            if (isSelectedPosition.value) {
+                                showSectorsTextField.value = false
+                                position.value = ""
+                            }
+                            showPositionTextField.value = true
+                            Text(
+                                text = "업종 입력",
+                                style = typography.titleLarge
+                            )
+                            Text(
+                                text = "소속하신 기관의 업종을 입력해 주세요!",
+                                style = typography.bodySmall,
+                                color = colors.G2
+                            )
+                        }
+
+                        Sectors -> {
+                            if (isSelectedSectors.value) {
+                                showPhoneNumberTextField.value = false
+                                phoneNumber.value = ""
+                            }
+                            showSectorsTextField.value = true
+                            Text(
+                                text = "직책 입력",
+                                style = typography.titleLarge
+                            )
+                            Text(
+                                text = "본인의 직책을 입력해 주세요!",
+                                style = typography.bodySmall,
+                                color = colors.G2
+                            )
+                        }
+
                         PhoneNumber -> {
                             if (isSelectedPhoneNumber.value) {
-                                showAuthenticationTextField.value = false
-                                authentication.value = 0
+                                showEmailTextField.value = false
+                                email.value = ""
                             }
                             showPhoneNumberTextField.value = true
                             Text(
@@ -398,24 +459,7 @@ fun SignUpScreen(
                                 style = typography.titleLarge
                             )
                             Text(
-                                text = "인증을 위해 전화번호를 입력해 주세요!",
-                                style = typography.bodySmall,
-                                color = colors.G2
-                            )
-                        }
-
-                        Authentication -> {
-                            if (isSelectedAuthentication.value) {
-                                showEmailTextField.value = false
-                                email.value = ""
-                            }
-                            showAuthenticationTextField.value = true
-                            Text(
-                                text = "인증번호 입력",
-                                style = typography.titleLarge
-                            )
-                            Text(
-                                text = "받으신 인증번호 N자리를 입력해 주세요!",
+                                text = "전화번호를 입력해 주세요!",
                                 style = typography.bodySmall,
                                 color = colors.G2
                             )
@@ -423,8 +467,8 @@ fun SignUpScreen(
 
                         Email -> {
                             if (isSelectedEmail.value) {
-                                showEmailAuthenticationTextField.value = false
-                                emailAuthentication.value = ""
+                                showPasswordTextField.value = false
+                                password.value = ""
                             }
                             showEmailTextField.value = true
                             Text(
@@ -433,23 +477,6 @@ fun SignUpScreen(
                             )
                             Text(
                                 text = "이메일을 입력해 주세요!",
-                                style = typography.bodySmall,
-                                color = colors.G2
-                            )
-                        }
-
-                        EmailAuthentication -> {
-                            if (isSelectedEmailAuthentication.value) {
-                                showPasswordTextField.value = false
-                                password.value = ""
-                            }
-                            showEmailAuthenticationTextField.value = true
-                            Text(
-                                text = "인증번호 입력",
-                                style = typography.titleLarge
-                            )
-                            Text(
-                                text = "받으신 인증번호 N자리를 입력해 주세요!",
                                 style = typography.bodySmall,
                                 color = colors.G2
                             )
@@ -466,7 +493,7 @@ fun SignUpScreen(
                                 style = typography.titleLarge
                             )
                             Text(
-                                text = "비밀번호를 입력해 주세요!",
+                                text = "8~24자 이내의 영문 / 숫자, 특수문자 1개 이상",
                                 style = typography.bodySmall,
                                 color = colors.G2
                             )
@@ -485,17 +512,25 @@ fun SignUpScreen(
                             )
                         }
 
-                        Loading -> {
-                            Text(
-                                text = "비밀번호 재입력",
-                                style = typography.titleLarge
-                            )
-                            Text(
-                                text = "비밀번호를 다시 입력해 주세요!",
-                                style = typography.bodySmall,
-                                color = colors.G2
-                            )
-                        }
+                        Loading ->
+                            if (password.value == rePassword.value) {
+                                onEnterFinished(
+                                    job.value,
+                                    school.value,
+                                    club.value,
+                                    name.value,
+                                    phoneNumber.value,
+                                    college.value,
+                                    enrollment.intValue,
+                                    enterprise.value,
+                                    government.value,
+                                    gradeAndNumber.value,
+                                    email.value,
+                                    password.value,
+                                    position.value,
+                                    sectors.value
+                                )
+                            }
                     }
                     Spacer(modifier = Modifier.height(32.dp))
                     val scrollState = rememberScrollState()
@@ -513,7 +548,7 @@ fun SignUpScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
+                                        if (!it.isFocused && isClicked.value && (password.value == rePassword.value)) signUpState.value =
                                             continueToNextField(signUpState.value, job.value)
                                     },
                                 placeholder = "비밀번호",
@@ -522,11 +557,12 @@ fun SignUpScreen(
                                     rePassword.value = it
                                 },
                                 onClickLink = {},
-                                isError = false,
+                                isError = password.value == rePassword.value,
                                 isLinked = false,
                                 isDisabled = false,
                                 onClick = {
-                                    if (signUpState.value != RePassword) signUpState.value = RePassword
+                                    if (signUpState.value != RePassword) signUpState.value =
+                                        RePassword
                                     isClicked.value = true
                                 }
                             )
@@ -545,49 +581,17 @@ fun SignUpScreen(
                                             continueToNextField(signUpState.value, job.value)
                                     },
                                 placeholder = "비밀번호",
-                                errorText = "비밀번호는 (정규식)으로 해주세요",
+                                errorText = "비밀번호는 규칙에 맞게 입력해주세요",
                                 onValueChange = {
                                     password.value = it
                                 },
                                 onClickLink = {},
-                                isError = false,
+                                isError = !passwordRegex.matches(password.value),
                                 isLinked = false,
                                 isDisabled = false,
                                 onClick = {
                                     if (signUpState.value != Password) signUpState.value = Password
                                     showRePasswordTextField.value = false
-                                    isClicked.value = true
-                                }
-                            )
-                        }
-                        if (showEmailAuthenticationTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedEmailAuthentication.value = true
-                            DefaultTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
-                                    },
-                                placeholder = "인증번호",
-                                isError = false,
-                                isLinked = false,
-                                isDisabled = false,
-                                isReverseTrailingIcon = false,
-                                errorText = "",
-                                onValueChange = {
-                                    emailAuthentication.value = it
-                                },
-                                onClickButton = { emailAuthentication.value = "" },
-                                isReadOnly = false,
-                                isNumberOnly = true,
-                                onClick = {
-                                    if (signUpState.value != EmailAuthentication) signUpState.value = EmailAuthentication
-                                    showPasswordTextField.value = false
                                     isClicked.value = true
                                 }
                             )
@@ -618,39 +622,7 @@ fun SignUpScreen(
                                 isReadOnly = false,
                                 onClick = {
                                     if (signUpState.value != Email) signUpState.value = Email
-                                    showEmailAuthenticationTextField.value = false
-                                    isClicked.value = true
-                                }
-                            )
-                        }
-                        if (showAuthenticationTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedAuthentication.value = true
-                            DefaultTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
-                                    },
-                                placeholder = "인증번호",
-                                isError = false,
-                                isLinked = false,
-                                isDisabled = false,
-                                isReverseTrailingIcon = false,
-                                errorText = "",
-                                onValueChange = {
-                                    authentication.value = it.toInt()
-                                },
-                                onClickButton = { authentication.value = 0 },
-                                isReadOnly = false,
-                                isNumberOnly = true,
-                                onClick = {
-                                    if (signUpState.value != Authentication) signUpState.value = Authentication
-                                    showEmailTextField.value = false
+                                    showPasswordTextField.value = false
                                     isClicked.value = true
                                 }
                             )
@@ -681,8 +653,9 @@ fun SignUpScreen(
                                 isReadOnly = false,
                                 isNumberOnly = true,
                                 onClick = {
-                                    if (signUpState.value != PhoneNumber) signUpState.value = PhoneNumber
-                                    showAuthenticationTextField.value = false
+                                    if (signUpState.value != PhoneNumber) signUpState.value =
+                                        PhoneNumber
+                                    showEmailTextField.value = false
                                     isClicked.value = true
                                 }
                             )
@@ -707,15 +680,81 @@ fun SignUpScreen(
                                 isReverseTrailingIcon = false,
                                 errorText = "",
                                 onValueChange = {
-                                    gradeAndNumber.value = it.toInt()
+                                    gradeAndNumber.value = it
                                 },
-                                onClickButton = { gradeAndNumber.value = 0 },
+                                onClickButton = { gradeAndNumber.value = "" },
                                 isReadOnly = false,
                                 isNumberOnly = true,
                                 onClick = {
-                                    if (signUpState.value != GradeAndNumber) signUpState.value = GradeAndNumber
+                                    if (signUpState.value != GradeAndNumber) signUpState.value =
+                                        GradeAndNumber
                                     isActivatedBeforePhoneNumber.value = true
                                     showPhoneNumberTextField.value = false
+                                    isClicked.value = true
+                                }
+                            )
+                        }
+                        if (showSectorsTextField.value && showPositionTextField.value) {
+                            val isClicked = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) {
+                                focusManager.clearFocus()
+                            }
+                            isSelectedSectors.value = true
+                            DefaultTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .onFocusChanged {
+                                        if (!it.isFocused && isClicked.value) signUpState.value =
+                                            continueToNextField(signUpState.value, job.value)
+                                    },
+                                placeholder = "직책 입력",
+                                isError = false,
+                                isLinked = false,
+                                isDisabled = false,
+                                isReverseTrailingIcon = false,
+                                errorText = "",
+                                onValueChange = {
+                                    position.value = it
+                                },
+                                onClickButton = { position.value = "" },
+                                isReadOnly = false,
+                                onClick = {
+                                    if (signUpState.value != Sectors) signUpState.value =
+                                        Sectors
+                                    isActivatedBeforePhoneNumber.value = true
+                                    showPhoneNumberTextField.value = false
+                                    isClicked.value = true
+                                }
+                            )
+                        }
+                        if (showPositionTextField.value && showGovernmentTextField.value) {
+                            val isClicked = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) {
+                                focusManager.clearFocus()
+                            }
+                            isSelectedPosition.value = true
+                            DefaultTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .onFocusChanged {
+                                        if (!it.isFocused && isClicked.value) signUpState.value =
+                                            continueToNextField(signUpState.value, job.value)
+                                    },
+                                placeholder = "소속 기관의 업종",
+                                isError = false,
+                                isLinked = false,
+                                isDisabled = false,
+                                isReverseTrailingIcon = false,
+                                errorText = "",
+                                onValueChange = {
+                                    sectors.value = it
+                                },
+                                onClickButton = { sectors.value = "" },
+                                isReadOnly = false,
+                                onClick = {
+                                    if (signUpState.value != Position) signUpState.value =
+                                        Position
+                                    showSectorsTextField.value = false
                                     isClicked.value = true
                                 }
                             )
@@ -745,7 +784,8 @@ fun SignUpScreen(
                                 onClickButton = { government.value = "" },
                                 isReadOnly = false,
                                 onClick = {
-                                    if (signUpState.value != Government) signUpState.value = Government
+                                    if (signUpState.value != Government) signUpState.value =
+                                        Government
                                     isActivatedBeforePhoneNumber.value = true
                                     showPhoneNumberTextField.value = false
                                     isClicked.value = true
@@ -809,7 +849,8 @@ fun SignUpScreen(
                                 onClickButton = { enterprise.value = "" },
                                 isReadOnly = false,
                                 onClick = {
-                                    if (signUpState.value != Enterprise) signUpState.value = Enterprise
+                                    if (signUpState.value != Enterprise) signUpState.value =
+                                        Enterprise
                                     isActivatedBeforePhoneNumber.value = true
                                     showPhoneNumberTextField.value = false
                                     isClicked.value = true
@@ -842,7 +883,8 @@ fun SignUpScreen(
                                 isReadOnly = false,
                                 isNumberOnly = true,
                                 onClick = {
-                                    if (signUpState.value != Enrollment) signUpState.value = Enrollment
+                                    if (signUpState.value != Enrollment) signUpState.value =
+                                        Enrollment
                                     showGradeAndNumberTextField.value = false
                                     isClicked.value = true
                                 }
@@ -869,13 +911,17 @@ fun SignUpScreen(
                                 errorText = "",
                                 onValueChange = {
                                     name.value = it
-                                    if (it.length == 3) continueToNextField(signUpState.value, job.value)
+                                    if (it.length == 3) continueToNextField(
+                                        signUpState.value,
+                                        job.value
+                                    )
                                 },
                                 onClickButton = { name.value = "" },
                                 isReadOnly = false,
                                 onClick = {
                                     if (signUpState.value != Name) signUpState.value = Name
-                                    if (job.value == "취업동아리 선생님") isActivatedBeforePhoneNumber.value = true
+                                    if (job.value == "취업동아리 선생님") isActivatedBeforePhoneNumber.value =
+                                        true
                                     isClicked.value = true
                                     showEnrollmentTextField.value = false
                                     showPhoneNumberTextField.value = false
@@ -981,7 +1027,8 @@ fun SignUpScreen(
                             onQuit = {
                                 showSignUpBottomSheet.value = false
                                 focusManager.clearFocus()
-                                if (belong.value.isNotEmpty()) signUpState.value = continueToNextField(signUpState.value, belong.value)
+                                if (belong.value.isNotEmpty()) signUpState.value =
+                                    continueToNextField(signUpState.value, belong.value)
                                 isSelectedBelong.value = true
                                 showJobTextField.value = true
                             },
@@ -1005,13 +1052,15 @@ fun SignUpScreen(
                             onQuit = {
                                 showSignUpBottomSheet.value = false
                                 focusManager.clearFocus()
-                                signUpState.value = continueToNextField(signUpState.value, job.value)
+                                signUpState.value =
+                                    continueToNextField(signUpState.value, job.value)
                             },
                             onValueChanged = {}
                         ) {
-                            
+
                         }
                     }
+
                     School -> {
                         SignUpBottomSheet(
                             list = schoolListForSearch.value,
@@ -1023,15 +1072,17 @@ fun SignUpScreen(
                             onQuit = {
                                 showSignUpBottomSheet.value = false
                                 focusManager.clearFocus()
-                                signUpState.value = continueToNextField(signUpState.value, job.value)
+                                signUpState.value =
+                                    continueToNextField(signUpState.value, job.value)
                             },
                             onValueChanged = {
                                 schoolListForSearch.value = searchingInList(it, HighSchoolList)
                             }
                         ) {
-                            
+
                         }
                     }
+
                     Club -> {
                         SignUpBottomSheet(
                             list = clubListForSearch.value,
@@ -1043,16 +1094,21 @@ fun SignUpScreen(
                             onQuit = {
                                 showSignUpBottomSheet.value = false
                                 focusManager.clearFocus()
-                                signUpState.value = continueToNextField(signUpState.value, job.value)
+                                signUpState.value =
+                                    continueToNextField(signUpState.value, job.value)
                             },
                             onValueChanged = {
-                                clubListForSearch.value = searchingInList(it, school.value.searchClubBySchool())
+                                clubListForSearch.value =
+                                    searchingInList(it, school.value.searchClubBySchool())
                             }
                         ) {
-                            
+
                         }
                     }
-                    else -> { showSignUpBottomSheet.value = false }
+
+                    else -> {
+                        showSignUpBottomSheet.value = false
+                    }
                 }
             }
         }
@@ -1078,21 +1134,22 @@ fun continueToNextField(
                 "뽀짝 선생님" -> return Government
             }
         }
+
         College -> return PhoneNumber
         Enterprise -> return PhoneNumber
-        Government -> return PhoneNumber
+        Government -> return Position
         Enrollment -> {
             Log.d("TAG", "here")
             return GradeAndNumber
         }
         GradeAndNumber -> return PhoneNumber
-        PhoneNumber -> return Authentication
-        Authentication -> return Email
-        Email -> return EmailAuthentication
-        EmailAuthentication -> return Password
+        Position -> return Sectors
+        Sectors -> return PhoneNumber
         Password -> return RePassword
         RePassword -> return Loading
-        Loading -> TODO()
+        Loading -> return Loading
+        PhoneNumber -> return Email
+        Email -> return Password
     }
     return Loading
 }
@@ -1100,5 +1157,8 @@ fun continueToNextField(
 @Preview
 @Composable
 fun SignUpScreenPre() {
-    SignUpScreen(onBackClick = {})
+    SignUpScreen(
+        onBackClick = {},
+        onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _, _, _-> }
+    )
 }
