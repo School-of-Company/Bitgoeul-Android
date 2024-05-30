@@ -129,7 +129,8 @@ fun BitgoeulNavHost(
         )
         myPageScreen(
             onPasswordChangeClicked = navController::navigateToPasswordChange,
-            onWithdrawClicked = navController::navigateToLogin
+            onWithdrawClicked = navController::navigateToLogin,
+            onLogoutClicked = navController::navigateToLogin
         )
         changePasswordScreen(
             onSuccessScreenButtonClicked = navController::navigateToMyPage,

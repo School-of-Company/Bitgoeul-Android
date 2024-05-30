@@ -9,6 +9,7 @@ import com.msg.domain.auth.WithdrawUseCase
 import com.msg.domain.user.ChangePasswordUseCase
 import com.msg.domain.user.InquiryMyPageUseCase
 import Authority
+import com.msg.domain.auth.LogoutUseCase
 import com.msg.model.remote.request.user.ChangePasswordRequest
 import com.msg.model.remote.response.user.InquiryMyPageResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val inquiryMyPageUseCase: InquiryMyPageUseCase,
     private val withdrawUseCase: WithdrawUseCase,
-    private val logoutUseCase: WithdrawUseCase,
+    private val logoutUseCase: LogoutUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase
 ) : ViewModel() {
 

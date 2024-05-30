@@ -29,6 +29,7 @@ import com.msg.model.remote.response.user.InquiryMyPageResponse
 fun MyPageRoute(
     onPasswordChangeClicked: () -> Unit,
     onWithdrawClicked: () -> Unit,
+    onLogoutClicked: () -> Unit,
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     viewModel.inquiryMyPage()
@@ -44,6 +45,7 @@ fun MyPageRoute(
         onPasswordChangeClicked = onPasswordChangeClicked,
         onLogOutClicked = {
             viewModel.logout()
+            onLogoutClicked()
         },
         onWithdrawClicked = {
             viewModel.withdraw()

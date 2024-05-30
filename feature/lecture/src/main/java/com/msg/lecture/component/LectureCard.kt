@@ -31,6 +31,7 @@ import com.msg.design_system.component.checkbox.BitGoeulCheckBox
 import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.component.icon.DivideRectangleIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.response.lecture.ContentArray
 import com.msg.model.remote.response.lecture.Students
 import java.util.UUID
@@ -124,7 +125,12 @@ fun LectureListCard(
                         )
 
                         Text(
-                            text = data.semester,
+                            text = when (data.semester) {
+                                Semester.FIRST_YEAR_FALL_SEMESTER -> "1학년 2학기"
+                                Semester.SECOND_YEAR_SPRING_SEMESTER -> "2학년 1학기"
+                                Semester.SECOND_YEAR_FALL_SEMESTER -> "2학년 2학기"
+                                Semester.THIRD_YEAR_SPRING_SEMESTER -> "3학년 1학기"
+                            },
                             modifier = modifier
                                 .wrapContentWidth()
                                 .wrapContentHeight(),
@@ -172,8 +178,9 @@ fun LectureTakingStudentCard(
     val isComplete = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
-        Card(modifier = modifier
-            .wrapContentSize()
+        Card(
+            modifier = modifier
+                .wrapContentSize()
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically

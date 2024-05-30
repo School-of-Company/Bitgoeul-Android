@@ -349,7 +349,7 @@ fun MainPageScreen(
                         style = typography.labelMedium,
                         color = colors.WHITE
                     )
-                    Spacer(modifier = modifier.height(40.dp))
+                    Spacer(modifier = modifier.height(140.dp))
                 }
             }
             when (event) {

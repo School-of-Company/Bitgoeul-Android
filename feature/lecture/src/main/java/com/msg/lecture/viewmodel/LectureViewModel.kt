@@ -26,6 +26,7 @@ import com.msg.lecture.util.errorHandling
 import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.enumdatatype.LectureStatus
+import com.msg.model.remote.enumdatatype.Semester
 import com.msg.model.remote.model.lecture.LectureDates
 import com.msg.model.remote.request.lecture.OpenLectureRequest
 import com.msg.model.remote.response.lecture.ContentArray
@@ -132,7 +133,7 @@ class LectureViewModel @Inject constructor(
                         maxRegisteredUser = 0,
                         lecturer = "",
                         department = "",
-                        semester = "",
+                        semester = Semester.FIRST_YEAR_FALL_SEMESTER,
                         division = "",
                         line = "",
                         essentialComplete = false
