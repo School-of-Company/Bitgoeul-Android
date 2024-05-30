@@ -31,7 +31,7 @@ import com.msg.design_system.component.dialog.GetClubListDialog
 import com.msg.design_system.component.icon.BigAlertIcon
 import com.msg.design_system.component.icon.GreySettingIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.response.club.ClubListResponse
 import com.msg.ui.DevicePreviews
@@ -44,7 +44,7 @@ fun ClubScreenRoute(
     val role = viewModel.role
     var key = ""
 
-    if (role != Authority.ROLE_ADMIN) onItemClicked()
+    if (role != Authority.ROLE_ADMIN.toString()) onItemClicked()
 
     LaunchedEffect(key1 = key) {
         getClubList(

@@ -22,7 +22,7 @@ import com.example.my_page.component.MyInfoView
 import com.example.my_page.util.Event
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.response.user.InquiryMyPageResponse
 
 @Composable

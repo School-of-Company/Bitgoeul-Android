@@ -22,9 +22,8 @@ import com.msg.domain.lecture.SearchDivisionUseCase
 import com.msg.domain.lecture.SearchLineUseCase
 import com.msg.domain.lecture.SearchProfessorUseCase
 import com.msg.lecture.util.Event
-import com.msg.lecture.util.authorityOf
 import com.msg.lecture.util.errorHandling
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.model.lecture.LectureDates

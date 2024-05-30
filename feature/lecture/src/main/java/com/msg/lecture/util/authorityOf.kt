@@ -1,6 +1,6 @@
 package com.msg.lecture.util
 
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow

@@ -1,5 +1,7 @@
 package com.msg.student_activity
 
+import Authority
+import Authority.Companion.from
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,14 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import com.msg.student_activity.util.Event
 import com.msg.student_activity.viewmodel.StudentActivityViewModel
@@ -39,8 +39,9 @@ fun StudentActivityRoute(
     id: UUID? = null
 ) {
     val role = viewModel.role
+
     viewModel.inquiryStudentActivityList(
-        role = role,
+        role = from(role),
         page = 1,
         size = 20,
         sort = "",
@@ -62,7 +63,7 @@ fun StudentActivityRoute(
             viewModel.selectedActivityId.value = it
         },
         onBackClicked = onBackClicked,
-        role = role
+        role = from(role)
     )
 }
 
@@ -136,15 +137,4 @@ fun StudentActivityScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun StudentActivityScreenPre() {
-    StudentActivityScreen(
-        onAddClicked = {},
-        onItemClicked = {},
-        role = Authority.ROLE_STUDENT,
-        onBackClicked = {}
-    )
 }

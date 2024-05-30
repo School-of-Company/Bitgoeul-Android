@@ -1,6 +1,6 @@
 package com.msg.model.remote.response.lecture
 
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import java.util.UUID
 
 data class SearchProfessorResponse(

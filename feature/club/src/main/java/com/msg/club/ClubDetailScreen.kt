@@ -16,7 +16,7 @@ import com.msg.club.component.ClubMemberInfoListSection
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.color.BitgoeulColor
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.response.club.ClubDetailResponse
 import com.msg.ui.DevicePreviews
 import java.util.UUID
@@ -27,7 +27,7 @@ fun ClubDetailScreenRoute(
     onBackClicked: () -> Unit,
     onBackClickedByAdmin: () -> Unit
 ) {
-    val isAdmin = viewModel.role == Authority.ROLE_ADMIN
+    val isAdmin = viewModel.role == Authority.ROLE_ADMIN.toString()
 
     if (isAdmin) viewModel.getClubDetail() else viewModel.getMyClubDetail()
 

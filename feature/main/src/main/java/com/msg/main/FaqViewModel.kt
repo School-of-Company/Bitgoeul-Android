@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.msg.datastore.AuthTokenDataSource
 import com.msg.main.util.Event
 import com.msg.main.util.errorHandling
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

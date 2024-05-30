@@ -10,7 +10,7 @@ import com.msg.domain.post.EditPostUseCase
 import com.msg.domain.post.GetDetailPostUseCase
 import com.msg.domain.post.GetPostListUseCase
 import com.msg.domain.post.SendPostUseCase
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.request.post.WritePostRequest
 import com.msg.model.remote.response.post.GetDetailPostResponse
@@ -21,7 +21,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
@@ -51,7 +53,7 @@ class PostViewModel @Inject constructor(
     private val _sendPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val sendPostResponse = _sendPostResponse.asStateFlow()
 
-    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
+    val role = getRole().toString()
 
     var detailPost = mutableStateOf(
         GetDetailPostResponse(
@@ -201,5 +203,9 @@ class PostViewModel @Inject constructor(
         savedContent.value = detailPost.value.content
         links.addAll(detailPost.value.links)
         isEditPage.value = true
+    }
+
+    private fun getRole(): Authority = runBlocking {
+        return@runBlocking authTokenDataSource.getAuthority().first()
     }
 }

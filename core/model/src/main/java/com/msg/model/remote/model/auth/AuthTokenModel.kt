@@ -1,6 +1,6 @@
 package com.msg.model.remote.model.auth
 
-import com.msg.model.remote.enumdatatype.Authority
+import Authority
 
 
 data class AuthTokenModel(

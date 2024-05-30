@@ -1,5 +1,6 @@
 package com.msg.student_activity.viewmodel
 
+import Authority
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +17,6 @@ import com.msg.domain.activity.InquiryMyStudentActivityInfoListUseCase
 import com.msg.domain.activity.InquiryStudentActivityInfoListUseCase
 import com.msg.domain.activity.RejectStudentActivityInfoUseCase
 import com.msg.model.remote.enumdatatype.ApproveStatus
-import com.msg.model.remote.enumdatatype.Authority
 import com.msg.model.remote.model.activity.InquiryStudentActivityModel
 import com.msg.model.remote.model.activity.StudentActivityModel
 import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
@@ -27,7 +27,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
@@ -47,7 +49,7 @@ class StudentActivityViewModel @Inject constructor(
     private val authTokenDataSource: AuthTokenDataSource
 ) : ViewModel() {
 
-    val role = Authority.valueOf(authTokenDataSource.getAuthority().toString())
+    val role = getRole().toString()
 
     private val _getStudentActivityListResponse = MutableStateFlow<Event<InquiryStudentActivityListResponse>>(Event.Loading)
     val getStudentActivityListResponse = _getStudentActivityListResponse.asStateFlow()
@@ -262,5 +264,7 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    fun setSelectedActivityId(id: UUID) {}
+    private fun getRole(): Authority = runBlocking {
+        return@runBlocking authTokenDataSource.getAuthority().first()
+    }
 }
