@@ -17,7 +17,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun LectureDetailSettingDepartmentAndDivisionCard(
     data: String,
     modifier: Modifier = Modifier,
-    onClick: (String) -> Unit
+    onClicked: (String) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Surface {
@@ -27,7 +27,7 @@ fun LectureDetailSettingDepartmentAndDivisionCard(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 16.dp)
                     .clickable {
-                        onClick(data)
+                        onClicked(data)
                     },
                 colors = CardDefaults.cardColors(containerColor = colors.WHITE)
             ) {

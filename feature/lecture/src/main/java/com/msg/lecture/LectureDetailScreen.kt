@@ -47,7 +47,7 @@ import com.msg.ui.util.toLocalTimeFormat
 @Composable
 fun LectureDetailRoute(
     onBackClicked: () -> Unit,
-    onLectureTakingStudentListScreenClick: () -> Unit,
+    onLectureTakingStudentListScreenClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val id = viewModel.selectedLectureId.value
@@ -67,14 +67,14 @@ fun LectureDetailRoute(
         role = role,
         data = viewModel.lectureDetailData.value,
         onBackClicked = onBackClicked,
-        onLectureTakingStudentListScreenClick = onLectureTakingStudentListScreenClick,
-        onApplicationCancelClick = {
+        onLectureTakingStudentListScreenClicked = onLectureTakingStudentListScreenClicked,
+        onApplicationCancelClicked = {
             viewModel.lectureApplicationCancel(viewModel.selectedLectureId.value)
         },
-        onApplicationClick = {
+        onApplicationClicked = {
             viewModel.lectureApplication(viewModel.selectedLectureId.value)
         },
-        onDownloadButtonClick = {
+        onDownloadButtonClicked = {
             viewModel.downloadLectureExcel()
         }
     )
@@ -101,10 +101,10 @@ fun LectureDetailScreen(
     data: DetailLectureResponse,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onApplicationClick: () -> Unit,
-    onApplicationCancelClick: () -> Unit,
-    onLectureTakingStudentListScreenClick: () -> Unit,
-    onDownloadButtonClick: () -> Unit,
+    onApplicationClicked: () -> Unit,
+    onApplicationCancelClicked: () -> Unit,
+    onLectureTakingStudentListScreenClicked: () -> Unit,
+    onDownloadButtonClicked: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val isExcelDownloadSheetVisible = remember { mutableStateOf(false) }
@@ -326,7 +326,7 @@ fun LectureDetailScreen(
                             .align(Alignment.BottomCenter),
                         state = ButtonState.Enable
                     ) {
-                        onLectureTakingStudentListScreenClick()
+                        onLectureTakingStudentListScreenClicked()
                     }
                 }
                 else -> {}
@@ -411,7 +411,7 @@ fun LectureDetailScreen(
                 isPositiveActionDialogVisible.value = false
             },
             onActionClicked = {
-                onApplicationClick()
+                onApplicationClicked()
                 isPositiveActionDialogVisible.value = false
                 isApplicationState.value = true
             },
@@ -425,7 +425,7 @@ fun LectureDetailScreen(
             isVisible = isNegativeDialogVisible.value,
             onQuit = { isNegativeDialogVisible.value = false },
             onActionClicked = {
-                onApplicationCancelClick()
+                onApplicationCancelClicked()
                 isNegativeDialogVisible.value = false
             }
         )
@@ -433,7 +433,7 @@ fun LectureDetailScreen(
         LectureExcelDownloadBottomSheet(
             isVisible = isExcelDownloadSheetVisible.value,
             onDownloadButtonClick = {
-                onDownloadButtonClick()
+                onDownloadButtonClicked()
                 isExcelDownloadSheetVisible.value = false
             },
             onQuit = {

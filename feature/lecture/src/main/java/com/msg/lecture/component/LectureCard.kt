@@ -40,7 +40,7 @@ import java.util.UUID
 fun LectureListCard(
     modifier: Modifier = Modifier,
     data: ContentArray,
-    onClick: (UUID) -> Unit,
+    onClicked: (UUID) -> Unit,
 ) {
     BitgoeulAndroidTheme { color, type ->
         Surface {
@@ -48,7 +48,7 @@ fun LectureListCard(
                 modifier = modifier
                     .wrapContentSize()
                     .clickable {
-                        onClick(data.id)
+                        onClicked(data.id)
                     },
                 colors = CardDefaults.cardColors(containerColor = color.WHITE)
             ) {

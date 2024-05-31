@@ -49,11 +49,11 @@ fun LectureDetailSettingSearchBottomSheet(
     searchPlaceHolder: String,
     division: String,
     searchAPIType: String,
-    onSearchButtonClick: (keyword: String, division: String) -> Unit,
-    onProfessorListClick: (professorUUID: UUID, professorName: String) -> Unit,
-    onDepartmentListClick: (String) -> Unit,
-    onLineListClick: (String) -> Unit,
-    onDivisionListClick: (String) -> Unit,
+    onSearchButtonClicked: (keyword: String, division: String) -> Unit,
+    onProfessorListClicked: (professorUUID: UUID, professorName: String) -> Unit,
+    onDepartmentListClicked: (String) -> Unit,
+    onLineListClicked: (String) -> Unit,
+    onDivisionListClicked: (String) -> Unit,
     onQuit: () -> Unit,
 ) {
     val keywordState = remember { mutableStateOf("") }
@@ -66,7 +66,7 @@ fun LectureDetailSettingSearchBottomSheet(
             containerColor = colors.WHITE
         ) {
             LaunchedEffect(true) {
-                onSearchButtonClick("", "")
+                onSearchButtonClicked("", "")
             }
             Column(
                 modifier = modifier
@@ -84,7 +84,7 @@ fun LectureDetailSettingSearchBottomSheet(
                     },
                     isDisabled = false,
                     onClickButton = {
-                        onSearchButtonClick(keywordState.value, division)
+                        onSearchButtonClicked(keywordState.value, division)
                     },
                 )
 
@@ -95,7 +95,7 @@ fun LectureDetailSettingSearchBottomSheet(
                             LectureLineList(
                                 modifier = modifier,
                                 onClick = { selectedLineData ->
-                                    onLineListClick(selectedLineData)
+                                    onLineListClicked(selectedLineData)
                                 },
                                 data = searchLineData,
                                 division = division,
@@ -107,7 +107,7 @@ fun LectureDetailSettingSearchBottomSheet(
                             LectureProfessorList(
                                 modifier = modifier,
                                 onClick = { professor, selectedProfessorName ->
-                                    onProfessorListClick(professor, selectedProfessorName)
+                                    onProfessorListClicked(professor, selectedProfessorName)
                                 },
                                 data = searchProfessorData,
                                 division = division,
@@ -119,7 +119,7 @@ fun LectureDetailSettingSearchBottomSheet(
                             LectureDepartmentList(
                                 modifier = modifier,
                                 onClick = { department ->
-                                    onDepartmentListClick(department)
+                                    onDepartmentListClicked(department)
                                 },
                                 data = searchDepartmentData
                             )
@@ -129,7 +129,7 @@ fun LectureDetailSettingSearchBottomSheet(
                             LectureDivisionList(
                                 modifier = modifier,
                                 onClick = { division ->
-                                    onDivisionListClick(division)
+                                    onDivisionListClicked(division)
                                 },
                                 data = searchDivisionData
                             )
@@ -250,7 +250,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 fun LectureExcelDownloadBottomSheet(
     isVisible: Boolean,
     modifier: Modifier = Modifier,
-    onDownloadButtonClick: () -> Unit,
+    onDownloadButtonClicked: () -> Unit,
     onQuit: () -> Unit,
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
@@ -287,7 +287,7 @@ fun LectureExcelDownloadBottomSheet(
                         FileIcon(
                             modifier = modifier.clickable {
                                 coroutineScope.launch {
-                                    onDownloadButtonClick()
+                                    onDownloadButtonClicked()
                                     bottomSheetState.hide()
                                 }
                             }

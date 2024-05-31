@@ -70,10 +70,10 @@ fun LectureDetailSettingSearchTextField(
     onSearchDepartmentClicked: (String) -> Unit = {},
     onSearchProfessorClicked: (String) -> Unit = {},
     onSearchDivisionClicked: (String) -> Unit = {},
-    onProfessorItemClick: (userId: UUID, professorName: String) -> Unit = { _, _ -> },
-    onDepartmentItemClick: (String) -> Unit = {},
-    onLineItemClick: (String) -> Unit = {},
-    onDivisionItemClick: (String) -> Unit = {},
+    onProfessorItemClicked: (userId: UUID, professorName: String) -> Unit = { _, _ -> },
+    onDepartmentItemClicked: (String) -> Unit = {},
+    onLineItemClicked: (String) -> Unit = {},
+    onDivisionItemClicked: (String) -> Unit = {},
     isClickedPickerType: String,
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
@@ -137,17 +137,17 @@ fun LectureDetailSettingSearchTextField(
                 },
                 searchAPIType = isClickedPickerType,
                 onProfessorListClick = { selectedProfessorUUID, selectedProfessorName ->
-                    onProfessorItemClick(selectedProfessorUUID, selectedProfessorName)
+                    onProfessorItemClicked(selectedProfessorUUID, selectedProfessorName)
                 },
                 division = division,
                 onDepartmentListClick = { selectedDepartmentData ->
-                    onDepartmentItemClick(selectedDepartmentData)
+                    onDepartmentItemClicked(selectedDepartmentData)
                 },
                 onLineListClick = { selectedLineData ->
-                    onLineItemClick(selectedLineData)
+                    onLineItemClicked(selectedLineData)
                 },
                 onDivisionListClick = { selectedDivisionData ->
-                    onDivisionItemClick(selectedDivisionData)
+                    onDivisionItemClicked(selectedDivisionData)
                 },
                 onQuit = {
                     isFocused.value = false
