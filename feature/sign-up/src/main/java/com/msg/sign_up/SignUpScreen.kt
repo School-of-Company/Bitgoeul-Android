@@ -99,11 +99,11 @@ fun keyboardAsState(): State<Keyboard> {
 @Composable
 fun SignUpRoute(
     viewModel: SignUpViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
     onEnterFinished: () -> Unit
 ) {
     SignUpScreen(
-        onBackClick = onBackClick,
+        onBackClicked = onBackClicked,
         onEnterFinished = { job: String, school: String, club: String, name: String, phoneNumber: String, college: String, enrollment: Int, enterprise: String, government: String, gradeAndNumber: String, email: String, password: String, position: String, sectors: String ->
             viewModel.job.value = job
             viewModel.school.value = school
@@ -127,7 +127,7 @@ fun SignUpRoute(
 
 @Composable
 fun SignUpScreen(
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
     onEnterFinished: (
         job: String,
         school: String,
@@ -227,7 +227,7 @@ fun SignUpScreen(
                 GoBackTopBar(
                     icon = { GoBackIcon() },
                     text = "돌아가기",
-                    onClick = { onBackClick() }
+                    onClick = { onBackClicked() }
                 )
                 Column(
                     modifier = Modifier
@@ -1158,7 +1158,7 @@ fun continueToNextField(
 @Composable
 fun SignUpScreenPre() {
     SignUpScreen(
-        onBackClick = {},
+        onBackClicked = {},
         onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _, _, _-> }
     )
 }
