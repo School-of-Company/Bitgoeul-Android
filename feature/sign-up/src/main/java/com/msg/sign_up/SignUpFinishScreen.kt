@@ -59,7 +59,7 @@ fun SignUpFinishScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 28.dp),
                 text = "돌아가기",
-                onClick = onBackClicked
+                onClicked = onBackClicked
             )
             Spacer(modifier = modifier.height(56.dp))
         }
