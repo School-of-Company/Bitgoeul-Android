@@ -186,7 +186,8 @@ fun LectureTakingStudentCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 BitGoeulCheckBox(
-                    modifier = modifier, checked = isComplete.value
+                    modifier = modifier,
+                    isChecked = isComplete.value
                 ) { isCompleteValue ->
                     onChangeCompleteState(isCompleteValue, data.id)
                     isComplete.value = isCompleteValue

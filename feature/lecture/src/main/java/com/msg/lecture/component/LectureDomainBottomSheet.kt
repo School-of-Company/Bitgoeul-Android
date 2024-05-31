@@ -83,7 +83,7 @@ fun LectureDetailSettingSearchBottomSheet(
                         keywordState.value = keyword
                     },
                     isDisabled = false,
-                    onClickButton = {
+                    onButtonClicked = {
                         onSearchButtonClicked(keywordState.value, division)
                     },
                 )
@@ -94,7 +94,7 @@ fun LectureDetailSettingSearchBottomSheet(
                         "강의 계열" -> {
                             LectureLineList(
                                 modifier = modifier,
-                                onClick = { selectedLineData ->
+                                onClicked = { selectedLineData ->
                                     onLineListClicked(selectedLineData)
                                 },
                                 data = searchLineData,
@@ -106,7 +106,7 @@ fun LectureDetailSettingSearchBottomSheet(
                         "담당 교수" -> {
                             LectureProfessorList(
                                 modifier = modifier,
-                                onClick = { professor, selectedProfessorName ->
+                                onClicked = { professor, selectedProfessorName ->
                                     onProfessorListClicked(professor, selectedProfessorName)
                                 },
                                 data = searchProfessorData,
@@ -118,7 +118,7 @@ fun LectureDetailSettingSearchBottomSheet(
                         "학과" -> {
                             LectureDepartmentList(
                                 modifier = modifier,
-                                onClick = { department ->
+                                onClicked = { department ->
                                     onDepartmentListClicked(department)
                                 },
                                 data = searchDepartmentData
@@ -128,7 +128,7 @@ fun LectureDetailSettingSearchBottomSheet(
                         "구분" -> {
                             LectureDivisionList(
                                 modifier = modifier,
-                                onClick = { division ->
+                                onClicked = { division ->
                                     onDivisionListClicked(division)
                                 },
                                 data = searchDivisionData
@@ -229,7 +229,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
                     BitgoeulButton(
                         modifier = modifier.fillMaxWidth(),
-                        onClick = {
+                        onClicked = {
                             if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
                                 onQuit(completeDates.value, startTime.value, endTime.value)
                                 coroutineScope.launch {

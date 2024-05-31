@@ -55,7 +55,7 @@ fun LectureDetailSettingInputTextField(
                 onValueChange = { inputString ->
                     onItemChange(inputString)
                 },
-                onClickButton = {},
+                onButtonClicked = {},
             )
         }
     }
@@ -114,7 +114,7 @@ fun LectureDetailSettingSearchTextField(
                     "구분" -> stringResource(id = R.string.division_placeholder)
                     else -> ""
                 },
-                onSearchButtonClick = { keyword, division ->
+                onSearchButtonClicked = { keyword, division ->
                     when (isClickedPickerType) {
                         "강의 계열" -> {
                             onSearchLineClicked(keyword, division)
@@ -136,17 +136,17 @@ fun LectureDetailSettingSearchTextField(
                     }
                 },
                 searchAPIType = isClickedPickerType,
-                onProfessorListClick = { selectedProfessorUUID, selectedProfessorName ->
+                onProfessorListClicked = { selectedProfessorUUID, selectedProfessorName ->
                     onProfessorItemClicked(selectedProfessorUUID, selectedProfessorName)
                 },
                 division = division,
-                onDepartmentListClick = { selectedDepartmentData ->
+                onDepartmentListClicked = { selectedDepartmentData ->
                     onDepartmentItemClicked(selectedDepartmentData)
                 },
-                onLineListClick = { selectedLineData ->
+                onLineListClicked = { selectedLineData ->
                     onLineItemClicked(selectedLineData)
                 },
-                onDivisionListClick = { selectedDivisionData ->
+                onDivisionListClicked = { selectedDivisionData ->
                     onDivisionItemClicked(selectedDivisionData)
                 },
                 onQuit = {

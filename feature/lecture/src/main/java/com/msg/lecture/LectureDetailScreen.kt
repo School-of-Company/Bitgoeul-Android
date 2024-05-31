@@ -130,7 +130,7 @@ fun LectureDetailScreen(
                     GoBackTopBar(
                         icon = { GoBackIcon() },
                         text = "돌아가기",
-                        onClick = { onBackClicked() }
+                        onClicked = { onBackClicked() }
                     )
 
                     Spacer(modifier = modifier.weight(1f))
@@ -351,7 +351,7 @@ fun LectureDetailScreen(
                                             .fillMaxWidth()
                                             .height(52.dp)
                                             .align(Alignment.BottomCenter),
-                                        onClick = {
+                                        onClicked = {
                                             isNegativeDialogVisible.value = true
                                         }
                                     )
@@ -432,7 +432,7 @@ fun LectureDetailScreen(
 
         LectureExcelDownloadBottomSheet(
             isVisible = isExcelDownloadSheetVisible.value,
-            onDownloadButtonClick = {
+            onDownloadButtonClicked = {
                 onDownloadButtonClicked()
                 isExcelDownloadSheetVisible.value = false
             },
