@@ -54,7 +54,7 @@ fun AddLinkSection(
                     isReverseTrailingIcon = false,
                     errorText = "",
                     onValueChange = { onValueChanged(index, it) },
-                    onClickButton = {}
+                    onButtonClicked = {}
                 )
                 Spacer(modifier = modifier.height(12.dp))
             }
