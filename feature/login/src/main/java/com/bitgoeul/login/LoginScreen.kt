@@ -148,7 +148,7 @@ fun LoginScreen(
                             emailState.value = it
                         },
                         isError = isEmailErrorStatus.value,
-                        onClickButton = {
+                        onButtonClicked = {
                             isEmailErrorStatus.value = isTextStatus.isNullOrBlank()
                         },
                         isLinked = false,
@@ -178,7 +178,7 @@ fun LoginScreen(
                         onValueChange = {
                             passwordState.value = it
                         },
-                        onClickLink = {
+                        onLinkClicked = {
                             onFindPasswordClicked()
                         },
                         isError = isPasswordErrorStatus.value,
@@ -201,7 +201,7 @@ fun LoginScreen(
                             .fillMaxWidth()
                             .height(52.dp),
                         state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
-                        onClick = {
+                        onClicked = {
                             setLoginData(emailState.value, passwordState.value)
                             onLoginClicked()
                         }
