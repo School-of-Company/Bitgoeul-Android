@@ -69,7 +69,7 @@ internal fun LoginRoute(
     )
 }
 
-fun observeLoginEvent(
+private fun observeLoginEvent(
     viewModel: AuthViewModel,
     lifecycleOwner: LifecycleOwner,
     onSuccess: () -> Unit,
@@ -95,7 +95,7 @@ fun observeLoginEvent(
 
 
 @Composable
-fun LoginScreen(
+internal fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
     onFindPasswordClick: () -> Unit,
