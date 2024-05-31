@@ -45,7 +45,7 @@ import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
 
 @Composable
-fun LectureDetailRoute(
+internal fun LectureDetailRoute(
     onBackClicked: () -> Unit,
     onLectureTakingStudentListScreenClick: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
@@ -80,7 +80,7 @@ fun LectureDetailRoute(
     )
 }
 
-suspend fun getLectureDetailData(
+private suspend fun getLectureDetailData(
     viewModel: LectureViewModel,
     onSuccess: (data: DetailLectureResponse) -> Unit,
 ) {
@@ -96,7 +96,7 @@ suspend fun getLectureDetailData(
 }
 
 @Composable
-fun LectureDetailScreen(
+internal fun LectureDetailScreen(
     role: String,
     data: DetailLectureResponse,
     modifier: Modifier = Modifier,

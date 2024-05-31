@@ -26,7 +26,7 @@ import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun LectureFilterDialog(
+internal fun LectureFilterDialog(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
     onCloseButtonClick: () -> Unit,

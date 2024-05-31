@@ -145,7 +145,7 @@ internal fun LectureDetailSettingRoute(
 }
 
 
-suspend fun getLineSearchData(
+private suspend fun getLineSearchData(
     viewModel: LectureViewModel,
     onLineSuccess: (data: SearchLineResponse) -> Unit,
 ) {
@@ -160,7 +160,7 @@ suspend fun getLineSearchData(
     }
 }
 
-suspend fun getProfessorSearchData(
+private suspend fun getProfessorSearchData(
     viewModel: LectureViewModel,
     onSearchProfessorSuccess: (data: SearchProfessorResponse) -> Unit,
 ) {
@@ -175,7 +175,7 @@ suspend fun getProfessorSearchData(
     }
 }
 
-suspend fun getDepartmentSearchData(
+private suspend fun getDepartmentSearchData(
     viewModel: LectureViewModel,
     onDepartmentSuccess: (data: SearchDepartmentResponse) -> Unit,
 ) {
@@ -206,7 +206,7 @@ suspend fun getDivisionSearchData(
 }
 
 @Composable
-fun LectureDetailSettingScreen(
+internal fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,

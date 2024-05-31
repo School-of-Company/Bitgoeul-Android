@@ -19,7 +19,7 @@ import com.msg.model.remote.response.lecture.Students
 import java.util.UUID
 
 @Composable
-fun LectureList(
+internal fun LectureList(
     modifier: Modifier = Modifier,
     data: List<ContentArray>?,
     onClick: (UUID) -> Unit,
@@ -58,7 +58,7 @@ fun LectureList(
 }
 
 @Composable
-fun LectureTakingStudentList(
+internal fun LectureTakingStudentList(
     modifier: Modifier = Modifier,
     data: List<Students>?,
     onChangeCompleteState: (isComplete: Boolean, studentId: UUID) -> Unit,

@@ -40,7 +40,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LectureDetailSettingSearchBottomSheet(
+internal fun LectureDetailSettingSearchBottomSheet(
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
     searchDepartmentData: SearchDepartmentResponse,
@@ -143,7 +143,7 @@ fun LectureDetailSettingSearchBottomSheet(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LectureDetailSettingLectureDatesBottomSheet(
+internal fun LectureDetailSettingLectureDatesBottomSheet(
     modifier: Modifier = Modifier,
     onQuit: (completeDates: String, startTime: String, endTime: String) -> Unit,
 ) {
@@ -247,7 +247,7 @@ fun LectureDetailSettingLectureDatesBottomSheet(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LectureExcelDownloadBottomSheet(
+internal fun LectureExcelDownloadBottomSheet(
     isVisible: Boolean,
     modifier: Modifier = Modifier,
     onDownloadButtonClick: () -> Unit,

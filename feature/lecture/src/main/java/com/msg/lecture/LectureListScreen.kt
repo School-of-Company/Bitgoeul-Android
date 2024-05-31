@@ -39,7 +39,7 @@ import com.msg.model.remote.response.lecture.Lectures
 import java.util.UUID
 
 @Composable
-fun LectureListRoute(
+internal fun LectureListRoute(
     onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
@@ -84,7 +84,7 @@ fun LectureListRoute(
     )
 }
 
-suspend fun getLectureList(
+private suspend fun getLectureList(
     viewModel: LectureViewModel,
     onSuccess: (data: LectureListResponse) -> Unit,
 ) {
@@ -101,7 +101,7 @@ suspend fun getLectureList(
 
 
 @Composable
-fun LectureListScreen(
+internal fun LectureListScreen(
     modifier: Modifier = Modifier,
     data: LectureListResponse? = null,
     onOpenClicked: () -> Unit,

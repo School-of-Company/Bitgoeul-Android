@@ -22,7 +22,7 @@ import com.msg.model.remote.response.lecture.SearchProfessorResponse
 import java.util.UUID
 
 @Composable
-fun LectureDepartmentList(
+internal fun LectureDepartmentList(
     data: SearchDepartmentResponse,
     modifier: Modifier = Modifier,
     onClick: (String) -> Unit,
@@ -65,7 +65,7 @@ fun LectureDepartmentList(
 }
 
 @Composable
-fun LectureLineList(
+internal fun LectureLineList(
     data: SearchLineResponse,
     keyword: String,
     modifier: Modifier = Modifier,
@@ -115,7 +115,7 @@ fun LectureLineList(
 }
 
 @Composable
-fun LectureProfessorList(
+internal fun LectureProfessorList(
     data: SearchProfessorResponse,
     keyword: String,
     modifier: Modifier = Modifier,
@@ -165,7 +165,7 @@ fun LectureProfessorList(
 }
 
 @Composable
-fun LectureDivisionList(
+internal fun LectureDivisionList(
     data: SearchDivisionResponse,
     modifier: Modifier = Modifier,
     onClick: (String) -> Unit,
