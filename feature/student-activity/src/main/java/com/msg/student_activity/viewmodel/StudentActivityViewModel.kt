@@ -11,16 +11,16 @@ import com.msg.domain.activity.AddStudentActivityInfoUseCase
 import com.msg.domain.activity.ApproveStudentActivityInfoUseCase
 import com.msg.domain.activity.DeleteStudentActivityInfoUseCase
 import com.msg.domain.activity.EditStudentActivityInfoUseCase
-import com.msg.domain.activity.InquiryDetailStudentActivityInfoUseCase
-import com.msg.domain.activity.InquiryEntireStudentActivityInfoListUseCase
-import com.msg.domain.activity.InquiryMyStudentActivityInfoListUseCase
-import com.msg.domain.activity.InquiryStudentActivityInfoListUseCase
+import com.msg.domain.activity.GetDetailStudentActivityInfoUseCase
+import com.msg.domain.activity.GetEntireStudentActivityInfoListUseCase
+import com.msg.domain.activity.GetMyStudentActivityInfoListUseCase
+import com.msg.domain.activity.GetStudentActivityInfoListUseCase
 import com.msg.domain.activity.RejectStudentActivityInfoUseCase
 import com.msg.model.remote.enumdatatype.ApproveStatus
-import com.msg.model.remote.model.activity.InquiryStudentActivityModel
+import com.msg.model.remote.model.activity.GetStudentActivityModel
 import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
+import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
+import com.msg.model.remote.response.activity.GetStudentActivityListResponse
 import com.msg.student_activity.util.Event
 import com.msg.student_activity.util.errorHandling
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,10 +37,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StudentActivityViewModel @Inject constructor(
-    private val inquiryMyStudentActivityInfoListUseCase: InquiryMyStudentActivityInfoListUseCase,
-    private val inquiryStudentActivityInfoListUseCase: InquiryStudentActivityInfoListUseCase,
-    private val inquiryEntireStudentActivityInfoListUseCase: InquiryEntireStudentActivityInfoListUseCase,
-    private val inquiryDetailStudentActivityInfoUseCase: InquiryDetailStudentActivityInfoUseCase,
+    private val getMyStudentActivityInfoListUseCase: GetMyStudentActivityInfoListUseCase,
+    private val getStudentActivityInfoListUseCase: GetStudentActivityInfoListUseCase,
+    private val getEntireStudentActivityInfoListUseCase: GetEntireStudentActivityInfoListUseCase,
+    private val getDetailStudentActivityInfoUseCase: GetDetailStudentActivityInfoUseCase,
     private val addStudentActivityInfoUseCase: AddStudentActivityInfoUseCase,
     private val editStudentActivityInfoUseCase: EditStudentActivityInfoUseCase,
     private val approveStudentActivityInfoUseCase: ApproveStudentActivityInfoUseCase,
@@ -51,10 +51,10 @@ class StudentActivityViewModel @Inject constructor(
 
     val role = getRole().toString()
 
-    private val _getStudentActivityListResponse = MutableStateFlow<Event<InquiryStudentActivityListResponse>>(Event.Loading)
+    private val _getStudentActivityListResponse = MutableStateFlow<Event<GetStudentActivityListResponse>>(Event.Loading)
     val getStudentActivityListResponse = _getStudentActivityListResponse.asStateFlow()
 
-    private val _getDetailStudentActivityResponse = MutableStateFlow<Event<InquiryDetailStudentActivityInfoResponse>>(Event.Loading)
+    private val _getDetailStudentActivityResponse = MutableStateFlow<Event<GetDetailStudentActivityInfoResponse>>(Event.Loading)
     val getDetailStudentActivityResponse = _getDetailStudentActivityResponse.asStateFlow()
 
     private val _addStudentActivityResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -69,11 +69,11 @@ class StudentActivityViewModel @Inject constructor(
     private val _deleteStudentActivityResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val deleteStudentActivityResponse = _deleteStudentActivityResponse.asStateFlow()
 
-    var studentActivityList = mutableStateListOf<InquiryStudentActivityModel>()
+    var studentActivityList = mutableStateListOf<GetStudentActivityModel>()
         private set
 
     var studentDetailActivityData = mutableStateOf(
-        InquiryDetailStudentActivityInfoResponse(
+        GetDetailStudentActivityInfoResponse(
             id = UUID.randomUUID(),
             title = "",
             content = "",
@@ -103,13 +103,12 @@ class StudentActivityViewModel @Inject constructor(
     var detailState = mutableStateOf(false)
         private set
 
-    fun inquiryStudentActivityList(role: Authority, page: Int, size: Int, sort: String, id: UUID? = null) = viewModelScope.launch {
+    fun getStudentActivityList(role: Authority, page: Int, size: Int, sort: String, id: UUID? = null) = viewModelScope.launch {
         when(role) {
             Authority.ROLE_STUDENT -> {
-                inquiryMyStudentActivityInfoListUseCase(
+                getMyStudentActivityInfoListUseCase(
                     page = page,
                     size = size,
-                    sort = sort
                 ).onSuccess {
                     it.catch { remoteError ->
                         _getStudentActivityListResponse.value = remoteError.errorHandling()
@@ -122,10 +121,9 @@ class StudentActivityViewModel @Inject constructor(
             }
             Authority.ROLE_TEACHER -> {
                 if (id != null) {
-                    inquiryStudentActivityInfoListUseCase(
+                    getStudentActivityInfoListUseCase(
                         page = page,
                         size = size,
-                        sort = sort,
                         id = id
                     ).onSuccess {
                         it.catch { remoteError ->
@@ -139,10 +137,9 @@ class StudentActivityViewModel @Inject constructor(
                 }
             }
             Authority.ROLE_ADMIN -> {
-                inquiryEntireStudentActivityInfoListUseCase(
+                getEntireStudentActivityInfoListUseCase(
                     page = page,
                     size = size,
-                    sort = sort
                 ).onSuccess {
                     it.catch { remoteError ->
                         _getStudentActivityListResponse.value = remoteError.errorHandling()
@@ -158,10 +155,10 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    fun inquiryDetailStudentActivity(
+    fun getDetailStudentActivity(
         id: UUID
     ) = viewModelScope.launch {
-        inquiryDetailStudentActivityInfoUseCase(id = id).onSuccess {
+        getDetailStudentActivityInfoUseCase(id = id).onSuccess {
             it.catch { remoteError ->
                 _getDetailStudentActivityResponse.value = remoteError.errorHandling()
             }.collect { response ->

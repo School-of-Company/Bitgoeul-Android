@@ -8,12 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import Authority
-import com.msg.model.remote.model.activity.InquiryStudentActivityModel
+import com.msg.model.remote.model.activity.GetStudentActivityModel
 import java.util.UUID
 
 @Composable
 fun StudentActivityList(
-    data: List<InquiryStudentActivityModel>,
+    data: List<GetStudentActivityModel>,
     onClick: (UUID) -> Unit,
     role: Authority
 ) {

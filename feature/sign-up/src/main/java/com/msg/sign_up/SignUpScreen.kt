@@ -7,12 +7,15 @@ import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsEndWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
@@ -23,6 +26,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +35,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.design_system.component.button.BitgoeulButton
+import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.PasswordTextField
@@ -212,8 +218,10 @@ fun SignUpScreen(
 
     val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,24}$")
 
+    val isApplicationButtonEnabled = remember { mutableStateOf(false) }
+
     BitgoeulAndroidTheme { colors, typography ->
-        Surface(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(colors.WHITE)
@@ -244,7 +252,8 @@ fun SignUpScreen(
                             }
                             Text(
                                 text = "만나서 반가워요!",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.BLACK
                             )
                             Text(
                                 text = "어디서 오셨나요?",
@@ -261,7 +270,8 @@ fun SignUpScreen(
                             showJobTextField.value = true
                             Text(
                                 text = "만나서 반가워요!",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.BLACK
                             )
                             Text(
                                 text = "어디서 오셨나요?",
@@ -278,7 +288,8 @@ fun SignUpScreen(
                             showSchoolTextField.value = true
                             Text(
                                 text = "학교 선택",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "재학 중이신 학교를 선택해 주세요!",
@@ -295,7 +306,8 @@ fun SignUpScreen(
                             showClubTextField.value = true
                             Text(
                                 text = "동아리 선택",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "가입하신 동아리를 선택해 주세요!",
@@ -319,7 +331,8 @@ fun SignUpScreen(
                             showNameTextField.value = true
                             Text(
                                 text = "이름 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "이름을 입력해 주세요!",
@@ -336,7 +349,8 @@ fun SignUpScreen(
                             showCollegeTextField.value = true
                             Text(
                                 text = "대학 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "소속되신 대학을 입력해 주세요",
@@ -353,7 +367,8 @@ fun SignUpScreen(
                             showEnterpriseTextField.value = true
                             Text(
                                 text = "기업 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "소속되신 기업을 입력해 주세요!",
@@ -370,7 +385,8 @@ fun SignUpScreen(
                             showGovernmentTextField.value = true
                             Text(
                                 text = "기관입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "어디서 오셨나요?",
@@ -388,7 +404,8 @@ fun SignUpScreen(
                             showEnrollmentTextField.value = true
                             Text(
                                 text = "입학년도 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "입학하신 연도를 입력해 주세요!",
@@ -405,7 +422,8 @@ fun SignUpScreen(
                             showGradeAndNumberTextField.value = true
                             Text(
                                 text = "학번 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "학년, 반, 번호를 입력해 주세요! (ex:1101)",
@@ -422,7 +440,8 @@ fun SignUpScreen(
                             showPositionTextField.value = true
                             Text(
                                 text = "업종 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "소속하신 기관의 업종을 입력해 주세요!",
@@ -439,7 +458,8 @@ fun SignUpScreen(
                             showSectorsTextField.value = true
                             Text(
                                 text = "직책 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "본인의 직책을 입력해 주세요!",
@@ -456,7 +476,8 @@ fun SignUpScreen(
                             showPhoneNumberTextField.value = true
                             Text(
                                 text = "전화번호 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "전화번호를 입력해 주세요!",
@@ -473,7 +494,8 @@ fun SignUpScreen(
                             showEmailTextField.value = true
                             Text(
                                 text = "이메일 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "이메일을 입력해 주세요!",
@@ -486,11 +508,13 @@ fun SignUpScreen(
                             if (isSelectedPassword.value) {
                                 showRePasswordTextField.value = false
                                 rePassword.value = ""
+                                isApplicationButtonEnabled.value = false
                             }
                             showPasswordTextField.value = true
                             Text(
                                 text = "비밀번호 입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "8~24자 이내의 영문 / 숫자, 특수문자 1개 이상",
@@ -503,7 +527,8 @@ fun SignUpScreen(
                             showRePasswordTextField.value = true
                             Text(
                                 text = "비밀번호 재입력",
-                                style = typography.titleLarge
+                                style = typography.titleLarge,
+                                color = colors.G2
                             )
                             Text(
                                 text = "비밀번호를 다시 입력해 주세요!",
@@ -514,22 +539,7 @@ fun SignUpScreen(
 
                         Loading ->
                             if (password.value == rePassword.value) {
-                                onEnterFinished(
-                                    job.value,
-                                    school.value,
-                                    club.value,
-                                    name.value,
-                                    phoneNumber.value,
-                                    college.value,
-                                    enrollment.intValue,
-                                    enterprise.value,
-                                    government.value,
-                                    gradeAndNumber.value,
-                                    email.value,
-                                    password.value,
-                                    position.value,
-                                    sectors.value
-                                )
+                                isApplicationButtonEnabled.value = true
                             }
                     }
                     Spacer(modifier = Modifier.height(32.dp))
@@ -1111,6 +1121,33 @@ fun SignUpScreen(
                     }
                 }
             }
+            BitgoeulButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 28.dp, end = 28.dp, bottom = 16.dp)
+                    .wrapContentHeight()
+                    .align(Alignment.BottomCenter),
+                text = "회원가입 신청하기",
+                state = if (isApplicationButtonEnabled.value) ButtonState.Enable else ButtonState.Disable,
+                onClick = {
+                    onEnterFinished(
+                        job.value,
+                        school.value,
+                        club.value,
+                        name.value,
+                        phoneNumber.value,
+                        college.value,
+                        enrollment.intValue,
+                        enterprise.value,
+                        government.value,
+                        gradeAndNumber.value,
+                        email.value,
+                        password.value,
+                        position.value,
+                        sectors.value
+                    )
+                }
+            )
         }
     }
 }

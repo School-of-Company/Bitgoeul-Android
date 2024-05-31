@@ -1,8 +1,8 @@
 package com.msg.network.datasource.activity
 
 import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
+import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
+import com.msg.model.remote.response.activity.GetStudentActivityListResponse
 import com.msg.network.api.ActivityAPI
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
@@ -55,47 +55,44 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun inquiryMyStudentActivityInfoList(
+    override suspend fun getMyStudentActivityInfoList(
         page: Int,
         size: Int,
-        sort: String
-    ): Flow<InquiryStudentActivityListResponse> = flow {
+    ): Flow<GetStudentActivityListResponse> = flow {
         emit(
-            BitgoeulApiHandler<InquiryStudentActivityListResponse>()
-                .httpRequest { activityAPI.inquiryMyStudentActivityInfoList(page = page, size = size, sort = sort) }
+            BitgoeulApiHandler<GetStudentActivityListResponse>()
+                .httpRequest { activityAPI.getMyStudentActivityInfoList(page = page, size = size) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun inquiryStudentActivityInfoList(
+    override suspend fun getStudentActivityInfoList(
         page: Int,
         size: Int,
-        sort: String,
         id: UUID
-    ): Flow<InquiryStudentActivityListResponse> = flow {
+    ): Flow<GetStudentActivityListResponse> = flow {
         emit(
-            BitgoeulApiHandler<InquiryStudentActivityListResponse>()
-                .httpRequest { activityAPI.inquiryStudentActivityInfoList(page = page, size = size, sort = sort, id = id) }
+            BitgoeulApiHandler<GetStudentActivityListResponse>()
+                .httpRequest { activityAPI.getStudentActivityInfoList(page = page, size = size, id = id) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun inquiryEntireStudentActivityInfoList(
+    override suspend fun getEntireStudentActivityInfoList(
         page: Int,
         size: Int,
-        sort: String
-    ): Flow<InquiryStudentActivityListResponse> = flow {
+    ): Flow<GetStudentActivityListResponse> = flow {
         emit(
-            BitgoeulApiHandler<InquiryStudentActivityListResponse>()
-                .httpRequest { activityAPI.inquiryEntireStudentActivityInfoList(page = page, size = size, sort = sort) }
+            BitgoeulApiHandler<GetStudentActivityListResponse>()
+                .httpRequest { activityAPI.getEntireStudentActivityInfoList(page = page, size = size) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun inquiryDetailStudentActivityInfo(id: UUID): Flow<InquiryDetailStudentActivityInfoResponse> = flow {
+    override suspend fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse> = flow {
         emit(
-            BitgoeulApiHandler<InquiryDetailStudentActivityInfoResponse>()
-                .httpRequest { activityAPI.inquiryDetailStudentActivityInfo(id = id) }
+            BitgoeulApiHandler<GetDetailStudentActivityInfoResponse>()
+                .httpRequest { activityAPI.getDetailStudentActivityInfo(id = id) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)

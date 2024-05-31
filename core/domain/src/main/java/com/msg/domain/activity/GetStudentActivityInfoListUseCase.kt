@@ -4,14 +4,13 @@ import com.msg.data.repository.activity.ActivityRepository
 import java.util.UUID
 import javax.inject.Inject
 
-class InquiryStudentActivityInfoListUseCase @Inject constructor(
+class GetStudentActivityInfoListUseCase @Inject constructor(
     private val activityRepository: ActivityRepository
 ) {
-    suspend operator fun invoke(page: Int, size: Int, sort: String, id: UUID) = runCatching {
-        activityRepository.inquiryStudentActivityInfoList(
+    suspend operator fun invoke(page: Int, size: Int, id: UUID) = runCatching {
+        activityRepository.getStudentActivityInfoList(
             page = page,
             size = size,
-            sort = sort,
             id = id
         )
     }
