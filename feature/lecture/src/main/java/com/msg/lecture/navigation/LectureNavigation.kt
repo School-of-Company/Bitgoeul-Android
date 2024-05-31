@@ -58,7 +58,7 @@ fun NavGraphBuilder.lectureDetailScreen(
     composable(route = lectureDetailRoute) {
         LectureDetailRoute(
             onBackClicked = onBackClicked,
-            onLectureTakingStudentListScreenClick = onLectureTakingStudentListScreenClicked,
+            onLectureTakingStudentListScreenClicked = onLectureTakingStudentListScreenClicked,
         )
     }
 }

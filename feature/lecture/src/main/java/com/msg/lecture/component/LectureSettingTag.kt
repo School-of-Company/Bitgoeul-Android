@@ -20,7 +20,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 @Composable
 fun LectureSettingTag(
     isSelected: Boolean,
-    onClick: (() -> Unit)?,
+    onClicked: (() -> Unit)?,
     modifier: Modifier = Modifier,
     text: String,
 ) {
@@ -42,8 +42,8 @@ fun LectureSettingTag(
                 interactionSource = interactionSource.value,
                 indication = rememberRipple(bounded = false)
             ) {
-                if (onClick != null) {
-                    onClick()
+                if (onClicked != null) {
+                    onClicked()
                 }
             }) {
             Text(

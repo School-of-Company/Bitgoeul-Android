@@ -18,7 +18,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun Selector(
     value: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClicked: () -> Unit
 ) {
     BitgoeulAndroidTheme { _, typography ->
         Box(
@@ -29,7 +29,7 @@ fun Selector(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
-                    onClick()
+                    onClicked()
                 }
         ) {
             Text(
@@ -40,8 +40,8 @@ fun Selector(
             SelectedIndicator(
                 isSelected = isSelected,
                 modifier = Modifier.align(Alignment.CenterEnd),
-                onClick = {
-                    onClick()
+                onClicked = {
+                    onClicked()
                 }
             )
         }

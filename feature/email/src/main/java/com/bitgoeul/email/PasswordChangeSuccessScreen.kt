@@ -74,7 +74,7 @@ fun PasswordChangeSuccessScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     state = ButtonState.Enable,
-                    onClick = {
+                    onClicked = {
                         onBackClicked()
                     }
                 )

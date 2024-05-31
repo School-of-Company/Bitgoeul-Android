@@ -55,7 +55,7 @@ fun LectureDetailSettingInputTextField(
                 onValueChange = { inputString ->
                     onItemChange(inputString)
                 },
-                onClickButton = {},
+                onButtonClicked = {},
             )
         }
     }
@@ -70,10 +70,10 @@ fun LectureDetailSettingSearchTextField(
     onSearchDepartmentClicked: (String) -> Unit = {},
     onSearchProfessorClicked: (String) -> Unit = {},
     onSearchDivisionClicked: (String) -> Unit = {},
-    onProfessorItemClick: (userId: UUID, professorName: String) -> Unit = { _, _ -> },
-    onDepartmentItemClick: (String) -> Unit = {},
-    onLineItemClick: (String) -> Unit = {},
-    onDivisionItemClick: (String) -> Unit = {},
+    onProfessorItemClicked: (userId: UUID, professorName: String) -> Unit = { _, _ -> },
+    onDepartmentItemClicked: (String) -> Unit = {},
+    onLineItemClicked: (String) -> Unit = {},
+    onDivisionItemClicked: (String) -> Unit = {},
     isClickedPickerType: String,
     searchProfessorData: SearchProfessorResponse,
     searchLineData: SearchLineResponse,
@@ -114,7 +114,7 @@ fun LectureDetailSettingSearchTextField(
                     "구분" -> stringResource(id = R.string.division_placeholder)
                     else -> ""
                 },
-                onSearchButtonClick = { keyword, division ->
+                onSearchButtonClicked = { keyword, division ->
                     when (isClickedPickerType) {
                         "강의 계열" -> {
                             onSearchLineClicked(keyword, division)
@@ -136,18 +136,18 @@ fun LectureDetailSettingSearchTextField(
                     }
                 },
                 searchAPIType = isClickedPickerType,
-                onProfessorListClick = { selectedProfessorUUID, selectedProfessorName ->
-                    onProfessorItemClick(selectedProfessorUUID, selectedProfessorName)
+                onProfessorListClicked = { selectedProfessorUUID, selectedProfessorName ->
+                    onProfessorItemClicked(selectedProfessorUUID, selectedProfessorName)
                 },
                 division = division,
-                onDepartmentListClick = { selectedDepartmentData ->
-                    onDepartmentItemClick(selectedDepartmentData)
+                onDepartmentListClicked = { selectedDepartmentData ->
+                    onDepartmentItemClicked(selectedDepartmentData)
                 },
-                onLineListClick = { selectedLineData ->
-                    onLineItemClick(selectedLineData)
+                onLineListClicked = { selectedLineData ->
+                    onLineItemClicked(selectedLineData)
                 },
-                onDivisionListClick = { selectedDivisionData ->
-                    onDivisionItemClick(selectedDivisionData)
+                onDivisionListClicked = { selectedDivisionData ->
+                    onDivisionItemClicked(selectedDivisionData)
                 },
                 onQuit = {
                     isFocused.value = false

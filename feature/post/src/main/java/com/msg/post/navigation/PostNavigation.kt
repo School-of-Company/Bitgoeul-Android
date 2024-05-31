@@ -62,7 +62,7 @@ fun NavController.navigateToPostDetailSettingPage(navOptions: NavOptions? = null
 fun NavGraphBuilder.postDetailSettingScreen(onCloseClicked: () -> Unit) {
     composable(route = postDetailSettingRoute) {
         PostDetailSettingScreenRoute(
-            onCloseClick = onCloseClicked
+            onCloseClicked = onCloseClicked
         )
     }
 }

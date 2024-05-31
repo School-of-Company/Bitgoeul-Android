@@ -26,7 +26,7 @@ fun BitgoeulButton(
     modifier: Modifier = Modifier,
     text: String,
     state: ButtonState = ButtonState.Enable,
-    onClick: () -> Unit,
+    onClicked: () -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
 
@@ -82,7 +82,7 @@ fun BitgoeulButton(
                 disabledContainerColor = colors.G1,
                 disabledContentColor = colors.G2,
             ),
-            onClick = onClick,
+            onClick = onClicked,
             contentPadding = PaddingValues(vertical = 12.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
@@ -98,13 +98,13 @@ fun BitgoeulButton(
 fun DetailSettingButton(
     modifier: Modifier = Modifier,
     type: String,
-    onClick: () -> Unit
+    onClicked: () -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         OutlinedButton(
             border = BorderStroke(1.dp, colors.P5),
             modifier = modifier,
-            onClick = onClick,
+            onClick = onClicked,
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = colors.WHITE,
                 contentColor = colors.P5,
@@ -130,7 +130,7 @@ fun NegativeBitgoeulButton(
     modifier: Modifier = Modifier,
     text: String,
     state: ButtonState = ButtonState.Enable,
-    onClick: () -> Unit
+    onClicked: () -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
 
@@ -153,7 +153,7 @@ fun NegativeBitgoeulButton(
                 disabledContainerColor = colors.G1,
                 disabledContentColor = colors.G2,
             ),
-            onClick = onClick,
+            onClick = onClicked,
             contentPadding = PaddingValues(vertical = 12.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
@@ -168,13 +168,13 @@ fun NegativeBitgoeulButton(
 @Composable
 fun ApplicationDoneButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onClicked: () -> Unit,
     text: String,
 ) {
     BitgoeulAndroidTheme { colors, type ->
         OutlinedButton(
             modifier = modifier,
-            onClick = onClick,
+            onClick = onClicked,
             border = BorderStroke(1.dp, color = colors.E5),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = colors.WHITE,
@@ -222,7 +222,7 @@ fun BitgoeulButtonPre() {
             modifier = Modifier
                 .width(319.dp)
                 .height(52.dp),
-            onClick = {},
+            onClicked = {},
             type = "강의"
         )
 
@@ -230,7 +230,7 @@ fun BitgoeulButtonPre() {
             modifier = Modifier
                 .width(319.dp)
                 .height(52.dp),
-            onClick = {},
+            onClicked = {},
             text = "수강 신청 취소"
         )
     }

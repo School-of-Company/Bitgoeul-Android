@@ -105,11 +105,11 @@ fun keyboardAsState(): State<Keyboard> {
 @Composable
 fun SignUpRoute(
     viewModel: SignUpViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
     onEnterFinished: () -> Unit
 ) {
     SignUpScreen(
-        onBackClick = onBackClick,
+        onBackClicked = onBackClicked,
         onEnterFinished = { job: String, school: String, club: String, name: String, phoneNumber: String, college: String, enrollment: Int, enterprise: String, government: String, gradeAndNumber: String, email: String, password: String, position: String, sectors: String ->
             viewModel.job.value = job
             viewModel.school.value = school
@@ -133,7 +133,7 @@ fun SignUpRoute(
 
 @Composable
 fun SignUpScreen(
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
     onEnterFinished: (
         job: String,
         school: String,
@@ -235,7 +235,7 @@ fun SignUpScreen(
                 GoBackTopBar(
                     icon = { GoBackIcon() },
                     text = "돌아가기",
-                    onClick = { onBackClick() }
+                    onClicked = { onBackClicked() }
                 )
                 Column(
                     modifier = Modifier
@@ -566,11 +566,11 @@ fun SignUpScreen(
                                 onValueChange = {
                                     rePassword.value = it
                                 },
-                                onClickLink = {},
-                                isError = password.value != rePassword.value,
+                                onLinkClicked = {},
+                                isError = password.value == rePassword.value,
                                 isLinked = false,
                                 isDisabled = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != RePassword) signUpState.value =
                                         RePassword
                                     isClicked.value = true
@@ -595,11 +595,11 @@ fun SignUpScreen(
                                 onValueChange = {
                                     password.value = it
                                 },
-                                onClickLink = {},
+                                onLinkClicked = {},
                                 isError = !passwordRegex.matches(password.value),
                                 isLinked = false,
                                 isDisabled = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Password) signUpState.value = Password
                                     showRePasswordTextField.value = false
                                     isClicked.value = true
@@ -628,9 +628,9 @@ fun SignUpScreen(
                                 onValueChange = {
                                     email.value = it
                                 },
-                                onClickButton = { email.value = "" },
+                                onButtonClicked = { email.value = "" },
                                 isReadOnly = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Email) signUpState.value = Email
                                     showPasswordTextField.value = false
                                     isClicked.value = true
@@ -659,10 +659,10 @@ fun SignUpScreen(
                                 onValueChange = {
                                     phoneNumber.value = it
                                 },
-                                onClickButton = { phoneNumber.value = "" },
+                                onButtonClicked = { phoneNumber.value = "" },
                                 isReadOnly = false,
                                 isNumberOnly = true,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != PhoneNumber) signUpState.value =
                                         PhoneNumber
                                     showEmailTextField.value = false
@@ -692,10 +692,10 @@ fun SignUpScreen(
                                 onValueChange = {
                                     gradeAndNumber.value = it
                                 },
-                                onClickButton = { gradeAndNumber.value = "" },
+                                onButtonClicked = { gradeAndNumber.value = "" },
                                 isReadOnly = false,
                                 isNumberOnly = true,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != GradeAndNumber) signUpState.value =
                                         GradeAndNumber
                                     isActivatedBeforePhoneNumber.value = true
@@ -726,9 +726,9 @@ fun SignUpScreen(
                                 onValueChange = {
                                     position.value = it
                                 },
-                                onClickButton = { position.value = "" },
+                                onButtonClicked = { position.value = "" },
                                 isReadOnly = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Sectors) signUpState.value =
                                         Sectors
                                     isActivatedBeforePhoneNumber.value = true
@@ -759,9 +759,9 @@ fun SignUpScreen(
                                 onValueChange = {
                                     sectors.value = it
                                 },
-                                onClickButton = { sectors.value = "" },
+                                onButtonClicked = { sectors.value = "" },
                                 isReadOnly = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Position) signUpState.value =
                                         Position
                                     showSectorsTextField.value = false
@@ -791,9 +791,9 @@ fun SignUpScreen(
                                 onValueChange = {
                                     government.value = it
                                 },
-                                onClickButton = { government.value = "" },
+                                onButtonClicked = { government.value = "" },
                                 isReadOnly = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Government) signUpState.value =
                                         Government
                                     isActivatedBeforePhoneNumber.value = true
@@ -824,9 +824,9 @@ fun SignUpScreen(
                                 onValueChange = {
                                     college.value = it
                                 },
-                                onClickButton = { college.value = "" },
+                                onButtonClicked = { college.value = "" },
                                 isReadOnly = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != College) signUpState.value = College
                                     isActivatedBeforePhoneNumber.value = true
                                     showPhoneNumberTextField.value = false
@@ -856,9 +856,9 @@ fun SignUpScreen(
                                 onValueChange = {
                                     enterprise.value = it
                                 },
-                                onClickButton = { enterprise.value = "" },
+                                onButtonClicked = { enterprise.value = "" },
                                 isReadOnly = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Enterprise) signUpState.value =
                                         Enterprise
                                     isActivatedBeforePhoneNumber.value = true
@@ -889,10 +889,10 @@ fun SignUpScreen(
                                 onValueChange = {
                                     enrollment.value = it.toInt()
                                 },
-                                onClickButton = { enrollment.value = 0 },
+                                onButtonClicked = { enrollment.value = 0 },
                                 isReadOnly = false,
                                 isNumberOnly = true,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Enrollment) signUpState.value =
                                         Enrollment
                                     showGradeAndNumberTextField.value = false
@@ -926,9 +926,9 @@ fun SignUpScreen(
                                         job.value
                                     )
                                 },
-                                onClickButton = { name.value = "" },
+                                onButtonClicked = { name.value = "" },
                                 isReadOnly = false,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Name) signUpState.value = Name
                                     if (job.value == "취업동아리 선생님") isActivatedBeforePhoneNumber.value =
                                         true
@@ -953,9 +953,9 @@ fun SignUpScreen(
                                 isReverseTrailingIcon = true,
                                 errorText = "",
                                 onValueChange = {},
-                                onClickButton = { club.value = "" },
+                                onButtonClicked = { club.value = "" },
                                 isReadOnly = true,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Club) signUpState.value = Club
                                     showSignUpBottomSheet.value = true
                                     showNameTextField.value = false
@@ -974,9 +974,9 @@ fun SignUpScreen(
                                 isReverseTrailingIcon = true,
                                 errorText = "",
                                 onValueChange = {},
-                                onClickButton = { school.value = "" },
+                                onButtonClicked = { school.value = "" },
                                 isReadOnly = true,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != School) signUpState.value = School
                                     showSignUpBottomSheet.value = true
                                     showClubTextField.value = false
@@ -995,9 +995,9 @@ fun SignUpScreen(
                                 isReverseTrailingIcon = true,
                                 errorText = "",
                                 onValueChange = {},
-                                onClickButton = { job.value = "" },
+                                onButtonClicked = { job.value = "" },
                                 isReadOnly = true,
-                                onClick = {
+                                onClicked = {
                                     if (signUpState.value != Job) signUpState.value = Job
                                     showSignUpBottomSheet.value = true
                                     showSchoolTextField.value = false
@@ -1013,10 +1013,10 @@ fun SignUpScreen(
                             isDisabled = isLoading.value,
                             errorText = "",
                             onValueChange = {},
-                            onClickButton = { belong.value = "" },
+                            onButtonClicked = { belong.value = "" },
                             isReadOnly = true,
                             isReverseTrailingIcon = true,
-                            onClick = {
+                            onClicked = {
                                 if (signUpState.value != Belong) signUpState.value = Belong
                                 showSignUpBottomSheet.value = true
                             },
@@ -1129,7 +1129,7 @@ fun SignUpScreen(
                     .align(Alignment.BottomCenter),
                 text = "회원가입 신청하기",
                 state = if (isApplicationButtonEnabled.value) ButtonState.Enable else ButtonState.Disable,
-                onClick = {
+                onClicked = {
                     onEnterFinished(
                         job.value,
                         school.value,
@@ -1195,7 +1195,7 @@ fun continueToNextField(
 @Composable
 fun SignUpScreenPre() {
     SignUpScreen(
-        onBackClick = {},
+        onBackClicked = {},
         onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _, _, _-> }
     )
 }

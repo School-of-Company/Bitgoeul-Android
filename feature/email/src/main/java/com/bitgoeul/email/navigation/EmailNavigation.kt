@@ -47,12 +47,12 @@ fun NavGraphBuilder.inputEmailScreen(
 
 fun NavGraphBuilder.emailSendInformScreen(
     onBackClicked: () -> Unit,
-    onMoveNewPasswordClick: () -> Unit,
+    onMoveNewPasswordClicked: () -> Unit,
 ) {
     composable(route = emailSendInformRoute) {
         EmailSendInformRoute(
             onBackClicked = onBackClicked,
-            onMoveNewPasswordClick = onMoveNewPasswordClick,
+            onMoveNewPasswordClicked = onMoveNewPasswordClicked,
         )
     }
 }

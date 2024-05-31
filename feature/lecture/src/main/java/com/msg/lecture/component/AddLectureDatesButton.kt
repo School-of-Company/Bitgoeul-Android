@@ -18,7 +18,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 @Composable
 fun AddLectureDatesButton(
     modifier: Modifier = Modifier,
-    onAddClick: () -> Unit
+    onAddClicked: () -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Row(
@@ -29,9 +29,9 @@ fun AddLectureDatesButton(
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(vertical = 12.dp, horizontal = 20.dp)
-                .clickable(
-                    onClick = { onAddClick() }
-                ),
+                .clickable {
+                    onAddClicked()
+                },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(

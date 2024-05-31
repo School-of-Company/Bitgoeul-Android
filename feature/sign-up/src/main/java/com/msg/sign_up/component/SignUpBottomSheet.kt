@@ -33,7 +33,7 @@ fun SignUpBottomSheet(
                     onValueChange = {
                         onValueChanged(it)
                     },
-                    onClickButton = onClickButton,
+                    onButtonClicked = onClickButton,
                     errorText = "",
                 )
             }

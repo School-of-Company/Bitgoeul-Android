@@ -176,13 +176,13 @@ fun LectureListScreen(
                 if (data != null) {
                     LectureList(
                         data = data.lectures.content,
-                        onClick = onItemClicked,
+                        onClicked = onItemClicked,
                     )
                 }
 
                 LectureFilterDialog(
                     isVisible = isFilterDialogVisible.value,
-                    onCloseButtonClick = {
+                    onCloseButtonClicked = {
                         isFilterDialogVisible.value = false
                     }
                 ) { lectureType ->

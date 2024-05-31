@@ -25,7 +25,7 @@ fun LectureDetailSettingInfoCard(
     searchLineData: String?,
     division: String,
     keyword: String,
-    onClick: (UUID, String, String) -> Unit
+    onClicked: (UUID, String, String) -> Unit
 ) {
     val isSelected = remember { mutableStateOf(false) }
 
@@ -80,10 +80,10 @@ fun LectureDetailSettingInfoCard(
             SelectedIndicator(
                 modifier = modifier.align(Alignment.CenterEnd),
                 isSelected = isSelected.value,
-                onClick = {
+                onClicked = {
                     isSelected.value = true
                     if (searchProfessorData != null) {
-                        onClick(searchProfessorData.id, searchLineData.toString(), searchProfessorData.name)
+                        onClicked(searchProfessorData.id, searchLineData.toString(), searchProfessorData.name)
                     }
                 }
             )
