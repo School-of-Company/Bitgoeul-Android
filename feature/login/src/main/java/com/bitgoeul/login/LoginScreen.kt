@@ -61,7 +61,10 @@ internal fun LoginRoute(
             coroutineScope.launch {
                 getLoginData(
                     viewModel = viewModel,
-                    onSuccess = onLoginClicked,
+                    onSuccess = {
+                        Toast.makeText(context, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                        onLoginClicked()
+                    },
                     onFailure = {
                         Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
                     }
@@ -83,8 +86,10 @@ private suspend fun getLoginData(
                 onSuccess()
             }
 
-            else -> {
+            is Event.BadRequest -> {
                 onFailure()
+            }
+            else -> {
             }
         }
     }
