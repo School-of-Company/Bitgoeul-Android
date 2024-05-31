@@ -24,14 +24,11 @@ class AuthViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
 ) : ViewModel() {
-    private val _saveTokenRequest = MutableLiveData<Event<Nothing>>()
-    val saveTokenRequest: LiveData<Event<Nothing>> get() = _saveTokenRequest
+    private val _saveTokenRequest = MutableStateFlow<Event<Nothing>>(Event.Loading)
+    val saveTokenRequest = _saveTokenRequest.asStateFlow()
 
-    private val _loginRequest = MutableLiveData<Event<AuthTokenModel>>()
-    val loginRequest: LiveData<Event<AuthTokenModel>> get() = _loginRequest
-
-    private val _logoutRequest = MutableLiveData<Event<Nothing>>()
-    val logoutRequest = MutableLiveData<Event<Nothing>>()
+    private val _loginResponse = MutableStateFlow<Event<AuthTokenModel>>(Event.Loading)
+    val loginResponse = _loginResponse.asStateFlow()
 
     private val _email = mutableStateOf("")
     val email: State<String> = _email
