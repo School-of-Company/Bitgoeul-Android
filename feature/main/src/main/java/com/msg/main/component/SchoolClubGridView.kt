@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun AutoSchoolClubGridView(
+internal fun AutoSchoolClubGridView(
     modifier: Modifier = Modifier,
     school: String,
     rowItems: List<String>,
@@ -55,7 +55,7 @@ fun AutoSchoolClubGridView(
 
 
 @Composable
-fun AutoIndustryGridView(
+internal fun AutoIndustryGridView(
     rowItems: List<String>,
 ) {
     val actualItems = rowItems.getActualList()
@@ -78,7 +78,7 @@ fun AutoIndustryGridView(
 }
 
 @Composable
-fun List<String>.getActualList(): List<List<String>> {
+private fun List<String>.getActualList(): List<List<String>> {
     val configuration = LocalConfiguration.current
     val actualItems: MutableList<MutableList<String>> = mutableListOf(mutableListOf())
 
@@ -100,7 +100,7 @@ fun List<String>.getActualList(): List<List<String>> {
 }
 
 @Composable
-fun String.getClubChipWidth(): Dp {
+private fun String.getClubChipWidth(): Dp {
     val width = remember { mutableStateOf(0.dp) }
     val shouldShowCompose = remember { mutableStateOf(true) }
     val density = LocalDensity.current
