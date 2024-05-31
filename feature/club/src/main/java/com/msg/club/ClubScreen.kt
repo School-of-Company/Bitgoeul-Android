@@ -37,7 +37,7 @@ import com.msg.model.remote.response.club.ClubListResponse
 import com.msg.ui.DevicePreviews
 
 @Composable
-fun ClubScreenRoute(
+internal fun ClubScreenRoute(
     viewModel: ClubViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onItemClicked: () -> Unit
 ) {
@@ -72,7 +72,7 @@ fun ClubScreenRoute(
     )
 }
 
-suspend fun getClubList(
+private suspend fun getClubList(
     viewModel: ClubViewModel,
     onSuccess: (data: List<ClubListResponse>) -> Unit,
     onFailure: () -> Unit
@@ -90,7 +90,7 @@ suspend fun getClubList(
 }
 
 @Composable
-fun ClubScreen(
+internal fun ClubScreen(
     modifier: Modifier = Modifier,
     data: List<ClubListResponse>,
     onSettingClicked: (String) -> Unit,

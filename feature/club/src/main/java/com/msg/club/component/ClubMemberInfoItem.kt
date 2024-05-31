@@ -12,7 +12,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import java.util.UUID
 
 @Composable
-fun ClubMemberInfoItem(
+internal fun ClubMemberInfoItem(
     modifier: Modifier = Modifier,
     data: String,
     isTeacher: Boolean,
