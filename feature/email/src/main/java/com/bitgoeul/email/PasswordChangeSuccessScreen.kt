@@ -20,7 +20,7 @@ import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun PasswordChangeSuccessRoute(
+internal fun PasswordChangeSuccessRoute(
     onBackClicked: () -> Unit
 ) {
     PasswordChangeSuccessScreen(
@@ -28,7 +28,7 @@ fun PasswordChangeSuccessRoute(
     )
 }
 @Composable
-fun PasswordChangeSuccessScreen(
+internal fun PasswordChangeSuccessScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit
 ) {
