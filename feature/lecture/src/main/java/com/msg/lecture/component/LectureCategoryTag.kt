@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun LectureCategoryTag(
+internal fun LectureCategoryTag(
     modifier: Modifier = Modifier,
     line: String,
     division: String,

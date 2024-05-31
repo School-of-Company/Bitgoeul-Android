@@ -29,7 +29,7 @@ import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDate
 
 @Composable
-fun AddCertificationScreenRoute(
+internal fun AddCertificationScreenRoute(
     viewModel: CertificationViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onBackClicked: () -> Unit,
     onAddClicked: () -> Unit
@@ -50,7 +50,7 @@ fun AddCertificationScreenRoute(
 }
 
 @Composable
-fun AddCertificationScreen(
+internal fun AddCertificationScreen(
     modifier: Modifier = Modifier,
     selectedName: String,
     selectedDate: LocalDate?,

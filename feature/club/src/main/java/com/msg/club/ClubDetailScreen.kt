@@ -22,7 +22,7 @@ import com.msg.ui.DevicePreviews
 import java.util.UUID
 
 @Composable
-fun ClubDetailScreenRoute(
+internal fun ClubDetailScreenRoute(
     viewModel: ClubViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onBackClicked: () -> Unit,
     onBackClickedByAdmin: () -> Unit
@@ -42,7 +42,7 @@ fun ClubDetailScreenRoute(
 }
 
 @Composable
-fun ClubDetailScreen(
+internal fun ClubDetailScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     data: ClubDetailResponse,

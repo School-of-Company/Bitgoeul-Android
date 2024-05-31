@@ -22,7 +22,7 @@ import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun AddLinkSection(
+internal fun AddLinkSection(
     modifier: Modifier,
     links: List<String>,
     onClickAddButton: () -> Unit,

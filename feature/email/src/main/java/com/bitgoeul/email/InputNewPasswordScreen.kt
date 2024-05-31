@@ -29,7 +29,7 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun InputNewPasswordRoute(
+internal fun InputNewPasswordRoute(
     onBackClicked: () -> Unit,
     onNextClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
@@ -45,7 +45,7 @@ fun InputNewPasswordRoute(
 }
 
 @Composable
-fun InputNewPasswordScreen(
+internal fun InputNewPasswordScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     onNextClicked: (String) -> Unit,

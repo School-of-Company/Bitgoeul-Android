@@ -21,7 +21,7 @@ import com.msg.design_system.component.icon.MedicalIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun GovernmentBannerItem(
+internal fun GovernmentBannerItem(
     modifier: Modifier = Modifier,
     field: String
 ) {

@@ -12,7 +12,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.user.InquiryMyPageResponse
 
 @Composable
-fun AccountInfoView(
+internal fun AccountInfoView(
     data: InquiryMyPageResponse,
     modifier: Modifier
 ) {

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun LectureSettingTag(
+internal fun LectureSettingTag(
     isSelected: Boolean,
     onClicked: (() -> Unit)?,
     modifier: Modifier = Modifier,

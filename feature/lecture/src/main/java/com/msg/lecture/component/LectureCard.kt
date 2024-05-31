@@ -37,7 +37,7 @@ import com.msg.model.remote.response.lecture.Students
 import java.util.UUID
 
 @Composable
-fun LectureListCard(
+internal fun LectureListCard(
     modifier: Modifier = Modifier,
     data: ContentArray,
     onClicked: (UUID) -> Unit,

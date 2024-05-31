@@ -14,7 +14,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.club.ClubDetailResponse
 
 @Composable
-fun ClubInfoSection(
+internal fun ClubInfoSection(
     modifier: Modifier = Modifier,
     data: ClubDetailResponse
 ) {

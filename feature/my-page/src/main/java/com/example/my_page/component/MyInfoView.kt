@@ -16,7 +16,7 @@ import Authority
 import com.msg.model.remote.response.user.InquiryMyPageResponse
 
 @Composable
-fun MyInfoView(
+internal fun MyInfoView(
     data: InquiryMyPageResponse,
     modifier: Modifier
 ) {

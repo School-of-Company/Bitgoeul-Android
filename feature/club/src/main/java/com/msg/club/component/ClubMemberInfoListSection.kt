@@ -15,7 +15,7 @@ import com.msg.model.remote.response.club.ClubDetailResponse
 import java.util.UUID
 
 @Composable
-fun ClubMemberInfoListSection(
+internal fun ClubMemberInfoListSection(
     modifier: Modifier = Modifier,
     teacherData: ClubDetailResponse.Teacher,
     studentsData: List<ClubDetailResponse.Student>,

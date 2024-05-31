@@ -16,7 +16,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.club.ClubListResponse
 
 @Composable
-fun ClubResultList(
+internal fun ClubResultList(
     modifier: Modifier = Modifier,
     data: List<ClubListResponse>,
     onItemClicked: (Long) -> Unit

@@ -82,7 +82,7 @@ internal fun PostScreenRoute(
     )
 }
 
-suspend fun getPostList(
+private suspend fun getPostList(
     viewModel: PostViewModel,
     onSuccess: (data: GetPostListResponse) -> Unit,
     onFailure: () -> Unit
@@ -101,7 +101,7 @@ suspend fun getPostList(
 }
 
 @Composable
-fun PostScreen(
+internal fun PostScreen(
     modifier: Modifier = Modifier,
     role: String,
     onAddClicked: (feedType: FeedType) -> Unit,

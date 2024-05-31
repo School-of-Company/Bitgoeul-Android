@@ -24,7 +24,7 @@ import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
 import java.util.UUID
 
 @Composable
-fun LectureTakingStudentListRoute(
+internal fun LectureTakingStudentListRoute(
     onBackClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
@@ -46,7 +46,7 @@ fun LectureTakingStudentListRoute(
     )
 }
 
-suspend fun getTakingLectureStudentList(
+private suspend fun getTakingLectureStudentList(
     viewModel: LectureViewModel,
     onSuccess: (data: GetTakingLectureStudentListResponse) -> Unit,
 ) {
@@ -62,7 +62,7 @@ suspend fun getTakingLectureStudentList(
 }
 
 @Composable
-fun LectureTakingStudentListScreen(
+internal fun LectureTakingStudentListScreen(
     data: GetTakingLectureStudentListResponse? = null,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,

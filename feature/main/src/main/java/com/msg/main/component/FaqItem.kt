@@ -26,7 +26,7 @@ import com.msg.design_system.theme.pretendard
 import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
 
 @Composable
-fun FaqItem(
+internal fun FaqItem(
     modifier: Modifier = Modifier,
     data: GetFrequentlyAskedQuestionDetailResponse
 ) {

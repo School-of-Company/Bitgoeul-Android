@@ -19,7 +19,7 @@ import com.msg.model.remote.response.lecture.Instructors
 import java.util.UUID
 
 @Composable
-fun LectureDetailSettingInfoCard(
+internal fun LectureDetailSettingInfoCard(
     modifier: Modifier = Modifier,
     searchProfessorData: Instructors?,
     searchLineData: String?,

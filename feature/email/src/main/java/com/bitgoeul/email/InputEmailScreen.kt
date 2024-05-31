@@ -28,7 +28,7 @@ import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun InputEmailRoute(
+internal fun InputEmailRoute(
     onBackClicked: () -> Unit,
     onNextClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
@@ -43,7 +43,7 @@ fun InputEmailRoute(
     )
 }
 @Composable
-fun InputEmailScreen(
+internal fun InputEmailScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     onNextClicked: (String) -> Unit,

@@ -16,7 +16,7 @@ import com.msg.design_system.component.icon.PlusWhiteIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun AddLectureDatesButton(
+internal fun AddLectureDatesButton(
     modifier: Modifier = Modifier,
     onAddClicked: () -> Unit
 ) {

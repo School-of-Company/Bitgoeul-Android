@@ -53,7 +53,7 @@ import com.msg.ui.DevicePreviews
 import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
 
 @Composable
-fun MainPageScreenRoute(
+internal fun MainPageScreenRoute(
     viewModel: FaqViewModel = hiltViewModel(),
     onLoginClicked: () -> Unit
 ) {
@@ -102,7 +102,7 @@ fun MainPageScreenRoute(
     )
 }
 
-suspend fun getFaqList(
+private suspend fun getFaqList(
     viewModel: FaqViewModel,
     onSuccess: (data: List<GetFAQDetailResponse>) -> Unit,
     onFailure: (error: Event<List<GetFAQDetailResponse>>) -> Unit
@@ -120,7 +120,7 @@ suspend fun getFaqList(
 }
 
 @Composable
-fun MainPageScreen(
+internal fun MainPageScreen(
     modifier: Modifier = Modifier,
     data: List<GetFAQDetailResponse>,
     event: Event<List<GetFAQDetailResponse>>,

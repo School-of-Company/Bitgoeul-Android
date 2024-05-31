@@ -35,7 +35,7 @@ import com.msg.lecture.viewmodel.LectureViewModel
 import java.time.LocalDateTime
 
 @Composable
-fun LectureOpenRoute(
+internal fun LectureOpenRoute(
     onActionClicked: () -> Unit,
     onBackClicked: () -> Unit,
     onSettingClicked: () -> Unit,
@@ -72,7 +72,7 @@ fun LectureOpenRoute(
 }
 
 @Composable
-fun LectureOpenScreen(
+internal fun LectureOpenScreen(
     onActionClicked: () -> Unit,
     onBackClicked: () -> Unit,
     onSettingClicked: (name: String, content: String) -> Unit,

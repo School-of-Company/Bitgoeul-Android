@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun ClubChipView(
+internal fun ClubChipView(
     modifier: Modifier = Modifier,
     clubName: String
 ) {

@@ -22,7 +22,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.main.component.AutoSchoolClubGridView
 
 @Composable
-fun MedicalHealthClubBanner(
+internal fun MedicalHealthClubBanner(
     modifier: Modifier = Modifier
 ) {
     BitgoeulAndroidTheme { colors, typography ->

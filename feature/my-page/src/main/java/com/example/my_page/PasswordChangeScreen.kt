@@ -25,7 +25,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.checkPasswordRegex
 
 @Composable
-fun PasswordChangeRoute(
+internal fun PasswordChangeRoute(
     onSuccessScreenButtonClicked: () -> Unit,
     onBackClicked: () -> Unit,
     viewModel: MyPageViewModel = hiltViewModel()
@@ -43,7 +43,7 @@ fun PasswordChangeRoute(
 }
 
 @Composable
-fun PasswordChangeScreen(
+internal fun PasswordChangeScreen(
     modifier: Modifier = Modifier,
     onPasswordChangeClicked: (currentPassword: String, newPassword: String) -> Unit,
     onSuccessScreenButtonClicked: () -> Unit,

@@ -27,7 +27,7 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HorizontalInfiniteLoopPager(
+internal fun HorizontalInfiniteLoopPager(
     modifier: Modifier = Modifier,
     bannerType: String,
     list: List<String>

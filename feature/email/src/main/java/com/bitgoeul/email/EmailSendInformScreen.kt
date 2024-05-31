@@ -32,7 +32,7 @@ import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
 import kotlinx.coroutines.launch
 
 @Composable
-fun EmailSendInformRoute(
+internal fun EmailSendInformRoute(
     onBackClicked: () -> Unit,
     onMoveNewPasswordClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
@@ -76,7 +76,7 @@ fun EmailSendInformRoute(
 
 
 
-suspend fun getEmailAuthenticateStatus(
+private suspend fun getEmailAuthenticateStatus(
     viewModel: EmailViewModel,
     onSuccess: (data: GetEmailAuthenticateStatusResponse) -> Unit,
 ) {
@@ -92,7 +92,7 @@ suspend fun getEmailAuthenticateStatus(
 }
 
 @Composable
-fun EmailSendInformScreen(
+internal fun EmailSendInformScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     emailText: String,

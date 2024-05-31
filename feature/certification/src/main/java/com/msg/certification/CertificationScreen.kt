@@ -36,7 +36,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 @Composable
-fun CertificationScreenRoute(
+internal fun CertificationScreenRoute(
     viewModel: CertificationViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onHumanIconClicked: () -> Unit,
     onEditClicked: () -> Unit
@@ -84,7 +84,7 @@ fun CertificationScreenRoute(
     )
 }
 
-suspend fun getCertificationList(
+private suspend fun getCertificationList(
     viewModel: CertificationViewModel,
     onSuccess: (data: List<CertificationListResponse>) -> Unit,
     onFailure: () -> Unit
@@ -99,7 +99,7 @@ suspend fun getCertificationList(
     }
 }
 
-suspend fun getStudentData(
+private suspend fun getStudentData(
     viewModel: CertificationViewModel,
     onSuccess: (data: StudentBelongClubResponse) -> Unit,
     onFailure: () -> Unit
@@ -114,7 +114,7 @@ suspend fun getStudentData(
     }
 }
 
-suspend fun getLectureData(
+private suspend fun getLectureData(
     viewModel: CertificationViewModel,
     onSuccess: (data: GetLectureSignUpHistoryResponse) -> Unit,
     onFailure: () -> Unit
@@ -130,7 +130,7 @@ suspend fun getLectureData(
 }
 
 @Composable
-fun CertificationScreen(
+internal fun CertificationScreen(
     modifier: Modifier = Modifier,
     onHumanIconClicked: () -> Unit,
     onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,

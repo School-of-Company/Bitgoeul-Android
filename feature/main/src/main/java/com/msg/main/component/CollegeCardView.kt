@@ -15,7 +15,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.ui.CollegeData
 
 @Composable
-fun CollegeCardView(
+internal fun CollegeCardView(
     modifier: Modifier = Modifier,
     data: CollegeData
 ) {
