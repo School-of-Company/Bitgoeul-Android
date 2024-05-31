@@ -20,7 +20,7 @@ import com.msg.design_system.theme.color.BitgoeulColor
 @Composable
 fun RowScope.BitgoeulNavigationBarItem(
     selected: Boolean,
-    onClick: () -> Unit,
+    onClicked: () -> Unit,
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     selectedIcon: @Composable () -> Unit = icon,
@@ -30,7 +30,7 @@ fun RowScope.BitgoeulNavigationBarItem(
 ) {
     NavigationBarItem(
         selected = selected,
-        onClick = onClick,
+        onClick = onClicked,
         icon = if (selected) selectedIcon else icon,
         modifier = modifier,
         enabled = enabled,
@@ -109,7 +109,7 @@ fun BitgoeulNavigationPre() {
                         )
                     },
                     selected = index == 0,
-                    onClick = {},
+                    onClicked = {},
                 )
             }
         }

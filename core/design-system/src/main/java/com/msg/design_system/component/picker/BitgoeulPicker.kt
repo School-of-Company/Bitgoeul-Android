@@ -18,7 +18,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun Picker(
     modifier: Modifier,
     text: String,
-    onClick: (() -> Unit)?,
+    onClicked: (() -> Unit)?,
 ) {
     BitgoeulAndroidTheme { colors, type ->
         Row(
@@ -29,8 +29,8 @@ fun Picker(
                 )
                 .padding(vertical = 15.dp, horizontal = 20.dp)
                 .clickable {
-                    if(onClick != null) {
-                        onClick()
+                    if(onClicked != null) {
+                        onClicked()
                     }
                 },
             horizontalArrangement = Arrangement.SpaceBetween,

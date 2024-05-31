@@ -61,9 +61,9 @@ fun DefaultTextField(
     errorText: String,
     linkText: String? = null,
     onValueChange: (String) -> Unit,
-    onClickButton: () -> Unit,
-    onClickLink: (() -> Unit)? = null,
-    onClick: (() -> Unit)? = null,
+    onButtonClicked: () -> Unit,
+    onLinkClicked: (() -> Unit)? = null,
+    onClicked: (() -> Unit)? = null,
     value: String? = null,
     visualTransformationState: Boolean = false,
 ) {
@@ -91,7 +91,7 @@ fun DefaultTextField(
                     )
                     .onFocusChanged {
                         isFocused.value = it.isFocused
-                        if (it.isFocused && onClick != null) onClick()
+                        if (it.isFocused && onClicked != null) onClicked()
                         if (!it.isFocused && value != null) text = value
                     }
                     .background(
@@ -120,7 +120,7 @@ fun DefaultTextField(
                             IconButton(
                                 onClick = {
                                     text = ""
-                                    onClickButton()
+                                    onButtonClicked()
                                 },
                                 enabled = text.isNotEmpty()
                             ) {
@@ -132,7 +132,7 @@ fun DefaultTextField(
                             IconButton(
                                 onClick = {
                                     text = ""
-                                    onClickButton()
+                                    onButtonClicked()
                                 },
                                 enabled = text.isNotEmpty()
                             ) {
@@ -156,16 +156,16 @@ fun DefaultTextField(
                     if (isAll) {
                         ErrorText(text = errorText)
                         if (linkText != null) {
-                            if (onClickLink != null) {
-                                LinkText(text = linkText, onClickLink = onClickLink)
+                            if (onLinkClicked != null) {
+                                LinkText(text = linkText, onLinkClicked = onLinkClicked)
                             }
                         }
                     } else if (isError) {
                         ErrorText(text = errorText)
                     } else {
                         if (linkText != null) {
-                            if (onClickLink != null) {
-                                LinkText(text = linkText, onClickLink = onClickLink)
+                            if (onLinkClicked != null) {
+                                LinkText(text = linkText, onLinkClicked = onLinkClicked)
                             }
                         }
                     }
@@ -183,11 +183,11 @@ fun PasswordTextField(
     errorText: String,
     linkText: String? = null,
     onValueChange: (String) -> Unit,
-    onClickLink: () -> Unit,
+    onLinkClicked: () -> Unit,
     isError: Boolean,
     isLinked: Boolean,
     isDisabled: Boolean,
-    onClick: (() -> Unit)? = null,
+    onClicked: (() -> Unit)? = null,
 ) {
     var showPassword by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -219,7 +219,7 @@ fun PasswordTextField(
                     )
                     .onFocusChanged {
                         isFocused.value = it.isFocused
-                        if (it.isFocused && onClick != null) onClick()
+                        if (it.isFocused && onClicked != null) onClicked()
                         if (it.isFocused) isChanged.value = false
                     }
                     .background(
@@ -269,13 +269,13 @@ fun PasswordTextField(
                     if (isAll) {
                         ErrorText(text = errorText)
                         if (linkText != null) {
-                            LinkText(text = linkText, onClickLink = onClickLink)
+                            LinkText(text = linkText, onLinkClicked = onLinkClicked)
                         }
                     } else if (isError) {
                         ErrorText(text = errorText)
                     } else {
                         if (linkText != null) {
-                            LinkText(text = linkText, onClickLink = onClickLink)
+                            LinkText(text = linkText, onLinkClicked = onLinkClicked)
                         }
                     }
                 }
@@ -378,7 +378,7 @@ fun TrailingIconTextField(
     placeholder: String,
     isDisabled: Boolean,
     onValueChange: (String) -> Unit,
-    onClickButton: () -> Unit,
+    onButtonClicked: () -> Unit,
     value: String? = null,
 ) {
     var text by remember { mutableStateOf(value ?: "") }
@@ -414,7 +414,7 @@ fun TrailingIconTextField(
                 maxLines = 1,
                 singleLine = true,
                 trailingIcon = {
-                    IconButton(onClick = onClickButton) {
+                    IconButton(onClick = onButtonClicked) {
                         SearchIcon(
                             modifier = modifier
                         )
@@ -565,11 +565,11 @@ fun ErrorText(
 @Composable
 fun LinkText(
     text: String,
-    onClickLink: () -> Unit,
+    onLinkClicked: () -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Text(
-            modifier = Modifier.clickable(enabled = true, onClick = onClickLink),
+            modifier = Modifier.clickable(enabled = true, onClick = onLinkClicked),
             text = text,
             color = colors.P5,
             style = typography.labelMedium
@@ -592,13 +592,14 @@ fun TextFieldPre() {
             placeholder = "Put Email",
             errorText = "Incorrect Format",
             onValueChange = {},
-            onClickButton = {},
+            onButtonClicked = {},
             isError = false,
             isLinked = false,
             isDisabled = false,
             isReadOnly = false,
             isReverseTrailingIcon = false,
-            onClick = {}
+            onClicked = {},
+            onLinkClicked = {}
         )
 
         PasswordTextField(
@@ -608,7 +609,7 @@ fun TextFieldPre() {
             placeholder = "Put Password",
             errorText = "Incorrect Password",
             onValueChange = {},
-            onClickLink = {},
+            onLinkClicked = {},
             isError = true,
             isLinked = true,
             linkText = "Sign Up",
@@ -622,7 +623,7 @@ fun TextFieldPre() {
             placeholder = "Put Password",
             errorText = "Incorrect Password",
             onValueChange = {},
-            onClickLink = {},
+            onLinkClicked = {},
             isError = false,
             isLinked = false,
             isDisabled = true
@@ -642,7 +643,7 @@ fun TextFieldPre() {
             placeholder = "Search",
             onValueChange = {},
             isDisabled = false,
-            onClickButton = {}
+            onButtonClicked = {}
         )
 
         PickerTextField(
