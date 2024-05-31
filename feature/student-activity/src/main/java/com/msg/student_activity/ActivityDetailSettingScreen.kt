@@ -30,12 +30,12 @@ import java.time.LocalDate
 
 @Composable
 fun ActivityDetailSettingRoute(
-    onCloseClick: () -> Unit,
+    onCloseClicked: () -> Unit,
     onApplyClicked: () -> Unit,
     viewModel: StudentActivityViewModel = hiltViewModel()
 ) {
     ActivityDetailSettingScreen(
-        onCloseClick = onCloseClick,
+        onCloseClicked = onCloseClicked,
         onApplyClicked = { activityDate, credit ->
             viewModel.activityDate.value = activityDate
             viewModel.credit.intValue = credit
@@ -48,7 +48,7 @@ fun ActivityDetailSettingRoute(
 
 @Composable
 fun ActivityDetailSettingScreen(
-    onCloseClick: () -> Unit,
+    onCloseClicked: () -> Unit,
     onApplyClicked: (LocalDate, Int) -> Unit,
     savedCreditPoint: Int,
     savedActivityDate: LocalDate?
@@ -79,7 +79,7 @@ fun ActivityDetailSettingScreen(
                     color = colors.BLACK
                 )
                 IconButton(
-                    onClick = onCloseClick,
+                    onClick = onCloseClicked,
                     content = { CloseIcon() }
                 )
             }
@@ -138,7 +138,7 @@ fun ActivityDetailSettingScreen(
 @Composable
 fun ActivityDetailSettingScreenPre() {
     ActivityDetailSettingScreen(
-        onCloseClick = {},
+        onCloseClicked = {},
         onApplyClicked = {_, _ ->},
         savedActivityDate = LocalDate.now(),
         savedCreditPoint = 0
