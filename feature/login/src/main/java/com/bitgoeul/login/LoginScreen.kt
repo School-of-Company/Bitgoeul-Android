@@ -38,7 +38,10 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
+import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.model.remote.response.lecture.LectureListResponse
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun LoginRoute(
@@ -90,9 +93,8 @@ private suspend fun getLoginData(
 @Composable
 internal fun LoginScreen(
     onSignUpClicked: () -> Unit,
-    onLoginClicked: () -> Unit = {},
+    onLoginClicked: (String, String) -> Unit = { _, _ -> },
     onFindPasswordClicked: () -> Unit,
-    setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
