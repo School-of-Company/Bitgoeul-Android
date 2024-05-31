@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -46,22 +47,23 @@ internal fun LoginRoute(
     onLoginClicked: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     LoginScreen(
         onSignUpClicked = onSignUpClicked,
         onFindPasswordClicked = onFindPasswordClicked,
-        onLoginClicked = {
-            viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
-            observeLoginEvent(
-                lifecycleOwner = lifecycleOwner,
-                viewModel = viewModel,
-                onSuccess = onLoginClicked,
-                onFailure = {
-                    Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
-                }
-            )
+        onLoginClicked = { email, password ->
+            viewModel.login(email = email, password = password)
+            coroutineScope.launch {
+                getLoginData(
+                    viewModel = viewModel,
+                    onSuccess = onLoginClicked,
+                    onFailure = {
+                        Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
         },
     )
 }
