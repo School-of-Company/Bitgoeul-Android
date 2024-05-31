@@ -14,7 +14,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
 
 @Composable
-fun FaqSection(
+internal fun FaqSection(
     modifier: Modifier = Modifier,
     data: List<GetFrequentlyAskedQuestionDetailResponse>
 ) {

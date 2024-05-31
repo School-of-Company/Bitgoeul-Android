@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun AddFaqItem(
+internal fun AddFaqItem(
     modifier: Modifier = Modifier,
     questionValue: String,
     onQuestionValueChanged: (String) -> Unit,

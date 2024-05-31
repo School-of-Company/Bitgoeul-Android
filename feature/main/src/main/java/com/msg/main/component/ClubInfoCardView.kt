@@ -17,7 +17,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.ui.ClubInfoData
 
 @Composable
-fun ClubInfoCardView(
+internal fun ClubInfoCardView(
     modifier: Modifier = Modifier,
     data: ClubInfoData
 ) {

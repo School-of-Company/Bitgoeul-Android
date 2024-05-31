@@ -18,7 +18,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.HighSchool
 
 @Composable
-fun HighSchoolCardView(
+internal fun HighSchoolCardView(
     modifier: Modifier,
     school: HighSchool
 ) {

@@ -24,7 +24,7 @@ import com.msg.main.component.AutoSchoolClubGridView
 import com.msg.ui.DevicePreviews
 
 @Composable
-fun FutureTransportClubBanner(
+internal fun FutureTransportClubBanner(
     modifier: Modifier = Modifier
 ) {
     BitgoeulAndroidTheme { colors, typography ->

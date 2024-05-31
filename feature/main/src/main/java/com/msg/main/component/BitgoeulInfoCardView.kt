@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
-fun BitgoeulInfoCardView(
+internal fun BitgoeulInfoCardView(
     modifier: Modifier,
     title: String,
     contentList: List<String>
