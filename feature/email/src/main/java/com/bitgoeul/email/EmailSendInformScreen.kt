@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun EmailSendInformRoute(
     onBackClicked: () -> Unit,
-    onMoveNewPasswordClick: () -> Unit,
+    onMoveNewPasswordClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
     val context = LocalContext.current
@@ -50,7 +50,7 @@ fun EmailSendInformRoute(
                         viewModel = viewModel,
                         onSuccess = { response ->
                             if (response.isAuthentication) {
-                                onMoveNewPasswordClick()
+                                onMoveNewPasswordClicked()
                                 Toast.makeText(context, "이메일 인증에 성공했습니다.", Toast.LENGTH_SHORT).show()
                             }
                             if (!response.isAuthentication) {
