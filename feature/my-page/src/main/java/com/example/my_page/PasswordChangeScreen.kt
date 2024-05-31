@@ -91,7 +91,7 @@ internal fun PasswordChangeScreen(
                         onValueChange = {
                             currentPassword.value = it
                         },
-                        onClickLink = {},
+                        onLinkClicked = {},
                         isError = isWrongPassword.value,
                         isLinked = false,
                         isDisabled = false
@@ -104,7 +104,7 @@ internal fun PasswordChangeScreen(
                         onValueChange = {
                             newPassword.value = it
                         },
-                        onClickLink = {},
+                        onLinkClicked = {},
                         isError = newPassword.value.checkPasswordRegex(),
                         isLinked = false,
                         isDisabled = false
@@ -118,7 +118,7 @@ internal fun PasswordChangeScreen(
                             checkPassword.value = it
                             isSamePassword.value = newPassword.value == checkPassword.value
                         },
-                        onClickLink = {},
+                        onLinkClicked = {},
                         isError = !isSamePassword.value,
                         isLinked = false,
                         isDisabled = false

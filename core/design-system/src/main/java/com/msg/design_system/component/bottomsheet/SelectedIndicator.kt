@@ -25,7 +25,7 @@ fun SelectedIndicator(
     isSelected: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: (() -> Unit)?
+    onClicked: (() -> Unit)?
 ) {
     val interactionSource = remember { mutableStateOf(MutableInteractionSource()) }
     BitgoeulAndroidTheme { colors, _ ->
@@ -37,8 +37,8 @@ fun SelectedIndicator(
                     interactionSource = interactionSource.value,
                     indication = rememberRipple(bounded = false)
                 ) {
-                    if (onClick != null && enabled) {
-                        onClick()
+                    if (onClicked != null && enabled) {
+                        onClicked()
                     }
                 },
         ) {
@@ -64,8 +64,8 @@ fun SelectedIndicatorPre() {
             .background(Color.White)
             .fillMaxSize()
     ) {
-        SelectedIndicator(isSelected = selected.value == "0", onClick = { selected.value = "0" })
+        SelectedIndicator(isSelected = selected.value == "0", onClicked = { selected.value = "0" })
         Spacer(modifier = Modifier.height(15.dp))
-        SelectedIndicator(isSelected = selected.value == "1", onClick = { selected.value = "1" })
+        SelectedIndicator(isSelected = selected.value == "1", onClicked = { selected.value = "1" })
     }
 }

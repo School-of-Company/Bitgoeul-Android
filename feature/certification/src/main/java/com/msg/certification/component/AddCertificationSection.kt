@@ -15,7 +15,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 fun AddCertificationSection(
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
-    onClickButton: () -> Unit
+    onButtonClicked: () -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -36,7 +36,7 @@ fun AddCertificationSection(
                 isReverseTrailingIcon = false,
                 errorText = "",
                 onValueChange = onValueChange,
-                onClickButton = onClickButton
+                onButtonClicked = onButtonClicked
             )
         }
     }

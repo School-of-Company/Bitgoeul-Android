@@ -299,7 +299,7 @@ internal fun LectureDetailSettingScreen(
                     LectureSettingTag(
                         text = "필수",
                         isSelected = isRequiredCourse.value == "0",
-                        onClick = {
+                        onClicked = {
                             isRequiredCourse.value = "0"
                         },
                     )
@@ -309,7 +309,7 @@ internal fun LectureDetailSettingScreen(
                     LectureSettingTag(
                         text = "선택",
                         isSelected = isRequiredCourse.value == "1",
-                        onClick = {
+                        onClicked = {
                             isRequiredCourse.value = "1"
                         },
                     )
@@ -366,7 +366,7 @@ internal fun LectureDetailSettingScreen(
                         isError = false,
                         isLinked = false,
                         isReverseTrailingIcon = false,
-                        onClickButton = {}
+                        onButtonClicked = {}
                     )
                 }
                 Spacer(modifier = modifier.height(24.dp))
@@ -381,7 +381,7 @@ internal fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     placeholder = lectureDivisionForShow.value.ifEmpty { "구분 선택" },
                     division = division.value,
-                    onDivisionItemClick = { selectedDivisionData ->
+                    onDivisionItemClicked = { selectedDivisionData ->
                         division.value = selectedDivisionData
                         lectureDivisionForShow.value = selectedDivisionData
                     },
@@ -407,7 +407,7 @@ internal fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     placeholder = lectureLineForShow.value.ifEmpty { "강의 선택" },
                     division = division.value,
-                    onLineItemClick = { selectedLineData ->
+                    onLineItemClicked = { selectedLineData ->
                         line.value = selectedLineData
                         lectureLineForShow.value = selectedLineData
                     },
@@ -433,7 +433,7 @@ internal fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     placeholder = lectureDepartmentForShow.value.ifEmpty { "학과 선택" },
                     isClickedPickerType = "학과",
-                    onDepartmentItemClick = { selectedDepartmentData ->
+                    onDepartmentItemClicked = { selectedDepartmentData ->
                         department.value = selectedDepartmentData
                         lectureDepartmentForShow.value = selectedDepartmentData
                     },
@@ -458,7 +458,7 @@ internal fun LectureDetailSettingScreen(
                     modifier = modifier.fillMaxWidth(),
                     placeholder = lectureTeacherInChargeForShow.value.ifEmpty { "담당 강사 선택" },
                     isClickedPickerType = "담당 교수",
-                    onProfessorItemClick = { selectedProfessorUUID, selectedProfessorName ->
+                    onProfessorItemClicked = { selectedProfessorUUID, selectedProfessorName ->
                         userId.value = selectedProfessorUUID
                         lectureTeacherInChargeForShow.value = selectedProfessorName
                     },

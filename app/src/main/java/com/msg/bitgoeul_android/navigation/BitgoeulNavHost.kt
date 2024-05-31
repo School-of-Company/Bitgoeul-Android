@@ -68,9 +68,9 @@ fun BitgoeulNavHost(
         modifier = modifier
     ) {
         loginScreen(
-            onSignUpClick = navController::navigateToSignUp,
-            onFindPasswordClick = navController::navigateToInputEmail,
-            onLoginClick = navController::navigateToMainPage
+            onSignUpClicked = navController::navigateToSignUp,
+            onFindPasswordClicked = navController::navigateToInputEmail,
+            onLoginClicked = navController::navigateToMainPage
         )
         inputEmailScreen(
             onBackClicked = navController::navigateToLogin,
@@ -78,7 +78,7 @@ fun BitgoeulNavHost(
         )
         emailSendInformScreen(
             onBackClicked = navController::navigateToInputEmail,
-            onMoveNewPasswordClick = navController::navigateToInputNewPassword
+            onMoveNewPasswordClicked = navController::navigateToInputNewPassword
         )
         inputNewPasswordScreen(
             onBackClicked = navController::navigateToInputEmail,
@@ -88,15 +88,15 @@ fun BitgoeulNavHost(
             onBackClicked = navController::navigateToLogin
         )
         signUpScreen(
-            onBackClick = navController::popBackStack,
+            onBackClicked = navController::popBackStack,
             onEnterFinished = navController::navigateToSignUpFinish
         )
         signUpFinishScreen(
             onBackClicked = navController::navigateToLogin
         )
         studentActivityScreen(
-            onAddClick = navController::navigateToAddActivity,
-            onItemClick = navController::navigateToStudentDetailActivity,
+            onAddClicked = navController::navigateToAddActivity,
+            onItemClicked = navController::navigateToStudentDetailActivity,
             onBackClicked = navController::popBackStack
         )
         studentDetailActivityScreen(
@@ -110,7 +110,7 @@ fun BitgoeulNavHost(
             onBackClicked = navController::popBackStack
         )
         studentDetailSettingActivityScreen(
-            onCloseClick = navController::popBackStack,
+            onCloseClicked = navController::popBackStack,
             onApplyClicked = navController::popBackStack
         )
         lectureListScreen(

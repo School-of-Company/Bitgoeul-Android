@@ -41,23 +41,23 @@ import com.msg.model.remote.request.auth.LoginRequest
 
 @Composable
 internal fun LoginRoute(
-    onSignUpClick: () -> Unit,
-    onFindPasswordClick: () -> Unit,
-    onLoginClick: () -> Unit,
+    onSignUpClicked: () -> Unit,
+    onFindPasswordClicked: () -> Unit,
+    onLoginClicked: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
     LoginScreen(
-        onSignUpClick = onSignUpClick,
-        onFindPasswordClick = onFindPasswordClick,
-        onLoginClick = {
+        onSignUpClicked = onSignUpClicked,
+        onFindPasswordClicked = onFindPasswordClicked,
+        onLoginClicked = {
             viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
             observeLoginEvent(
                 lifecycleOwner = lifecycleOwner,
                 viewModel = viewModel,
-                onSuccess = onLoginClick,
+                onSuccess = onLoginClicked,
                 onFailure = {
                     Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
                 }
@@ -95,10 +95,17 @@ private fun observeLoginEvent(
 
 
 @Composable
+<<<<<<< HEAD
 internal fun LoginScreen(
     onSignUpClick: () -> Unit,
     onLoginClick: () -> Unit = {},
     onFindPasswordClick: () -> Unit,
+=======
+fun LoginScreen(
+    onSignUpClicked: () -> Unit,
+    onLoginClicked: () -> Unit = {},
+    onFindPasswordClicked: () -> Unit,
+>>>>>>> e56ba4db2c7906221c5e993e5ef9cced8e179767
     setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -148,7 +155,7 @@ internal fun LoginScreen(
                             emailState.value = it
                         },
                         isError = isEmailErrorStatus.value,
-                        onClickButton = {
+                        onButtonClicked = {
                             isEmailErrorStatus.value = isTextStatus.isNullOrBlank()
                         },
                         isLinked = false,
@@ -178,8 +185,8 @@ internal fun LoginScreen(
                         onValueChange = {
                             passwordState.value = it
                         },
-                        onClickLink = {
-                            onFindPasswordClick()
+                        onLinkClicked = {
+                            onFindPasswordClicked()
                         },
                         isError = isPasswordErrorStatus.value,
                         isLinked = true,
@@ -201,9 +208,9 @@ internal fun LoginScreen(
                             .fillMaxWidth()
                             .height(52.dp),
                         state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
-                        onClick = {
+                        onClicked = {
                             setLoginData(emailState.value, passwordState.value)
-                            onLoginClick()
+                            onLoginClicked()
                         }
                     )
                 }
@@ -223,7 +230,7 @@ internal fun LoginScreen(
                 LinkText(
                     text = stringResource(id = R.string.sign_up)
                 ) {
-                    onSignUpClick()
+                    onSignUpClicked()
                 }
             }
         }

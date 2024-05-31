@@ -40,7 +40,7 @@ import java.util.UUID
 internal fun LectureListCard(
     modifier: Modifier = Modifier,
     data: ContentArray,
-    onClick: (UUID) -> Unit,
+    onClicked: (UUID) -> Unit,
 ) {
     BitgoeulAndroidTheme { color, type ->
         Surface {
@@ -48,7 +48,7 @@ internal fun LectureListCard(
                 modifier = modifier
                     .wrapContentSize()
                     .clickable {
-                        onClick(data.id)
+                        onClicked(data.id)
                     },
                 colors = CardDefaults.cardColors(containerColor = color.WHITE)
             ) {
@@ -186,7 +186,8 @@ fun LectureTakingStudentCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 BitGoeulCheckBox(
-                    modifier = modifier, checked = isComplete.value
+                    modifier = modifier,
+                    isChecked = isComplete.value
                 ) { isCompleteValue ->
                     onChangeCompleteState(isCompleteValue, data.id)
                     isComplete.value = isCompleteValue

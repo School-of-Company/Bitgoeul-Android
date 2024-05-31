@@ -80,7 +80,7 @@ internal fun LectureTakingStudentListScreen(
             GoBackTopBar(
                 icon = { GoBackIcon() },
                 text = "돌아가기",
-                onClick = { onBackClicked() }
+                onClicked = { onBackClicked() }
             )
 
             Spacer(modifier = modifier.height(8.dp))

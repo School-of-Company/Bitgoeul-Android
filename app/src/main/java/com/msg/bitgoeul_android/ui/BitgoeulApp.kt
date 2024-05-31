@@ -84,7 +84,7 @@ fun BitgoeulBottomBar(
             val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
             BitgoeulNavigationBarItem(
                 selected = selected,
-                onClick = { onNavigateToDestination(destination) },
+                onClicked = { onNavigateToDestination(destination) },
                 icon = {
                     Icon(
                         painter = painterResource(id = destination.unselectedIcon),

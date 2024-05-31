@@ -22,7 +22,7 @@ import java.util.UUID
 internal fun LectureList(
     modifier: Modifier = Modifier,
     data: List<ContentArray>?,
-    onClick: (UUID) -> Unit,
+    onClicked: (UUID) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, _ ->
         LazyColumn(
@@ -46,7 +46,7 @@ internal fun LectureList(
 
                     LectureListCard(
                         data = item,
-                        onClick = onClick,
+                        onClicked = onClicked,
                     )
 
                     Spacer(modifier = modifier.height(12.dp))

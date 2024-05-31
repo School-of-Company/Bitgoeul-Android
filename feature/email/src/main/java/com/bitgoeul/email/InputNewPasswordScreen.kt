@@ -99,7 +99,7 @@ internal fun InputNewPasswordScreen(
                     isError = !passwordPattern.matches(firstInputPassword.value) && firstInputPassword.value.isNotEmpty(),
                     isLinked = false,
                     isReverseTrailingIcon = false,
-                    onClickButton = {},
+                    onButtonClicked = {},
                     placeholder = "8~24자 영문, 숫자, 특수문자 1개 이상",
                     visualTransformationState = true
                 )
@@ -116,7 +116,7 @@ internal fun InputNewPasswordScreen(
                     isError = firstInputPassword.value != secondInputPassword.value,
                     isLinked = false,
                     isReverseTrailingIcon = false,
-                    onClickButton = {},
+                    onButtonClicked = {},
                     placeholder = "비밀번호 확인",
                     visualTransformationState = true
                 )
@@ -130,7 +130,7 @@ internal fun InputNewPasswordScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     state = if(firstInputPassword.value.isNotEmpty() && secondInputPassword.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
-                    onClick = {
+                    onClicked = {
                         if (passwordPattern.matches(firstInputPassword.value)) {
                             onNextClicked(secondInputPassword.value)
                         } else {

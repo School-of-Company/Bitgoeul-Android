@@ -21,7 +21,7 @@ fun GoBackTopBar(
     modifier: Modifier = Modifier,
     icon: @Composable () -> Unit,
     text: String,
-    onClick: () -> Unit
+    onClicked: () -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Row(
@@ -30,7 +30,7 @@ fun GoBackTopBar(
                 .background(colors.WHITE)
         ) {
             IconButton(
-                onClick = onClick,
+                onClick = onClicked,
                 modifier = modifier
                     .height(24.dp)
                     .width(24.dp)

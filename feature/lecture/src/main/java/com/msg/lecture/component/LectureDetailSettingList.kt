@@ -25,7 +25,7 @@ import java.util.UUID
 internal fun LectureDepartmentList(
     data: SearchDepartmentResponse,
     modifier: Modifier = Modifier,
-    onClick: (String) -> Unit,
+    onClicked: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.departments.isNotEmpty()) {
@@ -35,8 +35,8 @@ internal fun LectureDepartmentList(
                 items(data.departments.size) { index ->
                     LectureDetailSettingDepartmentAndDivisionCard(
                         modifier = modifier,
-                        onClick = { department ->
-                            onClick(department)
+                        onClicked = { department ->
+                            onClicked(department)
                         },
                         data = data.departments[index]
                     )
@@ -70,7 +70,7 @@ internal fun LectureLineList(
     keyword: String,
     modifier: Modifier = Modifier,
     division: String,
-    onClick: (String) -> Unit,
+    onClicked: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.lines.isNotEmpty()) {
@@ -81,8 +81,8 @@ internal fun LectureLineList(
                     data.lines.getOrNull(index)?.let { linesData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
-                            onClick = { _, searchLineData, _ ->
-                                onClick(searchLineData)
+                            onClicked = { _, searchLineData, _ ->
+                                onClicked(searchLineData)
                             },
                             searchProfessorData = null,
                             searchLineData = linesData,
@@ -120,7 +120,7 @@ internal fun LectureProfessorList(
     keyword: String,
     modifier: Modifier = Modifier,
     division: String,
-    onClick: (UUID, String) -> Unit,
+    onClicked: (UUID, String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.instructors.isNotEmpty()) {
@@ -131,8 +131,8 @@ internal fun LectureProfessorList(
                     data.instructors.getOrNull(index)?.let { professorData ->
                         LectureDetailSettingInfoCard(
                             modifier = modifier.background(color = Color.Transparent),
-                            onClick = { professorUUID, _, selectedProfessorName ->
-                                onClick(professorUUID, selectedProfessorName)
+                            onClicked = { professorUUID, _, selectedProfessorName ->
+                                onClicked(professorUUID, selectedProfessorName)
                             },
                             searchProfessorData = professorData,
                             searchLineData = null,
@@ -168,7 +168,7 @@ internal fun LectureProfessorList(
 internal fun LectureDivisionList(
     data: SearchDivisionResponse,
     modifier: Modifier = Modifier,
-    onClick: (String) -> Unit,
+    onClicked: (String) -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         if (data.divisions.isNotEmpty()) {
@@ -179,8 +179,8 @@ internal fun LectureDivisionList(
                     data.divisions.getOrNull(index)?.let { divisionData ->
                         LectureDetailSettingDepartmentAndDivisionCard(
                             modifier = modifier.background(color = Color.Transparent),
-                            onClick = { division ->
-                                onClick(division)
+                            onClicked = { division ->
+                                onClicked(division)
                             },
                             data = divisionData
                         )

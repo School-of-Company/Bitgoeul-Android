@@ -47,7 +47,7 @@ import com.msg.ui.util.toLocalTimeFormat
 @Composable
 internal fun LectureDetailRoute(
     onBackClicked: () -> Unit,
-    onLectureTakingStudentListScreenClick: () -> Unit,
+    onLectureTakingStudentListScreenClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val id = viewModel.selectedLectureId.value
@@ -67,14 +67,14 @@ internal fun LectureDetailRoute(
         role = role,
         data = viewModel.lectureDetailData.value,
         onBackClicked = onBackClicked,
-        onLectureTakingStudentListScreenClick = onLectureTakingStudentListScreenClick,
-        onApplicationCancelClick = {
+        onLectureTakingStudentListScreenClicked = onLectureTakingStudentListScreenClicked,
+        onApplicationCancelClicked = {
             viewModel.lectureApplicationCancel(viewModel.selectedLectureId.value)
         },
-        onApplicationClick = {
+        onApplicationClicked = {
             viewModel.lectureApplication(viewModel.selectedLectureId.value)
         },
-        onDownloadButtonClick = {
+        onDownloadButtonClicked = {
             viewModel.downloadLectureExcel()
         }
     )
@@ -101,10 +101,10 @@ internal fun LectureDetailScreen(
     data: DetailLectureResponse,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onApplicationClick: () -> Unit,
-    onApplicationCancelClick: () -> Unit,
-    onLectureTakingStudentListScreenClick: () -> Unit,
-    onDownloadButtonClick: () -> Unit,
+    onApplicationClicked: () -> Unit,
+    onApplicationCancelClicked: () -> Unit,
+    onLectureTakingStudentListScreenClicked: () -> Unit,
+    onDownloadButtonClicked: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val isExcelDownloadSheetVisible = remember { mutableStateOf(false) }
@@ -130,7 +130,7 @@ internal fun LectureDetailScreen(
                     GoBackTopBar(
                         icon = { GoBackIcon() },
                         text = "돌아가기",
-                        onClick = { onBackClicked() }
+                        onClicked = { onBackClicked() }
                     )
 
                     Spacer(modifier = modifier.weight(1f))
@@ -326,7 +326,7 @@ internal fun LectureDetailScreen(
                             .align(Alignment.BottomCenter),
                         state = ButtonState.Enable
                     ) {
-                        onLectureTakingStudentListScreenClick()
+                        onLectureTakingStudentListScreenClicked()
                     }
                 }
                 else -> {}
@@ -351,7 +351,7 @@ internal fun LectureDetailScreen(
                                             .fillMaxWidth()
                                             .height(52.dp)
                                             .align(Alignment.BottomCenter),
-                                        onClick = {
+                                        onClicked = {
                                             isNegativeDialogVisible.value = true
                                         }
                                     )
@@ -411,7 +411,7 @@ internal fun LectureDetailScreen(
                 isPositiveActionDialogVisible.value = false
             },
             onActionClicked = {
-                onApplicationClick()
+                onApplicationClicked()
                 isPositiveActionDialogVisible.value = false
                 isApplicationState.value = true
             },
@@ -425,15 +425,15 @@ internal fun LectureDetailScreen(
             isVisible = isNegativeDialogVisible.value,
             onQuit = { isNegativeDialogVisible.value = false },
             onActionClicked = {
-                onApplicationCancelClick()
+                onApplicationCancelClicked()
                 isNegativeDialogVisible.value = false
             }
         )
 
         LectureExcelDownloadBottomSheet(
             isVisible = isExcelDownloadSheetVisible.value,
-            onDownloadButtonClick = {
-                onDownloadButtonClick()
+            onDownloadButtonClicked = {
+                onDownloadButtonClicked()
                 isExcelDownloadSheetVisible.value = false
             },
             onQuit = {

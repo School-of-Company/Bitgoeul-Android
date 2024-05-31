@@ -15,12 +15,12 @@ fun NavController.navigateToSignUp(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.signUpScreen(
-    onBackClick: () -> Unit,
+    onBackClicked: () -> Unit,
     onEnterFinished: () -> Unit
 ) {
     composable(route = signUpRoute) {
         SignUpRoute(
-            onBackClick = onBackClick,
+            onBackClicked = onBackClicked,
             onEnterFinished = onEnterFinished
         )
     }

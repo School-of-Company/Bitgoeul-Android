@@ -93,7 +93,7 @@ internal fun InputEmailScreen(
                     isError = false,
                     isLinked = false,
                     isReverseTrailingIcon = false,
-                    onClickButton = {},
+                    onButtonClicked = {},
                     placeholder = stringResource(id = R.string.email)
                 )
 
@@ -106,7 +106,7 @@ internal fun InputEmailScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     state = if(email.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
-                    onClick = {
+                    onClicked = {
                         onNextClicked(email.value)
                     }
                 )

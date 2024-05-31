@@ -30,12 +30,12 @@ import com.msg.ui.DevicePreviews
 @Composable
 internal fun PostDetailSettingScreenRoute(
     viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
-    onCloseClick: () -> Unit
+    onCloseClicked: () -> Unit
 ) {
     PostDetailSettingScreen(
         links = viewModel.links,
-        onCloseClick = {
-            onCloseClick()
+        onCloseClicked = {
+            onCloseClicked()
             viewModel.saveLinkList()
         },
         onClickAddButton = { viewModel.addLinks() },
@@ -49,7 +49,7 @@ internal fun PostDetailSettingScreenRoute(
 internal fun PostDetailSettingScreen(
     modifier: Modifier = Modifier,
     links: MutableList<String>,
-    onCloseClick: () -> Unit,
+    onCloseClicked: () -> Unit,
     onClickAddButton: () -> Unit,
     onValueChanged: (index: Int, item: String) -> Unit
 ) {
@@ -80,7 +80,7 @@ internal fun PostDetailSettingScreen(
                     color = colors.BLACK
                 )
                 IconButton(
-                    onClick = onCloseClick,
+                    onClick = onCloseClicked,
                     content = { CloseIcon() }
                 )
             }
@@ -103,7 +103,7 @@ fun PostDetailSettingScreenPre() {
             "https://youtu.be/AlGd4CP-GrA?si=rOHB1qzfswrbrxKM",
             "https://youtu.be/sv--0Kiry7s?si=PQQBa-lyS8ZxqJTm"
         ),
-        onCloseClick = {},
+        onCloseClicked = {},
         onClickAddButton = {},
         onValueChanged = {_,_ ->}
     )

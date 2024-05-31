@@ -30,14 +30,14 @@ fun LectureApplicationDialog(
     modifier: Modifier = Modifier,
     content: String,
     isVisible: Boolean,
-    onCancelClick: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onCancelClicked: () -> Unit,
+    onConfirmClicked: () -> Unit,
 ) {
     if (isVisible) {
         BitgoeulAndroidTheme { colors, type ->
             Dialog(onDismissRequest = {
-                onCancelClick()
-                onConfirmClick()
+                onCancelClicked()
+                onConfirmClicked()
             }) {
                 Box(
                     modifier = modifier
@@ -91,7 +91,7 @@ fun LectureApplicationDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            onCancelClick()
+                                            onCancelClicked()
                                         },
                                     text = stringResource(id = R.string.cancel),
                                     color = colors.WHITE,
@@ -119,7 +119,7 @@ fun LectureApplicationDialog(
                                         .align(Alignment.Center)
                                         .padding(vertical = 13.dp)
                                         .clickable {
-                                            onConfirmClick()
+                                            onConfirmClicked()
                                         },
                                     text = stringResource(id = R.string.application),
                                     color = colors.WHITE,

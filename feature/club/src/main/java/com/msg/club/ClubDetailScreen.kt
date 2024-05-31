@@ -57,7 +57,7 @@ internal fun ClubDetailScreen(
         GoBackTopBar(
             icon = { GoBackIcon() },
             text = "돌아가기",
-            onClick = onBackClicked
+            onClicked = onBackClicked
         )
         Spacer(modifier = modifier.height(16.dp))
         ClubInfoSection(data = data)

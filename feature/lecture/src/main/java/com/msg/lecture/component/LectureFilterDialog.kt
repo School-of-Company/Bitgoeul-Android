@@ -29,13 +29,13 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 internal fun LectureFilterDialog(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
-    onCloseButtonClick: () -> Unit,
-    onFilterButtonClick: (String?) -> Unit?,
+    onCloseButtonClicked: () -> Unit,
+    onFilterButtonClicked: (String?) -> Unit?,
 ) {
     val isFilterSelected = remember { mutableStateOf("0") }
     if (isVisible) {
         BitgoeulAndroidTheme { colors, typography ->
-            Dialog(onDismissRequest = { onCloseButtonClick() }) {
+            Dialog(onDismissRequest = { onCloseButtonClicked() }) {
                 Box(
                     modifier = modifier
                         .background(color = colors.WHITE, RoundedCornerShape(8.dp))
@@ -55,7 +55,7 @@ internal fun LectureFilterDialog(
 
                             CloseIcon(
                                 modifier = modifier.clickable {
-                                    onCloseButtonClick()
+                                    onCloseButtonClicked()
                                 }
                             )
                         }
@@ -68,8 +68,8 @@ internal fun LectureFilterDialog(
                             SelectedIndicator(
                                 modifier = modifier.size(20.dp),
                                 isSelected = isFilterSelected.value == "0",
-                                onClick = {
-                                    onFilterButtonClick(null)
+                                onClicked = {
+                                    onFilterButtonClicked(null)
                                     isFilterSelected.value = "0"
                                 }
                             )
@@ -91,8 +91,8 @@ internal fun LectureFilterDialog(
                             SelectedIndicator(
                                 modifier = modifier.size(20.dp),
                                 isSelected = isFilterSelected.value == "1",
-                                onClick = {
-                                    onFilterButtonClick("상호학점인정교육과정")
+                                onClicked= {
+                                    onFilterButtonClicked("상호학점인정교육과정")
                                     isFilterSelected.value = "1"
                                 }
                             )
@@ -114,8 +114,8 @@ internal fun LectureFilterDialog(
                             SelectedIndicator(
                                 modifier = modifier.size(20.dp),
                                 isSelected = isFilterSelected.value == "2",
-                                onClick = {
-                                    onFilterButtonClick("대학탐방프로그램")
+                                onClicked = {
+                                    onFilterButtonClicked("대학탐방프로그램")
                                     isFilterSelected.value = "2"
                                 }
                             )

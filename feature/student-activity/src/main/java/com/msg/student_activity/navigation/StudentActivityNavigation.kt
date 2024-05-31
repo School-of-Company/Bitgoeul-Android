@@ -19,11 +19,11 @@ fun NavController.navigateToStudentActivity(navOptions: NavOptions? = null) {
     this.navigate(studentActivityRoute, navOptions)
 }
 
-fun NavGraphBuilder.studentActivityScreen(onAddClick: () -> Unit, onItemClick: () -> Unit, onBackClicked: () -> Unit, id: UUID? = null) {
+fun NavGraphBuilder.studentActivityScreen(onAddClicked: () -> Unit, onItemClicked: () -> Unit, onBackClicked: () -> Unit, id: UUID? = null) {
     composable(route = studentActivityRoute) {
         StudentActivityRoute(
-            onAddClicked = onAddClick,
-            onItemClicked = onItemClick,
+            onAddClicked = onAddClicked,
+            onItemClicked = onItemClicked,
             onBackClicked = onBackClicked,
             id = id
         )
@@ -62,10 +62,10 @@ fun NavController.navigateToDetailSettingActivity(navOptions: NavOptions? = null
     this.navigate(studentActivityDetailSettingRoute, navOptions)
 }
 
-fun NavGraphBuilder.studentDetailSettingActivityScreen(onCloseClick: () -> Unit, onApplyClicked: () -> Unit) {
+fun NavGraphBuilder.studentDetailSettingActivityScreen(onCloseClicked: () -> Unit, onApplyClicked: () -> Unit) {
     composable(route = studentActivityDetailSettingRoute) {
         ActivityDetailSettingRoute(
-            onCloseClick = onCloseClick,
+            onCloseClicked = onCloseClicked,
             onApplyClicked = onApplyClicked
         )
     }

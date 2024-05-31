@@ -49,11 +49,11 @@ internal fun LectureDetailSettingSearchBottomSheet(
     searchPlaceHolder: String,
     division: String,
     searchAPIType: String,
-    onSearchButtonClick: (keyword: String, division: String) -> Unit,
-    onProfessorListClick: (professorUUID: UUID, professorName: String) -> Unit,
-    onDepartmentListClick: (String) -> Unit,
-    onLineListClick: (String) -> Unit,
-    onDivisionListClick: (String) -> Unit,
+    onSearchButtonClicked: (keyword: String, division: String) -> Unit,
+    onProfessorListClicked: (professorUUID: UUID, professorName: String) -> Unit,
+    onDepartmentListClicked: (String) -> Unit,
+    onLineListClicked: (String) -> Unit,
+    onDivisionListClicked: (String) -> Unit,
     onQuit: () -> Unit,
 ) {
     val keywordState = remember { mutableStateOf("") }
@@ -66,7 +66,7 @@ internal fun LectureDetailSettingSearchBottomSheet(
             containerColor = colors.WHITE
         ) {
             LaunchedEffect(true) {
-                onSearchButtonClick("", "")
+                onSearchButtonClicked("", "")
             }
             Column(
                 modifier = modifier
@@ -83,8 +83,8 @@ internal fun LectureDetailSettingSearchBottomSheet(
                         keywordState.value = keyword
                     },
                     isDisabled = false,
-                    onClickButton = {
-                        onSearchButtonClick(keywordState.value, division)
+                    onButtonClicked = {
+                        onSearchButtonClicked(keywordState.value, division)
                     },
                 )
 
@@ -94,8 +94,8 @@ internal fun LectureDetailSettingSearchBottomSheet(
                         "강의 계열" -> {
                             LectureLineList(
                                 modifier = modifier,
-                                onClick = { selectedLineData ->
-                                    onLineListClick(selectedLineData)
+                                onClicked = { selectedLineData ->
+                                    onLineListClicked(selectedLineData)
                                 },
                                 data = searchLineData,
                                 division = division,
@@ -106,8 +106,8 @@ internal fun LectureDetailSettingSearchBottomSheet(
                         "담당 교수" -> {
                             LectureProfessorList(
                                 modifier = modifier,
-                                onClick = { professor, selectedProfessorName ->
-                                    onProfessorListClick(professor, selectedProfessorName)
+                                onClicked = { professor, selectedProfessorName ->
+                                    onProfessorListClicked(professor, selectedProfessorName)
                                 },
                                 data = searchProfessorData,
                                 division = division,
@@ -118,8 +118,8 @@ internal fun LectureDetailSettingSearchBottomSheet(
                         "학과" -> {
                             LectureDepartmentList(
                                 modifier = modifier,
-                                onClick = { department ->
-                                    onDepartmentListClick(department)
+                                onClicked = { department ->
+                                    onDepartmentListClicked(department)
                                 },
                                 data = searchDepartmentData
                             )
@@ -128,8 +128,8 @@ internal fun LectureDetailSettingSearchBottomSheet(
                         "구분" -> {
                             LectureDivisionList(
                                 modifier = modifier,
-                                onClick = { division ->
-                                    onDivisionListClick(division)
+                                onClicked = { division ->
+                                    onDivisionListClicked(division)
                                 },
                                 data = searchDivisionData
                             )
@@ -229,7 +229,7 @@ internal fun LectureDetailSettingLectureDatesBottomSheet(
 
                     BitgoeulButton(
                         modifier = modifier.fillMaxWidth(),
-                        onClick = {
+                        onClicked = {
                             if (completeDates.value.isNotEmpty() && startTime.value.isNotEmpty() && endTime.value.isNotEmpty()) {
                                 onQuit(completeDates.value, startTime.value, endTime.value)
                                 coroutineScope.launch {
@@ -250,7 +250,7 @@ internal fun LectureDetailSettingLectureDatesBottomSheet(
 internal fun LectureExcelDownloadBottomSheet(
     isVisible: Boolean,
     modifier: Modifier = Modifier,
-    onDownloadButtonClick: () -> Unit,
+    onDownloadButtonClicked: () -> Unit,
     onQuit: () -> Unit,
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
@@ -287,7 +287,7 @@ internal fun LectureExcelDownloadBottomSheet(
                         FileIcon(
                             modifier = modifier.clickable {
                                 coroutineScope.launch {
-                                    onDownloadButtonClick()
+                                    onDownloadButtonClicked()
                                     bottomSheetState.hide()
                                 }
                             }
