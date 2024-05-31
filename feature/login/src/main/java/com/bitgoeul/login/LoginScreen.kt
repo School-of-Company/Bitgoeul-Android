@@ -95,17 +95,10 @@ private fun observeLoginEvent(
 
 
 @Composable
-<<<<<<< HEAD
 internal fun LoginScreen(
-    onSignUpClick: () -> Unit,
-    onLoginClick: () -> Unit = {},
-    onFindPasswordClick: () -> Unit,
-=======
-fun LoginScreen(
     onSignUpClicked: () -> Unit,
     onLoginClicked: () -> Unit = {},
     onFindPasswordClicked: () -> Unit,
->>>>>>> e56ba4db2c7906221c5e993e5ef9cced8e179767
     setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)

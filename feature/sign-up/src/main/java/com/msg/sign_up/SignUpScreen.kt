@@ -132,13 +132,8 @@ internal fun SignUpRoute(
 }
 
 @Composable
-<<<<<<< HEAD
 internal fun SignUpScreen(
-    onBackClick: () -> Unit,
-=======
-fun SignUpScreen(
     onBackClicked: () -> Unit,
->>>>>>> e56ba4db2c7906221c5e993e5ef9cced8e179767
     onEnterFinished: (
         job: String,
         school: String,
