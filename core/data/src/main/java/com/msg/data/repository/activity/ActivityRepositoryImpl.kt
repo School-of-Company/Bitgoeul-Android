@@ -1,8 +1,8 @@
 package com.msg.data.repository.activity
 
 import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.InquiryStudentActivityListResponse
+import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
+import com.msg.model.remote.response.activity.GetStudentActivityListResponse
 import com.msg.network.datasource.activity.ActivityDataSource
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -42,46 +42,40 @@ class ActivityRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun inquiryMyStudentActivityInfoList(
+    override suspend fun getMyStudentActivityInfoList(
         page: Int,
         size: Int,
-        sort: String
-    ): Flow<InquiryStudentActivityListResponse> {
-        return activityDataSource.inquiryMyStudentActivityInfoList(
+    ): Flow<GetStudentActivityListResponse> {
+        return activityDataSource.getMyStudentActivityInfoList(
             page = page,
             size = size,
-            sort = sort
         )
     }
 
-    override suspend fun inquiryStudentActivityInfoList(
+    override suspend fun getStudentActivityInfoList(
         page: Int,
         size: Int,
-        sort: String,
         id: UUID
-    ): Flow<InquiryStudentActivityListResponse> {
-        return activityDataSource.inquiryStudentActivityInfoList(
+    ): Flow<GetStudentActivityListResponse> {
+        return activityDataSource.getStudentActivityInfoList(
             page = page,
             size = size,
-            sort = sort,
             id = id
         )
     }
 
-    override suspend fun inquiryEntireStudentActivityInfoList(
+    override suspend fun getEntireStudentActivityInfoList(
         page: Int,
         size: Int,
-        sort: String
-    ): Flow<InquiryStudentActivityListResponse> {
-        return activityDataSource.inquiryEntireStudentActivityInfoList(
+    ): Flow<GetStudentActivityListResponse> {
+        return activityDataSource.getEntireStudentActivityInfoList(
             page = page,
             size = size,
-            sort = sort
         )
     }
 
-    override suspend fun inquiryDetailStudentActivityInfo(id: UUID): Flow<InquiryDetailStudentActivityInfoResponse> {
-        return activityDataSource.inquiryDetailStudentActivityInfo(
+    override suspend fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse> {
+        return activityDataSource.getDetailStudentActivityInfo(
             id = id
         )
     }

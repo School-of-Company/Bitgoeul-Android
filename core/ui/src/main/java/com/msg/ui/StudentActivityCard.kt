@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.ApproveStatus
 import Authority
-import com.msg.model.remote.model.activity.InquiryStudentActivityModel
+import com.msg.model.remote.model.activity.GetStudentActivityModel
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDate
 import java.util.UUID
 
 @Composable
 fun StudentActivityCard(
-    data: InquiryStudentActivityModel,
+    data: GetStudentActivityModel,
     onClick: (UUID) -> Unit,
     role: Authority = Authority.ROLE_USER
 ) {
@@ -89,7 +89,7 @@ fun StudentActivityCard(
 @Composable
 fun StudentActivityCardPre() {
     StudentActivityCard(
-        data = InquiryStudentActivityModel(
+        data = GetStudentActivityModel(
             activityId = UUID.randomUUID(),
             title = "title",
             activityDate = LocalDate.now(),

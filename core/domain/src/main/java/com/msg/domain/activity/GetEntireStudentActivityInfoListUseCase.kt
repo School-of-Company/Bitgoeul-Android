@@ -3,14 +3,13 @@ package com.msg.domain.activity
 import com.msg.data.repository.activity.ActivityRepository
 import javax.inject.Inject
 
-class InquiryMyStudentActivityInfoListUseCase @Inject constructor(
+class GetEntireStudentActivityInfoListUseCase @Inject constructor(
     private val activityRepository: ActivityRepository
 ) {
-    suspend operator fun invoke(page: Int, size: Int, sort: String) = runCatching {
-        activityRepository.inquiryMyStudentActivityInfoList(
+    suspend operator fun invoke(page: Int, size: Int) = runCatching {
+        activityRepository.getEntireStudentActivityInfoList(
             page = page,
             size = size,
-            sort = sort
         )
     }
 }

@@ -33,7 +33,7 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.ApproveStatus
-import com.msg.model.remote.response.activity.InquiryDetailStudentActivityInfoResponse
+import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
 import com.msg.student_activity.util.Event
 import com.msg.student_activity.viewmodel.StudentActivityViewModel
 import com.msg.ui.util.toDotFormat
@@ -49,7 +49,7 @@ fun ActivityDetailRoute(
 ) {
     val role = viewModel.role
     val id = viewModel.selectedActivityId.value
-    viewModel.inquiryDetailStudentActivity(id = id)
+    viewModel.getDetailStudentActivity(id = id)
     LaunchedEffect(true) {
         getActivityData(
             viewModel = viewModel,
@@ -72,7 +72,7 @@ fun ActivityDetailRoute(
 
 suspend fun getActivityData(
     viewModel: StudentActivityViewModel,
-    onSuccess: (data: InquiryDetailStudentActivityInfoResponse) -> Unit
+    onSuccess: (data: GetDetailStudentActivityInfoResponse) -> Unit
 ) {
     viewModel.getDetailStudentActivityResponse.collect { response ->
         when (response) {
@@ -87,7 +87,7 @@ suspend fun getActivityData(
 
 @Composable
 fun ActivityDetailScreen(
-    data: InquiryDetailStudentActivityInfoResponse,
+    data: GetDetailStudentActivityInfoResponse,
     role: String = Authority.ROLE_USER.toString(),
     onDeleteClicked: (UUID) -> Unit,
     onRejectClicked: (UUID) -> Unit,
