@@ -63,9 +63,6 @@ internal fun LoginRoute(
                 }
             )
         },
-        setLoginData = { email, password ->
-            viewModel.setLoginData(email = email, password = password)
-        },
     )
 }
 
@@ -196,8 +193,7 @@ internal fun LoginScreen(
                             .height(52.dp),
                         state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
                         onClicked = {
-                            setLoginData(emailState.value, passwordState.value)
-                            onLoginClicked()
+                            onLoginClicked(emailState.value, passwordState.value)
                         }
                     )
                 }
