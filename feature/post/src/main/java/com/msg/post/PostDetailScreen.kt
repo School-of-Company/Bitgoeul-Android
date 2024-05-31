@@ -45,7 +45,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Composable
-fun PostDetailScreenRoute(
+internal fun PostDetailScreenRoute(
     viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onEditClicked: () -> Unit,
     onDeleteClicked: () -> Unit,
@@ -78,7 +78,7 @@ fun PostDetailScreenRoute(
     )
 }
 
-suspend fun getDetailPost(
+private suspend fun getDetailPost(
     viewModel: PostViewModel,
     onSuccess: (data: GetDetailPostResponse) -> Unit
 ) {
@@ -93,7 +93,7 @@ suspend fun getDetailPost(
 }
 
 @Composable
-fun PostDetailScreen(
+internal fun PostDetailScreen(
     modifier: Modifier = Modifier,
     data: GetDetailPostResponse,
     id: UUID,

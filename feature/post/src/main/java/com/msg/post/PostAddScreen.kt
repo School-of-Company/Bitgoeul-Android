@@ -71,7 +71,7 @@ internal fun PostAddScreenRoute(
 }
 
 @Composable
-fun PostAddScreen(
+internal fun PostAddScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     onSettingClicked: (title: String, content: String) -> Unit,

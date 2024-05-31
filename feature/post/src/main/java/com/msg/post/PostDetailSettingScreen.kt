@@ -46,7 +46,7 @@ internal fun PostDetailSettingScreenRoute(
 }
 
 @Composable
-fun PostDetailSettingScreen(
+internal fun PostDetailSettingScreen(
     modifier: Modifier = Modifier,
     links: MutableList<String>,
     onCloseClick: () -> Unit,
