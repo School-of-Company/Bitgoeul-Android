@@ -7,7 +7,7 @@ import com.msg.design_system.component.bottomsheet.SelectorBottomSheet
 import com.msg.design_system.component.textfield.DefaultTextField
 
 @Composable
-fun SignUpBottomSheet(
+internal fun SignUpBottomSheet(
     list: List<String>,
     selectedItem: String,
     isSearching: Boolean,

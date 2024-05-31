@@ -19,7 +19,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.ui.DevicePreviews
 
 @Composable
-fun SignupFinishScreenRoute(
+internal fun SignupFinishScreenRoute(
     onBackClicked: () -> Unit
 ) {
     SignUpFinishScreen(
@@ -28,7 +28,7 @@ fun SignupFinishScreenRoute(
 }
 
 @Composable
-fun SignUpFinishScreen(
+internal fun SignUpFinishScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit
 ) {

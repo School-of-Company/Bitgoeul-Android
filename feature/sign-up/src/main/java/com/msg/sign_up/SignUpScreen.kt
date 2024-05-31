@@ -77,7 +77,7 @@ enum class Keyboard {
 }
 
 @Composable
-fun keyboardAsState(): State<Keyboard> {
+private fun keyboardAsState(): State<Keyboard> {
     val keyboardState = remember { mutableStateOf(Keyboard.Closed) }
     val view = LocalView.current
     DisposableEffect(view) {
@@ -103,7 +103,7 @@ fun keyboardAsState(): State<Keyboard> {
 }
 
 @Composable
-fun SignUpRoute(
+internal fun SignUpRoute(
     viewModel: SignUpViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onBackClick: () -> Unit,
     onEnterFinished: () -> Unit
@@ -132,7 +132,7 @@ fun SignUpRoute(
 }
 
 @Composable
-fun SignUpScreen(
+internal fun SignUpScreen(
     onBackClick: () -> Unit,
     onEnterFinished: (
         job: String,
