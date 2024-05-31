@@ -137,7 +137,7 @@ fun LectureFilterBottomSheet(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         BitGoeulCheckBox(
-                            checked = isChecked[0],
+                            isChecked = isChecked[0],
                             onCheckedChange = { isChecked[0] = it },
                             modifier = Modifier
                                 .width(24.dp)
@@ -162,7 +162,7 @@ fun LectureFilterBottomSheet(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         BitGoeulCheckBox(
-                            checked = isChecked[1],
+                            isChecked = isChecked[1],
                             onCheckedChange = { isChecked[1] = it },
                             modifier = Modifier
                                 .width(24.dp)
