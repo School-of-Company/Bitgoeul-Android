@@ -26,7 +26,7 @@ import Authority
 import com.msg.model.remote.response.user.InquiryMyPageResponse
 
 @Composable
-fun MyPageRoute(
+internal fun MyPageRoute(
     onPasswordChangeClicked: () -> Unit,
     onWithdrawClicked: () -> Unit,
     onLogoutClicked: () -> Unit,
@@ -55,7 +55,7 @@ fun MyPageRoute(
     )
 }
 
-suspend fun getMyPageData(
+private suspend fun getMyPageData(
     viewModel: MyPageViewModel,
     onSuccess: (data: InquiryMyPageResponse) -> Unit
 ) {
@@ -70,7 +70,7 @@ suspend fun getMyPageData(
 }
 
 @Composable
-fun MyPageScreen(
+internal fun MyPageScreen(
     onPasswordChangeClicked: () -> Unit,
     onLogOutClicked: () -> Unit,
     onWithdrawClicked: () -> Unit,

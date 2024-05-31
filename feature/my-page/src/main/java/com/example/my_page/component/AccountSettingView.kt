@@ -13,7 +13,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.BitgoeulIndication
 
 @Composable
-fun AccountSettingView(
+internal fun AccountSettingView(
     modifier: Modifier,
     onPasswordChangeClicked: () -> Unit,
     onLogOutClicked: () -> Unit,
