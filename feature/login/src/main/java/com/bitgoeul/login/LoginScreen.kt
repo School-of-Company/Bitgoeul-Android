@@ -69,30 +69,24 @@ internal fun LoginRoute(
     )
 }
 
-private fun observeLoginEvent(
+private suspend fun getLoginData(
     viewModel: AuthViewModel,
-    lifecycleOwner: LifecycleOwner,
     onSuccess: () -> Unit,
-    onFailure: () -> Unit
+    onFailure: () -> Unit,
 ) {
-    viewModel.loginRequest.observe(lifecycleOwner) { event ->
-        Log.e("event", event.toString())
-        when (event) {
+    viewModel.loginResponse.collect { response ->
+        when (response) {
             is Event.Success -> {
-                val data = event.data
-                if (data != null && data.accessToken.isNotEmpty()) {
-                    viewModel.saveTokenData(data)
-                    onSuccess()
-                } else {
-                    onFailure()
-                }
+                viewModel.saveTokenData(response.data!!)
+                onSuccess()
             }
 
-            else -> {}
+            else -> {
+                onFailure()
+            }
         }
     }
 }
-
 
 @Composable
 internal fun LoginScreen(
