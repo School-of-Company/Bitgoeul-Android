@@ -13,15 +13,15 @@ fun NavController.navigateToLogin(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.loginScreen(
-    onSignUpClick: () -> Unit,
-    onFindPasswordClick: () -> Unit,
-    onLoginClick: () -> Unit
+    onSignUpClicked: () -> Unit,
+    onFindPasswordClicked: () -> Unit,
+    onLoginClicked: () -> Unit
 ) {
     composable(route = loginRoute) {
         LoginRoute(
-            onSignUpClick = onSignUpClick,
-            onFindPasswordClick = onFindPasswordClick,
-            onLoginClick = onLoginClick
+            onSignUpClicked = onSignUpClicked,
+            onFindPasswordClicked = onFindPasswordClicked,
+            onLoginClicked = onLoginClicked
         )
     }
 }
