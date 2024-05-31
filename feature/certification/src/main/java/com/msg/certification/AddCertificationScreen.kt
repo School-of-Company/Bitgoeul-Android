@@ -85,7 +85,7 @@ fun AddCertificationScreen(
                 onValueChange = {
                     name.value = it
                 },
-                onClickButton = {
+                onButtonClicked = {
                     name.value = ""
                 }
             )
@@ -99,7 +99,7 @@ fun AddCertificationScreen(
             BitgoeulButton(
                 modifier = modifier.fillMaxWidth(),
                 text = "자격증 등록",
-                onClick = {
+                onClicked = {
                     if (name.value.isBlank()) {
                         Toast.makeText(context, "자격증 이름을 입력해주세요", Toast.LENGTH_SHORT).show()
                     } else if (date.value == null) {
