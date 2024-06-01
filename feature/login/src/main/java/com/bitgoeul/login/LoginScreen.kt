@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,7 +38,10 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
+import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.model.remote.response.lecture.LectureListResponse
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun LoginRoute(
@@ -46,60 +50,56 @@ internal fun LoginRoute(
     onLoginClicked: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     LoginScreen(
         onSignUpClicked = onSignUpClicked,
         onFindPasswordClicked = onFindPasswordClicked,
-        onLoginClicked = {
-            viewModel.login(LoginRequest(viewModel.email.value, viewModel.password.value))
-            observeLoginEvent(
-                lifecycleOwner = lifecycleOwner,
-                viewModel = viewModel,
-                onSuccess = onLoginClicked,
-                onFailure = {
-                    Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
-                }
-            )
-        },
-        setLoginData = { email, password ->
-            viewModel.setLoginData(email = email, password = password)
+        onLoginClicked = { email, password ->
+            viewModel.login(email = email, password = password)
+            coroutineScope.launch {
+                getLoginData(
+                    viewModel = viewModel,
+                    onSuccess = {
+                        Toast.makeText(context, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                        onLoginClicked()
+                    },
+                    onFailure = {
+                        Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
         },
     )
 }
 
-private fun observeLoginEvent(
+private suspend fun getLoginData(
     viewModel: AuthViewModel,
-    lifecycleOwner: LifecycleOwner,
     onSuccess: () -> Unit,
-    onFailure: () -> Unit
+    onFailure: () -> Unit,
 ) {
-    viewModel.loginRequest.observe(lifecycleOwner) { event ->
-        Log.e("event", event.toString())
-        when (event) {
+    viewModel.loginResponse.collect { response ->
+        when (response) {
             is Event.Success -> {
-                val data = event.data
-                if (data != null && data.accessToken.isNotEmpty()) {
-                    viewModel.saveTokenData(data)
-                    onSuccess()
-                } else {
-                    onFailure()
-                }
+                viewModel.saveTokenData(response.data!!)
+                onSuccess()
             }
 
-            else -> {}
+            is Event.BadRequest -> {
+                onFailure()
+            }
+            else -> {
+            }
         }
     }
 }
 
-
 @Composable
 internal fun LoginScreen(
     onSignUpClicked: () -> Unit,
-    onLoginClicked: () -> Unit = {},
+    onLoginClicked: (String, String) -> Unit = { _, _ -> },
     onFindPasswordClicked: () -> Unit,
-    setLoginData: (String, String) -> Unit = { _, _ -> },
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val isEmailErrorStatus = remember { mutableStateOf(false) }
@@ -202,8 +202,7 @@ internal fun LoginScreen(
                             .height(52.dp),
                         state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
                         onClicked = {
-                            setLoginData(emailState.value, passwordState.value)
-                            onLoginClicked()
+                            onLoginClicked(emailState.value, passwordState.value)
                         }
                     )
                 }
