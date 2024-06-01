@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +21,6 @@ import com.msg.certification.component.AddAcquisitionDateSection
 import com.msg.certification.component.AddCertificationSection
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.topbar.DetailSettingTopBar
-import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.theme.color.BitgoeulColor
 import com.msg.ui.DevicePreviews
 import com.msg.ui.util.toKoreanFormat

@@ -1,5 +1,6 @@
 package com.msg.post
 
+import Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -23,14 +24,10 @@ import com.msg.design_system.component.icon.HelpIcon
 import com.msg.design_system.component.icon.MegaphoneIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import Authority
 import com.msg.model.remote.enumdatatype.FeedType
-import com.msg.model.remote.model.post.PostModel
 import com.msg.model.remote.response.post.GetPostListResponse
 import com.msg.post.util.Event
-import com.msg.ui.DevicePreviews
 import com.msg.ui.PostList
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Composable

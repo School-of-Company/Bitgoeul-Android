@@ -1,5 +1,6 @@
 package com.msg.post
 
+import Authority
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,6 @@ import com.msg.domain.post.EditPostUseCase
 import com.msg.domain.post.GetDetailPostUseCase
 import com.msg.domain.post.GetPostListUseCase
 import com.msg.domain.post.SendPostUseCase
-import Authority
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.request.post.WritePostRequest
 import com.msg.model.remote.response.post.GetDetailPostResponse

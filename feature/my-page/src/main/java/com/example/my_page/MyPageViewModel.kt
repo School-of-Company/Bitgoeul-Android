@@ -1,15 +1,15 @@
 package com.example.my_page
 
+import Authority
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.my_page.util.Event
 import com.example.my_page.util.errorHandling
+import com.msg.domain.auth.LogoutUseCase
 import com.msg.domain.auth.WithdrawUseCase
 import com.msg.domain.user.ChangePasswordUseCase
 import com.msg.domain.user.InquiryMyPageUseCase
-import Authority
-import com.msg.domain.auth.LogoutUseCase
 import com.msg.model.remote.request.user.ChangePasswordRequest
 import com.msg.model.remote.response.user.InquiryMyPageResponse
 import dagger.hilt.android.lifecycle.HiltViewModel

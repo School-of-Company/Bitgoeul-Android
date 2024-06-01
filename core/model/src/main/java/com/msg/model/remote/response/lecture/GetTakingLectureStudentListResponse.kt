@@ -1,7 +1,6 @@
 package com.msg.model.remote.response.lecture
 
 import com.msg.model.remote.enumdatatype.HighSchool
-import java.time.LocalDate
 import java.util.UUID
 
 data class GetTakingLectureStudentListResponse(

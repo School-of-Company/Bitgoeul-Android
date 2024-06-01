@@ -1,5 +1,6 @@
 package com.msg.club
 
+import Authority
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +13,6 @@ import com.msg.domain.club.GetClubDetailUseCase
 import com.msg.domain.club.GetClubListUseCase
 import com.msg.domain.club.GetMyClubDetailUseCase
 import com.msg.domain.club.GetStudentBelongClubUseCase
-import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.response.club.ClubDetailResponse
 import com.msg.model.remote.response.club.ClubListResponse

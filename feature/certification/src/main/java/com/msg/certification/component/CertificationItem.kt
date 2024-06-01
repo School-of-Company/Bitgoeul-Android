@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.msg.design_system.R
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.certification.CertificationListResponse
-import com.msg.design_system.R
 import com.msg.ui.util.toDotFormat
 import java.time.LocalDate
 import java.util.UUID

@@ -1,5 +1,6 @@
 package com.msg.club
 
+import Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,7 +17,6 @@ import com.msg.club.component.ClubMemberInfoListSection
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.color.BitgoeulColor
-import Authority
 import com.msg.model.remote.response.club.ClubDetailResponse
 import com.msg.ui.DevicePreviews
 import java.util.UUID

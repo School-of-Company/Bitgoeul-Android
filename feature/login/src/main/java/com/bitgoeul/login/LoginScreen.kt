@@ -1,7 +1,6 @@
 package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,12 +19,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
 import com.bitgoeul.login.viewmodel.AuthViewModel
 import com.bitgoeul.login.viewmodel.util.Event
 import com.msg.design_system.R
@@ -38,9 +35,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
-import com.msg.model.remote.model.auth.AuthTokenModel
-import com.msg.model.remote.request.auth.LoginRequest
-import com.msg.model.remote.response.lecture.LectureListResponse
 import kotlinx.coroutines.launch
 
 @Composable

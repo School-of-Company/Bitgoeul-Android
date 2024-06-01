@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.R
@@ -33,7 +32,6 @@ import com.msg.lecture.component.LectureFilterDialog
 import com.msg.lecture.component.LectureList
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import Authority
 import com.msg.model.remote.response.lecture.LectureListResponse
 import com.msg.model.remote.response.lecture.Lectures
 import java.util.UUID

@@ -10,7 +10,6 @@ import com.msg.domain.auth.SignUpGovernmentUseCase
 import com.msg.domain.auth.SignUpJobClubTeacherUseCase
 import com.msg.domain.auth.SignUpProfessorUseCase
 import com.msg.domain.auth.SignUpStudentUseCase
-import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
 import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
 import com.msg.model.remote.request.auth.SignUpGovernmentRequest
