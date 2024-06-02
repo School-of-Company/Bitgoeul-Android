@@ -3,6 +3,7 @@ package com.msg.datastore
 import androidx.datastore.core.DataStore
 import Authority
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import java.time.LocalDateTime
@@ -15,12 +16,13 @@ class AuthTokenDataSource @Inject constructor(
         it.accessToken ?: ""
     }
 
-    suspend fun setAccessToken(accessToken: String) {
+    fun setAccessToken(accessToken: String): Flow<Unit> = flow {
         authToken.updateData {
             it.toBuilder()
                 .setAccessToken(accessToken)
                 .build()
         }
+        emit(Unit)
     }
 
     fun getAccessTokenExp(): Flow<LocalDateTime> =
@@ -29,24 +31,26 @@ class AuthTokenDataSource @Inject constructor(
         }
 
 
-    suspend fun setAccessTokenExp(accessTokenExp: String) {
+    fun setAccessTokenExp(accessTokenExp: String): Flow<Unit> = flow {
         authToken.updateData {
             it.toBuilder()
                 .setAccessExp(accessTokenExp)
                 .build()
         }
+        emit(Unit)
     }
 
     fun getRefreshToken(): Flow<String> = authToken.data.map {
         it.refreshToken ?: ""
     }
 
-    suspend fun setRefreshToken(refreshToken: String) {
+    fun setRefreshToken(refreshToken: String): Flow<Unit> = flow {
         authToken.updateData {
             it.toBuilder()
                 .setRefreshToken(refreshToken)
                 .build()
         }
+        emit(Unit)
     }
 
     fun getRefreshTokenExp(): Flow<LocalDateTime> =
@@ -55,7 +59,7 @@ class AuthTokenDataSource @Inject constructor(
         } }
 
 
-    suspend fun setRefreshTokenExp(refreshTokenExp: String) {
+    fun setRefreshTokenExp(refreshTokenExp: String): Flow<Unit> = flow {
         authToken.updateData {
             it.toBuilder()
                 .setRefreshExp(refreshTokenExp)
@@ -80,11 +84,12 @@ class AuthTokenDataSource @Inject constructor(
     }
 
 
-    suspend fun setAuthority(authority: Authority) {
+    fun setAuthority(authority: Authority): Flow<Unit> = flow {
         authToken.updateData {
             it.toBuilder()
                 .setAuthority(authority.toString())
                 .build()
         }
+        emit(Unit)
     }
 }
