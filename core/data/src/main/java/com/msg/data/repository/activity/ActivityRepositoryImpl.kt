@@ -11,38 +11,38 @@ import javax.inject.Inject
 class ActivityRepositoryImpl @Inject constructor(
     private val activityDataSource: ActivityDataSource
 ) : ActivityRepository {
-    override suspend fun addStudentActivityInfo(body: StudentActivityModel): Flow<Unit> {
+    override fun addStudentActivityInfo(body: StudentActivityModel): Flow<Unit> {
         return activityDataSource.addStudentActivityInfo(
             body = body
         )
     }
 
-    override suspend fun editStudentActivityInfo(id: UUID, body: StudentActivityModel): Flow<Unit> {
+    override fun editStudentActivityInfo(id: UUID, body: StudentActivityModel): Flow<Unit> {
         return activityDataSource.editStudentActivityInfo(
             id = id,
             body = body
         )
     }
 
-    override suspend fun approveStudentActivityInfo(id: UUID): Flow<Unit> {
+    override fun approveStudentActivityInfo(id: UUID): Flow<Unit> {
         return activityDataSource.approveStudentActivityInfo(
             id = id
         )
     }
 
-    override suspend fun rejectStudentActivityInfo(id: UUID): Flow<Unit> {
+    override fun rejectStudentActivityInfo(id: UUID): Flow<Unit> {
         return activityDataSource.rejectStudentActivityInfo(
             id = id
         )
     }
 
-    override suspend fun deleteStudentActivityInfo(id: UUID): Flow<Unit> {
+    override fun deleteStudentActivityInfo(id: UUID): Flow<Unit> {
         return activityDataSource.deleteStudentActivityInfo(
             id = id
         )
     }
 
-    override suspend fun getMyStudentActivityInfoList(
+    override fun getMyStudentActivityInfoList(
         page: Int,
         size: Int,
     ): Flow<GetStudentActivityListResponse> {
@@ -52,7 +52,7 @@ class ActivityRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getStudentActivityInfoList(
+    override fun getStudentActivityInfoList(
         page: Int,
         size: Int,
         id: UUID
@@ -64,7 +64,7 @@ class ActivityRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getEntireStudentActivityInfoList(
+    override fun getEntireStudentActivityInfoList(
         page: Int,
         size: Int,
     ): Flow<GetStudentActivityListResponse> {
@@ -74,7 +74,7 @@ class ActivityRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse> {
+    override fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse> {
         return activityDataSource.getDetailStudentActivityInfo(
             id = id
         )
