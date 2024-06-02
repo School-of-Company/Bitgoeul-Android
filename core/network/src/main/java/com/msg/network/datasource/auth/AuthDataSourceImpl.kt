@@ -20,7 +20,7 @@ import javax.inject.Inject
 class AuthDataSourceImpl @Inject constructor(
     private val authAPI: AuthAPI
 ) : AuthDataSource {
-    override suspend fun login(body: LoginRequest): Flow<AuthTokenModel> = flow {
+    override fun login(body: LoginRequest): Flow<AuthTokenModel> = flow {
         emit(
             BitgoeulApiHandler<AuthTokenModel>()
                 .httpRequest { authAPI.login(body = body) }
@@ -28,7 +28,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun signUpStudent(body: SignUpStudentRequest): Flow<Unit> = flow {
+    override fun signUpStudent(body: SignUpStudentRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpStudent(body = body) }
@@ -36,7 +36,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit> = flow {
+    override fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpJobClubTeacher(body = body) }
@@ -44,7 +44,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit> = flow {
+    override fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpProfessor(body = body) }
@@ -53,7 +53,7 @@ class AuthDataSourceImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-    override suspend fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit> = flow {
+    override fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpGovernment(body = body) }
@@ -61,7 +61,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit> = flow {
+    override fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpCompanyInstructor(body = body) }
@@ -69,7 +69,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit> = flow {
+    override fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.signUpBbozzakTeacher(body = body) }
@@ -77,7 +77,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun findPassword(body: FindPasswordRequest): Flow<Unit> = flow {
+    override fun findPassword(body: FindPasswordRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.findPassword(body = body) }
@@ -85,7 +85,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun logout(): Flow<Unit> = flow {
+    override fun logout(): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.logout() }
@@ -93,7 +93,7 @@ class AuthDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun withdraw(): Flow<Unit> = flow {
+    override fun withdraw(): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { authAPI.withdraw() }
