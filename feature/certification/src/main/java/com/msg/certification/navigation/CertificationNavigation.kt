@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.msg.certification.AddCertificationScreenRoute
 import com.msg.certification.CertificationScreenRoute
-import java.util.UUID
 
 const val certificationRoute = "certification_route"
 const val addCertificationRoute = "add_certification_route"

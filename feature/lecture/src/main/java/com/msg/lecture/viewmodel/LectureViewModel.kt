@@ -1,7 +1,7 @@
 package com.msg.lecture.viewmodel
 
+import Authority
 import android.app.Application
-import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +23,6 @@ import com.msg.domain.lecture.SearchLineUseCase
 import com.msg.domain.lecture.SearchProfessorUseCase
 import com.msg.lecture.util.Event
 import com.msg.lecture.util.errorHandling
-import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.enumdatatype.Semester

@@ -1,9 +1,7 @@
 package com.msg.lecture.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.component.icon.FileIcon
-import com.msg.design_system.component.icon.FilterIcon
 import com.msg.design_system.component.icon.RedCloseIcon
 import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme

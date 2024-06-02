@@ -1,5 +1,6 @@
 package com.msg.club
 
+import Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +32,6 @@ import com.msg.design_system.component.dialog.GetClubListDialog
 import com.msg.design_system.component.icon.BigAlertIcon
 import com.msg.design_system.component.icon.GreySettingIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.remote.response.club.ClubListResponse
 import com.msg.ui.DevicePreviews

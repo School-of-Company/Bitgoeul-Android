@@ -1,5 +1,6 @@
 package com.msg.student_activity
 
+import Authority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

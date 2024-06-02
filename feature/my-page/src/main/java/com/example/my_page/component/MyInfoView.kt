@@ -1,5 +1,6 @@
 package com.example.my_page.component
 
+import Authority
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import Authority
 import com.msg.model.remote.response.user.InquiryMyPageResponse
 
 @Composable

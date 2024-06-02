@@ -1,6 +1,5 @@
 package com.msg.bitgoeul_android.navigation
 
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.msg.design_system.R
 
 enum class TopLevelDestination(

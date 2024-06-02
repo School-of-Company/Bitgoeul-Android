@@ -1,5 +1,6 @@
 package com.msg.main
 
+import Authority
 import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,7 +42,6 @@ import com.msg.main.component.HighSchoolCardView
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.main.util.Event
-import Authority
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData

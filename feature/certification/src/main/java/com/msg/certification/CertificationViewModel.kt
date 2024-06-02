@@ -1,5 +1,6 @@
 package com.msg.certification
 
+import Authority
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -14,7 +15,6 @@ import com.msg.domain.certification.GetCertificationListForTeacherUseCase
 import com.msg.domain.certification.WriteCertificationUseCase
 import com.msg.domain.club.GetStudentBelongClubUseCase
 import com.msg.domain.lecture.GetLectureSignUpHistoryUseCase
-import Authority
 import com.msg.model.remote.request.certification.WriteCertificationRequest
 import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.model.remote.response.club.StudentBelongClubResponse

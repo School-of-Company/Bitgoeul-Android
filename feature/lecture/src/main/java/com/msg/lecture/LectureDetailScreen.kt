@@ -38,7 +38,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureExcelDownloadBottomSheet
 import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import Authority
 import com.msg.model.remote.enumdatatype.LectureStatus
 import com.msg.model.remote.response.lecture.DetailLectureResponse
 import com.msg.ui.util.toKoreanFormat
