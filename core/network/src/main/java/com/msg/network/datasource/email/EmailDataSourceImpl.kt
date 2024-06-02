@@ -13,7 +13,7 @@ import javax.inject.Inject
 class EmailDataSourceImpl @Inject constructor(
     private val emailAPI: EmailAPI
 ) : EmailDataSource {
-    override suspend fun sendLinkToEmail(body: SendLinkToEmailRequest): Flow<Unit> = flow {
+    override fun sendLinkToEmail(body: SendLinkToEmailRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { emailAPI.sendLinkToEmail(body = body) }
@@ -21,7 +21,7 @@ class EmailDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getEmailAuthenticateStatus(email: String): Flow<GetEmailAuthenticateStatusResponse> = flow {
+    override fun getEmailAuthenticateStatus(email: String): Flow<GetEmailAuthenticateStatusResponse> = flow {
         emit(
             BitgoeulApiHandler<GetEmailAuthenticateStatusResponse>()
                 .httpRequest { emailAPI.getEmailAuthenticateStatus(email = email) }
