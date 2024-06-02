@@ -11,6 +11,7 @@ import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
 import com.msg.model.remote.request.auth.SignUpProfessorRequest
 import com.msg.model.remote.request.auth.SignUpStudentRequest
 import com.msg.network.datasource.auth.AuthDataSource
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
     private val localDataSource: AuthTokenDataSource
 ) : AuthRepository {
-    override suspend fun login(body: LoginRequest): Flow<AuthTokenModel> {
+    override fun login(body: LoginRequest): Flow<AuthTokenModel> {
         return authDataSource.login(
             body = body
         )
@@ -34,52 +35,52 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun signUpStudent(body: SignUpStudentRequest): Flow<Unit> {
+    override fun signUpStudent(body: SignUpStudentRequest): Flow<Unit> {
         return authDataSource.signUpStudent(
             body = body
         )
     }
 
-    override suspend fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit> {
+    override fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit> {
         return authDataSource.signUpJobClubTeacher(
             body = body
         )
     }
 
-    override suspend fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit> {
+    override fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit> {
         return authDataSource.signUpProfessor(
             body = body
         )
     }
 
-    override suspend fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit> {
+    override fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit> {
         return authDataSource.signUpGovernment(
             body = body
         )
     }
 
-    override suspend fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit> {
+    override fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit> {
         return authDataSource.signUpCompanyInstructor(
             body = body
         )
     }
 
-    override suspend fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit> {
+    override fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit> {
         return authDataSource.signUpBbozzakTeacher(
             body = body
         )
     }
 
-    override suspend fun findPassword(body: FindPasswordRequest): Flow<Unit> {
+    override fun findPassword(body: FindPasswordRequest): Flow<Unit> {
         return authDataSource.findPassword(
             body = body
         )
     }
-    override suspend fun logout(): Flow<Unit> {
+    override fun logout(): Flow<Unit> {
         return authDataSource.logout()
     }
 
-    override suspend fun withdraw(): Flow<Unit> {
+    override fun withdraw(): Flow<Unit> {
         return authDataSource.withdraw()
     }
 }
