@@ -13,6 +13,8 @@ import com.msg.model.remote.request.auth.SignUpStudentRequest
 import com.msg.network.datasource.auth.AuthDataSource
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -25,14 +27,12 @@ class AuthRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun saveToken(data: AuthTokenModel) {
-        data.let { loginResponse ->
-            localDataSource.setAccessToken(loginResponse.accessToken)
-            localDataSource.setAccessTokenExp(loginResponse.accessExpiredAt)
-            localDataSource.setRefreshToken(loginResponse.refreshToken)
-            localDataSource.setRefreshTokenExp(loginResponse.refreshExpiredAt)
-            localDataSource.setAuthority(loginResponse.authority)
-        }
+    override fun saveToken(data: AuthTokenModel): Flow<Unit> = flow {
+            localDataSource.setAccessToken(data.accessToken).first()
+            localDataSource.setAccessTokenExp(data.accessExpiredAt).first()
+            localDataSource.setRefreshToken(data.refreshToken).first()
+            localDataSource.setRefreshTokenExp(data.refreshExpiredAt).first()
+            localDataSource.setAuthority(data.authority).first()
     }
 
     override fun signUpStudent(body: SignUpStudentRequest): Flow<Unit> {

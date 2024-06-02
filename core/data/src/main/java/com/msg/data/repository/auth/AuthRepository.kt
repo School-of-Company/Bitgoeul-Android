@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
     fun login(body: LoginRequest): Flow<AuthTokenModel>
-    suspend fun saveToken(data: AuthTokenModel)
+    fun saveToken(data: AuthTokenModel): Flow<Unit>
     fun signUpStudent(body: SignUpStudentRequest): Flow<Unit>
     fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit>
     fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit>
