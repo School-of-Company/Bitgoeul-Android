@@ -22,7 +22,7 @@ import javax.inject.Inject
 class LectureDataSourceImpl @Inject constructor(
     private val lectureAPI: LectureAPI,
 ) : LectureDataSource {
-    override suspend fun openLecture(body: OpenLectureRequest): Flow<Unit> = flow {
+    override fun openLecture(body: OpenLectureRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { lectureAPI.openLecture(body = body) }
@@ -30,7 +30,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getLectureList(
+    override fun getLectureList(
         page: Int,
         size: Int,
         type: String?,
@@ -48,7 +48,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> = flow {
+    override fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> = flow {
         emit(
             BitgoeulApiHandler<DetailLectureResponse>()
                 .httpRequest { lectureAPI.getDetailLecture(id = id) }
@@ -56,7 +56,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun lectureApplication(id: UUID): Flow<Unit> = flow {
+    override fun lectureApplication(id: UUID): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { lectureAPI.lectureApplication(id = id) }
@@ -64,7 +64,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun lectureApplicationCancel(id: UUID): Flow<Unit> = flow {
+    override fun lectureApplicationCancel(id: UUID): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { lectureAPI.lectureApplicationCancel(id = id) }
@@ -72,7 +72,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> =
+    override fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> =
         flow {
             emit(
                 BitgoeulApiHandler<SearchProfessorResponse>()
@@ -81,7 +81,7 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> =
+    override fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> =
         flow {
             emit(
                 BitgoeulApiHandler<SearchLineResponse>()
@@ -90,7 +90,7 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> = flow {
+    override fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> = flow {
         emit(
             BitgoeulApiHandler<SearchDepartmentResponse>()
                 .httpRequest { lectureAPI.searchDepartment(keyword = keyword) }
@@ -98,7 +98,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchDivision(keyword: String): Flow<SearchDivisionResponse> = flow {
+    override fun searchDivision(keyword: String): Flow<SearchDivisionResponse> = flow {
         emit(
             BitgoeulApiHandler<SearchDivisionResponse>()
                 .httpRequest { lectureAPI.searchDivision(keyword = keyword) }
@@ -106,7 +106,7 @@ class LectureDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> =
+    override fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> =
         flow {
             emit(
                 BitgoeulApiHandler<GetLectureSignUpHistoryResponse>()
@@ -115,7 +115,7 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse> =
+    override fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse> =
         flow {
             emit(
                 BitgoeulApiHandler<GetTakingLectureStudentListResponse>()
@@ -124,7 +124,7 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> =
+    override fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> =
         flow {
             emit(
                 BitgoeulApiHandler<Unit>()
@@ -139,7 +139,7 @@ class LectureDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun downloadExcelFile(): Flow<DownloadExcelFileResponse> = flow {
+    override fun downloadExcelFile(): Flow<DownloadExcelFileResponse> = flow {
         emit(
             BitgoeulApiHandler<DownloadExcelFileResponse>()
                 .httpRequest {

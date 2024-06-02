@@ -9,11 +9,11 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
 ) : UserRepository {
-    override suspend fun changePassword(body: ChangePasswordRequest): Flow<Unit> {
+    override fun changePassword(body: ChangePasswordRequest): Flow<Unit> {
         return userDataSource.changePassword(body = body)
     }
 
-    override suspend fun inquiryMyPage(): Flow<InquiryMyPageResponse> {
+    override fun inquiryMyPage(): Flow<InquiryMyPageResponse> {
         return userDataSource.inquiryMyPage()
     }
 }

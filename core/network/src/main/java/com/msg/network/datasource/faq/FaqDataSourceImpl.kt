@@ -13,7 +13,7 @@ import javax.inject.Inject
 class FaqDataSourceImpl @Inject constructor(
     private val faqAPI: FaqAPI,
 ) : FaqDataSource {
-    override suspend fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit> =
+    override fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit> =
         flow {
             emit(
                 BitgoeulApiHandler<Unit>()
@@ -22,7 +22,7 @@ class FaqDataSourceImpl @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>> =
+    override fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>> =
         flow {
             emit(
                 BitgoeulApiHandler<List<GetFrequentlyAskedQuestionDetailResponse>>()

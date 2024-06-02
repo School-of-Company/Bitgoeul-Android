@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ClubDataSourceImpl @Inject constructor(
     private val clubAPI: ClubAPI,
 ) : ClubDataSource {
-    override suspend fun getClubList(highSchool: HighSchool): Flow<List<ClubListResponse>> = flow {
+    override fun getClubList(highSchool: HighSchool): Flow<List<ClubListResponse>> = flow {
         emit(
             BitgoeulApiHandler<List<ClubListResponse>>()
                 .httpRequest { clubAPI.getClubList(highSchool = highSchool) }
@@ -22,7 +22,7 @@ class ClubDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getClubDetail(id: Long): Flow<ClubDetailResponse> = flow {
+    override fun getClubDetail(id: Long): Flow<ClubDetailResponse> = flow {
         emit(
             BitgoeulApiHandler<ClubDetailResponse>()
                 .httpRequest { clubAPI.getClubDetail(id = id) }
@@ -30,7 +30,7 @@ class ClubDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getStudentBelongClubDetail(id: Long, studentId: UUID): Flow<StudentBelongClubResponse> = flow {
+    override fun getStudentBelongClubDetail(id: Long, studentId: UUID): Flow<StudentBelongClubResponse> = flow {
         emit(
             BitgoeulApiHandler<StudentBelongClubResponse>()
                 .httpRequest { clubAPI.getStudentBelongClubDetail(id = id, studentId = studentId) }
@@ -38,7 +38,7 @@ class ClubDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getMyClubDetail(): Flow<ClubDetailResponse> = flow {
+    override fun getMyClubDetail(): Flow<ClubDetailResponse> = flow {
         emit(
             BitgoeulApiHandler<ClubDetailResponse>()
                 .httpRequest { clubAPI.getMyClubDetail() }

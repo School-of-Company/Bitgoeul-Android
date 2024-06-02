@@ -5,5 +5,5 @@ import com.msg.model.remote.response.admin.UserListResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AdminRepository {
-    suspend fun getUserList(body: GetUserListRequest, keyword: String): Flow<UserListResponse>
+    fun getUserList(body: GetUserListRequest, keyword: String): Flow<UserListResponse>
 }

@@ -11,7 +11,7 @@ import javax.inject.Inject
 class AdminDataSourceImpl @Inject constructor(
     private val adminAPI: AdminAPI,
 ) : AdminDataSource {
-    override suspend fun getUserList(
+    override fun getUserList(
         body: GetUserListRequest,
         keyword: String,
     ): Flow<UserListResponse> = flow {

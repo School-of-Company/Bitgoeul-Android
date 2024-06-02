@@ -16,7 +16,7 @@ import javax.inject.Inject
 class PostDataSourceImpl @Inject constructor(
     private val postAPI: PostAPI
 ) : PostDataSource {
-    override suspend fun sendPost(body: WritePostRequest): Flow<Unit> = flow {
+    override fun sendPost(body: WritePostRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { postAPI.sendPost(body = body) }
@@ -24,7 +24,7 @@ class PostDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListResponse> = flow {
+    override fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListResponse> = flow {
         emit(
             BitgoeulApiHandler<GetPostListResponse>()
                 .httpRequest {
@@ -38,7 +38,7 @@ class PostDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> = flow {
+    override fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> = flow {
         emit(
             BitgoeulApiHandler<GetDetailPostResponse>()
                 .httpRequest { postAPI.getDetailPost(id = id) }
@@ -46,7 +46,7 @@ class PostDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> = flow {
+    override fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest {
@@ -59,7 +59,7 @@ class PostDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun deletePost(id: UUID): Flow<Unit> = flow {
+    override fun deletePost(id: UUID): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { postAPI.deletePost(id = id) }

@@ -9,13 +9,13 @@ import javax.inject.Inject
 class EmailRepositoryImpl @Inject constructor(
     private val emailDataSource: EmailDataSource
 ) : EmailRepository {
-    override suspend fun sendLinkToEmail(body: SendLinkToEmailRequest): Flow<Unit> {
+    override fun sendLinkToEmail(body: SendLinkToEmailRequest): Flow<Unit> {
         return emailDataSource.sendLinkToEmail(
             body = body
         )
     }
 
-    override suspend fun getEmailAuthenticateStatus(email: String): Flow<GetEmailAuthenticateStatusResponse> {
+    override fun getEmailAuthenticateStatus(email: String): Flow<GetEmailAuthenticateStatusResponse> {
         return emailDataSource.getEmailAuthenticateStatus(
             email = email
         )
