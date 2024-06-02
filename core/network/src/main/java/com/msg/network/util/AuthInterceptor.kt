@@ -64,10 +64,10 @@ class AuthInterceptor @Inject constructor(
                     val response = client.newCall(refreshRequest).execute()
                     if (response.isSuccessful) {
                         val token = jsonParser.parse(response.body!!.string()) as JsonObject
-                        dataSource.setAccessToken(token["accessToken"].toString())
-                        dataSource.setAccessTokenExp(token["accessExpiration"].toString())
-                        dataSource.setRefreshToken(token["refreshToken"].toString())
-                        dataSource.setRefreshTokenExp(token["refreshExpiration"].toString())
+                        dataSource.setAccessToken(token["accessToken"].toString()).first()
+                        dataSource.setAccessTokenExp(token["accessExpiration"].toString()).first()
+                        dataSource.setRefreshToken(token["refreshToken"].toString()).first()
+                        dataSource.setRefreshTokenExp(token["refreshExpiration"].toString()).first()
                     } else throw NeedLoginException()
                 }
             }
