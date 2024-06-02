@@ -9,13 +9,13 @@ import javax.inject.Inject
 class FaqRepositoryImpl @Inject constructor(
     private val faqDataSource: FaqDataSource,
 ) : FaqRepository {
-    override suspend fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit> {
+    override fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit> {
         return faqDataSource.addFrequentlyAskedQuestions(
             body = body
         )
     }
 
-    override suspend fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>> {
+    override fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>> {
         return faqDataSource.getFrequentlyAskedQuestionsList()
     }
 }

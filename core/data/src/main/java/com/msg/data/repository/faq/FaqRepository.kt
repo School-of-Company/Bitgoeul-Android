@@ -5,6 +5,6 @@ import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailRespons
 import kotlinx.coroutines.flow.Flow
 
 interface FaqRepository {
-    suspend fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit>
-    suspend fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>>
+    fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit>
+    fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>>
 }
