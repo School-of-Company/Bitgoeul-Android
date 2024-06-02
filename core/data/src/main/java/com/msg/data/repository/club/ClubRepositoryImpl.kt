@@ -12,22 +12,22 @@ import javax.inject.Inject
 class ClubRepositoryImpl @Inject constructor(
     private val clubDataSource: ClubDataSource
 ) : ClubRepository{
-    override suspend fun getClubList(highSchool: HighSchool): Flow<List<ClubListResponse>> {
+    override fun getClubList(highSchool: HighSchool): Flow<List<ClubListResponse>> {
         return clubDataSource.getClubList(highSchool = highSchool)
     }
 
-    override suspend fun getClubDetail(id: Long): Flow<ClubDetailResponse> {
+    override fun getClubDetail(id: Long): Flow<ClubDetailResponse> {
         return clubDataSource.getClubDetail(id = id)
     }
 
-    override suspend fun getStudentBelongClubDetail(
+    override fun getStudentBelongClubDetail(
         id: Long,
         studentId: UUID
     ): Flow<StudentBelongClubResponse> {
         return clubDataSource.getStudentBelongClubDetail(id = id, studentId = studentId)
     }
 
-    override suspend fun getMyClubDetail(): Flow<ClubDetailResponse> {
+    override fun getMyClubDetail(): Flow<ClubDetailResponse> {
         return clubDataSource.getMyClubDetail()
     }
 }
