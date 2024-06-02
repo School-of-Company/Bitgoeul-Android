@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface PostRepository {
-    suspend fun sendPost(body: WritePostRequest): Flow<Unit>
-    suspend fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListResponse>
-    suspend fun getDetailPost(id: UUID): Flow<GetDetailPostResponse>
-    suspend fun editPost(id: UUID, body: WritePostRequest): Flow<Unit>
-    suspend fun deletePost(id: UUID): Flow<Unit>
+    fun sendPost(body: WritePostRequest): Flow<Unit>
+    fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListResponse>
+    fun getDetailPost(id: UUID): Flow<GetDetailPostResponse>
+    fun editPost(id: UUID, body: WritePostRequest): Flow<Unit>
+    fun deletePost(id: UUID): Flow<Unit>
 }

@@ -12,11 +12,11 @@ import javax.inject.Inject
 class PostRepositoryImpl @Inject constructor(
     private val postDataSource: PostDataSource
 ) : PostRepository {
-    override suspend fun sendPost(body: WritePostRequest): Flow<Unit> {
+    override fun sendPost(body: WritePostRequest): Flow<Unit> {
         return postDataSource.sendPost(body = body)
     }
 
-    override suspend fun getPostList(
+    override fun getPostList(
         type: FeedType,
         size: Int,
         page: Int
@@ -28,18 +28,18 @@ class PostRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> {
+    override fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> {
         return postDataSource.getDetailPost(id = id)
     }
 
-    override suspend fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> {
+    override fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> {
         return postDataSource.editPost(
             id = id,
             body = body
         )
     }
 
-    override suspend fun deletePost(id: UUID): Flow<Unit> {
+    override fun deletePost(id: UUID): Flow<Unit> {
         return postDataSource.deletePost(id = id)
     }
 }
