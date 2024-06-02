@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ActivityDataSourceImpl @Inject constructor(
     private val activityAPI: ActivityAPI
 ) : ActivityDataSource {
-    override suspend fun addStudentActivityInfo(body: StudentActivityModel): Flow<Unit> = flow {
+    override fun addStudentActivityInfo(body: StudentActivityModel): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { activityAPI.addStudentActivityInfo(body = body) }
@@ -23,7 +23,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun editStudentActivityInfo(id: UUID, body: StudentActivityModel): Flow<Unit> = flow {
+    override fun editStudentActivityInfo(id: UUID, body: StudentActivityModel): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { activityAPI.editStudentActivityInfo(id = id, body = body) }
@@ -31,7 +31,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun approveStudentActivityInfo(id: UUID): Flow<Unit> = flow {
+    override fun approveStudentActivityInfo(id: UUID): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { activityAPI.approveStudentActivityInfo(id = id) }
@@ -39,7 +39,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun rejectStudentActivityInfo(id: UUID): Flow<Unit> = flow {
+    override fun rejectStudentActivityInfo(id: UUID): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { activityAPI.rejectStudentActivityInfo(id = id) }
@@ -47,7 +47,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun deleteStudentActivityInfo(id: UUID): Flow<Unit> = flow {
+    override fun deleteStudentActivityInfo(id: UUID): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { activityAPI.deleteStudentActivityInfo(id = id) }
@@ -55,7 +55,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getMyStudentActivityInfoList(
+    override fun getMyStudentActivityInfoList(
         page: Int,
         size: Int,
     ): Flow<GetStudentActivityListResponse> = flow {
@@ -66,7 +66,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getStudentActivityInfoList(
+    override fun getStudentActivityInfoList(
         page: Int,
         size: Int,
         id: UUID
@@ -78,7 +78,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getEntireStudentActivityInfoList(
+    override fun getEntireStudentActivityInfoList(
         page: Int,
         size: Int,
     ): Flow<GetStudentActivityListResponse> = flow {
@@ -89,7 +89,7 @@ class ActivityDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse> = flow {
+    override fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse> = flow {
         emit(
             BitgoeulApiHandler<GetDetailStudentActivityInfoResponse>()
                 .httpRequest { activityAPI.getDetailStudentActivityInfo(id = id) }
