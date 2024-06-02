@@ -13,7 +13,7 @@ import javax.inject.Inject
 class UserDataSourceImpl @Inject constructor(
     private val userAPI: UserAPI
 ) : UserDataSource {
-    override suspend fun changePassword(body: ChangePasswordRequest): Flow<Unit> = flow {
+    override fun changePassword(body: ChangePasswordRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { userAPI.changePassword(body = body) }
@@ -21,7 +21,7 @@ class UserDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun inquiryMyPage(): Flow<InquiryMyPageResponse> = flow {
+    override fun inquiryMyPage(): Flow<InquiryMyPageResponse> = flow {
         emit(
             BitgoeulApiHandler<InquiryMyPageResponse>()
                 .httpRequest { userAPI.inquiryMyPage() }
