@@ -18,13 +18,13 @@ import javax.inject.Inject
 class LectureRepositoryImpl @Inject constructor(
     private val lectureDataSource: LectureDataSource,
 ) : LectureRepository {
-    override suspend fun openLecture(body: OpenLectureRequest): Flow<Unit> {
+    override fun openLecture(body: OpenLectureRequest): Flow<Unit> {
         return lectureDataSource.openLecture(
             body = body
         )
     }
 
-    override suspend fun getLectureList(
+    override fun getLectureList(
         page: Int,
         size: Int,
         type: String?,
@@ -36,62 +36,62 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> {
+    override fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> {
         return lectureDataSource.getDetailLecture(
             id = id
         )
     }
 
-    override suspend fun lectureApplication(id: UUID): Flow<Unit> {
+    override fun lectureApplication(id: UUID): Flow<Unit> {
         return lectureDataSource.lectureApplication(
             id = id
         )
     }
 
-    override suspend fun lectureApplicationCancel(id: UUID): Flow<Unit> {
+    override fun lectureApplicationCancel(id: UUID): Flow<Unit> {
         return lectureDataSource.lectureApplicationCancel(
             id = id
         )
     }
 
-    override suspend fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> {
+    override fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> {
         return lectureDataSource.searchProfessor(
             keyword = keyword
         )
     }
 
-    override suspend fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> {
+    override fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> {
         return lectureDataSource.searchLine(
             keyword = keyword,
             division = division
         )
     }
 
-    override suspend fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> {
+    override fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> {
         return lectureDataSource.searchDepartment(
             keyword = keyword
         )
     }
 
-    override suspend fun searchDivision(keyword: String): Flow<SearchDivisionResponse> {
+    override fun searchDivision(keyword: String): Flow<SearchDivisionResponse> {
         return lectureDataSource.searchDivision(
             keyword = keyword
         )
     }
 
-    override suspend fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> {
+    override fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> {
         return lectureDataSource.getLectureSignUpHistory(
             studentId = studentId
         )
     }
 
-    override suspend fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse> {
+    override fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse> {
         return lectureDataSource.getTakingLectureStudentList(
             id = id
         )
     }
 
-    override suspend fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
+    override fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
         return lectureDataSource.editLectureCourseCompletionStatus(
             id = id,
             studentId = studentId,
@@ -99,7 +99,7 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun downloadExcelFile(): Flow<DownloadExcelFileResponse> {
+    override fun downloadExcelFile(): Flow<DownloadExcelFileResponse> {
         return lectureDataSource.downloadExcelFile()
     }
 }
