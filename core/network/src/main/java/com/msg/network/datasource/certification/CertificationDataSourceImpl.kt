@@ -14,7 +14,7 @@ import javax.inject.Inject
 class CertificationDataSourceImpl @Inject constructor(
     private val certificationAPI: CertificationAPI,
 ) : CertificationDataSource {
-    override suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>> =
+    override fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>> =
         flow {
             emit(
                 BitgoeulApiHandler<List<CertificationListResponse>>()
@@ -23,7 +23,7 @@ class CertificationDataSourceImpl @Inject constructor(
             )
         }
 
-    override suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>> =
+    override fun getCertificationListForStudent(): Flow<List<CertificationListResponse>> =
         flow {
             emit(
                 BitgoeulApiHandler<List<CertificationListResponse>>()
@@ -32,7 +32,7 @@ class CertificationDataSourceImpl @Inject constructor(
             )
         }
 
-    override suspend fun writeCertification(body: WriteCertificationRequest): Flow<Unit> = flow {
+    override fun writeCertification(body: WriteCertificationRequest): Flow<Unit> = flow {
         emit(
             BitgoeulApiHandler<Unit>()
                 .httpRequest { certificationAPI.writeCertification(body = body) }
@@ -40,7 +40,7 @@ class CertificationDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun editCertification(
+    override fun editCertification(
         id: UUID,
         body: WriteCertificationRequest,
     ): Flow<Unit> = flow {

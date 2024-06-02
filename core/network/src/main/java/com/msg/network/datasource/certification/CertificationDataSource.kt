@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface CertificationDataSource {
-    suspend fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>>
-    suspend fun getCertificationListForStudent(): Flow<List<CertificationListResponse>>
-    suspend fun writeCertification(body: WriteCertificationRequest): Flow<Unit>
-    suspend fun editCertification(id: UUID, body: WriteCertificationRequest): Flow<Unit>
+    fun getCertificationListForTeacher(studentId: UUID): Flow<List<CertificationListResponse>>
+    fun getCertificationListForStudent(): Flow<List<CertificationListResponse>>
+    fun writeCertification(body: WriteCertificationRequest): Flow<Unit>
+    fun editCertification(id: UUID, body: WriteCertificationRequest): Flow<Unit>
 }
