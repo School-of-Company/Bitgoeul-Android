@@ -9,7 +9,7 @@ import javax.inject.Inject
 class AdminRepositoryImpl @Inject constructor(
     private val adminDataSource: AdminDataSource,
 ) : AdminRepository {
-    override suspend fun getUserList(
+    override fun getUserList(
         body: GetUserListRequest,
         keyword: String,
     ): Flow<UserListResponse> {
