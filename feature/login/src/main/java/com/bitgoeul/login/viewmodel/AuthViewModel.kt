@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.bitgoeul.login.viewmodel.util.Event
 import com.bitgoeul.login.viewmodel.util.errorHandling
 import com.msg.domain.auth.LoginUseCase
-import com.msg.domain.auth.LogoutUseCase
 import com.msg.domain.auth.SaveTokenUseCase
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.LoginRequest
@@ -19,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val logoutUseCase: LogoutUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
 ) : ViewModel() {
     private val _saveTokenRequest = MutableStateFlow<Event<Nothing>>(Event.Loading)
