@@ -31,5 +31,4 @@ fun Any?.toLocalDateTime(): LocalDateTime? {
             null
         }
     }
-    return null
 }
