@@ -12,7 +12,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
@@ -35,8 +34,10 @@ class AuthInterceptor @Inject constructor(
 
 
         runBlocking {
-            val refreshTime = dataSource.getRefreshTokenExp().toString()
-            val accessTime = dataSource.getAccessTokenExp().toString()
+            val refreshTime = dataSource.getRefreshTokenExp().first()
+            val accessTime = dataSource.getAccessTokenExp().first()
+            val accessToken = dataSource.getAccessToken().first()
+            val refreshToken = dataSource.getRefreshToken().first()
 
             if (refreshTime == "") {
                 return@runBlocking
