@@ -11,7 +11,6 @@ import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
 import com.msg.model.remote.request.auth.SignUpProfessorRequest
 import com.msg.model.remote.request.auth.SignUpStudentRequest
 import com.msg.network.datasource.auth.AuthDataSource
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
