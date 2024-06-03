@@ -2,7 +2,7 @@ package com.msg.network.util
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.msg.datastore.AuthTokenDataSource
+import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.network.BuildConfig
 import com.msg.network.exception.NeedLoginException
 import kotlinx.coroutines.flow.first
