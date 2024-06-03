@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.certification.util.Event
 import com.msg.certification.util.errorHandling
-import com.msg.datastore.datasource.AuthTokenDataSource
+import com.msg.data.repository.auth.AuthRepository
 import com.msg.domain.certification.EditCertificationUseCase
 import com.msg.domain.certification.GetCertificationListForStudentUseCase
 import com.msg.domain.certification.GetCertificationListForTeacherUseCase
@@ -36,7 +36,7 @@ class CertificationViewModel @Inject constructor(
     private val editCertificationUseCase: EditCertificationUseCase,
     private val getStudentBelongClubUseCase: GetStudentBelongClubUseCase,
     private val getLectureSignUpHistoryUseCase: GetLectureSignUpHistoryUseCase,
-    private val authTokenDataSourceImpl: AuthTokenDataSource,
+    private val authRepository: AuthRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -54,10 +54,6 @@ class CertificationViewModel @Inject constructor(
 
     private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryResponse>>(Event.Loading)
     val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
-
-    private fun getRole(): Authority = runBlocking {
-        return@runBlocking authTokenDataSourceImpl.getAuthority().first()
-    }
 
     private val studentId = UUID.fromString(savedStateHandle.get<String>("studentId"))
 
@@ -190,5 +186,9 @@ class CertificationViewModel @Inject constructor(
                 _getLectureSignUpHistoryResponse.value = error.errorHandling()
             }
         }
+    }
+
+    private fun getRole(): Authority = runBlocking {
+        return@runBlocking authRepository.getAuthority().first()
     }
 }
