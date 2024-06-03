@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.club.util.Event
 import com.msg.club.util.errorHandling
-import com.msg.datastore.AuthTokenDataSource
+import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.domain.club.GetClubDetailUseCase
 import com.msg.domain.club.GetClubListUseCase
 import com.msg.domain.club.GetMyClubDetailUseCase
