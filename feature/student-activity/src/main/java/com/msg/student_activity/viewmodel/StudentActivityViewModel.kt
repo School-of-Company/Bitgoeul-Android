@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.datastore.AuthTokenDataSource
+import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.domain.activity.AddStudentActivityInfoUseCase
 import com.msg.domain.activity.ApproveStudentActivityInfoUseCase
 import com.msg.domain.activity.DeleteStudentActivityInfoUseCase
@@ -46,7 +46,7 @@ class StudentActivityViewModel @Inject constructor(
     private val approveStudentActivityInfoUseCase: ApproveStudentActivityInfoUseCase,
     private val rejectStudentActivityInfoUseCase: RejectStudentActivityInfoUseCase,
     private val deleteStudentActivityInfoUseCase: DeleteStudentActivityInfoUseCase,
-    private val authTokenDataSource: AuthTokenDataSource
+    private val authTokenDataSourceImpl: AuthTokenDataSource
 ) : ViewModel() {
 
     val role = getRole().toString()
@@ -262,6 +262,6 @@ class StudentActivityViewModel @Inject constructor(
     }
 
     private fun getRole(): Authority = runBlocking {
-        return@runBlocking authTokenDataSource.getAuthority().first()
+        return@runBlocking authTokenDataSourceImpl.getAuthority().first()
     }
 }
