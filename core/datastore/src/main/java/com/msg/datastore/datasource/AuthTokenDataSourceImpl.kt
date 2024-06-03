@@ -1,57 +1,59 @@
-package com.msg.datastore
+package com.msg.datastore.datasource
 
 import Authority
 import androidx.datastore.core.DataStore
+import com.msg.datastore.AuthToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform
 import java.time.LocalDateTime
 import javax.inject.Inject
 
-class AuthTokenDataSource @Inject constructor(
-    private val authToken: DataStore<AuthToken>,
-) {
-    fun getAccessToken(): Flow<String> = authToken.data
+class AuthTokenDataSourceImpl @Inject constructor(
+    private val authToken: DataStore<AuthToken>
+) : AuthTokenDataSource {
+
+    override fun getAccessToken(): Flow<String> = authToken.data
         .transform { data ->
             emit(data.accessToken ?: "")
         }
 
-    fun setAccessToken(accessToken: String): Flow<Unit>  {
+    override fun setAccessToken(accessToken: String): Flow<Unit> {
         return updateAuthToken { it.toBuilder().setAccessToken(accessToken).build() }
     }
 
-    fun getAccessTokenExp(): Flow<LocalDateTime> = authToken.data
+    override fun getAccessTokenExp(): Flow<LocalDateTime> = authToken.data
         .transform { data ->
             data.accessExp?.let {
                 emit(LocalDateTime.parse(it))
             }
         }
 
-    fun setAccessTokenExp(accessTokenExp: String): Flow<Unit> {
+    override fun setAccessTokenExp(accessTokenExp: String): Flow<Unit> {
         return updateAuthToken { it.toBuilder().setAccessExp(accessTokenExp).build() }
     }
 
-    fun getRefreshToken(): Flow<String> = authToken.data
+    override fun getRefreshToken(): Flow<String> = authToken.data
         .transform { data ->
             emit(data.refreshToken ?: "")
         }
 
-    fun setRefreshToken(refreshToken: String): Flow<Unit> {
+    override fun setRefreshToken(refreshToken: String): Flow<Unit> {
         return updateAuthToken { it.toBuilder().setRefreshToken(refreshToken).build() }
     }
 
-    fun getRefreshTokenExp(): Flow<LocalDateTime> = authToken.data
+    override fun getRefreshTokenExp(): Flow<LocalDateTime> = authToken.data
         .transform { data ->
             data.refreshExp?.let {
                 emit(LocalDateTime.parse(it))
             }
         }
 
-    fun setRefreshTokenExp(refreshTokenExp: String): Flow<Unit> {
+    override fun setRefreshTokenExp(refreshTokenExp: String): Flow<Unit> {
         return updateAuthToken { it.toBuilder().setRefreshExp(refreshTokenExp).build() }
     }
 
-    fun getAuthority(): Flow<Authority> = authToken.data
+    override fun getAuthority(): Flow<Authority> = authToken.data
         .transform { data ->
             data.authority?.let { authority ->
                 Authority.entries.firstOrNull { it.name == authority }?.let {
@@ -60,7 +62,7 @@ class AuthTokenDataSource @Inject constructor(
             }
         }
 
-    fun setAuthority(authority: Authority): Flow<Unit> {
+    override fun setAuthority(authority: Authority): Flow<Unit> {
         return updateAuthToken { it.toBuilder().setAuthority(authority.name).build() }
     }
 
