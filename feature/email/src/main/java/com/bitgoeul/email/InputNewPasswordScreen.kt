@@ -1,6 +1,5 @@
 package com.bitgoeul.email
 
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,7 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.ui.makeToast
 
 @Composable
 internal fun InputNewPasswordRoute(
@@ -134,7 +134,7 @@ internal fun InputNewPasswordScreen(
                         if (passwordPattern.matches(firstInputPassword.value)) {
                             onNextClicked(secondInputPassword.value)
                         } else {
-                            Toast.makeText(context, "비밀번호는 8~24자 영문, 숫자, 특수문자 1개 이상이어야 합니다.", Toast.LENGTH_SHORT).show()
+                            makeToast(context, "비밀번호는 8~24자 영문, 숫자, 특수문자 1개 이상이어야 합니다.")
                         }
                     }
                 )
