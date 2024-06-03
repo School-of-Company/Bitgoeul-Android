@@ -4,92 +4,68 @@ import Authority
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.transform
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 class AuthTokenDataSource @Inject constructor(
     private val authToken: DataStore<AuthToken>,
 ) {
-    fun getAccessToken(): Flow<String> = authToken.data.map {
-        it.accessToken ?: ""
-    }
-
-    fun setAccessToken(accessToken: String): Flow<Unit> = flow {
-        authToken.updateData {
-            it.toBuilder()
-                .setAccessToken(accessToken)
-                .build()
-        }
-        emit(Unit)
-    }
-
-    fun getAccessTokenExp(): Flow<LocalDateTime> =
-        authToken.data.mapNotNull { it.accessExp }.map { accessExp ->
-            LocalDateTime.parse(accessExp)
+    fun getAccessToken(): Flow<String> = authToken.data
+        .transform { data ->
+            emit(data.accessToken ?: "")
         }
 
-
-    fun setAccessTokenExp(accessTokenExp: String): Flow<Unit> = flow {
-        authToken.updateData {
-            it.toBuilder()
-                .setAccessExp(accessTokenExp)
-                .build()
-        }
-        emit(Unit)
+    fun setAccessToken(accessToken: String): Flow<Unit>  {
+        return updateAuthToken { it.toBuilder().setAccessToken(accessToken).build() }
     }
 
-    fun getRefreshToken(): Flow<String> = authToken.data.map {
-        it.refreshToken ?: ""
-    }
-
-    fun setRefreshToken(refreshToken: String): Flow<Unit> = flow {
-        authToken.updateData {
-            it.toBuilder()
-                .setRefreshToken(refreshToken)
-                .build()
-        }
-        emit(Unit)
-    }
-
-    fun getRefreshTokenExp(): Flow<LocalDateTime> =
-        authToken.data.mapNotNull { it.refreshExp?.let { refreshExp ->
-            LocalDateTime.parse(refreshExp)
-        } }
-
-
-    fun setRefreshTokenExp(refreshTokenExp: String): Flow<Unit> = flow {
-        authToken.updateData {
-            it.toBuilder()
-                .setRefreshExp(refreshTokenExp)
-                .build()
-        }
-    }
-
-    fun getAuthority(): Flow<Authority> = authToken.data.mapNotNull { data ->
-        data.authority?.let { authority ->
-            when (authority) {
-                "ROLE_USER" -> Authority.ROLE_USER
-                "ROLE_ADMIN" -> Authority.ROLE_ADMIN
-                "ROLE_STUDENT" -> Authority.ROLE_STUDENT
-                "ROLE_TEACHER" -> Authority.ROLE_TEACHER
-                "ROLE_BBOZZAK" -> Authority.ROLE_BBOZZAK
-                "ROLE_PROFESSOR" -> Authority.ROLE_PROFESSOR
-                "ROLE_COMPANY_INSTRUCTOR" -> Authority.ROLE_COMPANY_INSTRUCTOR
-                "ROLE_GOVERNMENT" -> Authority.ROLE_GOVERNMENT
-                else -> null
+    fun getAccessTokenExp(): Flow<LocalDateTime> = authToken.data
+        .transform { data ->
+            data.accessExp?.let {
+                emit(LocalDateTime.parse(it))
             }
         }
+
+    fun setAccessTokenExp(accessTokenExp: String): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setAccessExp(accessTokenExp).build() }
     }
 
-
-    fun setAuthority(authority: Authority): Flow<Unit> = flow {
-        authToken.updateData {
-            it.toBuilder()
-                .setAuthority(authority.toString())
-                .build()
+    fun getRefreshToken(): Flow<String> = authToken.data
+        .transform { data ->
+            emit(data.refreshToken ?: "")
         }
+
+    fun setRefreshToken(refreshToken: String): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setRefreshToken(refreshToken).build() }
+    }
+
+    fun getRefreshTokenExp(): Flow<LocalDateTime> = authToken.data
+        .transform { data ->
+            data.refreshExp?.let {
+                emit(LocalDateTime.parse(it))
+            }
+        }
+
+    fun setRefreshTokenExp(refreshTokenExp: String): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setRefreshExp(refreshTokenExp).build() }
+    }
+
+    fun getAuthority(): Flow<Authority> = authToken.data
+        .transform { data ->
+            data.authority?.let { authority ->
+                Authority.entries.firstOrNull { it.name == authority }?.let {
+                    emit(it)
+                }
+            }
+        }
+
+    fun setAuthority(authority: Authority): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setAuthority(authority.name).build() }
+    }
+
+    private fun updateAuthToken(update: (AuthToken) -> AuthToken): Flow<Unit> = flow {
+        authToken.updateData { update(it) }
         emit(Unit)
     }
 }

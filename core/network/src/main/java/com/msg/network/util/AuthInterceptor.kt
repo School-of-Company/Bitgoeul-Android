@@ -12,7 +12,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
@@ -35,44 +34,39 @@ class AuthInterceptor @Inject constructor(
 
 
         runBlocking {
-            val refreshTime = dataSource.getRefreshTokenExp().toString()
-            val accessTime = dataSource.getAccessTokenExp().toString()
+            val refreshTime = dataSource.getRefreshTokenExp().first()
+            val accessTime = dataSource.getAccessTokenExp().first()
+            val accessToken = dataSource.getAccessToken().first()
+            val refreshToken = dataSource.getRefreshToken().first()
 
-            if (refreshTime == "") {
+            if (refreshTime.toString() == "") {
                 return@runBlocking
             }
 
-            if (currentTime != null) {
-                if (currentTime.isAfter(refreshTime.toLocalDateTime())) {
-                    throw NeedLoginException()
-                }
+            if (currentTime != null && currentTime.isAfter(refreshTime.toLocalDateTime())) {
+                throw NeedLoginException()
             }
-
             //Re Issue Access Token
-            if (currentTime != null) {
-                if (currentTime.isAfter(accessTime.toLocalDateTime())) {
-                    val client = OkHttpClient()
-                    val refreshRequest = Request.Builder()
-                        .url(BuildConfig.BASE_URL + "auth")
-                        .patch(chain.request().body ?: RequestBody.Companion.create(null, byteArrayOf()))
-                        .addHeader(
-                            "RefreshToken",
-                            dataSource.getRefreshToken().toString()
-                        )
-                        .build()
-                    val jsonParser = JsonParser()
-                    val response = client.newCall(refreshRequest).execute()
-                    if (response.isSuccessful) {
-                        val token = jsonParser.parse(response.body!!.string()) as JsonObject
-                        dataSource.setAccessToken(token["accessToken"].toString()).first()
-                        dataSource.setAccessTokenExp(token["accessExpiration"].toString()).first()
-                        dataSource.setRefreshToken(token["refreshToken"].toString()).first()
-                        dataSource.setRefreshTokenExp(token["refreshExpiration"].toString()).first()
-                    } else throw NeedLoginException()
-                }
+            if (currentTime != null && currentTime.isAfter(accessTime.toLocalDateTime())) {
+                val client = OkHttpClient()
+                val refreshRequest = Request.Builder()
+                    .url(BuildConfig.BASE_URL + "auth")
+                    .patch(chain.request().body ?: RequestBody.Companion.create(null, byteArrayOf()))
+                    .addHeader("RefreshToken", "Bearer $refreshToken")
+                    .build()
+
+                val jsonParser = JsonParser()
+                val response = client.newCall(refreshRequest).execute()
+                if (response.isSuccessful) {
+                    val token = jsonParser.parse(response.body!!.string()) as JsonObject
+                    dataSource.setAccessToken(token["accessToken"].toString()).first()
+                    dataSource.setAccessTokenExp(token["accessExpiration"].toString()).first()
+                    dataSource.setRefreshToken(token["refreshToken"].toString()).first()
+                    dataSource.setRefreshTokenExp(token["refreshExpiration"].toString()).first()
+                } else throw NeedLoginException()
+            } else {
+                builder.addHeader("Authorization", "Bearer $accessToken")
             }
-            val accessToken = dataSource.getAccessToken().first()
-            val refreshToken = dataSource.getRefreshToken().first()
             if (method == "DELETE") {
                 builder.addHeader("RefreshToken", "Bearer $refreshToken")
             }
@@ -80,8 +74,4 @@ class AuthInterceptor @Inject constructor(
         }
         return chain.proceed(builder.build())
     }
-}
-
-fun LocalDateTime.isAfter(compare: LocalDateTime): Boolean {
-    return this > compare
 }
