@@ -20,8 +20,8 @@ class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
 ) : ViewModel() {
-    private val _saveTokenRequest = MutableStateFlow<Event<Nothing>>(Event.Loading)
-    val saveTokenRequest = _saveTokenRequest.asStateFlow()
+    private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
+    val saveTokenRequest = _saveTokenResponse.asStateFlow()
 
     private val _loginResponse = MutableStateFlow<Event<AuthTokenModel>>(Event.Loading)
     val loginResponse = _loginResponse.asStateFlow()
@@ -47,9 +47,13 @@ class AuthViewModel @Inject constructor(
         saveTokenUseCase(
             data = data
         ).onSuccess {
-            _saveTokenRequest.value = Event.Success()
+            it.catch { remoteError ->
+                _saveTokenResponse.value = remoteError.errorHandling()
+            }.collect {
+                _saveTokenResponse.value = Event.Success()
+            }
         }.onFailure {
-            _saveTokenRequest.value = it.errorHandling()
+            _saveTokenResponse.value = it.errorHandling()
         }
     }
 }
