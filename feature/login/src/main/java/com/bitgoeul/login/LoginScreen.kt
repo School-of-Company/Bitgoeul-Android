@@ -1,7 +1,6 @@
 package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,6 +34,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
+import com.msg.ui.makeToast
 import kotlinx.coroutines.launch
 
 @Composable
@@ -56,11 +56,11 @@ internal fun LoginRoute(
                 getLoginData(
                     viewModel = viewModel,
                     onSuccess = {
-                        Toast.makeText(context, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                        makeToast(context, "로그인에 성공하였습니다.")
                         onLoginClicked()
                     },
                     onFailure = {
-                        Toast.makeText(context, "로그인에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                        makeToast(context, "로그인에 실패하였습니다. 다시 시도해주세요")
                     }
                 )
             }

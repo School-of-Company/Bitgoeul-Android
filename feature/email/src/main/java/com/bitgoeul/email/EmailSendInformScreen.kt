@@ -1,7 +1,6 @@
 package com.bitgoeul.email
 
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -29,6 +28,7 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
+import com.msg.ui.makeToast
 import kotlinx.coroutines.launch
 
 @Composable
@@ -51,10 +51,10 @@ internal fun EmailSendInformRoute(
                         onSuccess = { response ->
                             if (response.isAuthentication) {
                                 onMoveNewPasswordClicked()
-                                Toast.makeText(context, "이메일 인증에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                                makeToast(context, "이메일 인증에 성공했습니다.")
                             }
                             if (!response.isAuthentication) {
-                                Toast.makeText(context, "이메일 인증에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                makeToast(context, "이메일 인증에 실패했습니다.")
                             }
                         }
                     )

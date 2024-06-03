@@ -1,6 +1,5 @@
 package com.msg.certification
 
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +22,7 @@ import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.topbar.DetailSettingTopBar
 import com.msg.design_system.theme.color.BitgoeulColor
 import com.msg.ui.DevicePreviews
+import com.msg.ui.makeToast
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDate
 
@@ -99,9 +99,9 @@ internal fun AddCertificationScreen(
                 text = "자격증 등록",
                 onClicked = {
                     if (name.value.isBlank()) {
-                        Toast.makeText(context, "자격증 이름을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        makeToast(context, "자격증 이름을 입력해주세요")
                     } else if (date.value == null) {
-                        Toast.makeText(context, "취득일을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        makeToast(context, "취득일을 입력해주세요")
                     } else {
                         onAddClicked(name.value, date.value!!)
                     }
