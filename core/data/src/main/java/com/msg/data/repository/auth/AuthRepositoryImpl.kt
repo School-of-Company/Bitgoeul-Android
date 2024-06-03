@@ -1,6 +1,6 @@
 package com.msg.data.repository.auth
 
-import com.msg.datastore.AuthTokenDataSource
+import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.auth.LoginRequest
