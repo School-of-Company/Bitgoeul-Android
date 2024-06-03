@@ -1,5 +1,7 @@
 package com.msg.network.di
 
+import com.msg.datastore.datasource.AuthTokenDataSource
+import com.msg.datastore.datasource.AuthTokenDataSourceImpl
 import com.msg.network.datasource.activity.ActivityDataSource
 import com.msg.network.datasource.activity.ActivityDataSourceImpl
 import com.msg.network.datasource.admin.AdminDataSource
@@ -77,4 +79,9 @@ abstract class DataSourceModule {
     abstract fun bindEmailDataSource(
         emailDataSourceImpl: EmailDataSourceImpl
     ): EmailDataSource
+
+    @Binds
+    abstract fun bindAuthTokenDataSource(
+        authTokenDataSourceImpl: AuthTokenDataSourceImpl
+    ): AuthTokenDataSource
 }
