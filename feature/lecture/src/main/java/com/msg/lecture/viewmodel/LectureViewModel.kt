@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.datastore.AuthTokenDataSource
+import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.domain.lecture.DownloadExcelFileUseCase
 import com.msg.domain.lecture.EditLectureCourseCompletionStatusUseCase
 import com.msg.domain.lecture.GetDetailLectureUseCase
@@ -61,7 +61,7 @@ class LectureViewModel @Inject constructor(
     private val getLectureListUseCase: GetLectureListUseCase,
     private val getDetailLectureUseCase: GetDetailLectureUseCase,
     private val openLectureUseCase: OpenLectureUseCase,
-    private val authTokenDataSource: AuthTokenDataSource,
+    private val authTokenDataSourceImpl: AuthTokenDataSource,
     private val lectureApplicationUseCase: LectureApplicationUseCase,
     private val lectureApplicationCancelUseCase: LectureApplicationCancelUseCase,
     private val searchProfessorUseCase: SearchProfessorUseCase,
@@ -584,6 +584,6 @@ class LectureViewModel @Inject constructor(
     }
 
     private fun getRole(): Authority = runBlocking {
-        return@runBlocking authTokenDataSource.getAuthority().first()
+        return@runBlocking authTokenDataSourceImpl.getAuthority().first()
     }
 }
