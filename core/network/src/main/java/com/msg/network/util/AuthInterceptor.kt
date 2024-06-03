@@ -39,7 +39,7 @@ class AuthInterceptor @Inject constructor(
             val accessToken = dataSource.getAccessToken().first()
             val refreshToken = dataSource.getRefreshToken().first()
 
-            if (refreshTime == "") {
+            if (refreshTime.toString() == "") {
                 return@runBlocking
             }
 
