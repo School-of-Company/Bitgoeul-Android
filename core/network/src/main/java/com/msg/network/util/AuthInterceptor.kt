@@ -75,7 +75,3 @@ class AuthInterceptor @Inject constructor(
         return chain.proceed(builder.build())
     }
 }
-
-fun LocalDateTime.isAfter(compare: LocalDateTime): Boolean {
-    return this > compare
-}
