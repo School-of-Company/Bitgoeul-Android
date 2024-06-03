@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.club.util.Event
 import com.msg.club.util.errorHandling
-import com.msg.datastore.datasource.AuthTokenDataSource
+import com.msg.data.repository.auth.AuthRepository
 import com.msg.domain.club.GetClubDetailUseCase
 import com.msg.domain.club.GetClubListUseCase
 import com.msg.domain.club.GetMyClubDetailUseCase
@@ -33,7 +33,7 @@ class ClubViewModel @Inject constructor(
     private val getClubListUseCase: GetClubListUseCase,
     private val getMyClubDetailUseCase: GetMyClubDetailUseCase,
     private val getStudentBelongClubUseCase: GetStudentBelongClubUseCase,
-    private val authTokenDataSource: AuthTokenDataSource,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
     private val _getClubDetailResponse = MutableStateFlow<Event<ClubDetailResponse>>(Event.Loading)
@@ -142,6 +142,6 @@ class ClubViewModel @Inject constructor(
 
 
     private fun getRole(): Authority = runBlocking {
-        return@runBlocking authTokenDataSource.getAuthority().first()
+        return@runBlocking authRepository.getAuthority().first()
     }
 }
