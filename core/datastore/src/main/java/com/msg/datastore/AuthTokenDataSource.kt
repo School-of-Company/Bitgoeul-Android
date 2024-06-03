@@ -27,25 +27,17 @@ class AuthTokenDataSource @Inject constructor(
             }
         }
 
-
-    fun setAccessTokenExp(accessTokenExp: String): Flow<Unit> = flow {
-        authToken.updateData {
-            it.toBuilder()
-                .setAccessExp(accessTokenExp)
-                .build()
-        }
-        emit(Unit)
-    }
-
-    fun getRefreshToken(): Flow<String> = authToken.data.map {
-        it.refreshToken ?: ""
+    fun setAccessTokenExp(accessTokenExp: String): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setAccessExp(accessTokenExp).build() }
     }
 
     fun getRefreshToken(): Flow<String> = authToken.data
         .transform { data ->
             emit(data.refreshToken ?: "")
         }
-        emit(Unit)
+
+    fun setRefreshToken(refreshToken: String): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setRefreshToken(refreshToken).build() }
     }
 
     fun getRefreshTokenExp(): Flow<LocalDateTime> = authToken.data
@@ -54,6 +46,9 @@ class AuthTokenDataSource @Inject constructor(
                 emit(LocalDateTime.parse(it))
             }
         }
+
+    fun setRefreshTokenExp(refreshTokenExp: String): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setRefreshExp(refreshTokenExp).build() }
     }
 
     fun getAuthority(): Flow<Authority> = authToken.data
@@ -64,15 +59,13 @@ class AuthTokenDataSource @Inject constructor(
                 }
             }
         }
+
+    fun setAuthority(authority: Authority): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().setAuthority(authority.name).build() }
     }
 
-
-    fun setAuthority(authority: Authority): Flow<Unit> = flow {
-        authToken.updateData {
-            it.toBuilder()
-                .setAuthority(authority.toString())
-                .build()
-        }
+    private fun updateAuthToken(update: (AuthToken) -> AuthToken): Flow<Unit> = flow {
+        authToken.updateData { update(it) }
         emit(Unit)
     }
 }
