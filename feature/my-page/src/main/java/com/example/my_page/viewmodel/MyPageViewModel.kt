@@ -1,4 +1,4 @@
-package com.example.my_page
+package com.example.my_page.viewmodel
 
 import Authority
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +50,7 @@ class MyPageViewModel @Inject constructor(
     )
         private set
 
-    fun inquiryMyPage() = viewModelScope.launch {
+    internal fun inquiryMyPage() = viewModelScope.launch {
         inquiryMyPageUseCase().onSuccess {
             it.catch { remoteError ->
                 _getMyPageResponse.value = remoteError.errorHandling()
@@ -62,7 +62,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun logout() = viewModelScope.launch {
+    internal fun logout() = viewModelScope.launch {
         logoutUseCase().onSuccess {
             it.catch { remoteError ->
                 _getLogoutResponse.value = remoteError.errorHandling()
@@ -74,7 +74,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun withdraw() = viewModelScope.launch {
+    internal fun withdraw() = viewModelScope.launch {
         withdrawUseCase().onSuccess {
             it.catch { remoteError ->
                 _getWithdrawResponse.value = remoteError.errorHandling()
@@ -86,7 +86,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun changePassword(currentPassword: String, newPassword: String) = viewModelScope.launch {
+    internal fun changePassword(currentPassword: String, newPassword: String) = viewModelScope.launch {
         changePasswordUseCase(
             body = ChangePasswordRequest(
             currentPassword = currentPassword,

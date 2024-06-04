@@ -21,6 +21,7 @@ import com.example.my_page.component.AccountInfoView
 import com.example.my_page.component.AccountSettingView
 import com.example.my_page.component.MyInfoView
 import com.example.my_page.util.Event
+import com.example.my_page.viewmodel.MyPageViewModel
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.user.InquiryMyPageResponse
