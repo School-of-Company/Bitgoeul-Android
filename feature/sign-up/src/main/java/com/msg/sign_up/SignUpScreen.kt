@@ -65,6 +65,7 @@ import com.msg.sign_up.data.OutsideJobList
 import com.msg.sign_up.data.SchoolJobList
 import com.msg.sign_up.util.searchClubBySchool
 import com.msg.sign_up.util.searchingInList
+import com.msg.sign_up.viewmodel.SignUpViewModel
 
 enum class SignUpState {
     Belong,
