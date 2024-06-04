@@ -122,25 +122,6 @@ class ClubViewModel @Inject constructor(
         }
     }
 
-    internal fun getStudentBelongClub(
-        id: Long,
-        studentId: UUID,
-    ) = viewModelScope.launch {
-        getStudentBelongClubUseCase(
-            id = id,
-            studentId = studentId
-        ).onSuccess {
-            it.catch { remoteError ->
-                _getStudentBelongClubResponse.value = remoteError.errorHandling()
-            }.collect { response ->
-                _getStudentBelongClubResponse.value = Event.Success(data = response)
-            }
-        }.onFailure { error ->
-            _getStudentBelongClubResponse.value = error.errorHandling()
-        }
-    }
-
-
     private fun getRole(): Authority = runBlocking {
         return@runBlocking authRepository.getAuthority().first()
     }
