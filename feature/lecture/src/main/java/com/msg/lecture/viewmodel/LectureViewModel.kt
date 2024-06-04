@@ -302,7 +302,7 @@ class LectureViewModel @Inject constructor(
     var essentialComplete = mutableStateOf(false)
         private set
 
-    fun getLectureList(
+    internal fun getLectureList(
         page: Int,
         size: Int,
         type: String?,
@@ -322,7 +322,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun getDetailLecture(
+    internal fun getDetailLecture(
         id: UUID,
     ) = viewModelScope.launch {
         getDetailLectureUseCase(
@@ -338,7 +338,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun openLecture(
+    internal fun openLecture(
         name: String,
         content: String,
         semester: String,
@@ -381,7 +381,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun addLectureDates() {
+    internal fun addLectureDates() {
         if (completeDate.value != null || startTime.value != null || endTime.value != null) {
             lectureDates.add(
                 LectureDates(
@@ -396,19 +396,19 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun saveLectureDatesList() {
+    internal fun saveLectureDatesList() {
         lectureDates.forEachIndexed { index, _ ->
             if (lectureDates.isEmpty()) lectureDates.removeAt(index)
         }
     }
 
-    fun removeLectureDates() {
+    internal fun removeLectureDates() {
         if (lectureDates.isNotEmpty()) {
             lectureDates.removeAt(lectureDates.size - 1)
         }
     }
 
-    fun lectureApplication(
+    internal fun lectureApplication(
         id: UUID,
     ) = viewModelScope.launch {
         lectureApplicationUseCase(
@@ -424,7 +424,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun lectureApplicationCancel(
+    internal fun lectureApplicationCancel(
         id: UUID,
     ) = viewModelScope.launch {
         lectureApplicationCancelUseCase(
@@ -440,7 +440,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun searchProfessor(
+    internal fun searchProfessor(
         keyword: String,
     ) = viewModelScope.launch {
         searchProfessorUseCase(
@@ -456,7 +456,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun searchLine(
+    internal fun searchLine(
         keyword: String,
         division: String,
     ) = viewModelScope.launch {
@@ -475,7 +475,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun searchDepartment(
+    internal fun searchDepartment(
         keyword: String,
     ) = viewModelScope.launch {
         searchDepartmentUseCase(
@@ -491,7 +491,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun searchDivision(
+    internal fun searchDivision(
         keyword: String,
     ) = viewModelScope.launch {
         searchDivisionUseCase(
@@ -507,7 +507,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun getLectureSignUpHistory(
+    internal fun getLectureSignUpHistory(
         studentId: UUID,
     ) = viewModelScope.launch {
         getLectureSignUpHistoryUseCase(
@@ -523,7 +523,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun getTakingLectureStudentList() = viewModelScope.launch {
+    internal fun getTakingLectureStudentList() = viewModelScope.launch {
         getTakingLectureStudentListUseCase(
             id = selectedLectureId.value
         ).onSuccess {
@@ -537,7 +537,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun editLectureCourseCompletionStatus(
+    internal fun editLectureCourseCompletionStatus(
         studentId: UUID,
         isComplete: Boolean,
     ) = viewModelScope.launch {
@@ -556,7 +556,7 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    fun downloadLectureExcel() = viewModelScope.launch {
+    internal fun downloadLectureExcel() = viewModelScope.launch {
         downloadExcelFileUseCase()
             .onSuccess {
                 it.catch { remoteError ->
