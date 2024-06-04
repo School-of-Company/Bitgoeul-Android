@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bitgoeul.login.viewmodel.AuthViewModel
-import com.bitgoeul.login.viewmodel.util.Event
+import com.bitgoeul.login.util.Event
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState

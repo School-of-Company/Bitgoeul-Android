@@ -2,8 +2,8 @@ package com.bitgoeul.login.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitgoeul.login.viewmodel.util.Event
-import com.bitgoeul.login.viewmodel.util.errorHandling
+import com.bitgoeul.login.util.Event
+import com.bitgoeul.login.util.errorHandling
 import com.msg.domain.auth.LoginUseCase
 import com.msg.domain.auth.SaveTokenUseCase
 import com.msg.model.remote.model.auth.AuthTokenModel
@@ -26,7 +26,7 @@ class AuthViewModel @Inject constructor(
     private val _loginResponse = MutableStateFlow<Event<AuthTokenModel>>(Event.Loading)
     val loginResponse = _loginResponse.asStateFlow()
 
-    fun login(
+    internal fun login(
         email: String,
         password: String
     ) = viewModelScope.launch {
@@ -43,7 +43,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun saveTokenData(data: AuthTokenModel) = viewModelScope.launch {
+    internal fun saveTokenData(data: AuthTokenModel) = viewModelScope.launch {
         saveTokenUseCase(
             data = data
         ).onSuccess {

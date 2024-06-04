@@ -1,4 +1,4 @@
-package com.bitgoeul.login.viewmodel.util
+package com.bitgoeul.login.util
 
 import android.util.Log
 import com.msg.domain.exception.BadRequestException

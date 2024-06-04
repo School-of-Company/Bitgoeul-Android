@@ -1,4 +1,4 @@
-package com.bitgoeul.login.viewmodel.util
+package com.bitgoeul.login.util
 
 sealed class Event<out T>(
     val data: T? = null
