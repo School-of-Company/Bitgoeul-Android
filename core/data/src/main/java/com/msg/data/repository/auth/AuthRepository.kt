@@ -1,5 +1,6 @@
 package com.msg.data.repository.auth
 
+import Authority
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.auth.LoginRequest
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
     fun login(body: LoginRequest): Flow<AuthTokenModel>
-    fun saveToken(data: AuthTokenModel): Flow<Unit>
     fun signUpStudent(body: SignUpStudentRequest): Flow<Unit>
     fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit>
     fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit>
@@ -23,4 +23,7 @@ interface AuthRepository {
     fun findPassword(body: FindPasswordRequest): Flow<Unit>
     fun logout(): Flow<Unit>
     fun withdraw(): Flow<Unit>
+    fun saveToken(data: AuthTokenModel): Flow<Unit>
+    fun getAuthority(): Flow<Authority>
+
 }

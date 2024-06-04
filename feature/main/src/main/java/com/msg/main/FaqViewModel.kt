@@ -4,7 +4,7 @@ import Authority
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.datastore.AuthTokenDataSource
+import com.msg.data.repository.auth.AuthRepository
 import com.msg.main.util.Event
 import com.msg.main.util.errorHandling
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +24,7 @@ import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailRespons
 class FaqViewModel @Inject constructor(
     private val addFAQUseCase: AddFAQUseCase,
     private val getFAQUseCase: GetFAQUseCase,
-    private val authTokenDataSource: AuthTokenDataSource
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
     val role = getRole().toString()
@@ -76,6 +76,6 @@ class FaqViewModel @Inject constructor(
     }
 
     private fun getRole(): Authority = runBlocking {
-        return@runBlocking authTokenDataSource.getAuthority().first()
+        return@runBlocking authRepository.getAuthority().first()
     }
 }

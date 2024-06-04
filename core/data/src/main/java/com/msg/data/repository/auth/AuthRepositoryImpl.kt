@@ -1,6 +1,7 @@
 package com.msg.data.repository.auth
 
-import com.msg.datastore.AuthTokenDataSource
+import Authority
+import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.model.remote.model.auth.AuthTokenModel
 import com.msg.model.remote.request.auth.FindPasswordRequest
 import com.msg.model.remote.request.auth.LoginRequest
@@ -17,69 +18,75 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authDataSource: AuthDataSource,
+    private val remoteDataSource: AuthDataSource,
     private val localDataSource: AuthTokenDataSource
 ) : AuthRepository {
     override fun login(body: LoginRequest): Flow<AuthTokenModel> {
-        return authDataSource.login(
+        return remoteDataSource.login(
             body = body
         )
     }
 
-    override fun saveToken(data: AuthTokenModel): Flow<Unit> = flow {
-            localDataSource.setAccessToken(data.accessToken).first()
-            localDataSource.setAccessTokenExp(data.accessExpiredAt).first()
-            localDataSource.setRefreshToken(data.refreshToken).first()
-            localDataSource.setRefreshTokenExp(data.refreshExpiredAt).first()
-            localDataSource.setAuthority(data.authority).first()
-    }
-
     override fun signUpStudent(body: SignUpStudentRequest): Flow<Unit> {
-        return authDataSource.signUpStudent(
+        return remoteDataSource.signUpStudent(
             body = body
         )
     }
 
     override fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit> {
-        return authDataSource.signUpJobClubTeacher(
+        return remoteDataSource.signUpJobClubTeacher(
             body = body
         )
     }
 
     override fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit> {
-        return authDataSource.signUpProfessor(
+        return remoteDataSource.signUpProfessor(
             body = body
         )
     }
 
     override fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit> {
-        return authDataSource.signUpGovernment(
+        return remoteDataSource.signUpGovernment(
             body = body
         )
     }
 
     override fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit> {
-        return authDataSource.signUpCompanyInstructor(
+        return remoteDataSource.signUpCompanyInstructor(
             body = body
         )
     }
 
     override fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit> {
-        return authDataSource.signUpBbozzakTeacher(
+        return remoteDataSource.signUpBbozzakTeacher(
             body = body
         )
     }
 
     override fun findPassword(body: FindPasswordRequest): Flow<Unit> {
-        return authDataSource.findPassword(
+        return remoteDataSource.findPassword(
             body = body
         )
     }
     override fun logout(): Flow<Unit> {
-        return authDataSource.logout()
+        return remoteDataSource.logout()
     }
 
     override fun withdraw(): Flow<Unit> {
-        return authDataSource.withdraw()
+        return remoteDataSource.withdraw()
+    }
+
+    override fun saveToken(data: AuthTokenModel): Flow<Unit> = flow {
+        with(localDataSource) {
+            setAccessToken(data.accessToken).first()
+            setAccessTokenExp(data.accessExpiredAt).first()
+            setRefreshToken(data.refreshToken).first()
+            setRefreshTokenExp(data.refreshExpiredAt).first()
+            setAuthority(data.authority).first()
+        }
+    }
+
+    override fun getAuthority(): Flow<Authority> {
+        return localDataSource.getAuthority()
     }
 }

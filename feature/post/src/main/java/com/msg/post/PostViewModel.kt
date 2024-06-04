@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.datastore.AuthTokenDataSource
+import com.msg.data.repository.auth.AuthRepository
 import com.msg.domain.post.DeletePostUseCase
 import com.msg.domain.post.EditPostUseCase
 import com.msg.domain.post.GetDetailPostUseCase
@@ -35,7 +35,7 @@ class PostViewModel @Inject constructor(
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
     private val sendPostUseCase: SendPostUseCase,
-    private val authTokenDataSource: AuthTokenDataSource
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
     private val _deletePostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -206,6 +206,6 @@ class PostViewModel @Inject constructor(
     }
 
     private fun getRole(): Authority = runBlocking {
-        return@runBlocking authTokenDataSource.getAuthority().first()
+        return@runBlocking authRepository.getAuthority().first()
     }
 }
