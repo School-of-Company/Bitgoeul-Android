@@ -25,6 +25,7 @@ import com.msg.certification.component.CertificationSection
 import com.msg.certification.component.FinishedLectureSection
 import com.msg.certification.component.StudentInfoSection
 import com.msg.certification.util.Event
+import com.msg.certification.viewmodel.CertificationViewModel
 import com.msg.design_system.component.icon.HumanIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.response.certification.CertificationListResponse

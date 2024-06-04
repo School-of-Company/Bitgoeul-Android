@@ -104,7 +104,12 @@ class StudentActivityViewModel @Inject constructor(
     var detailState = mutableStateOf(false)
         private set
 
-    fun getStudentActivityList(role: Authority, page: Int, size: Int, sort: String, id: UUID? = null) = viewModelScope.launch {
+    internal fun getStudentActivityList(
+        role: Authority,
+        page: Int,
+        size: Int,
+        id: UUID? = null
+    ) = viewModelScope.launch {
         when(role) {
             Authority.ROLE_STUDENT -> {
                 getMyStudentActivityInfoListUseCase(
@@ -156,7 +161,7 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    fun getDetailStudentActivity(
+    internal fun getDetailStudentActivity(
         id: UUID
     ) = viewModelScope.launch {
         getDetailStudentActivityInfoUseCase(id = id).onSuccess {
@@ -170,7 +175,7 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    fun addActivityInfo(
+    internal fun addActivityInfo(
         title: String,
         content: String,
         credit: Int,
@@ -194,33 +199,7 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    fun editActivityInfo(
-        id: UUID,
-        title: String,
-        content: String,
-        credit: Int,
-        activityDate: LocalDate
-    ) = viewModelScope.launch {
-        editStudentActivityInfoUseCase(
-            id = id,
-            StudentActivityModel(
-                title = title,
-                content = content,
-                credit = credit,
-                activityDate = activityDate
-            )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _addStudentActivityResponse.value = remoteError.errorHandling()
-            }.collect {
-                _addStudentActivityResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _addStudentActivityResponse.value = error.errorHandling()
-        }
-    }
-
-    fun approveActivityInfo(
+    internal fun approveActivityInfo(
         id: UUID
     ) = viewModelScope.launch {
         approveStudentActivityInfoUseCase(id = id).onSuccess {
@@ -234,7 +213,7 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    fun rejectActivityInfo(
+    internal fun rejectActivityInfo(
         id: UUID
     ) = viewModelScope.launch {
         rejectStudentActivityInfoUseCase(id = id).onSuccess {
@@ -248,7 +227,7 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    fun deleteActivityInfo(
+    internal fun deleteActivityInfo(
         id: UUID
     ) = viewModelScope.launch {
         deleteStudentActivityInfoUseCase(id = id).onSuccess {

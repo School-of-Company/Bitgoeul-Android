@@ -1,4 +1,4 @@
-package com.msg.post
+package com.msg.post.viewmodel
 
 import Authority
 import androidx.compose.runtime.mutableStateListOf
@@ -92,7 +92,7 @@ class PostViewModel @Inject constructor(
     var isEditPage = mutableStateOf(false)
         private set
 
-    fun deletePost(
+    internal fun deletePost(
         id: UUID
     ) = viewModelScope.launch {
         deletePostUseCase(id = id).onSuccess {
@@ -106,7 +106,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun editPost(
+    internal fun editPost(
         id: UUID,
         title: String,
         content: String,
@@ -131,7 +131,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun sendPost(
+    internal fun sendPost(
         title: String,
         content: String,
         feedType: FeedType,
@@ -154,7 +154,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun getPostList(
+    internal fun getPostList(
         type: FeedType
     ) = viewModelScope.launch {
         getPostListUseCase(
@@ -172,7 +172,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun getDetailPost(
+    internal fun getDetailPost(
         id: UUID
     ) = viewModelScope.launch {
         getDetailPostUseCase(
@@ -188,17 +188,17 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun addLinks() {
+    internal fun addLinks() {
         links.add("")
     }
 
-    fun saveLinkList() {
+    internal fun saveLinkList() {
         links.forEachIndexed { index, link ->
             if (link == "") links.removeAt(index)
         }
     }
 
-    fun getFilledEditPage() {
+    internal fun getFilledEditPage() {
         savedTitle.value = detailPost.value.title
         savedContent.value = detailPost.value.content
         links.addAll(detailPost.value.links)

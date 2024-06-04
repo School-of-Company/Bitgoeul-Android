@@ -40,7 +40,7 @@ class EmailViewModel @Inject constructor(
     var newPassword = mutableStateOf("")
         private set
 
-    fun getEmailAuthenticateStatus() = viewModelScope.launch {
+    internal fun getEmailAuthenticateStatus() = viewModelScope.launch {
        getEmailAuthenticateStatusUseCase(
            email = email.value
        ).onSuccess {
@@ -54,7 +54,7 @@ class EmailViewModel @Inject constructor(
        }
     }
 
-    fun sendLinkToEmail() = viewModelScope.launch {
+    internal fun sendLinkToEmail() = viewModelScope.launch {
         sendLinkToEmailUseCase(
             body = SendLinkToEmailRequest(
                 email = email.value
@@ -70,7 +70,7 @@ class EmailViewModel @Inject constructor(
         }
     }
 
-    fun findPassword() = viewModelScope.launch {
+    internal fun findPassword() = viewModelScope.launch {
         findPasswordUseCase(
             body = FindPasswordRequest(
                 email = email.value,

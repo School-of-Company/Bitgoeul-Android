@@ -39,6 +39,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.remote.enumdatatype.FeedType
 import com.msg.model.remote.response.post.GetDetailPostResponse
 import com.msg.post.util.Event
+import com.msg.post.viewmodel.PostViewModel
 import com.msg.ui.DevicePreviews
 import com.msg.ui.util.toKoreanFormat
 import java.time.LocalDateTime

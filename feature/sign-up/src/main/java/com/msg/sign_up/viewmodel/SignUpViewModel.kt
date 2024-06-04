@@ -1,4 +1,4 @@
-package com.msg.sign_up
+package com.msg.sign_up.viewmodel
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf

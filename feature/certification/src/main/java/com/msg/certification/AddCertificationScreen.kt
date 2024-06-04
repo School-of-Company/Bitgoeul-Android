@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.certification.component.AddAcquisitionDateSection
 import com.msg.certification.component.AddCertificationSection
+import com.msg.certification.viewmodel.CertificationViewModel
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.topbar.DetailSettingTopBar
 import com.msg.design_system.theme.color.BitgoeulColor
