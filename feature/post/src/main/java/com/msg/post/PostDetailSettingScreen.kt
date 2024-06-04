@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.icon.CloseIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.post.component.AddLinkSection
+import com.msg.post.viewmodel.PostViewModel
 import com.msg.ui.DevicePreviews
 
 @Composable
