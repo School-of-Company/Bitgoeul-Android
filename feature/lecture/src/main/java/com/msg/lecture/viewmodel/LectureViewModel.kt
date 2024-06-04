@@ -570,7 +570,9 @@ class LectureViewModel @Inject constructor(
             }
     }
 
-    private fun saveFileToStorage(response: DownloadExcelFileResponse) {
+    private fun saveFileToStorage(
+        response: DownloadExcelFileResponse
+    ) {
         try {
             val fileName = response.fileName
             val fileContents = response.file
