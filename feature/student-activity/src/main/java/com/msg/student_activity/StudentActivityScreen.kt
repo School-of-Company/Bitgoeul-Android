@@ -44,7 +44,6 @@ fun StudentActivityRoute(
         role = from(role),
         page = 1,
         size = 20,
-        sort = "",
         id = id
     )
     LaunchedEffect(true) {
