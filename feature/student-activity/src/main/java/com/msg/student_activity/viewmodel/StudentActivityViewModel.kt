@@ -104,7 +104,12 @@ class StudentActivityViewModel @Inject constructor(
     var detailState = mutableStateOf(false)
         private set
 
-    internal fun getStudentActivityList(role: Authority, page: Int, size: Int, sort: String, id: UUID? = null) = viewModelScope.launch {
+    internal fun getStudentActivityList(
+        role: Authority,
+        page: Int,
+        size: Int,
+        id: UUID? = null
+    ) = viewModelScope.launch {
         when(role) {
             Authority.ROLE_STUDENT -> {
                 getMyStudentActivityInfoListUseCase(
