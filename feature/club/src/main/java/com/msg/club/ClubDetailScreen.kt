@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.club.component.ClubInfoSection
 import com.msg.club.component.ClubMemberInfoListSection
+import com.msg.club.viewmodel.ClubViewModel
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.color.BitgoeulColor

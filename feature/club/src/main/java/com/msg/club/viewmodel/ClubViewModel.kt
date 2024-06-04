@@ -1,4 +1,4 @@
-package com.msg.club
+package com.msg.club.viewmodel
 
 import Authority
 import androidx.compose.runtime.mutableLongStateOf
@@ -84,7 +84,7 @@ class ClubViewModel @Inject constructor(
     var selectedClubId = mutableLongStateOf(0)
         private set
 
-    fun getClubDetail() = viewModelScope.launch {
+    internal fun getClubDetail() = viewModelScope.launch {
         getClubDetailUseCase(id = selectedClubId.longValue).onSuccess {
             it.catch { remoteError ->
                 _getClubDetailResponse.value = remoteError.errorHandling()
@@ -96,7 +96,7 @@ class ClubViewModel @Inject constructor(
         }
     }
 
-    fun getClubList(
+    internal fun getClubList(
         highSchool: HighSchool,
     ) = viewModelScope.launch {
         getClubListUseCase(highSchool = highSchool).onSuccess {
@@ -110,7 +110,7 @@ class ClubViewModel @Inject constructor(
         }
     }
 
-    fun getMyClubDetail() = viewModelScope.launch {
+    internal fun getMyClubDetail() = viewModelScope.launch {
         getMyClubDetailUseCase().onSuccess {
             it.catch { remoteError ->
                 _getMyClubDetailResponse.value = remoteError.errorHandling()
@@ -122,7 +122,7 @@ class ClubViewModel @Inject constructor(
         }
     }
 
-    fun getStudentBelongClub(
+    internal fun getStudentBelongClub(
         id: Long,
         studentId: UUID,
     ) = viewModelScope.launch {

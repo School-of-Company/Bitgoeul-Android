@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.club.component.ClubResultList
 import com.msg.club.util.Event
 import com.msg.club.util.getSchoolNameFromEnum
+import com.msg.club.viewmodel.ClubViewModel
 import com.msg.design_system.component.dialog.GetClubListDialog
 import com.msg.design_system.component.icon.BigAlertIcon
 import com.msg.design_system.component.icon.GreySettingIcon
