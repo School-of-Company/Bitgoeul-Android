@@ -86,7 +86,10 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    internal fun changePassword(currentPassword: String, newPassword: String) = viewModelScope.launch {
+    internal fun changePassword(
+        currentPassword: String,
+        newPassword: String
+    ) = viewModelScope.launch {
         changePasswordUseCase(
             body = ChangePasswordRequest(
             currentPassword = currentPassword,
