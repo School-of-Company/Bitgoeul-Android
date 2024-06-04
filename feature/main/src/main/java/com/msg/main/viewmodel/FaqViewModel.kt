@@ -1,4 +1,4 @@
-package com.msg.main
+package com.msg.main.viewmodel
 
 import Authority
 import androidx.compose.runtime.mutableStateListOf
@@ -40,7 +40,7 @@ class FaqViewModel @Inject constructor(
 
     private var errorCode: Int = 200
 
-    fun addFaq(
+    internal fun addFaq(
         question: String,
         answer: String
     ) = viewModelScope.launch {
@@ -63,7 +63,7 @@ class FaqViewModel @Inject constructor(
         }
     }
 
-    fun getFaq() = viewModelScope.launch {
+    internal fun getFaq() = viewModelScope.launch {
         getFAQUseCase().onSuccess {
             it.catch { remoteError ->
                 _getFaqListResponse.value = remoteError.errorHandling()

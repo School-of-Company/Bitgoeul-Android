@@ -42,6 +42,7 @@ import com.msg.main.component.HighSchoolCardView
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
 import com.msg.main.util.Event
+import com.msg.main.viewmodel.FaqViewModel
 import com.msg.model.remote.enumdatatype.HighSchool
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData
