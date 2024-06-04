@@ -43,7 +43,9 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    internal fun saveTokenData(data: AuthTokenModel) = viewModelScope.launch {
+    internal fun saveTokenData(
+        data: AuthTokenModel
+    ) = viewModelScope.launch {
         saveTokenUseCase(
             data = data
         ).onSuccess {
