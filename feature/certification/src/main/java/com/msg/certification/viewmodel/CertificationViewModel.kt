@@ -1,4 +1,4 @@
-package com.msg.certification
+package com.msg.certification.viewmodel
 
 import Authority
 import androidx.compose.runtime.mutableStateListOf
@@ -88,7 +88,7 @@ class CertificationViewModel @Inject constructor(
     )
         private set
 
-    fun getCertificationList() = viewModelScope.launch {
+    internal fun getCertificationList() = viewModelScope.launch {
         if (getRole() == Authority.ROLE_STUDENT) {
             getCertificationListForStudentUseCase().onSuccess {
                 it.catch { remoteError ->
@@ -114,7 +114,7 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
-    fun writeCertification(
+    internal fun writeCertification(
         name: String,
         acquisitionDate: LocalDate
     ) = viewModelScope.launch {
@@ -134,7 +134,7 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
-    fun editCertification(
+    internal fun editCertification(
         name: String,
         acquisitionDate: LocalDate
     ) = viewModelScope.launch {
@@ -155,7 +155,7 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
-    fun getStudentBelong() = viewModelScope.launch {
+    internal fun getStudentBelong() = viewModelScope.launch {
         if (clubId != null && studentId != null) {
             getStudentBelongClubUseCase(
                 id = clubId,
@@ -172,7 +172,7 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
-    fun getLectureSignUpHistory() = viewModelScope.launch {
+    internal fun getLectureSignUpHistory() = viewModelScope.launch {
         if (studentId != null) {
             getLectureSignUpHistoryUseCase(
                 studentId = studentId
