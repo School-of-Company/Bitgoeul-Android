@@ -77,11 +77,13 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun saveToken(data: AuthTokenModel): Flow<Unit> = flow {
-        localDataSource.setAccessToken(data.accessToken).first()
-        localDataSource.setAccessTokenExp(data.accessExpiredAt).first()
-        localDataSource.setRefreshToken(data.refreshToken).first()
-        localDataSource.setRefreshTokenExp(data.refreshExpiredAt).first()
-        localDataSource.setAuthority(data.authority).first()
+        with(localDataSource) {
+            setAccessToken(data.accessToken).first()
+            setAccessTokenExp(data.accessExpiredAt).first()
+            setRefreshToken(data.refreshToken).first()
+            setRefreshTokenExp(data.refreshExpiredAt).first()
+            setAuthority(data.authority).first()
+        }
     }
 
     override fun getAuthority(): Flow<Authority> {
