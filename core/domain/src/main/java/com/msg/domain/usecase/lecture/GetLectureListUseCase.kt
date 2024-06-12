@@ -1,4 +1,4 @@
-package com.msg.domain.lecture
+package com.msg.domain.usecase.lecture
 
 import com.msg.data.repository.lecture.LectureRepository
 import javax.inject.Inject
