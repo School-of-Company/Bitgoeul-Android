@@ -12,7 +12,6 @@ import com.msg.common.exception.ServerException
 import com.msg.common.exception.TimeOutException
 import com.msg.common.exception.UnauthorizedException
 
-//추후 리팩토링을 통해 다른 모듈? 패키지로 이동 예정
 suspend fun <T> Throwable.errorHandling(
     badRequestAction: suspend () -> Unit = {},
     unauthorizedAction: suspend () -> Unit = {},
