@@ -1,4 +1,4 @@
-package com.msg.model.remote.response.club
+package com.msg.network.response.club
 
 data class StudentBelongClubResponse(
     val name: String,

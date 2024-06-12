@@ -1,4 +1,4 @@
-package com.msg.model.remote.response.club
+package com.msg.network.response.club
 
 data class ClubListResponse(
     val id: Long,
