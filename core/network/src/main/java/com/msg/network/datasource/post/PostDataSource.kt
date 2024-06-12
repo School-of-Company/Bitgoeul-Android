@@ -1,9 +1,8 @@
 package com.msg.network.datasource.post
 
-import com.msg.model.enumdata.FeedType
+import com.msg.network.response.post.*
 import com.msg.network.request.post.WritePostRequest
-import com.msg.network.response.post.GetDetailPostResponse
-import com.msg.network.response.post.GetPostListResponse
+import com.msg.model.enumdata.FeedType
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
