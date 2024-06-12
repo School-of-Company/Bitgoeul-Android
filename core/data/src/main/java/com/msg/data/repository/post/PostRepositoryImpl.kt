@@ -1,41 +1,52 @@
 package com.msg.data.repository.post
 
-import com.msg.model.remote.enumdatatype.FeedType
-import com.msg.model.remote.request.post.WritePostRequest
-import com.msg.model.remote.response.post.GetDetailPostResponse
-import com.msg.model.remote.response.post.GetPostListResponse
+import com.msg.data.mapper.post.toEntity
+import com.msg.data.mapper.post.toRequest
+import com.msg.model.entity.post.GetDetailPostEntity
+import com.msg.model.entity.post.GetPostListEntity
+import com.msg.model.enumdata.FeedType
+import com.msg.model.param.post.WritePostParam
 import com.msg.network.datasource.post.PostDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 import java.util.UUID
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
-    private val postDataSource: PostDataSource
+    private val postDataSource: PostDataSource,
 ) : PostRepository {
-    override fun sendPost(body: WritePostRequest): Flow<Unit> {
-        return postDataSource.sendPost(body = body)
+    override fun sendPost(body: WritePostParam): Flow<Unit> {
+        return postDataSource.sendPost(
+            body = body.toRequest()
+        )
     }
 
     override fun getPostList(
         type: FeedType,
         size: Int,
-        page: Int
-    ): Flow<GetPostListResponse> {
+        page: Int,
+    ): Flow<GetPostListEntity> {
         return postDataSource.getPostList(
             type = type,
             page = page,
             size = size
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> {
-        return postDataSource.getDetailPost(id = id)
+    override fun getDetailPost(id: UUID): Flow<GetDetailPostEntity> {
+        return postDataSource.getDetailPost(
+            id = id
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> {
+    override fun editPost(id: UUID, body: WritePostParam): Flow<Unit> {
         return postDataSource.editPost(
             id = id,
-            body = body
+            body = body.toRequest()
         )
     }
 
