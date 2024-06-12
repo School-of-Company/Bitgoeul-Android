@@ -1,4 +1,4 @@
-package com.msg.domain.certification
+package com.msg.domain.usecase.certification
 
 import com.msg.data.repository.certification.CertificationRepository
 import javax.inject.Inject
