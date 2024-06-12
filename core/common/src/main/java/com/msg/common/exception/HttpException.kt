@@ -1,4 +1,4 @@
-package com.msg.domain.exception
+package com.msg.common.exception
 
 class BadRequestException(
     override val message: String?

@@ -1,4 +1,4 @@
-package com.msg.network.exception
+package com.msg.common.exception
 
 import java.io.IOException
 
