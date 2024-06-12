@@ -1,30 +1,30 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.request.lecture.OpenLectureRequest
-import com.msg.model.remote.response.lecture.DetailLectureResponse
-import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
-import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
-import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
-import com.msg.model.remote.response.lecture.LectureListResponse
-import com.msg.model.remote.response.lecture.SearchDepartmentResponse
-import com.msg.model.remote.response.lecture.SearchDivisionResponse
-import com.msg.model.remote.response.lecture.SearchLineResponse
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.model.entity.lecture.DetailLectureEntity
+import com.msg.model.entity.lecture.DownloadExcelFileEntity
+import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
+import com.msg.model.entity.lecture.GetTakingLectureStudentListEntity
+import com.msg.model.entity.lecture.LectureListEntity
+import com.msg.model.entity.lecture.SearchDepartmentEntity
+import com.msg.model.entity.lecture.SearchDivisionEntity
+import com.msg.model.entity.lecture.SearchLineEntity
+import com.msg.model.entity.lecture.SearchProfessorEntity
+import com.msg.model.param.lecture.OpenLectureParam
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface LectureRepository {
-    fun openLecture(body: OpenLectureRequest): Flow<Unit>
-    fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListResponse>
-    fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
+    fun openLecture(body: OpenLectureParam): Flow<Unit>
+    fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListEntity>
+    fun getDetailLecture(id: UUID): Flow<DetailLectureEntity>
     fun lectureApplication(id: UUID): Flow<Unit>
     fun lectureApplicationCancel(id: UUID): Flow<Unit>
-    fun searchProfessor(keyword: String): Flow<SearchProfessorResponse>
-    fun searchLine(keyword: String, division: String): Flow<SearchLineResponse>
-    fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse>
-    fun searchDivision(keyword: String): Flow<SearchDivisionResponse>
-    fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse>
-    fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse>
+    fun searchProfessor(keyword: String): Flow<SearchProfessorEntity>
+    fun searchLine(keyword: String, division: String): Flow<SearchLineEntity>
+    fun searchDepartment(keyword: String): Flow<SearchDepartmentEntity>
+    fun searchDivision(keyword: String): Flow<SearchDivisionEntity>
+    fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryEntity>
+    fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListEntity>
     fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>
-    fun downloadExcelFile(): Flow<DownloadExcelFileResponse>
+    fun downloadExcelFile(): Flow<DownloadExcelFileEntity>
 }

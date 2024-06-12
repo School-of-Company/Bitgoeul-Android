@@ -1,26 +1,29 @@
 package com.msg.data.repository.lecture
 
-import com.msg.model.remote.request.lecture.OpenLectureRequest
-import com.msg.model.remote.response.lecture.DetailLectureResponse
-import com.msg.model.remote.response.lecture.DownloadExcelFileResponse
-import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
-import com.msg.model.remote.response.lecture.GetTakingLectureStudentListResponse
-import com.msg.model.remote.response.lecture.LectureListResponse
-import com.msg.model.remote.response.lecture.SearchDepartmentResponse
-import com.msg.model.remote.response.lecture.SearchDivisionResponse
-import com.msg.model.remote.response.lecture.SearchLineResponse
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.data.mapper.lecture.toEntity
+import com.msg.data.mapper.lecture.toRequest
+import com.msg.model.entity.lecture.DetailLectureEntity
+import com.msg.model.entity.lecture.DownloadExcelFileEntity
+import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
+import com.msg.model.entity.lecture.GetTakingLectureStudentListEntity
+import com.msg.model.entity.lecture.LectureListEntity
+import com.msg.model.entity.lecture.SearchDepartmentEntity
+import com.msg.model.entity.lecture.SearchDivisionEntity
+import com.msg.model.entity.lecture.SearchLineEntity
+import com.msg.model.entity.lecture.SearchProfessorEntity
+import com.msg.model.param.lecture.OpenLectureParam
 import com.msg.network.datasource.lecture.LectureDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 import java.util.UUID
 import javax.inject.Inject
 
 class LectureRepositoryImpl @Inject constructor(
     private val lectureDataSource: LectureDataSource,
 ) : LectureRepository {
-    override fun openLecture(body: OpenLectureRequest): Flow<Unit> {
+    override fun openLecture(body: OpenLectureParam): Flow<Unit> {
         return lectureDataSource.openLecture(
-            body = body
+            body = body.toRequest()
         )
     }
 
@@ -28,18 +31,22 @@ class LectureRepositoryImpl @Inject constructor(
         page: Int,
         size: Int,
         type: String?,
-    ): Flow<LectureListResponse> {
+    ): Flow<LectureListEntity> {
         return lectureDataSource.getLectureList(
             page = page,
             size = size,
             type = type
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> {
+    override fun getDetailLecture(id: UUID): Flow<DetailLectureEntity> {
         return lectureDataSource.getDetailLecture(
             id = id
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
     override fun lectureApplication(id: UUID): Flow<Unit> {
@@ -54,44 +61,60 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> {
+    override fun searchProfessor(keyword: String): Flow<SearchProfessorEntity> {
         return lectureDataSource.searchProfessor(
             keyword = keyword
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> {
+    override fun searchLine(keyword: String, division: String): Flow<SearchLineEntity> {
         return lectureDataSource.searchLine(
             keyword = keyword,
             division = division
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> {
+    override fun searchDepartment(keyword: String): Flow<SearchDepartmentEntity> {
         return lectureDataSource.searchDepartment(
             keyword = keyword
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun searchDivision(keyword: String): Flow<SearchDivisionResponse> {
+    override fun searchDivision(keyword: String): Flow<SearchDivisionEntity> {
         return lectureDataSource.searchDivision(
             keyword = keyword
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> {
-        return lectureDataSource.getLectureSignUpHistory(
-            studentId = studentId
-        )
+    override fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryEntity> {
+        return lectureDataSource.getLectureSignUpHistory(studentId)
+            .transform { response ->
+                response.toEntity()
+            }
     }
 
-    override fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse> {
+
+    override fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListEntity> {
         return lectureDataSource.getTakingLectureStudentList(
             id = id
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit> {
+    override fun editLectureCourseCompletionStatus(
+        id: UUID,
+        studentId: UUID,
+        isComplete: Boolean,
+    ): Flow<Unit> {
         return lectureDataSource.editLectureCourseCompletionStatus(
             id = id,
             studentId = studentId,
@@ -99,7 +122,9 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun downloadExcelFile(): Flow<DownloadExcelFileResponse> {
-        return lectureDataSource.downloadExcelFile()
+    override fun downloadExcelFile(): Flow<DownloadExcelFileEntity> {
+        return lectureDataSource.downloadExcelFile().transform { response ->
+            response.toEntity()
+        }
     }
 }
