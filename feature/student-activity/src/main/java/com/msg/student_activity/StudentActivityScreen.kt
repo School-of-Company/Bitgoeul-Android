@@ -1,7 +1,7 @@
 package com.msg.student_activity
 
-import Authority
-import Authority.Companion.from
+import com.msg.model.enumdata.Authority
+import com.msg.model.enumdata.Authority.Companion.from
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,12 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.model.activity.GetStudentActivityModel
-import com.msg.student_activity.util.Event
+import com.msg.model.model.activity.GetStudentActivityModel
 import com.msg.student_activity.viewmodel.StudentActivityViewModel
 import com.msg.ui.StudentActivityList
 import java.util.UUID

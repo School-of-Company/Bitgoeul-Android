@@ -1,6 +1,6 @@
 package com.msg.student_activity
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.NegativeBitgoeulButton
 import com.msg.design_system.component.dialog.NegativeActionDialog
@@ -33,9 +34,8 @@ import com.msg.design_system.component.dialog.PositiveActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.ApproveStatus
-import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
-import com.msg.student_activity.util.Event
+import com.msg.model.entity.activity.GetDetailStudentActivityInfoEntity
+import com.msg.model.enumdata.ApproveStatus
 import com.msg.student_activity.viewmodel.StudentActivityViewModel
 import com.msg.ui.util.toDotFormat
 import com.msg.ui.util.toKoreanFormat
@@ -73,7 +73,7 @@ fun ActivityDetailRoute(
 
 suspend fun getActivityData(
     viewModel: StudentActivityViewModel,
-    onSuccess: (data: GetDetailStudentActivityInfoResponse) -> Unit
+    onSuccess: (data: GetDetailStudentActivityInfoEntity) -> Unit
 ) {
     viewModel.getDetailStudentActivityResponse.collect { response ->
         when (response) {
@@ -88,7 +88,7 @@ suspend fun getActivityData(
 
 @Composable
 fun ActivityDetailScreen(
-    data: GetDetailStudentActivityInfoResponse,
+    data: GetDetailStudentActivityInfoEntity,
     role: String = Authority.ROLE_USER.toString(),
     onDeleteClicked: (UUID) -> Unit,
     onRejectClicked: (UUID) -> Unit,
