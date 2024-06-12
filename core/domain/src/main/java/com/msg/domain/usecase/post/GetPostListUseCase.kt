@@ -1,7 +1,7 @@
-package com.msg.domain.post
+package com.msg.domain.usecase.post
 
 import com.msg.data.repository.post.PostRepository
-import com.msg.model.remote.enumdatatype.FeedType
+import com.msg.model.enumdata.FeedType
 import javax.inject.Inject
 
 class GetPostListUseCase @Inject constructor(

@@ -1,4 +1,4 @@
-package com.msg.domain.post
+package com.msg.domain.usecase.post
 
 import com.msg.data.repository.post.PostRepository
 import java.util.UUID
