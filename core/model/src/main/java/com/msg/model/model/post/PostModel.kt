@@ -1,4 +1,4 @@
-package com.msg.model.remote.model.post
+package com.msg.model.model.post
 
 import java.time.LocalDateTime
 import java.util.UUID
