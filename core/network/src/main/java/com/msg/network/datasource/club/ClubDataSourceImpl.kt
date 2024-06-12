@@ -1,10 +1,10 @@
 package com.msg.network.datasource.club
 
-import com.msg.model.remote.enumdatatype.HighSchool
-import com.msg.model.remote.response.club.ClubDetailResponse
-import com.msg.model.remote.response.club.ClubListResponse
-import com.msg.model.remote.response.club.StudentBelongClubResponse
+import com.msg.model.enumdata.HighSchool
 import com.msg.network.api.ClubAPI
+import com.msg.network.response.club.ClubDetailResponse
+import com.msg.network.response.club.ClubListResponse
+import com.msg.network.response.club.StudentBelongClubResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
