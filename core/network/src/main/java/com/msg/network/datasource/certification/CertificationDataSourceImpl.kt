@@ -1,8 +1,8 @@
 package com.msg.network.datasource.certification
 
-import com.msg.model.remote.request.certification.WriteCertificationRequest
-import com.msg.model.remote.response.certification.CertificationListResponse
 import com.msg.network.api.CertificationAPI
+import com.msg.network.request.certification.WriteCertificationRequest
+import com.msg.network.response.certification.CertificationListResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
