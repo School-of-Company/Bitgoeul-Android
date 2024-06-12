@@ -1,15 +1,15 @@
 package com.msg.network.datasource.auth
 
-import com.msg.model.remote.model.auth.AuthTokenModel
-import com.msg.model.remote.request.auth.FindPasswordRequest
-import com.msg.model.remote.request.auth.LoginRequest
-import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
-import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
-import com.msg.model.remote.request.auth.SignUpGovernmentRequest
-import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
-import com.msg.model.remote.request.auth.SignUpProfessorRequest
-import com.msg.model.remote.request.auth.SignUpStudentRequest
 import com.msg.network.api.AuthAPI
+import com.msg.network.request.auth.FindPasswordRequest
+import com.msg.network.request.auth.LoginRequest
+import com.msg.network.request.auth.SignUpBbozzakTeacherRequest
+import com.msg.network.request.auth.SignUpCompanyInstructorRequest
+import com.msg.network.request.auth.SignUpGovernmentRequest
+import com.msg.network.request.auth.SignUpJobClubTeacherRequest
+import com.msg.network.request.auth.SignUpProfessorRequest
+import com.msg.network.request.auth.SignUpStudentRequest
+import com.msg.network.response.auth.AuthTokenResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,9 +20,9 @@ import javax.inject.Inject
 class AuthDataSourceImpl @Inject constructor(
     private val authAPI: AuthAPI
 ) : AuthDataSource {
-    override fun login(body: LoginRequest): Flow<AuthTokenModel> = flow {
+    override fun login(body: LoginRequest): Flow<AuthTokenResponse> = flow {
         emit(
-            BitgoeulApiHandler<AuthTokenModel>()
+            BitgoeulApiHandler<AuthTokenResponse>()
                 .httpRequest { authAPI.login(body = body) }
                 .sendRequest()
         )
