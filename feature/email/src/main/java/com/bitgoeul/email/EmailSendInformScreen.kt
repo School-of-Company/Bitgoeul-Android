@@ -1,5 +1,6 @@
 package com.bitgoeul.email
 
+import com.msg.model.entity.email.GetEmailAuthenticateStatusEntity
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
@@ -21,13 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.bitgoeul.email.util.Event
 import com.bitgoeul.email.viewmodel.EmailViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
 import com.msg.ui.makeToast
 import kotlinx.coroutines.launch
 
@@ -78,7 +78,7 @@ internal fun EmailSendInformRoute(
 
 private suspend fun getEmailAuthenticateStatus(
     viewModel: EmailViewModel,
-    onSuccess: (data: GetEmailAuthenticateStatusResponse) -> Unit,
+    onSuccess: (data: GetEmailAuthenticateStatusEntity) -> Unit,
 ) {
     viewModel.getEmailAuthenticateStatusResponse.collect { response ->
         when (response) {
