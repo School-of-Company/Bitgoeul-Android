@@ -1,30 +1,26 @@
 package com.msg.certification.viewmodel
 
-import Authority
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.certification.util.Event
-import com.msg.certification.util.errorHandling
-import com.msg.data.repository.auth.AuthRepository
-import com.msg.domain.certification.EditCertificationUseCase
-import com.msg.domain.certification.GetCertificationListForStudentUseCase
-import com.msg.domain.certification.GetCertificationListForTeacherUseCase
-import com.msg.domain.certification.WriteCertificationUseCase
-import com.msg.domain.club.GetStudentBelongClubUseCase
-import com.msg.domain.lecture.GetLectureSignUpHistoryUseCase
-import com.msg.model.remote.request.certification.WriteCertificationRequest
-import com.msg.model.remote.response.certification.CertificationListResponse
-import com.msg.model.remote.response.club.StudentBelongClubResponse
-import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
+import com.msg.common.event.Event
+import com.msg.common.errorhandling.errorHandling
+import com.msg.domain.usecase.auth.GetAuthorityUseCase
+import com.msg.domain.usecase.certification.*
+import com.msg.domain.usecase.certification.GetCertificationListForTeacherUseCase
+import com.msg.domain.usecase.certification.WriteCertificationUseCase
+import com.msg.domain.usecase.club.GetStudentBelongClubUseCase
+import com.msg.domain.usecase.lecture.GetLectureSignUpHistoryUseCase
+import com.msg.model.entity.certification.CertificationListEntity
+import com.msg.model.entity.club.StudentBelongClubEntity
+import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
+import com.msg.model.param.certification.WriteCertificationParam
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
@@ -36,11 +32,14 @@ class CertificationViewModel @Inject constructor(
     private val editCertificationUseCase: EditCertificationUseCase,
     private val getStudentBelongClubUseCase: GetStudentBelongClubUseCase,
     private val getLectureSignUpHistoryUseCase: GetLectureSignUpHistoryUseCase,
-    private val authRepository: AuthRepository,
+    private val getAuthorityUseCase: GetAuthorityUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListResponse>>>(Event.Loading)
+    private val role = getRole().toString()
+
+    private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(
+        Event.Loading)
     val getCertificationListResponse = _getCertificationListResponse.asStateFlow()
 
     private val _writeCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -49,10 +48,11 @@ class CertificationViewModel @Inject constructor(
     private val _editCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val editCertificationResponse = _editCertificationResponse.asStateFlow()
 
-    private val _getStudentBelongResponse = MutableStateFlow<Event<StudentBelongClubResponse>>(Event.Loading)
+    private val _getStudentBelongResponse = MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
     val getStudentBelongResponse = _getStudentBelongResponse.asStateFlow()
 
-    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryResponse>>(Event.Loading)
+    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(
+        Event.Loading)
     val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
 
     private val studentId = UUID.fromString(savedStateHandle.get<String>("studentId"))
@@ -68,11 +68,11 @@ class CertificationViewModel @Inject constructor(
     var selectedDate = mutableStateOf<LocalDate?>(null)
         private set
 
-    var certificationList = mutableStateListOf<CertificationListResponse>()
+    var certificationList = mutableStateListOf<CertificationListEntity>()
         private set
 
     var studentData = mutableStateOf(
-        StudentBelongClubResponse(
+        StudentBelongClubEntity(
             name = "",
             phoneNumber = "",
             email = "",
@@ -82,14 +82,14 @@ class CertificationViewModel @Inject constructor(
         private set
 
     var lectureData = mutableStateOf(
-        GetLectureSignUpHistoryResponse(
+        GetLectureSignUpHistoryEntity(
             lectures = listOf()
         )
     )
         private set
 
     internal fun getCertificationList() = viewModelScope.launch {
-        if (getRole() == Authority.ROLE_STUDENT) {
+        if (role == "ROLE_STUDENT") {
             getCertificationListForStudentUseCase().onSuccess {
                 it.catch { remoteError ->
                     _getCertificationListResponse.value = remoteError.errorHandling()
@@ -119,7 +119,7 @@ class CertificationViewModel @Inject constructor(
         acquisitionDate: LocalDate
     ) = viewModelScope.launch {
         writeCertificationUseCase(
-            body = WriteCertificationRequest(
+            body = WriteCertificationParam(
                 name = name,
                 acquisitionDate = acquisitionDate
             )
@@ -140,7 +140,7 @@ class CertificationViewModel @Inject constructor(
     ) = viewModelScope.launch {
         editCertificationUseCase(
             id = selectedCertificationId.value!!,
-            body = WriteCertificationRequest(
+            body = WriteCertificationParam(
                 name = name,
                 acquisitionDate = acquisitionDate
             )
@@ -188,7 +188,7 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
-    private fun getRole(): Authority = runBlocking {
-        return@runBlocking authRepository.getAuthority().first()
+    private fun getRole() = viewModelScope.launch {
+        getAuthorityUseCase()
     }
 }
