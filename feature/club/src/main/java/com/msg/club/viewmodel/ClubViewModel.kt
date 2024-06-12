@@ -1,29 +1,26 @@
 package com.msg.club.viewmodel
 
-import Authority
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.club.util.Event
-import com.msg.club.util.errorHandling
-import com.msg.data.repository.auth.AuthRepository
-import com.msg.domain.club.GetClubDetailUseCase
-import com.msg.domain.club.GetClubListUseCase
-import com.msg.domain.club.GetMyClubDetailUseCase
-import com.msg.domain.club.GetStudentBelongClubUseCase
-import com.msg.model.remote.enumdatatype.HighSchool
-import com.msg.model.remote.response.club.ClubDetailResponse
-import com.msg.model.remote.response.club.ClubListResponse
-import com.msg.model.remote.response.club.StudentBelongClubResponse
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.auth.GetAuthorityUseCase
+import com.msg.domain.usecase.club.GetClubDetailUseCase
+import com.msg.domain.usecase.club.GetClubListUseCase
+import com.msg.domain.usecase.club.GetMyClubDetailUseCase
+import com.msg.domain.usecase.club.GetStudentBelongClubUseCase
+import com.msg.model.entity.club.ClubDetailEntity
+import com.msg.model.entity.club.ClubListEntity
+import com.msg.model.entity.club.StudentBelongClubEntity
+import com.msg.model.enumdata.HighSchool
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.UUID
 import javax.inject.Inject
 
@@ -33,34 +30,33 @@ class ClubViewModel @Inject constructor(
     private val getClubListUseCase: GetClubListUseCase,
     private val getMyClubDetailUseCase: GetMyClubDetailUseCase,
     private val getStudentBelongClubUseCase: GetStudentBelongClubUseCase,
-    private val authRepository: AuthRepository,
+    private val getAuthorityUseCase: GetAuthorityUseCase,
 ) : ViewModel() {
 
-    private val _getClubDetailResponse = MutableStateFlow<Event<ClubDetailResponse>>(Event.Loading)
+    private val _getClubDetailResponse = MutableStateFlow<Event<ClubDetailEntity>>(Event.Loading)
     val getClubDetailResponse = _getClubDetailResponse.asStateFlow()
 
     private val _getClubListResponse =
-        MutableStateFlow<Event<List<ClubListResponse>>>(Event.Loading)
+        MutableStateFlow<Event<List<ClubListEntity>>>(Event.Loading)
     val getClubListResponse = _getClubListResponse.asStateFlow()
 
-    private val _getMyClubDetailResponse =
-        MutableStateFlow<Event<ClubDetailResponse>>(Event.Loading)
+    private val _getMyClubDetailResponse = MutableStateFlow<Event<ClubDetailEntity>>(Event.Loading)
     val getMyClubDetailResponse = _getMyClubDetailResponse.asStateFlow()
 
     private val _getStudentBelongClubResponse =
-        MutableStateFlow<Event<StudentBelongClubResponse>>(Event.Loading)
+        MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
     val getStudentBelongClubResponse = _getStudentBelongClubResponse.asStateFlow()
 
     val role = getRole().toString()
 
     var detailClub = mutableStateOf(
-        ClubDetailResponse(
+        ClubDetailEntity(
             clubId = 0,
             clubName = "",
             highSchoolName = "",
             headCount = 0,
             students = listOf(),
-            teacher = ClubDetailResponse.Teacher(
+            teacher = ClubDetailEntity.Teacher(
                 id = UUID.randomUUID(),
                 name = ""
             )
@@ -68,11 +64,11 @@ class ClubViewModel @Inject constructor(
     )
         private set
 
-    var clubList = mutableStateListOf<ClubListResponse>()
+    var clubList = mutableStateListOf<ClubListEntity>()
         private set
 
     var studentBelongClub = mutableStateOf(
-        StudentBelongClubResponse(
+        StudentBelongClubEntity(
             name = "",
             phoneNumber = "",
             email = "",
@@ -122,7 +118,7 @@ class ClubViewModel @Inject constructor(
         }
     }
 
-    private fun getRole(): Authority = runBlocking {
-        return@runBlocking authRepository.getAuthority().first()
+    private fun getRole() = viewModelScope.launch {
+        getAuthorityUseCase()
     }
 }
