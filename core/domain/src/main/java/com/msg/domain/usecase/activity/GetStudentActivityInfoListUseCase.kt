@@ -1,4 +1,4 @@
-package com.msg.domain.activity
+package com.msg.domain.usecase.activity
 
 import com.msg.data.repository.activity.ActivityRepository
 import java.util.UUID

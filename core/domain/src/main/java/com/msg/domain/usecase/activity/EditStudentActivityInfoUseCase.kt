@@ -1,7 +1,7 @@
-package com.msg.domain.activity
+package com.msg.domain.usecase.activity
 
 import com.msg.data.repository.activity.ActivityRepository
-import com.msg.model.remote.model.activity.StudentActivityModel
+import com.msg.model.model.activity.StudentActivityModel
 import java.util.UUID
 import javax.inject.Inject
 
