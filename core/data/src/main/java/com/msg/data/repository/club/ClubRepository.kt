@@ -1,15 +1,15 @@
 package com.msg.data.repository.club
 
-import com.msg.model.remote.enumdatatype.HighSchool
-import com.msg.model.remote.response.club.ClubDetailResponse
-import com.msg.model.remote.response.club.ClubListResponse
-import com.msg.model.remote.response.club.StudentBelongClubResponse
+import com.msg.model.entity.club.ClubDetailEntity
+import com.msg.model.entity.club.ClubListEntity
+import com.msg.model.entity.club.StudentBelongClubEntity
+import com.msg.model.enumdata.HighSchool
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface ClubRepository {
-    fun getClubList(highSchool: HighSchool): Flow<List<ClubListResponse>>
-    fun getClubDetail(id: Long): Flow<ClubDetailResponse>
-    fun getStudentBelongClubDetail(id: Long, studentId: UUID): Flow<StudentBelongClubResponse>
-    fun getMyClubDetail(): Flow<ClubDetailResponse>
+    fun getClubList(highSchool: HighSchool): Flow<List<ClubListEntity>>
+    fun getClubDetail(id: Long): Flow<ClubDetailEntity>
+    fun getStudentBelongClubDetail(id: Long, studentId: UUID): Flow<StudentBelongClubEntity>
+    fun getMyClubDetail(): Flow<ClubDetailEntity>
 }
