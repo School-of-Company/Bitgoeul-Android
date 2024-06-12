@@ -1,4 +1,4 @@
-package com.msg.model.remote.request.faq
+package com.msg.network.request.faq
 
 data class AddFrequentlyAskedQuestionsRequest(
     val question: String,

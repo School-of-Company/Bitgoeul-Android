@@ -1,4 +1,4 @@
-package com.msg.model.remote.response.faq
+package com.msg.network.response.faq
 
 data class GetFrequentlyAskedQuestionDetailResponse(
     val id : Long,
