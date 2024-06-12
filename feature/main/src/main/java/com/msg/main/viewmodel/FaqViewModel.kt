@@ -1,30 +1,27 @@
 package com.msg.main.viewmodel
 
-import Authority
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.data.repository.auth.AuthRepository
-import com.msg.main.util.Event
-import com.msg.main.util.errorHandling
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.auth.GetAuthorityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
-import com.msg.domain.faq.AddFrequentlyAskedQuestionUseCase as AddFAQUseCase
-import com.msg.domain.faq.GetFrequentlyAskedQuestionsListUseCase as GetFAQUseCase
-import com.msg.model.remote.request.faq.AddFrequentlyAskedQuestionsRequest as AddFAQRequest
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
+import com.msg.domain.usecase.faq.AddFrequentlyAskedQuestionUseCase as AddFAQUseCase
+import com.msg.domain.usecase.faq.GetFrequentlyAskedQuestionsListUseCase as GetFAQUseCase
+import com.msg.model.param.faq.AddFrequentlyAskedQuestionsParam as AddFAQRequest
+import com.msg.model.entity.faq.GetFrequentlyAskedQuestionDetailEntity as GetFAQDetailEntity
 
 @HiltViewModel
 class FaqViewModel @Inject constructor(
     private val addFAQUseCase: AddFAQUseCase,
     private val getFAQUseCase: GetFAQUseCase,
-    private val authRepository: AuthRepository,
+    private val getAuthorityUseCase: GetAuthorityUseCase,
 ) : ViewModel() {
 
     val role = getRole().toString()
@@ -32,10 +29,10 @@ class FaqViewModel @Inject constructor(
     private val _addFaqResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val addFaqResponse = _addFaqResponse.asStateFlow()
 
-    private val _getFaqListResponse = MutableStateFlow<Event<List<GetFAQDetailResponse>>>(Event.Loading)
+    private val _getFaqListResponse = MutableStateFlow<Event<List<GetFAQDetailEntity>>>(Event.Loading)
     val getFaqListResponse = _getFaqListResponse.asStateFlow()
 
-    var faqList = mutableStateListOf<GetFAQDetailResponse>()
+    var faqList = mutableStateListOf<GetFAQDetailEntity>()
         private set
 
     private var errorCode: Int = 200
@@ -75,7 +72,7 @@ class FaqViewModel @Inject constructor(
         }
     }
 
-    private fun getRole(): Authority = runBlocking {
-        return@runBlocking authRepository.getAuthority().first()
+    private fun getRole() = viewModelScope.launch {
+        getAuthorityUseCase()
     }
 }
