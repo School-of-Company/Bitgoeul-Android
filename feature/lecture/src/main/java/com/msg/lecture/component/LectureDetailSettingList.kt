@@ -15,15 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.icon.EmptyBoxIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.lecture.SearchDepartmentResponse
-import com.msg.model.remote.response.lecture.SearchDivisionResponse
-import com.msg.model.remote.response.lecture.SearchLineResponse
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.model.entity.lecture.*
 import java.util.UUID
 
 @Composable
 internal fun LectureDepartmentList(
-    data: SearchDepartmentResponse,
+    data: SearchDepartmentEntity,
     modifier: Modifier = Modifier,
     onClicked: (String) -> Unit,
 ) {
@@ -66,7 +63,7 @@ internal fun LectureDepartmentList(
 
 @Composable
 internal fun LectureLineList(
-    data: SearchLineResponse,
+    data: SearchLineEntity,
     keyword: String,
     modifier: Modifier = Modifier,
     division: String,
@@ -116,7 +113,7 @@ internal fun LectureLineList(
 
 @Composable
 internal fun LectureProfessorList(
-    data: SearchProfessorResponse,
+    data: SearchProfessorEntity,
     keyword: String,
     modifier: Modifier = Modifier,
     division: String,
@@ -166,7 +163,7 @@ internal fun LectureProfessorList(
 
 @Composable
 internal fun LectureDivisionList(
-    data: SearchDivisionResponse,
+    data: SearchDivisionEntity,
     modifier: Modifier = Modifier,
     onClicked: (String) -> Unit,
 ) {

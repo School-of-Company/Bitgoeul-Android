@@ -29,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.icon.CloseIcon
@@ -44,12 +46,13 @@ import com.msg.lecture.component.LectureDetailSettingInputTextField
 import com.msg.lecture.component.LectureDetailSettingLectureDatesTextField
 import com.msg.lecture.component.LectureDetailSettingSearchTextField
 import com.msg.lecture.component.LectureSettingTag
-import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.response.lecture.SearchDepartmentResponse
-import com.msg.model.remote.response.lecture.SearchDivisionResponse
-import com.msg.model.remote.response.lecture.SearchLineResponse
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.model.entity.lecture.Instructors
+import com.msg.model.entity.lecture.SearchDepartmentEntity
+import com.msg.model.entity.lecture.SearchDivisionEntity
+import com.msg.model.entity.lecture.SearchLineEntity
+import com.msg.model.entity.lecture.SearchProfessorEntity
+import com.msg.model.enumdata.Authority
 import com.msg.ui.util.toKoreanFormat
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -147,7 +150,7 @@ internal fun LectureDetailSettingRoute(
 
 private suspend fun getLineSearchData(
     viewModel: LectureViewModel,
-    onLineSuccess: (data: SearchLineResponse) -> Unit,
+    onLineSuccess: (data: SearchLineEntity) -> Unit,
 ) {
     viewModel.searchLineResponse.collect { response ->
         when (response) {
@@ -162,7 +165,7 @@ private suspend fun getLineSearchData(
 
 private suspend fun getProfessorSearchData(
     viewModel: LectureViewModel,
-    onSearchProfessorSuccess: (data: SearchProfessorResponse) -> Unit,
+    onSearchProfessorSuccess: (data: SearchProfessorEntity) -> Unit,
 ) {
     viewModel.searchProfessorResponse.collect { response ->
         when (response) {
@@ -177,7 +180,7 @@ private suspend fun getProfessorSearchData(
 
 private suspend fun getDepartmentSearchData(
     viewModel: LectureViewModel,
-    onDepartmentSuccess: (data: SearchDepartmentResponse) -> Unit,
+    onDepartmentSuccess: (data: SearchDepartmentEntity) -> Unit,
 ) {
     viewModel.searchDepartmentResponse.collect { response ->
         when (response) {
@@ -192,7 +195,7 @@ private suspend fun getDepartmentSearchData(
 
 suspend fun getDivisionSearchData(
     viewModel: LectureViewModel,
-    onDivisionSuccess: (data: SearchDivisionResponse) -> Unit,
+    onDivisionSuccess: (data: SearchDivisionEntity) -> Unit,
 ) {
     viewModel.searchDivisionResponse.collect { response ->
         when (response) {
@@ -208,10 +211,10 @@ suspend fun getDivisionSearchData(
 @Composable
 internal fun LectureDetailSettingScreen(
     modifier: Modifier = Modifier,
-    searchProfessorData: SearchProfessorResponse,
-    searchLineData: SearchLineResponse,
-    searchDepartmentData: SearchDepartmentResponse,
-    searchDivisionData: SearchDivisionResponse,
+    searchProfessorData: SearchProfessorEntity,
+    searchLineData: SearchLineEntity,
+    searchDepartmentData: SearchDepartmentEntity,
+    searchDivisionData: SearchDivisionEntity,
     onCloseClicked: () -> Unit,
     onLectureDatesAddClicked: () -> Unit,
     onLectureDatesRemoveClicked: () -> Unit,
@@ -636,4 +639,49 @@ internal fun LectureDetailSettingScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun LectureDetailSettingScreenPre() {
+    LectureDetailSettingScreen(
+        onCloseClicked = {},
+        onApplyClicked = { _, _, _, _, _, _, _, _, _, _ -> },
+        onSearchProfessorClicked = {},
+        onSearchLineClicked = { _, _ -> },
+        onSearchDepartmentClicked = {},
+        onSearchDivisionClicked = {},
+        onLectureDatesAddClicked = {},
+        onLectureDatesRemoveClicked = {},
+        onLectureDatesChanged = { _, _, _ -> },
+        searchLineData = SearchLineEntity(
+            lines = listOf("A계열", "B계열", "C계열")
+        ),
+        searchProfessorData = SearchProfessorEntity(
+            instructors = listOf(
+                Instructors(
+                    id = UUID.randomUUID(),
+                    name = "채종인",
+                    organization = "광주소프트웨어마이스터고등학교",
+                    authority = Authority.ROLE_PROFESSOR
+                )
+            )
+        ),
+        searchDepartmentData = SearchDepartmentEntity(
+            departments = listOf("A학과", "B학과", "C학과")
+        ),
+        searchDivisionData = SearchDivisionEntity(
+            divisions = listOf("A구분", "B구분", "C구분")
+        ),
+        savedLectureType = "lectureType",
+        savedSemester = "semester",
+        savedDivision = "division",
+        savedDepartment = "department",
+        savedLine = "line",
+        savedUserId = UUID.randomUUID(),
+        savedCreditPoint = 3,
+        savedStartDate = LocalDateTime.now(),
+        savedEndDate = LocalDateTime.now(),
+        savedMaxRegisteredUser = 10,
+    )
 }

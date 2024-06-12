@@ -28,20 +28,20 @@ import com.msg.design_system.component.icon.FileIcon
 import com.msg.design_system.component.icon.RedCloseIcon
 import com.msg.design_system.component.textfield.TrailingIconTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.lecture.SearchDepartmentResponse
-import com.msg.model.remote.response.lecture.SearchDivisionResponse
-import com.msg.model.remote.response.lecture.SearchLineResponse
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.model.entity.lecture.SearchDepartmentEntity
+import com.msg.model.entity.lecture.SearchDivisionEntity
+import com.msg.model.entity.lecture.SearchLineEntity
+import com.msg.model.entity.lecture.SearchProfessorEntity
 import kotlinx.coroutines.launch
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LectureDetailSettingSearchBottomSheet(
-    searchProfessorData: SearchProfessorResponse,
-    searchLineData: SearchLineResponse,
-    searchDepartmentData: SearchDepartmentResponse,
-    searchDivisionData: SearchDivisionResponse,
+    searchProfessorData: SearchProfessorEntity,
+    searchLineData: SearchLineEntity,
+    searchDepartmentData: SearchDepartmentEntity,
+    searchDivisionData: SearchDivisionEntity,
     modifier: Modifier = Modifier,
     searchPlaceHolder: String,
     division: String,

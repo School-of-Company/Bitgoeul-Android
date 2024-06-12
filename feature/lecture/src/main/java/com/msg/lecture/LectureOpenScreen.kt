@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.design_system.component.button.BitgoeulButton
@@ -203,4 +204,16 @@ internal fun LectureOpenScreen(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun LectureOpenScreenPre() {
+    LectureOpenScreen(
+        onActionClicked = {},
+        onBackClicked = {},
+        onSettingClicked = { _, _ -> },
+        savedName = "코틀린",
+        savedContent = "코틀린은 자바 가상 머신에서 돌아가는 프로그래밍 언어로, 자바와 100% 호환되는 언어입니다."
+    )
 }

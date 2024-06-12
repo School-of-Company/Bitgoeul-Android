@@ -23,10 +23,10 @@ import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.util.toLocalDate
 import com.msg.lecture.util.toLocalTime
-import com.msg.model.remote.response.lecture.SearchDepartmentResponse
-import com.msg.model.remote.response.lecture.SearchDivisionResponse
-import com.msg.model.remote.response.lecture.SearchLineResponse
-import com.msg.model.remote.response.lecture.SearchProfessorResponse
+import com.msg.model.entity.lecture.SearchDepartmentEntity
+import com.msg.model.entity.lecture.SearchDivisionEntity
+import com.msg.model.entity.lecture.SearchLineEntity
+import com.msg.model.entity.lecture.SearchProfessorEntity
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -75,10 +75,10 @@ internal fun LectureDetailSettingSearchTextField(
     onLineItemClicked: (String) -> Unit = {},
     onDivisionItemClicked: (String) -> Unit = {},
     isClickedPickerType: String,
-    searchProfessorData: SearchProfessorResponse,
-    searchLineData: SearchLineResponse,
-    searchDepartmentData: SearchDepartmentResponse,
-    searchDivisionData: SearchDivisionResponse,
+    searchProfessorData: SearchProfessorEntity,
+    searchLineData: SearchLineEntity,
+    searchDepartmentData: SearchDepartmentEntity,
+    searchDivisionData: SearchDivisionEntity,
 ) {
     val isFocused = remember { mutableStateOf(false) }
 

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.bottomsheet.SelectedIndicator
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.lecture.Instructors
+import com.msg.model.entity.lecture.Instructors
 import java.util.UUID
 
 @Composable
