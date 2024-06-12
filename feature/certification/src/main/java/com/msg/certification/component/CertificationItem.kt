@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.msg.design_system.R
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.certification.CertificationListResponse
+import com.msg.model.entity.certification.CertificationListEntity
 import com.msg.ui.util.toDotFormat
 import java.time.LocalDate
 import java.util.UUID
@@ -28,7 +28,7 @@ import java.util.UUID
 @Composable
 fun CertificationItem(
     modifier: Modifier = Modifier,
-    data: CertificationListResponse,
+    data: CertificationListEntity,
     onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->  

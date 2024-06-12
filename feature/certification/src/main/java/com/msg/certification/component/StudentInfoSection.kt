@@ -11,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.club.StudentBelongClubResponse
+import com.msg.model.entity.club.StudentBelongClubEntity
 
 @Composable
 fun StudentInfoSection(
     modifier: Modifier = Modifier,
-    data: StudentBelongClubResponse
+    data: StudentBelongClubEntity
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -77,7 +77,7 @@ fun StudentInfoSection(
 @Composable
 fun StudentInfoSectionPre() {
     StudentInfoSection(
-        data = StudentBelongClubResponse(
+        data = StudentBelongClubEntity(
             name = "채종인",
             phoneNumber = "010-1234-5678",
             email = "s22055@gsm.hs.kr",

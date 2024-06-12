@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.certification.CertificationListResponse
+import com.msg.model.entity.certification.CertificationListEntity
 import java.time.LocalDate
 import java.util.UUID
 
@@ -26,7 +26,7 @@ fun CertificationSection(
     modifier: Modifier = Modifier,
     onPlusClicked: () -> Unit,
     onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,
-    data: List<CertificationListResponse>
+    data: List<CertificationListEntity>
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -73,7 +73,7 @@ fun CertificationSectionPre() {
         onPlusClicked = {},
         onEditClicked = {_,_,_->},
         data = listOf(
-            CertificationListResponse(
+            CertificationListEntity(
                 certificationId = UUID.randomUUID(),
                 name = "정보처리산업기사",
                 acquisitionDate = LocalDate.now()
