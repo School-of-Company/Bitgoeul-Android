@@ -1,4 +1,4 @@
-package com.msg.model.remote.enumdatatype
+package com.msg.model.enumdata
 
 import com.msg.model.ui.DHSofFSClubList
 import com.msg.model.ui.GATClubList

@@ -1,4 +1,4 @@
-package com.msg.model.remote.model.lecture
+package com.msg.model.model.lecture
 
 import java.time.LocalDate
 import java.time.LocalTime

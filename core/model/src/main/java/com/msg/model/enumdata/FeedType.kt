@@ -1,4 +1,4 @@
-package com.msg.model.remote.enumdatatype
+package com.msg.model.enumdata
 
 enum class FeedType {
     EMPLOYMENT,

@@ -1,3 +1,5 @@
+package com.msg.model.enumdata
+
 enum class Authority {
     ROLE_USER,
     ROLE_ADMIN,
