@@ -1,8 +1,8 @@
 package com.msg.network.datasource.email
 
-import com.msg.model.remote.request.email.SendLinkToEmailRequest
-import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
 import com.msg.network.api.EmailAPI
+import com.msg.network.request.email.SendLinkToEmailRequest
+import com.msg.network.response.email.GetEmailAuthenticateStatusResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
