@@ -1,9 +1,9 @@
-package com.msg.model.remote.response.lecture
+package com.msg.model.entity.lecture
 
-import Authority
+import com.msg.model.enumdata.Authority
 import java.util.UUID
 
-data class SearchProfessorResponse(
+data class SearchProfessorEntity(
     var instructors: List<Instructors>
 )
 

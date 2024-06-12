@@ -1,10 +1,10 @@
-package com.msg.model.remote.response.lecture
+package com.msg.model.entity.lecture
 
-import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.enumdatatype.Semester
+import com.msg.model.enumdata.LectureStatus
+import com.msg.model.enumdata.Semester
 import java.util.UUID
 
-data class LectureListResponse(
+data class LectureListEntity(
     val lectures: Lectures
 )
 

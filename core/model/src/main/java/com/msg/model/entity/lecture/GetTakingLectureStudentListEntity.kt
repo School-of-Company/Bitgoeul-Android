@@ -1,9 +1,9 @@
-package com.msg.model.remote.response.lecture
+package com.msg.model.entity.lecture
 
-import com.msg.model.remote.enumdatatype.HighSchool
+import com.msg.model.enumdata.HighSchool
 import java.util.UUID
 
-data class GetTakingLectureStudentListResponse(
+data class GetTakingLectureStudentListEntity(
     val students: List<Students>,
 )
 

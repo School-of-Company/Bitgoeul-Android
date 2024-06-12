@@ -1,9 +1,9 @@
-package com.msg.model.remote.response.lecture
+package com.msg.model.entity.lecture
 
 import java.time.LocalDate
 import java.util.UUID
 
-data class GetLectureSignUpHistoryResponse(
+data class GetLectureSignUpHistoryEntity(
     val lectures: List<SignUpLectures>,
 )
 
