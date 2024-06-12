@@ -1,4 +1,4 @@
-package com.msg.model.remote.request.user
+package com.msg.network.request.user
 
 data class ChangePasswordRequest(
     val currentPassword: String,
