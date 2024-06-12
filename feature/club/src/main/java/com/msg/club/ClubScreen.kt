@@ -1,6 +1,6 @@
 package com.msg.club
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,15 +26,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.club.component.ClubResultList
-import com.msg.club.util.Event
 import com.msg.club.util.getSchoolNameFromEnum
 import com.msg.club.viewmodel.ClubViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.component.dialog.GetClubListDialog
 import com.msg.design_system.component.icon.BigAlertIcon
 import com.msg.design_system.component.icon.GreySettingIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.HighSchool
-import com.msg.model.remote.response.club.ClubListResponse
+import com.msg.model.entity.club.ClubListEntity
+import com.msg.model.enumdata.HighSchool
 import com.msg.ui.DevicePreviews
 
 @Composable
@@ -75,7 +75,7 @@ internal fun ClubScreenRoute(
 
 private suspend fun getClubList(
     viewModel: ClubViewModel,
-    onSuccess: (data: List<ClubListResponse>) -> Unit,
+    onSuccess: (data: List<ClubListEntity>) -> Unit,
     onFailure: () -> Unit
 ) {
     viewModel.getClubListResponse.collect { response ->
@@ -93,7 +93,7 @@ private suspend fun getClubList(
 @Composable
 internal fun ClubScreen(
     modifier: Modifier = Modifier,
-    data: List<ClubListResponse>,
+    data: List<ClubListEntity>,
     onSettingClicked: (String) -> Unit,
     onItemClicked: (Long) -> Unit
 ) {
