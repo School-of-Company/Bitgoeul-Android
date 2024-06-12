@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetUserListUseCase @Inject constructor(
     private val adminRepository: AdminRepository
 ) {
-    suspend operator fun invoke(body: GetUserListParam, keyword: String) = kotlin.runCatching {
+    suspend operator fun invoke(body: GetUserListParam, keyword: String) = runCatching {
         adminRepository.getUserList(body = body, keyword = keyword)
     }
 }
