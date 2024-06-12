@@ -1,4 +1,4 @@
-package com.msg.model.remote.request.certification
+package com.msg.network.request.certification
 
 import java.time.LocalDate
 
