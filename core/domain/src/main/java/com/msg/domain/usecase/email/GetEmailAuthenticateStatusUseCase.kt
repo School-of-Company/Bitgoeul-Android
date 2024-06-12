@@ -1,4 +1,4 @@
-package com.msg.domain.email
+package com.msg.domain.usecase.email
 
 import com.msg.data.repository.email.EmailRepository
 import javax.inject.Inject
