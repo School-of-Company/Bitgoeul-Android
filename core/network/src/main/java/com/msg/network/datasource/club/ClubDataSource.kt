@@ -1,9 +1,7 @@
 package com.msg.network.datasource.club
 
+import com.msg.network.response.club.*
 import com.msg.model.enumdata.HighSchool
-import com.msg.network.response.club.ClubDetailResponse
-import com.msg.network.response.club.ClubListResponse
-import com.msg.network.response.club.StudentBelongClubResponse
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 

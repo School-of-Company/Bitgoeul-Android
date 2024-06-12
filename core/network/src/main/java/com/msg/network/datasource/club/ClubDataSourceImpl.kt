@@ -1,10 +1,8 @@
 package com.msg.network.datasource.club
 
+import com.msg.network.response.club.*
 import com.msg.model.enumdata.HighSchool
 import com.msg.network.api.ClubAPI
-import com.msg.network.response.club.ClubDetailResponse
-import com.msg.network.response.club.ClubListResponse
-import com.msg.network.response.club.StudentBelongClubResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
