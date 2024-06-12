@@ -1,4 +1,4 @@
-package com.msg.domain.faq
+package com.msg.domain.usecase.faq
 
 import com.msg.data.repository.faq.FaqRepository
 import javax.inject.Inject
