@@ -1,8 +1,8 @@
 package com.msg.network.datasource.faq
 
-import com.msg.model.remote.request.faq.AddFrequentlyAskedQuestionsRequest
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
 import com.msg.network.api.FaqAPI
+import com.msg.network.request.faq.AddFrequentlyAskedQuestionsRequest
+import com.msg.network.response.faq.GetFrequentlyAskedQuestionDetailResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

@@ -1,4 +1,4 @@
-package com.msg.model.remote.response.certification
+package com.msg.network.response.certification
 
 import java.time.LocalDate
 import java.util.UUID
