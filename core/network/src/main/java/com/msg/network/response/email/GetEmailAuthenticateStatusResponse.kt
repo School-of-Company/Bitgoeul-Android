@@ -1,4 +1,4 @@
-package com.msg.model.remote.response.email
+package com.msg.network.response.email
 
 data class GetEmailAuthenticateStatusResponse(
     val isAuthentication: Boolean,
