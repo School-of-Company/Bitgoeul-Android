@@ -1,36 +1,32 @@
 package com.msg.student_activity.viewmodel
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.data.repository.auth.AuthRepository
-import com.msg.datastore.datasource.AuthTokenDataSource
-import com.msg.domain.activity.AddStudentActivityInfoUseCase
-import com.msg.domain.activity.ApproveStudentActivityInfoUseCase
-import com.msg.domain.activity.DeleteStudentActivityInfoUseCase
-import com.msg.domain.activity.EditStudentActivityInfoUseCase
-import com.msg.domain.activity.GetDetailStudentActivityInfoUseCase
-import com.msg.domain.activity.GetEntireStudentActivityInfoListUseCase
-import com.msg.domain.activity.GetMyStudentActivityInfoListUseCase
-import com.msg.domain.activity.GetStudentActivityInfoListUseCase
-import com.msg.domain.activity.RejectStudentActivityInfoUseCase
-import com.msg.model.remote.enumdatatype.ApproveStatus
-import com.msg.model.remote.model.activity.GetStudentActivityModel
-import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.GetStudentActivityListResponse
-import com.msg.student_activity.util.Event
-import com.msg.student_activity.util.errorHandling
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.activity.AddStudentActivityInfoUseCase
+import com.msg.domain.usecase.activity.ApproveStudentActivityInfoUseCase
+import com.msg.domain.usecase.activity.DeleteStudentActivityInfoUseCase
+import com.msg.domain.usecase.activity.GetDetailStudentActivityInfoUseCase
+import com.msg.domain.usecase.activity.GetEntireStudentActivityInfoListUseCase
+import com.msg.domain.usecase.activity.GetMyStudentActivityInfoListUseCase
+import com.msg.domain.usecase.activity.GetStudentActivityInfoListUseCase
+import com.msg.domain.usecase.activity.RejectStudentActivityInfoUseCase
+import com.msg.domain.usecase.auth.GetAuthorityUseCase
+import com.msg.model.entity.activity.GetDetailStudentActivityInfoEntity
+import com.msg.model.entity.activity.GetStudentActivityListEntity
+import com.msg.model.enumdata.ApproveStatus
+import com.msg.model.model.activity.GetStudentActivityModel
+import com.msg.model.model.activity.StudentActivityModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
@@ -43,19 +39,18 @@ class StudentActivityViewModel @Inject constructor(
     private val getEntireStudentActivityInfoListUseCase: GetEntireStudentActivityInfoListUseCase,
     private val getDetailStudentActivityInfoUseCase: GetDetailStudentActivityInfoUseCase,
     private val addStudentActivityInfoUseCase: AddStudentActivityInfoUseCase,
-    private val editStudentActivityInfoUseCase: EditStudentActivityInfoUseCase,
     private val approveStudentActivityInfoUseCase: ApproveStudentActivityInfoUseCase,
     private val rejectStudentActivityInfoUseCase: RejectStudentActivityInfoUseCase,
     private val deleteStudentActivityInfoUseCase: DeleteStudentActivityInfoUseCase,
-    private val authRepository: AuthRepository,
+    private val getAuthorityUseCase: GetAuthorityUseCase,
 ) : ViewModel() {
 
     val role = getRole().toString()
 
-    private val _getStudentActivityListResponse = MutableStateFlow<Event<GetStudentActivityListResponse>>(Event.Loading)
+    private val _getStudentActivityListResponse = MutableStateFlow<Event<GetStudentActivityListEntity>>(Event.Loading)
     val getStudentActivityListResponse = _getStudentActivityListResponse.asStateFlow()
 
-    private val _getDetailStudentActivityResponse = MutableStateFlow<Event<GetDetailStudentActivityInfoResponse>>(Event.Loading)
+    private val _getDetailStudentActivityResponse = MutableStateFlow<Event<GetDetailStudentActivityInfoEntity>>(Event.Loading)
     val getDetailStudentActivityResponse = _getDetailStudentActivityResponse.asStateFlow()
 
     private val _addStudentActivityResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -74,7 +69,7 @@ class StudentActivityViewModel @Inject constructor(
         private set
 
     var studentDetailActivityData = mutableStateOf(
-        GetDetailStudentActivityInfoResponse(
+        GetDetailStudentActivityInfoEntity(
             id = UUID.randomUUID(),
             title = "",
             content = "",
@@ -241,7 +236,7 @@ class StudentActivityViewModel @Inject constructor(
         }
     }
 
-    private fun getRole(): Authority = runBlocking {
-        return@runBlocking authRepository.getAuthority().first()
+    private fun getRole() = viewModelScope.launch {
+        getAuthorityUseCase()
     }
 }
