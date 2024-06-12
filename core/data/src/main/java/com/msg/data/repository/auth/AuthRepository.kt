@@ -1,29 +1,28 @@
 package com.msg.data.repository.auth
 
-import Authority
-import com.msg.model.remote.model.auth.AuthTokenModel
-import com.msg.model.remote.request.auth.FindPasswordRequest
-import com.msg.model.remote.request.auth.LoginRequest
-import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
-import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
-import com.msg.model.remote.request.auth.SignUpGovernmentRequest
-import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
-import com.msg.model.remote.request.auth.SignUpProfessorRequest
-import com.msg.model.remote.request.auth.SignUpStudentRequest
+import com.msg.model.entity.auth.AuthTokenEntity
+import com.msg.model.enumdata.Authority
+import com.msg.model.param.auth.FindPasswordParam
+import com.msg.model.param.auth.LoginParam
+import com.msg.model.param.auth.SignUpBbozzakTeacherParam
+import com.msg.model.param.auth.SignUpCompanyInstructorParam
+import com.msg.model.param.auth.SignUpGovernmentParam
+import com.msg.model.param.auth.SignUpJobClubTeacherParam
+import com.msg.model.param.auth.SignUpProfessorParam
+import com.msg.model.param.auth.SignUpStudentParam
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
-    fun login(body: LoginRequest): Flow<AuthTokenModel>
-    fun signUpStudent(body: SignUpStudentRequest): Flow<Unit>
-    fun signUpJobClubTeacher(body: SignUpJobClubTeacherRequest): Flow<Unit>
-    fun signUpProfessor(body: SignUpProfessorRequest): Flow<Unit>
-    fun signUpGovernment(body: SignUpGovernmentRequest): Flow<Unit>
-    fun signUpCompanyInstructor(body: SignUpCompanyInstructorRequest): Flow<Unit>
-    fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherRequest): Flow<Unit>
-    fun findPassword(body: FindPasswordRequest): Flow<Unit>
+    fun login(body: LoginParam): Flow<AuthTokenEntity>
+    fun signUpStudent(body: SignUpStudentParam): Flow<Unit>
+    fun signUpJobClubTeacher(body: SignUpJobClubTeacherParam): Flow<Unit>
+    fun signUpProfessor(body: SignUpProfessorParam): Flow<Unit>
+    fun signUpGovernment(body: SignUpGovernmentParam): Flow<Unit>
+    fun signUpCompanyInstructor(body: SignUpCompanyInstructorParam): Flow<Unit>
+    fun signUpBbozzakTeacher(body: SignUpBbozzakTeacherParam): Flow<Unit>
+    fun findPassword(body: FindPasswordParam): Flow<Unit>
     fun logout(): Flow<Unit>
     fun withdraw(): Flow<Unit>
-    fun saveToken(data: AuthTokenModel): Flow<Unit>
+    fun saveToken(data: AuthTokenEntity): Flow<Unit>
     fun getAuthority(): Flow<Authority>
-
 }
