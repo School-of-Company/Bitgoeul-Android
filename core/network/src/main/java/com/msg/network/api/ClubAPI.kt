@@ -1,9 +1,9 @@
 package com.msg.network.api
 
-import com.msg.model.remote.enumdatatype.HighSchool
-import com.msg.model.remote.response.club.ClubDetailResponse
-import com.msg.model.remote.response.club.ClubListResponse
-import com.msg.model.remote.response.club.StudentBelongClubResponse
+import com.msg.model.enumdata.HighSchool
+import com.msg.network.response.club.ClubDetailResponse
+import com.msg.network.response.club.ClubListResponse
+import com.msg.network.response.club.StudentBelongClubResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

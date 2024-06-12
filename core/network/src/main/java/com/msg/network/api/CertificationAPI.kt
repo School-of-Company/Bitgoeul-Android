@@ -1,7 +1,7 @@
 package com.msg.network.api
 
-import com.msg.model.remote.request.certification.WriteCertificationRequest
-import com.msg.model.remote.response.certification.CertificationListResponse
+import com.msg.network.request.certification.WriteCertificationRequest
+import com.msg.network.response.certification.CertificationListResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH

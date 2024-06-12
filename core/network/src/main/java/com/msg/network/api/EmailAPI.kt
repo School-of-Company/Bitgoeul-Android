@@ -1,7 +1,7 @@
 package com.msg.network.api
 
-import com.msg.model.remote.request.email.SendLinkToEmailRequest
-import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
+import com.msg.network.request.email.SendLinkToEmailRequest
+import com.msg.network.response.email.GetEmailAuthenticateStatusResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

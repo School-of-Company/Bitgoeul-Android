@@ -1,8 +1,8 @@
 package com.msg.network.api
 
-import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.GetStudentActivityListResponse
+import com.msg.model.model.activity.StudentActivityModel
+import com.msg.network.response.activity.GetDetailStudentActivityInfoResponse
+import com.msg.network.response.activity.GetStudentActivityListResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
