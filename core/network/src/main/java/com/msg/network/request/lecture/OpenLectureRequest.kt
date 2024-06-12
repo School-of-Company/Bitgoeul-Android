@@ -1,6 +1,6 @@
-package com.msg.model.remote.request.lecture
+package com.msg.network.request.lecture
 
-import com.msg.model.remote.model.lecture.LectureDates
+import com.msg.model.model.lecture.LectureDates
 import java.time.LocalDateTime
 import java.util.UUID
 

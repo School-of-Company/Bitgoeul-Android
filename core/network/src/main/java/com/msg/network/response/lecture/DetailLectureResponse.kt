@@ -1,7 +1,7 @@
-package com.msg.model.remote.response.lecture
+package com.msg.network.response.lecture
 
-import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.model.lecture.LectureDates
+import com.msg.model.enumdata.LectureStatus
+import com.msg.model.model.lecture.LectureDates
 import java.time.LocalDate
 import java.time.LocalDateTime
 
