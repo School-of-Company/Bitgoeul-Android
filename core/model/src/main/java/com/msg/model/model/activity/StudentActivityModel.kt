@@ -1,4 +1,4 @@
-package com.msg.model.remote.model.activity
+package com.msg.model.model.activity
 
 import java.time.LocalDate
 
