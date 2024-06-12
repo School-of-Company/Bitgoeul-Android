@@ -1,4 +1,4 @@
-package com.msg.domain.user
+package com.msg.domain.usecase.user
 
 import com.msg.data.repository.user.UserRepository
 import javax.inject.Inject
