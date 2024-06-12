@@ -1,4 +1,4 @@
-package com.msg.model.remote.request.admin
+package com.msg.network.request.admin
 
 data class GetUserListRequest(
     val keyword: String,
