@@ -1,7 +1,7 @@
-package com.msg.model.remote.response.admin
+package com.msg.network.response.admin
 
 data class UserListResponse(
-    val content: List<UseListContentResponse>,
+    val content: List<UserListContentResponse>,
     val pageable: Pageable,
     val totalPages: Int,
     val totalElement: Int,
