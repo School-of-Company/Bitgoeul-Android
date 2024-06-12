@@ -1,6 +1,6 @@
 package com.msg.datastore.datasource
 
-import Authority
+import com.msg.model.enumdata.Authority
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
 
