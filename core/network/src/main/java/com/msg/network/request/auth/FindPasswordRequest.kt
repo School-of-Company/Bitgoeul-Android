@@ -1,4 +1,4 @@
-package com.msg.model.remote.request.auth
+package com.msg.network.request.auth
 
 data class FindPasswordRequest(
     val email: String,
