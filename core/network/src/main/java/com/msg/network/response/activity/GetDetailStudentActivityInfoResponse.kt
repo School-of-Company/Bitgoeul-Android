@@ -1,6 +1,6 @@
-package com.msg.model.remote.response.activity
+package com.msg.network.response.activity
 
-import com.msg.model.remote.enumdatatype.ApproveStatus
+import com.msg.model.enumdata.ApproveStatus
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID

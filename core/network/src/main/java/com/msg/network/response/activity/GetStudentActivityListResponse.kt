@@ -1,6 +1,6 @@
-package com.msg.model.remote.response.activity
+package com.msg.network.response.activity
 
-import com.msg.model.remote.model.activity.GetStudentActivityModel
+import com.msg.model.model.activity.GetStudentActivityModel
 
 data class GetStudentActivityListResponse (
     val content: List<GetStudentActivityModel>,
