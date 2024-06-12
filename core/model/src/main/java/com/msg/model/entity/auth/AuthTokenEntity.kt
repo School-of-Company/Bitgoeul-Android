@@ -1,9 +1,9 @@
-package com.msg.model.remote.model.auth
+package com.msg.model.entity.auth
 
-import Authority
+import com.msg.model.enumdata.Authority
 
 
-data class AuthTokenModel(
+data class AuthTokenEntity(
     val accessToken: String,
     val refreshToken: String,
     val accessExpiredAt: String,
