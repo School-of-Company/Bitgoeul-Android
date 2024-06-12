@@ -1,15 +1,16 @@
-package com.msg.certification.util
+package com.msg.common.errorhandling
 
 import android.util.Log
-import com.msg.domain.exception.BadRequestException
-import com.msg.domain.exception.ConflictException
-import com.msg.domain.exception.ForBiddenException
-import com.msg.domain.exception.NeedLoginException
-import com.msg.domain.exception.NotAcceptableException
-import com.msg.domain.exception.NotFoundException
-import com.msg.domain.exception.ServerException
-import com.msg.domain.exception.TimeOutException
-import com.msg.domain.exception.UnauthorizedException
+import com.msg.common.event.Event
+import com.msg.common.exception.BadRequestException
+import com.msg.common.exception.ConflictException
+import com.msg.common.exception.ForBiddenException
+import com.msg.common.exception.NeedLoginException
+import com.msg.common.exception.NotAcceptableException
+import com.msg.common.exception.NotFoundException
+import com.msg.common.exception.ServerException
+import com.msg.common.exception.TimeOutException
+import com.msg.common.exception.UnauthorizedException
 
 //추후 리팩토링을 통해 다른 모듈? 패키지로 이동 예정
 suspend fun <T> Throwable.errorHandling(
