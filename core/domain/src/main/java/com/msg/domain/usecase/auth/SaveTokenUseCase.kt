@@ -1,13 +1,13 @@
-package com.msg.domain.auth
+package com.msg.domain.usecase.auth
 
 import com.msg.data.repository.auth.AuthRepository
-import com.msg.model.remote.model.auth.AuthTokenModel
+import com.msg.model.entity.auth.AuthTokenEntity
 import javax.inject.Inject
 
 class SaveTokenUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(data: AuthTokenModel) = runCatching {
+    suspend operator fun invoke(data: AuthTokenEntity) = runCatching {
         authRepository.saveToken(data)
     }
 }

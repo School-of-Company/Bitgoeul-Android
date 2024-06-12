@@ -1,13 +1,13 @@
-package com.msg.domain.auth
+package com.msg.domain.usecase.auth
 
 import com.msg.data.repository.auth.AuthRepository
-import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.model.param.auth.LoginParam
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(body: LoginRequest) = runCatching {
+    suspend operator fun invoke(body: LoginParam) = runCatching {
         authRepository.login(body = body)
     }
 }
