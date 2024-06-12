@@ -1,10 +1,10 @@
 package com.msg.network.datasource.post
 
-import com.msg.model.remote.enumdatatype.FeedType
-import com.msg.model.remote.request.post.WritePostRequest
-import com.msg.model.remote.response.post.GetDetailPostResponse
-import com.msg.model.remote.response.post.GetPostListResponse
+import com.msg.model.enumdata.FeedType
 import com.msg.network.api.PostAPI
+import com.msg.network.request.post.WritePostRequest
+import com.msg.network.response.post.GetDetailPostResponse
+import com.msg.network.response.post.GetPostListResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
