@@ -1,4 +1,4 @@
-package com.msg.domain.club
+package com.msg.domain.usecase.club
 
 import com.msg.data.repository.club.ClubRepository
 import java.util.UUID

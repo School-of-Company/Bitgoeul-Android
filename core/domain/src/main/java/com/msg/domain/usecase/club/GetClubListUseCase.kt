@@ -1,7 +1,7 @@
-package com.msg.domain.club
+package com.msg.domain.usecase.club
 
 import com.msg.data.repository.club.ClubRepository
-import com.msg.model.remote.enumdatatype.HighSchool
+import com.msg.model.enumdata.HighSchool
 import javax.inject.Inject
 
 class GetClubListUseCase @Inject constructor(
