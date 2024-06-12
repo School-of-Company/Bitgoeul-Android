@@ -1,6 +1,6 @@
 package com.msg.post
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -19,14 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.component.icon.ChatIcon
 import com.msg.design_system.component.icon.HelpIcon
 import com.msg.design_system.component.icon.MegaphoneIcon
 import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.FeedType
-import com.msg.model.remote.response.post.GetPostListResponse
-import com.msg.post.util.Event
+import com.msg.model.entity.post.GetPostListEntity
+import com.msg.model.enumdata.FeedType
 import com.msg.post.viewmodel.PostViewModel
 import com.msg.ui.PostList
 import java.util.UUID
@@ -50,7 +50,7 @@ internal fun PostScreenRoute(
                 viewModel.postList.value = it
             },
             onFailure = {
-                viewModel.postList.value = GetPostListResponse(
+                viewModel.postList.value = GetPostListEntity(
                     posts = emptyList()
                 )
             }
@@ -70,7 +70,7 @@ internal fun PostScreenRoute(
         },
         data = viewModel.postList.value,
         onViewChangeClicked = {
-            viewModel.postList.value = GetPostListResponse(
+            viewModel.postList.value = GetPostListEntity(
                 posts = emptyList()
             )
             viewModel.getPostList(type = it)
@@ -82,7 +82,7 @@ internal fun PostScreenRoute(
 
 private suspend fun getPostList(
     viewModel: PostViewModel,
-    onSuccess: (data: GetPostListResponse) -> Unit,
+    onSuccess: (data: GetPostListEntity) -> Unit,
     onFailure: () -> Unit
 ) {
     viewModel.getPostListResponse.collect { response ->
@@ -105,7 +105,7 @@ internal fun PostScreen(
     onAddClicked: (feedType: FeedType) -> Unit,
     onItemClicked: (UUID) -> Unit,
     onViewChangeClicked: (type: FeedType) -> Unit,
-    data: GetPostListResponse,
+    data: GetPostListEntity,
     feedType: FeedType = FeedType.EMPLOYMENT
 ) {
     val roleField = listOf(

@@ -27,7 +27,7 @@ import com.msg.design_system.component.button.DetailSettingButton
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.enumdatatype.FeedType
+import com.msg.model.enumdata.FeedType
 import com.msg.post.viewmodel.PostViewModel
 import com.msg.ui.DevicePreviews
 
