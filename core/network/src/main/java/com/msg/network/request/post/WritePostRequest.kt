@@ -1,6 +1,6 @@
-package com.msg.model.remote.request.post
+package com.msg.network.request.post
 
-import com.msg.model.remote.enumdatatype.FeedType
+import com.msg.model.enumdata.FeedType
 
 data class WritePostRequest(
     val title: String,
