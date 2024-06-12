@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.model.post.PostModel
+import com.msg.model.model.post.PostModel
 import com.msg.ui.util.toDotFormat
 import java.time.LocalDateTime
 import java.util.UUID
