@@ -1,6 +1,6 @@
 package com.msg.main
 
-import Authority
+import com.msg.model.enumdata.Authority
 import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.R
 import com.msg.design_system.component.dialog.BitgoeulAlertDialog
 import com.msg.design_system.component.icon.GwangjuIcon
@@ -41,9 +42,8 @@ import com.msg.main.component.FaqSection
 import com.msg.main.component.HighSchoolCardView
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
-import com.msg.main.util.Event
 import com.msg.main.viewmodel.FaqViewModel
-import com.msg.model.remote.enumdatatype.HighSchool
+import com.msg.model.enumdata.HighSchool
 import com.msg.model.ui.CSTCollegeData
 import com.msg.model.ui.DKCollegeData
 import com.msg.model.ui.HNCollegeData
@@ -51,7 +51,7 @@ import com.msg.model.ui.NBCollegeData
 import com.msg.model.ui.SWCollegeData
 import com.msg.model.ui.SYCollegeData
 import com.msg.ui.DevicePreviews
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse as GetFAQDetailResponse
+import com.msg.model.entity.faq.GetFrequentlyAskedQuestionDetailEntity as GetFAQDetailEntity
 
 @Composable
 internal fun MainPageScreenRoute(
@@ -59,7 +59,7 @@ internal fun MainPageScreenRoute(
     onLoginClicked: () -> Unit
 ) {
     val role = viewModel.role
-    var error: Event<List<GetFAQDetailResponse>> = Event.Loading
+    var error: Event<List<GetFAQDetailEntity>> = Event.Loading
     var isReLaunched = false
     val activity = LocalContext.current as Activity
 
@@ -105,8 +105,8 @@ internal fun MainPageScreenRoute(
 
 private suspend fun getFaqList(
     viewModel: FaqViewModel,
-    onSuccess: (data: List<GetFAQDetailResponse>) -> Unit,
-    onFailure: (error: Event<List<GetFAQDetailResponse>>) -> Unit
+    onSuccess: (data: List<GetFAQDetailEntity>) -> Unit,
+    onFailure: (error: Event<List<GetFAQDetailEntity>>) -> Unit
 ) {
     viewModel.getFaqListResponse.collect { response ->
         when (response) {
@@ -123,8 +123,8 @@ private suspend fun getFaqList(
 @Composable
 internal fun MainPageScreen(
     modifier: Modifier = Modifier,
-    data: List<GetFAQDetailResponse>,
-    event: Event<List<GetFAQDetailResponse>>,
+    data: List<GetFAQDetailEntity>,
+    event: Event<List<GetFAQDetailEntity>>,
     role: Authority,
     onAddClicked: (question: String, answer: String) -> Unit,
     onDialogButtonClicked: () -> Unit
@@ -382,7 +382,7 @@ internal fun MainPageScreen(
 fun MainPageScreenPre() {
     MainPageScreen(
         data = listOf(
-            GetFAQDetailResponse(
+            GetFAQDetailEntity(
                 id = 0,
                 question = "학원에서 자격증 과정을 운영할 수 있나요?",
                 answer = "불가능 합니다. 그러나, 학교 주관으로 학원강사를 섭외할 수는 있고, 학원시설 이용비, 학원강사 수당 지급은 가능 합니다."
