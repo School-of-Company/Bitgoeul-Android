@@ -1,8 +1,7 @@
 package com.msg.network.datasource.activity
 
+import com.msg.network.response.activity.*
 import com.msg.model.model.activity.StudentActivityModel
-import com.msg.network.response.activity.GetDetailStudentActivityInfoResponse
-import com.msg.network.response.activity.GetStudentActivityListResponse
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 

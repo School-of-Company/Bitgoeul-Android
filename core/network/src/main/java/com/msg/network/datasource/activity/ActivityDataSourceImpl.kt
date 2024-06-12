@@ -1,9 +1,8 @@
 package com.msg.network.datasource.activity
 
+import com.msg.network.response.activity.*
 import com.msg.model.model.activity.StudentActivityModel
 import com.msg.network.api.ActivityAPI
-import com.msg.network.response.activity.GetDetailStudentActivityInfoResponse
-import com.msg.network.response.activity.GetStudentActivityListResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
