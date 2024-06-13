@@ -48,24 +48,24 @@ interface LectureAPI {
     )
 
     @GET("lecture/instructor")
-    suspend fun searchProfessor(
+    suspend fun getSearchProfessor(
         @Query("keyword") keyword: String,
     ): SearchProfessorResponse
 
 
     @GET("lecture/line")
-    suspend fun searchLine(
+    suspend fun getSearchLine(
         @Query("keyword") keyword: String,
         @Query("division") division: String,
     ): SearchLineResponse
 
     @GET("lecture/department")
-    suspend fun searchDepartment(
+    suspend fun getSearchDepartment(
         @Query("keyword") keyword: String,
     ): SearchDepartmentResponse
 
     @GET("lecture/division")
-    suspend fun searchDivision(
+    suspend fun getSearchDivision(
         @Query("keyword") keyword: String,
     ): SearchDivisionResponse
 
