@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.lecture.ContentArray
-import com.msg.model.remote.response.lecture.Students
+import com.msg.model.entity.lecture.ContentArray
+import com.msg.model.entity.lecture.Students
 import java.util.UUID
 
 @Composable

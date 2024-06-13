@@ -11,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
+import com.msg.model.entity.faq.GetFrequentlyAskedQuestionDetailEntity
 
 @Composable
 internal fun FaqSection(
     modifier: Modifier = Modifier,
-    data: List<GetFrequentlyAskedQuestionDetailResponse>
+    data: List<GetFrequentlyAskedQuestionDetailEntity>
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -48,7 +48,7 @@ internal fun FaqSection(
 fun FaqSectionPre() {
     FaqSection(
         data = listOf(
-            GetFrequentlyAskedQuestionDetailResponse(
+            GetFrequentlyAskedQuestionDetailEntity(
                 id = 0,
                 question = "학원에서 자격증 과정을 운영할 수 있나요?",
                 answer = "불가능 합니다. 그러나, 학교 주관으로 학원강사를 섭외할 수는 있고, 학원시설 이용비, 학원강사 수당 지급은 가능 합니다."

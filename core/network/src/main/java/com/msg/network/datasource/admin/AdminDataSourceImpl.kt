@@ -1,8 +1,8 @@
 package com.msg.network.datasource.admin
 
-import com.msg.model.remote.request.admin.GetUserListRequest
-import com.msg.model.remote.response.admin.UserListResponse
 import com.msg.network.api.AdminAPI
+import com.msg.network.request.admin.GetUserListRequest
+import com.msg.network.response.admin.UserListResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

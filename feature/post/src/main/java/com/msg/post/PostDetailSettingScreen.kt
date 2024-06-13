@@ -54,7 +54,6 @@ internal fun PostDetailSettingScreen(
     onClickAddButton: () -> Unit,
     onValueChanged: (index: Int, item: String) -> Unit
 ) {
-
     val scrollState = rememberScrollState()
     val interactionSource = remember { MutableInteractionSource() }
 

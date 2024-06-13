@@ -1,10 +1,12 @@
 package com.msg.data.repository.activity
 
-import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.GetStudentActivityListResponse
+import com.msg.data.mapper.activity.toEntity
+import com.msg.model.entity.activity.GetDetailStudentActivityInfoEntity
+import com.msg.model.entity.activity.GetStudentActivityListEntity
+import com.msg.model.model.activity.StudentActivityModel
 import com.msg.network.datasource.activity.ActivityDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 import java.util.UUID
 import javax.inject.Inject
 
@@ -45,38 +47,46 @@ class ActivityRepositoryImpl @Inject constructor(
     override fun getMyStudentActivityInfoList(
         page: Int,
         size: Int,
-    ): Flow<GetStudentActivityListResponse> {
+    ): Flow<GetStudentActivityListEntity> {
         return activityDataSource.getMyStudentActivityInfoList(
             page = page,
             size = size,
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
     override fun getStudentActivityInfoList(
         page: Int,
         size: Int,
         id: UUID
-    ): Flow<GetStudentActivityListResponse> {
+    ): Flow<GetStudentActivityListEntity> {
         return activityDataSource.getStudentActivityInfoList(
             page = page,
             size = size,
             id = id
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
     override fun getEntireStudentActivityInfoList(
         page: Int,
         size: Int,
-    ): Flow<GetStudentActivityListResponse> {
+    ): Flow<GetStudentActivityListEntity> {
         return activityDataSource.getEntireStudentActivityInfoList(
             page = page,
             size = size,
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 
-    override fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse> {
+    override fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoEntity> {
         return activityDataSource.getDetailStudentActivityInfo(
             id = id
-        )
+        ).transform { response ->
+            response.toEntity()
+        }
     }
 }

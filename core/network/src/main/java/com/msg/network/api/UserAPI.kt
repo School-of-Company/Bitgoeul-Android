@@ -1,7 +1,7 @@
 package com.msg.network.api
 
-import com.msg.model.remote.request.user.ChangePasswordRequest
-import com.msg.model.remote.response.user.InquiryMyPageResponse
+import com.msg.network.request.user.ChangePasswordRequest
+import com.msg.network.response.user.InquiryMyPageResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH

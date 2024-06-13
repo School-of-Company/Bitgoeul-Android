@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.lecture.SignUpLectures
+import com.msg.model.entity.lecture.SignUpLectures
 import com.msg.ui.util.toKoreanFormat
 
 @Composable

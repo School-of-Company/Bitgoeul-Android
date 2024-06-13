@@ -1,17 +1,17 @@
 package com.example.my_page.viewmodel
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.my_page.util.Event
-import com.example.my_page.util.errorHandling
-import com.msg.domain.auth.LogoutUseCase
-import com.msg.domain.auth.WithdrawUseCase
-import com.msg.domain.user.ChangePasswordUseCase
-import com.msg.domain.user.InquiryMyPageUseCase
-import com.msg.model.remote.request.user.ChangePasswordRequest
-import com.msg.model.remote.response.user.InquiryMyPageResponse
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.auth.LogoutUseCase
+import com.msg.domain.usecase.auth.WithdrawUseCase
+import com.msg.domain.usecase.user.ChangePasswordUseCase
+import com.msg.domain.usecase.user.InquiryMyPageUseCase
+import com.msg.model.entity.user.InquiryMyPageEntity
+import com.msg.model.param.user.ChangePasswordParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +27,7 @@ class MyPageViewModel @Inject constructor(
     private val changePasswordUseCase: ChangePasswordUseCase
 ) : ViewModel() {
 
-    private val _getMyPageResponse = MutableStateFlow<Event<InquiryMyPageResponse>>(Event.Loading)
+    private val _getMyPageResponse = MutableStateFlow<Event<InquiryMyPageEntity>>(Event.Loading)
     val getMyPageResponse = _getMyPageResponse.asStateFlow()
 
     private val _getLogoutResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -40,7 +40,7 @@ class MyPageViewModel @Inject constructor(
     val getChangePasswordResponse = _getChangePasswordResponse.asStateFlow()
 
     var myPageData = mutableStateOf(
-        InquiryMyPageResponse(
+        InquiryMyPageEntity(
             name = "",
             email = "",
             phoneNumber = "",
@@ -91,7 +91,7 @@ class MyPageViewModel @Inject constructor(
         newPassword: String
     ) = viewModelScope.launch {
         changePasswordUseCase(
-            body = ChangePasswordRequest(
+            body = ChangePasswordParam(
             currentPassword = currentPassword,
             newPassword = newPassword
             )

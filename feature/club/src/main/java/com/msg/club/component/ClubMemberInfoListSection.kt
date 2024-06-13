@@ -11,14 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.club.ClubDetailResponse
+import com.msg.model.entity.club.ClubDetailEntity
 import java.util.UUID
 
 @Composable
 internal fun ClubMemberInfoListSection(
     modifier: Modifier = Modifier,
-    teacherData: ClubDetailResponse.Teacher,
-    studentsData: List<ClubDetailResponse.Student>,
+    teacherData: ClubDetailEntity.Teacher,
+    studentsData: List<ClubDetailEntity.Student>,
     onItemClicked: (UUID) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->

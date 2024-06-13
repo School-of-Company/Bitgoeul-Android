@@ -1,10 +1,10 @@
 package com.msg.data.repository.email
 
-import com.msg.model.remote.request.email.SendLinkToEmailRequest
-import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
+import com.msg.model.entity.email.GetEmailAuthenticateStatusEntity
+import com.msg.model.param.email.SendLinkToEmailParam
 import kotlinx.coroutines.flow.Flow
 
 interface EmailRepository {
-    fun sendLinkToEmail(body: SendLinkToEmailRequest): Flow<Unit>
-    fun getEmailAuthenticateStatus(email: String): Flow<GetEmailAuthenticateStatusResponse>
+    fun sendLinkToEmail(body: SendLinkToEmailParam): Flow<Unit>
+    fun getEmailAuthenticateStatus(email: String): Flow<GetEmailAuthenticateStatusEntity>
 }

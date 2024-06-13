@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.club.ClubDetailResponse
+import com.msg.model.entity.club.ClubDetailEntity
 
 @Composable
 internal fun ClubInfoSection(
     modifier: Modifier = Modifier,
-    data: ClubDetailResponse
+    data: ClubDetailEntity
 ) {
     BitgoeulAndroidTheme { colors, typography ->  
         Column(

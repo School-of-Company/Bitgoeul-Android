@@ -1,6 +1,6 @@
 package com.example.my_page.component
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,11 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.user.InquiryMyPageResponse
+import com.msg.model.entity.user.InquiryMyPageEntity
 
 @Composable
 internal fun MyInfoView(
-    data: InquiryMyPageResponse,
+    data: InquiryMyPageEntity,
     modifier: Modifier
 ) {
     val organization = data.organization.split("/")

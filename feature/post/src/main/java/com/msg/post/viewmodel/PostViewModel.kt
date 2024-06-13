@@ -1,29 +1,22 @@
 package com.msg.post.viewmodel
 
-import Authority
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.data.repository.auth.AuthRepository
-import com.msg.domain.post.DeletePostUseCase
-import com.msg.domain.post.EditPostUseCase
-import com.msg.domain.post.GetDetailPostUseCase
-import com.msg.domain.post.GetPostListUseCase
-import com.msg.domain.post.SendPostUseCase
-import com.msg.model.remote.enumdatatype.FeedType
-import com.msg.model.remote.request.post.WritePostRequest
-import com.msg.model.remote.response.post.GetDetailPostResponse
-import com.msg.model.remote.response.post.GetPostListResponse
-import com.msg.post.util.Event
-import com.msg.post.util.errorHandling
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.auth.GetAuthorityUseCase
+import com.msg.domain.usecase.post.*
+import com.msg.model.entity.post.GetDetailPostEntity
+import com.msg.model.entity.post.GetPostListEntity
+import com.msg.model.enumdata.FeedType
+import com.msg.model.param.post.WritePostParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
@@ -35,8 +28,10 @@ class PostViewModel @Inject constructor(
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
     private val sendPostUseCase: SendPostUseCase,
-    private val authRepository: AuthRepository,
+    private val getAuthorityUseCase: GetAuthorityUseCase
+
 ) : ViewModel() {
+    val role = getRole().toString()
 
     private val _deletePostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val deletePostResponse = _deletePostResponse.asStateFlow()
@@ -44,19 +39,17 @@ class PostViewModel @Inject constructor(
     private val _editPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val editPostResponse = _editPostResponse.asStateFlow()
 
-    private val _getDetailPostResponse = MutableStateFlow<Event<GetDetailPostResponse>>(Event.Loading)
+    private val _getDetailPostResponse = MutableStateFlow<Event<GetDetailPostEntity>>(Event.Loading)
     val getDetailPostResponse = _getDetailPostResponse.asStateFlow()
 
-    private val _getPostListResponse = MutableStateFlow<Event<GetPostListResponse>>(Event.Loading)
+    private val _getPostListResponse = MutableStateFlow<Event<GetPostListEntity>>(Event.Loading)
     val getPostListResponse = _getPostListResponse.asStateFlow()
 
     private val _sendPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val sendPostResponse = _sendPostResponse.asStateFlow()
 
-    val role = getRole().toString()
-
     var detailPost = mutableStateOf(
-        GetDetailPostResponse(
+        GetDetailPostEntity(
             title = "",
             writer = "",
             content = "",
@@ -68,7 +61,7 @@ class PostViewModel @Inject constructor(
         private set
 
     var postList = mutableStateOf(
-        GetPostListResponse(
+        GetPostListEntity(
             posts = listOf()
         )
     )
@@ -114,7 +107,7 @@ class PostViewModel @Inject constructor(
     ) = viewModelScope.launch {
         editPostUseCase(
             id = id,
-            body = WritePostRequest(
+            body = WritePostParam(
                 title = title,
                 content = content,
                 links = links,
@@ -137,7 +130,7 @@ class PostViewModel @Inject constructor(
         feedType: FeedType,
     ) = viewModelScope.launch {
         sendPostUseCase(
-            body = WritePostRequest(
+            body = WritePostParam(
                 title = title,
                 content = content,
                 links = links,
@@ -205,7 +198,7 @@ class PostViewModel @Inject constructor(
         isEditPage.value = true
     }
 
-    private fun getRole(): Authority = runBlocking {
-        return@runBlocking authRepository.getAuthority().first()
+    private fun getRole() = viewModelScope.launch {
+        getAuthorityUseCase()
     }
 }

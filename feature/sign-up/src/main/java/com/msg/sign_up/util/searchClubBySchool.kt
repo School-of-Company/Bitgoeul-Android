@@ -1,6 +1,6 @@
 package com.msg.sign_up.util
 
-import com.msg.model.remote.enumdatatype.HighSchool
+import com.msg.model.enumdata.HighSchool
 
 fun String.searchClubBySchool(): List<String> {
     HighSchool.values().forEach {

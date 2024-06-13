@@ -1,6 +1,6 @@
 package com.example.my_page
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,11 +20,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.my_page.component.AccountInfoView
 import com.example.my_page.component.AccountSettingView
 import com.example.my_page.component.MyInfoView
-import com.example.my_page.util.Event
 import com.example.my_page.viewmodel.MyPageViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.user.InquiryMyPageResponse
+import com.msg.model.entity.user.InquiryMyPageEntity
 
 @Composable
 internal fun MyPageRoute(
@@ -58,7 +58,7 @@ internal fun MyPageRoute(
 
 private suspend fun getMyPageData(
     viewModel: MyPageViewModel,
-    onSuccess: (data: InquiryMyPageResponse) -> Unit
+    onSuccess: (data: InquiryMyPageEntity) -> Unit
 ) {
     viewModel.getMyPageResponse.collect { response ->
         when (response) {
@@ -75,7 +75,7 @@ internal fun MyPageScreen(
     onPasswordChangeClicked: () -> Unit,
     onLogOutClicked: () -> Unit,
     onWithdrawClicked: () -> Unit,
-    data: InquiryMyPageResponse,
+    data: InquiryMyPageEntity,
     modifier: Modifier = Modifier
 ) {
     val showDialog = remember { mutableStateOf(false) }
@@ -134,7 +134,7 @@ fun MyPageScreenPre() {
         onPasswordChangeClicked = {},
         onLogOutClicked = {},
         onWithdrawClicked = {},
-        data = InquiryMyPageResponse(
+        data = InquiryMyPageEntity(
             name = "채종인",
             email = "bitgoeul@gmail.com",
             phoneNumber = "010-0000-0000",

@@ -1,7 +1,7 @@
 package com.msg.network.datasource.user
 
-import com.msg.model.remote.request.user.ChangePasswordRequest
-import com.msg.model.remote.response.user.InquiryMyPageResponse
+import com.msg.network.request.user.ChangePasswordRequest
+import com.msg.network.response.user.InquiryMyPageResponse
 import kotlinx.coroutines.flow.Flow
 
 interface UserDataSource {

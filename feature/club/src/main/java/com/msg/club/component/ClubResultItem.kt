@@ -17,12 +17,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.component.icon.DashIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.club.ClubListResponse
+import com.msg.model.entity.club.ClubListEntity
 
 @Composable
 internal fun ClubResultItem(
     modifier: Modifier = Modifier,
-    data: ClubListResponse,
+    data: ClubListEntity,
     onItemClicked: (Long) -> Unit
 ) {
     BitgoeulAndroidTheme { colors, typography ->  
@@ -65,7 +65,7 @@ internal fun ClubResultItem(
 @Composable
 fun ClubResultItemPre() {
     ClubResultItem(
-        data = ClubListResponse(
+        data = ClubListEntity(
             id = 12,
             name = "HMI동아리",
             schoolName = "광주자동화설비공업고등학교"

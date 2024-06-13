@@ -22,6 +22,7 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:common"))
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
@@ -31,6 +32,7 @@ dependencies {
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.retrofit.gson.converter)
 }
+
 fun getApiKey(propertyKey: String): String {
     val propFile = rootProject.file("./local.properties")
     val properties = Properties()

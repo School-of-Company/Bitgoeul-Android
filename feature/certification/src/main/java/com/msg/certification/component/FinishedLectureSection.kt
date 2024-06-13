@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
-import com.msg.model.remote.response.lecture.SignUpLectures
+import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
+import com.msg.model.entity.lecture.SignUpLectures
 import java.time.LocalDate
 import java.util.UUID
 
 @Composable
 fun FinishedLectureSection(
     modifier: Modifier = Modifier,
-    data: GetLectureSignUpHistoryResponse
+    data: GetLectureSignUpHistoryEntity
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Column {
@@ -51,7 +51,7 @@ fun FinishedLectureSection(
 @Composable
 fun FinishedLectureSectionPre() {
     FinishedLectureSection(
-        data = GetLectureSignUpHistoryResponse(
+        data = GetLectureSignUpHistoryEntity(
             lectures = listOf(
                 SignUpLectures(
                     id = UUID.randomUUID(),

@@ -3,14 +3,14 @@ package com.bitgoeul.email.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitgoeul.email.util.Event
-import com.bitgoeul.email.util.errorHandling
-import com.msg.domain.auth.FindPasswordUseCase
-import com.msg.domain.email.GetEmailAuthenticateStatusUseCase
-import com.msg.domain.email.SendLinkToEmailUseCase
-import com.msg.model.remote.request.auth.FindPasswordRequest
-import com.msg.model.remote.request.email.SendLinkToEmailRequest
-import com.msg.model.remote.response.email.GetEmailAuthenticateStatusResponse
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.auth.FindPasswordUseCase
+import com.msg.domain.usecase.email.GetEmailAuthenticateStatusUseCase
+import com.msg.domain.usecase.email.SendLinkToEmailUseCase
+import com.msg.model.entity.email.GetEmailAuthenticateStatusEntity
+import com.msg.model.param.auth.FindPasswordParam
+import com.msg.model.param.email.SendLinkToEmailParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +28,7 @@ class EmailViewModel @Inject constructor(
     private val _sendLinkToEmailResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val sendLinkToEmailResponse = _sendLinkToEmailResponse.asStateFlow()
 
-    private val _getEmailAuthenticateStatusResponse = MutableStateFlow<Event<GetEmailAuthenticateStatusResponse>>(Event.Loading)
+    private val _getEmailAuthenticateStatusResponse = MutableStateFlow<Event<GetEmailAuthenticateStatusEntity>>(Event.Loading)
     val getEmailAuthenticateStatusResponse = _getEmailAuthenticateStatusResponse.asStateFlow()
 
     private val _findPasswordResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -56,7 +56,7 @@ class EmailViewModel @Inject constructor(
 
     internal fun sendLinkToEmail() = viewModelScope.launch {
         sendLinkToEmailUseCase(
-            body = SendLinkToEmailRequest(
+            body = SendLinkToEmailParam(
                 email = email.value
             )
         ).onSuccess {
@@ -72,7 +72,7 @@ class EmailViewModel @Inject constructor(
 
     internal fun findPassword() = viewModelScope.launch {
         findPasswordUseCase(
-            body = FindPasswordRequest(
+            body = FindPasswordParam(
                 email = email.value,
                 newPassword = newPassword.value
             )

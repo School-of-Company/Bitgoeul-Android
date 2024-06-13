@@ -1,8 +1,8 @@
 package com.msg.datastore.datasource
 
-import Authority
 import androidx.datastore.core.DataStore
 import com.msg.datastore.AuthToken
+import com.msg.model.enumdata.Authority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform

@@ -1,7 +1,7 @@
 package com.msg.network.datasource.faq
 
-import com.msg.model.remote.request.faq.AddFrequentlyAskedQuestionsRequest
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
+import com.msg.network.request.faq.AddFrequentlyAskedQuestionsRequest
+import com.msg.network.response.faq.GetFrequentlyAskedQuestionDetailResponse
 import kotlinx.coroutines.flow.Flow
 
 interface FaqDataSource {

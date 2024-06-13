@@ -24,14 +24,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.certification.component.CertificationSection
 import com.msg.certification.component.FinishedLectureSection
 import com.msg.certification.component.StudentInfoSection
-import com.msg.certification.util.Event
+import com.msg.common.event.Event
 import com.msg.certification.viewmodel.CertificationViewModel
 import com.msg.design_system.component.icon.HumanIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.remote.response.certification.CertificationListResponse
-import com.msg.model.remote.response.club.StudentBelongClubResponse
-import com.msg.model.remote.response.lecture.GetLectureSignUpHistoryResponse
-import com.msg.model.remote.response.lecture.SignUpLectures
+import com.msg.model.entity.certification.CertificationListEntity
+import com.msg.model.entity.club.StudentBelongClubEntity
+import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
+import com.msg.model.entity.lecture.SignUpLectures
 import com.msg.ui.DevicePreviews
 import java.time.LocalDate
 import java.util.UUID
@@ -87,7 +87,7 @@ internal fun CertificationScreenRoute(
 
 private suspend fun getCertificationList(
     viewModel: CertificationViewModel,
-    onSuccess: (data: List<CertificationListResponse>) -> Unit,
+    onSuccess: (data: List<CertificationListEntity>) -> Unit,
     onFailure: () -> Unit
 ) {
     viewModel.getCertificationListResponse.collect { response ->
@@ -102,7 +102,7 @@ private suspend fun getCertificationList(
 
 private suspend fun getStudentData(
     viewModel: CertificationViewModel,
-    onSuccess: (data: StudentBelongClubResponse) -> Unit,
+    onSuccess: (data: StudentBelongClubEntity) -> Unit,
     onFailure: () -> Unit
 ) {
     viewModel.getStudentBelongResponse.collect { response ->
@@ -117,7 +117,7 @@ private suspend fun getStudentData(
 
 private suspend fun getLectureData(
     viewModel: CertificationViewModel,
-    onSuccess: (data: GetLectureSignUpHistoryResponse) -> Unit,
+    onSuccess: (data: GetLectureSignUpHistoryEntity) -> Unit,
     onFailure: () -> Unit
 ) {
     viewModel.getLectureSignUpHistoryResponse.collect { response ->
@@ -136,9 +136,9 @@ internal fun CertificationScreen(
     onHumanIconClicked: () -> Unit,
     onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,
     onPlusClicked: () -> Unit,
-    studentData: StudentBelongClubResponse,
-    certificationData: List<CertificationListResponse>,
-    lectureData: GetLectureSignUpHistoryResponse
+    studentData: StudentBelongClubEntity,
+    certificationData: List<CertificationListEntity>,
+    lectureData: GetLectureSignUpHistoryEntity
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Box(
@@ -198,20 +198,20 @@ fun CertificationScreenPre() {
         onHumanIconClicked = {},
         onEditClicked = {_,_,_->},
         onPlusClicked = {},
-        studentData = StudentBelongClubResponse(
+        studentData = StudentBelongClubEntity(
             name = "채종인",
             phoneNumber = "010-1234-5678",
             email = "s22055@gsm.hs.kr",
             credit = 300
         ),
         certificationData = listOf(
-            CertificationListResponse(
+            CertificationListEntity(
                 certificationId = UUID.randomUUID(),
                 name = "정보처리산업기사",
                 acquisitionDate = LocalDate.now()
             )
         ),
-        lectureData = GetLectureSignUpHistoryResponse(
+        lectureData = GetLectureSignUpHistoryEntity(
             lectures = listOf(
                 SignUpLectures(
                     id = UUID.randomUUID(),

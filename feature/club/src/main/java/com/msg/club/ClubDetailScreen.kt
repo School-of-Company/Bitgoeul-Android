@@ -1,6 +1,6 @@
 package com.msg.club
 
-import Authority
+import com.msg.model.enumdata.Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,7 @@ import com.msg.club.viewmodel.ClubViewModel
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.color.BitgoeulColor
-import com.msg.model.remote.response.club.ClubDetailResponse
+import com.msg.model.entity.club.ClubDetailEntity
 import com.msg.ui.DevicePreviews
 import java.util.UUID
 
@@ -46,7 +46,7 @@ internal fun ClubDetailScreenRoute(
 internal fun ClubDetailScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    data: ClubDetailResponse,
+    data: ClubDetailEntity,
     onItemClicked: (UUID) -> Unit
 ) {
     Column(
@@ -76,18 +76,18 @@ internal fun ClubDetailScreen(
 fun ClubDetailScreenPre() {
     ClubDetailScreen(
         onBackClicked = {},
-        data = ClubDetailResponse(
+        data = ClubDetailEntity(
             clubId = 123,
             clubName = "dev_GSM",
             highSchoolName = "광주소프트웨어고등학교",
             headCount = 5,
             students = listOf(
-                ClubDetailResponse.Student(
+                ClubDetailEntity.Student(
                     id = UUID.randomUUID(),
                     name = "채종인"
                 )
             ),
-            teacher = ClubDetailResponse.Teacher(
+            teacher = ClubDetailEntity.Teacher(
                 id = UUID.randomUUID(),
                 name = "채종인"
             )

@@ -1,8 +1,8 @@
 package com.msg.data.repository.activity
 
-import com.msg.model.remote.model.activity.StudentActivityModel
-import com.msg.model.remote.response.activity.GetDetailStudentActivityInfoResponse
-import com.msg.model.remote.response.activity.GetStudentActivityListResponse
+import com.msg.model.entity.activity.GetDetailStudentActivityInfoEntity
+import com.msg.model.entity.activity.GetStudentActivityListEntity
+import com.msg.model.model.activity.StudentActivityModel
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
@@ -13,8 +13,8 @@ interface ActivityRepository {
     fun approveStudentActivityInfo(id: UUID): Flow<Unit>
     fun rejectStudentActivityInfo(id: UUID): Flow<Unit>
     fun deleteStudentActivityInfo(id: UUID): Flow<Unit>
-    fun getMyStudentActivityInfoList(page: Int, size: Int): Flow<GetStudentActivityListResponse>
-    fun getStudentActivityInfoList(page: Int, size: Int, id: UUID): Flow<GetStudentActivityListResponse>
-    fun getEntireStudentActivityInfoList(page: Int, size: Int): Flow<GetStudentActivityListResponse>
-    fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoResponse>
+    fun getMyStudentActivityInfoList(page: Int, size: Int): Flow<GetStudentActivityListEntity>
+    fun getStudentActivityInfoList(page: Int, size: Int, id: UUID): Flow<GetStudentActivityListEntity>
+    fun getEntireStudentActivityInfoList(page: Int, size: Int): Flow<GetStudentActivityListEntity>
+    fun getDetailStudentActivityInfo(id: UUID): Flow<GetDetailStudentActivityInfoEntity>
 }

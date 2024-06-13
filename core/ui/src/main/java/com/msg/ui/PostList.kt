@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.color.BitgoeulColor
-import com.msg.model.remote.response.post.GetPostListResponse
+import com.msg.model.entity.post.GetPostListEntity
 import java.util.UUID
 
 @Composable
 fun PostList(
     modifier: Modifier,
-    data: GetPostListResponse,
+    data: GetPostListEntity,
     onItemClicked: (UUID) -> Unit,
     onKebabClicked: () -> Unit,
 ) {

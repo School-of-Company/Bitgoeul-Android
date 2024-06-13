@@ -4,20 +4,20 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.msg.domain.auth.SignUpBbozzakTeacherUseCase
-import com.msg.domain.auth.SignUpCompanyInstructorUseCase
-import com.msg.domain.auth.SignUpGovernmentUseCase
-import com.msg.domain.auth.SignUpJobClubTeacherUseCase
-import com.msg.domain.auth.SignUpProfessorUseCase
-import com.msg.domain.auth.SignUpStudentUseCase
-import com.msg.model.remote.request.auth.SignUpBbozzakTeacherRequest
-import com.msg.model.remote.request.auth.SignUpCompanyInstructorRequest
-import com.msg.model.remote.request.auth.SignUpGovernmentRequest
-import com.msg.model.remote.request.auth.SignUpJobClubTeacherRequest
-import com.msg.model.remote.request.auth.SignUpProfessorRequest
-import com.msg.model.remote.request.auth.SignUpStudentRequest
-import com.msg.sign_up.util.Event
-import com.msg.sign_up.util.errorHandling
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.auth.SignUpBbozzakTeacherUseCase
+import com.msg.domain.usecase.auth.SignUpCompanyInstructorUseCase
+import com.msg.domain.usecase.auth.SignUpGovernmentUseCase
+import com.msg.domain.usecase.auth.SignUpJobClubTeacherUseCase
+import com.msg.domain.usecase.auth.SignUpProfessorUseCase
+import com.msg.domain.usecase.auth.SignUpStudentUseCase
+import com.msg.model.param.auth.SignUpBbozzakTeacherParam
+import com.msg.model.param.auth.SignUpCompanyInstructorParam
+import com.msg.model.param.auth.SignUpGovernmentParam
+import com.msg.model.param.auth.SignUpJobClubTeacherParam
+import com.msg.model.param.auth.SignUpProfessorParam
+import com.msg.model.param.auth.SignUpStudentParam
 import com.msg.sign_up.util.searchEngSchoolNameByKrSchoolName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,7 +72,7 @@ class SignUpViewModel @Inject constructor(
         when (job.value) {
             "학생" -> {
                 signUpStudentUseCase(
-                    body = SignUpStudentRequest(
+                    body = SignUpStudentParam(
                         email = email.value,
                         name = name.value,
                         phoneNumber = phoneNumber.value,
@@ -96,7 +96,7 @@ class SignUpViewModel @Inject constructor(
             }
             "취업동아리 선생님" -> {
                 signUpTeacherUseCase(
-                    body = SignUpJobClubTeacherRequest(
+                    body = SignUpJobClubTeacherParam(
                         email = email.value,
                         name = name.value,
                         phoneNumber = phoneNumber.value,
@@ -116,7 +116,7 @@ class SignUpViewModel @Inject constructor(
             }
             "기업강사" -> {
                 signUpCompanyInstructorUseCase(
-                    body = SignUpCompanyInstructorRequest(
+                    body = SignUpCompanyInstructorParam(
                         email = email.value,
                         name = name.value,
                         phoneNumber = phoneNumber.value,
@@ -137,7 +137,7 @@ class SignUpViewModel @Inject constructor(
             }
             "대학교수" -> {
                 signUpProfessorUseCase(
-                    body = SignUpProfessorRequest(
+                    body = SignUpProfessorParam(
                         email = email.value,
                         name = name.value,
                         phoneNumber = phoneNumber.value,
@@ -158,7 +158,7 @@ class SignUpViewModel @Inject constructor(
             }
             "유관기관" -> {
                 signUpGovernmentUseCase(
-                    body = SignUpGovernmentRequest(
+                    body = SignUpGovernmentParam(
                         email = email.value,
                         name = name.value,
                         phoneNumber = phoneNumber.value,
@@ -181,7 +181,7 @@ class SignUpViewModel @Inject constructor(
             }
             "뽀짝 선생님" -> {
                 signUpBbozzakTeacherUseCase(
-                    body = SignUpBbozzakTeacherRequest(
+                    body = SignUpBbozzakTeacherParam(
                         email = email.value,
                         name = name.value,
                         phoneNumber = phoneNumber.value,

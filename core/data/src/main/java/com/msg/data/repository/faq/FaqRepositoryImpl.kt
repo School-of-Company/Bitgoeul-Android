@@ -1,21 +1,27 @@
 package com.msg.data.repository.faq
 
-import com.msg.model.remote.request.faq.AddFrequentlyAskedQuestionsRequest
-import com.msg.model.remote.response.faq.GetFrequentlyAskedQuestionDetailResponse
+import com.msg.data.mapper.faq.toEntity
+import com.msg.data.mapper.faq.toRequest
+import com.msg.model.entity.faq.GetFrequentlyAskedQuestionDetailEntity
+import com.msg.model.param.faq.AddFrequentlyAskedQuestionsParam
 import com.msg.network.datasource.faq.FaqDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
 
 class FaqRepositoryImpl @Inject constructor(
     private val faqDataSource: FaqDataSource,
 ) : FaqRepository {
-    override fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsRequest): Flow<Unit> {
+    override fun addFrequentlyAskedQuestions(body: AddFrequentlyAskedQuestionsParam): Flow<Unit> {
         return faqDataSource.addFrequentlyAskedQuestions(
-            body = body
+            body = body.toRequest()
         )
     }
 
-    override fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailResponse>> {
+    override fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailEntity>> {
         return faqDataSource.getFrequentlyAskedQuestionsList()
+            .transform { response ->
+                response.map { it.toEntity() }
+            }
     }
 }

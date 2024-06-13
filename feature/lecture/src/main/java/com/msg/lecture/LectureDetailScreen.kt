@@ -24,8 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.msg.common.event.Event
 import com.msg.design_system.component.button.ApplicationDoneButton
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
@@ -36,12 +38,15 @@ import com.msg.design_system.component.icon.KebabIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureExcelDownloadBottomSheet
-import com.msg.lecture.util.Event
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.remote.enumdatatype.LectureStatus
-import com.msg.model.remote.response.lecture.DetailLectureResponse
+import com.msg.model.entity.lecture.DetailLectureEntity
+import com.msg.model.enumdata.LectureStatus
+import com.msg.model.model.lecture.LectureDates
 import com.msg.ui.util.toKoreanFormat
 import com.msg.ui.util.toLocalTimeFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Composable
 internal fun LectureDetailRoute(
@@ -81,7 +86,7 @@ internal fun LectureDetailRoute(
 
 private suspend fun getLectureDetailData(
     viewModel: LectureViewModel,
-    onSuccess: (data: DetailLectureResponse) -> Unit,
+    onSuccess: (data: DetailLectureEntity) -> Unit,
 ) {
     viewModel.getDetailLectureResponse.collect { response ->
         when (response) {
@@ -97,7 +102,7 @@ private suspend fun getLectureDetailData(
 @Composable
 internal fun LectureDetailScreen(
     role: String,
-    data: DetailLectureResponse,
+    data: DetailLectureEntity,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     onApplicationClicked: () -> Unit,
@@ -440,4 +445,43 @@ internal fun LectureDetailScreen(
             }
         )
     }
+}
+
+@Preview
+@Composable
+private fun LectureDetailScreenPre() {
+    LectureDetailScreen(
+        role = "ROLE_ADMIN",
+        data = DetailLectureEntity(
+            lectureType = "전공",
+            division = "전공",
+            line = "1학년",
+            department = "컴퓨터공학과",
+            name = "컴퓨터 프로그래밍",
+            semester = "2021년 1학기",
+            credit = 3,
+            createAt = LocalDate.now(),
+            lecturer = "홍길동",
+            content = "컴퓨터 프로그래밍에 대한 강의입니다.",
+            startDate = LocalDateTime.now(),
+            endDate = LocalDateTime.now(),
+            lectureDates = listOf(
+                LectureDates(
+                    completeDate = LocalDate.now(),
+                    startTime = LocalTime.now(),
+                    endTime = LocalTime.now()
+                )
+            ),
+            maxRegisteredUser = 30,
+            lectureStatus = LectureStatus.OPEN,
+            essentialComplete = true,
+            headCount = 0,
+            isRegistered = false
+        ),
+        onBackClicked = {},
+        onApplicationClicked = {},
+        onApplicationCancelClicked = {},
+        onLectureTakingStudentListScreenClicked = {},
+        onDownloadButtonClicked = {}
+    )
 }

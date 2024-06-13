@@ -1,16 +1,16 @@
 package com.msg.data.repository.post
 
-import com.msg.model.remote.enumdatatype.FeedType
-import com.msg.model.remote.request.post.WritePostRequest
-import com.msg.model.remote.response.post.GetDetailPostResponse
-import com.msg.model.remote.response.post.GetPostListResponse
+import com.msg.model.entity.post.GetDetailPostEntity
+import com.msg.model.entity.post.GetPostListEntity
+import com.msg.model.enumdata.FeedType
+import com.msg.model.param.post.WritePostParam
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface PostRepository {
-    fun sendPost(body: WritePostRequest): Flow<Unit>
-    fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListResponse>
-    fun getDetailPost(id: UUID): Flow<GetDetailPostResponse>
-    fun editPost(id: UUID, body: WritePostRequest): Flow<Unit>
+    fun sendPost(body: WritePostParam): Flow<Unit>
+    fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListEntity>
+    fun getDetailPost(id: UUID): Flow<GetDetailPostEntity>
+    fun editPost(id: UUID, body: WritePostParam): Flow<Unit>
     fun deletePost(id: UUID): Flow<Unit>
 }

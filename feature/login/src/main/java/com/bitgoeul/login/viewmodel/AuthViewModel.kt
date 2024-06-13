@@ -2,12 +2,12 @@ package com.bitgoeul.login.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitgoeul.login.util.Event
-import com.bitgoeul.login.util.errorHandling
-import com.msg.domain.auth.LoginUseCase
-import com.msg.domain.auth.SaveTokenUseCase
-import com.msg.model.remote.model.auth.AuthTokenModel
-import com.msg.model.remote.request.auth.LoginRequest
+import com.msg.common.errorhandling.errorHandling
+import com.msg.common.event.Event
+import com.msg.domain.usecase.auth.LoginUseCase
+import com.msg.domain.usecase.auth.SaveTokenUseCase
+import com.msg.model.entity.auth.AuthTokenEntity
+import com.msg.model.param.auth.LoginParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +23,7 @@ class AuthViewModel @Inject constructor(
     private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
     val saveTokenRequest = _saveTokenResponse.asStateFlow()
 
-    private val _loginResponse = MutableStateFlow<Event<AuthTokenModel>>(Event.Loading)
+    private val _loginResponse = MutableStateFlow<Event<AuthTokenEntity>>(Event.Loading)
     val loginResponse = _loginResponse.asStateFlow()
 
     internal fun login(
@@ -31,7 +31,7 @@ class AuthViewModel @Inject constructor(
         password: String
     ) = viewModelScope.launch {
         loginUseCase(
-            body = LoginRequest(email, password)
+            body = LoginParam(email, password)
         ).onSuccess {
             it.catch { remoteError ->
                 _loginResponse.value = remoteError.errorHandling()
@@ -44,7 +44,7 @@ class AuthViewModel @Inject constructor(
     }
 
     internal fun saveTokenData(
-        data: AuthTokenModel
+        data: AuthTokenEntity
     ) = viewModelScope.launch {
         saveTokenUseCase(
             data = data
