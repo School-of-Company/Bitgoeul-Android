@@ -19,6 +19,7 @@ import com.example.my_page.navigation.myPageScreen
 import com.example.my_page.navigation.navigateToMyPage
 import com.example.my_page.navigation.navigateToPasswordChange
 import com.msg.bitgoeul_android.ui.BitgoeulAppState
+import com.msg.bitgoeul_android.ui.navigateWithPopUpToLogin
 import com.msg.certification.navigation.addCertificationScreen
 import com.msg.certification.navigation.certificationScreen
 import com.msg.certification.navigation.navigateToAddCertificationPage
@@ -73,7 +74,7 @@ fun BitgoeulNavHost(
             onLoginClicked = navController::navigateToMainPage
         )
         inputEmailScreen(
-            onBackClicked = navController::navigateToLogin,
+            onBackClicked = { navController.navigateWithPopUpToLogin(loginRoute) },
             onNextClicked = navController::navigateToEmailSendInform
         )
         emailSendInformScreen(

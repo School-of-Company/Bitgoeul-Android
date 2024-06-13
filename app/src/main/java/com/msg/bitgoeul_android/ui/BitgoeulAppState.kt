@@ -7,6 +7,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.util.trace
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -30,7 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 fun rememberBitgoeulAppState(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
 ): BitgoeulAppState {
     return remember(
         navController,
@@ -49,7 +50,7 @@ fun rememberBitgoeulAppState(
 class BitgoeulAppState(
     val navController: NavHostController,
     val coroutineScope: CoroutineScope,
-    val windowSizeClass: WindowSizeClass
+    val windowSizeClass: WindowSizeClass,
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -87,5 +88,11 @@ class BitgoeulAppState(
                 TopLevelDestination.MY_PAGE -> navController.navigateToMyPage(topLevelNavOptions)
             }
         }
+    }
+}
+
+fun NavController.navigateWithPopUpToLogin(loginRoute: String) {
+    this.navigate(loginRoute) {
+        popUpTo(loginRoute) { inclusive = true }
     }
 }
