@@ -11,10 +11,10 @@ interface LectureDataSource {
     fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
     fun lectureApplication(id: UUID): Flow<Unit>
     fun lectureApplicationCancel(id: UUID): Flow<Unit>
-    fun searchProfessor(keyword: String): Flow<SearchProfessorResponse>
-    fun searchLine(keyword: String, division: String): Flow<SearchLineResponse>
-    fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse>
-    fun searchDivision(keyword: String): Flow<SearchDivisionResponse>
+    fun getSearchProfessor(keyword: String): Flow<SearchProfessorResponse>
+    fun getSearchLine(keyword: String, division: String): Flow<SearchLineResponse>
+    fun getSearchDepartment(keyword: String): Flow<SearchDepartmentResponse>
+    fun getSearchDivision(keyword: String): Flow<SearchDivisionResponse>
     fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse>
     fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListResponse>
     fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>

@@ -26,17 +26,17 @@ class LectureDataSourceImpl @Inject constructor(
     override fun lectureApplicationCancel(id: UUID): Flow<Unit> =
         makeRequest { lectureAPI.lectureApplicationCancel(id) }
 
-    override fun searchProfessor(keyword: String): Flow<SearchProfessorResponse> =
-        makeRequest { lectureAPI.searchProfessor(keyword) }
+    override fun getSearchProfessor(keyword: String): Flow<SearchProfessorResponse> =
+        makeRequest { lectureAPI.getSearchProfessor(keyword) }
 
-    override fun searchLine(keyword: String, division: String): Flow<SearchLineResponse> =
-        makeRequest { lectureAPI.searchLine(keyword, division) }
+    override fun getSearchLine(keyword: String, division: String): Flow<SearchLineResponse> =
+        makeRequest { lectureAPI.getSearchLine(keyword, division) }
 
-    override fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> =
-        makeRequest { lectureAPI.searchDepartment(keyword) }
+    override fun getSearchDepartment(keyword: String): Flow<SearchDepartmentResponse> =
+        makeRequest { lectureAPI.getSearchDepartment(keyword) }
 
-    override fun searchDivision(keyword: String): Flow<SearchDivisionResponse> =
-        makeRequest { lectureAPI.searchDivision(keyword) }
+    override fun getSearchDivision(keyword: String): Flow<SearchDivisionResponse> =
+        makeRequest { lectureAPI.getSearchDivision(keyword) }
 
     override fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse> =
         makeRequest { lectureAPI.getLectureSignUpHistory(studentId) }

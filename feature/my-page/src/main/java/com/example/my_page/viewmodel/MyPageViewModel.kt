@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val inquiryMyPageUseCase: GetMyPageUseCase,
+    private val getMyPageUseCase: GetMyPageUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase
@@ -51,7 +51,7 @@ class MyPageViewModel @Inject constructor(
         private set
 
     internal fun inquiryMyPage() = viewModelScope.launch {
-        inquiryMyPageUseCase().onSuccess {
+        getMyPageUseCase().onSuccess {
             it.catch { remoteError ->
                 _getMyPageResponse.value = remoteError.errorHandling()
             }.collect { response ->

@@ -61,16 +61,16 @@ class LectureRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun searchProfessor(keyword: String): Flow<SearchProfessorEntity> {
-        return lectureDataSource.searchProfessor(
+    override fun getSearchProfessor(keyword: String): Flow<SearchProfessorEntity> {
+        return lectureDataSource.getSearchProfessor(
             keyword = keyword
         ).transform { response ->
             response.toEntity()
         }
     }
 
-    override fun searchLine(keyword: String, division: String): Flow<SearchLineEntity> {
-        return lectureDataSource.searchLine(
+    override fun getSearchLine(keyword: String, division: String): Flow<SearchLineEntity> {
+        return lectureDataSource.getSearchLine(
             keyword = keyword,
             division = division
         ).transform { response ->
@@ -78,16 +78,16 @@ class LectureRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun searchDepartment(keyword: String): Flow<SearchDepartmentEntity> {
-        return lectureDataSource.searchDepartment(
+    override fun getSearchDepartment(keyword: String): Flow<SearchDepartmentEntity> {
+        return lectureDataSource.getSearchDepartment(
             keyword = keyword
         ).transform { response ->
             response.toEntity()
         }
     }
 
-    override fun searchDivision(keyword: String): Flow<SearchDivisionEntity> {
-        return lectureDataSource.searchDivision(
+    override fun getSearchDivision(keyword: String): Flow<SearchDivisionEntity> {
+        return lectureDataSource.getSearchDivision(
             keyword = keyword
         ).transform { response ->
             response.toEntity()

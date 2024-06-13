@@ -19,10 +19,10 @@ interface LectureRepository {
     fun getDetailLecture(id: UUID): Flow<DetailLectureEntity>
     fun lectureApplication(id: UUID): Flow<Unit>
     fun lectureApplicationCancel(id: UUID): Flow<Unit>
-    fun searchProfessor(keyword: String): Flow<SearchProfessorEntity>
-    fun searchLine(keyword: String, division: String): Flow<SearchLineEntity>
-    fun searchDepartment(keyword: String): Flow<SearchDepartmentEntity>
-    fun searchDivision(keyword: String): Flow<SearchDivisionEntity>
+    fun getSearchProfessor(keyword: String): Flow<SearchProfessorEntity>
+    fun getSearchLine(keyword: String, division: String): Flow<SearchLineEntity>
+    fun getSearchDepartment(keyword: String): Flow<SearchDepartmentEntity>
+    fun getSearchDivision(keyword: String): Flow<SearchDivisionEntity>
     fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryEntity>
     fun getTakingLectureStudentList(id: UUID): Flow<GetTakingLectureStudentListEntity>
     fun editLectureCourseCompletionStatus(id: UUID, studentId: UUID, isComplete: Boolean): Flow<Unit>
