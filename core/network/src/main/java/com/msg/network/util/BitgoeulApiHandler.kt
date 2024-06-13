@@ -1,7 +1,5 @@
 package com.msg.network.util
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import com.msg.common.exception.*
 import java.net.SocketTimeoutException
@@ -15,9 +13,7 @@ class BitgoeulApiHandler<T> {
 
     suspend fun sendRequest(): T {
         return try {
-            withContext(Dispatchers.IO) {
                 httpRequest.invoke()
-            }
         } catch (e: HttpException) {
             val message = e.message
             throw when(e.code()) {
