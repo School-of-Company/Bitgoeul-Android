@@ -9,7 +9,7 @@ import com.msg.common.event.Event
 import com.msg.domain.usecase.auth.LogoutUseCase
 import com.msg.domain.usecase.auth.WithdrawUseCase
 import com.msg.domain.usecase.user.ChangePasswordUseCase
-import com.msg.domain.usecase.user.InquiryMyPageUseCase
+import com.msg.domain.usecase.user.GetMyPageUseCase
 import com.msg.model.entity.user.GetMyPageEntity
 import com.msg.model.param.user.ChangePasswordParam
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val inquiryMyPageUseCase: InquiryMyPageUseCase,
+    private val inquiryMyPageUseCase: GetMyPageUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase
