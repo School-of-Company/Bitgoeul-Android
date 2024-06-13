@@ -68,7 +68,7 @@ class LectureDataSourceImpl @Inject constructor(
         flow {
             emit(
                 BitgoeulApiHandler<SearchProfessorResponse>()
-                    .httpRequest { lectureAPI.searchProfessor(keyword = keyword) }
+                    .httpRequest { lectureAPI.getSearchProfessor(keyword = keyword) }
                     .sendRequest()
             )
         }.flowOn(Dispatchers.IO)
@@ -77,7 +77,7 @@ class LectureDataSourceImpl @Inject constructor(
         flow {
             emit(
                 BitgoeulApiHandler<SearchLineResponse>()
-                    .httpRequest { lectureAPI.searchLine(keyword = keyword, division = division) }
+                    .httpRequest { lectureAPI.getSearchLine(keyword = keyword, division = division) }
                     .sendRequest()
             )
         }.flowOn(Dispatchers.IO)
@@ -85,7 +85,7 @@ class LectureDataSourceImpl @Inject constructor(
     override fun searchDepartment(keyword: String): Flow<SearchDepartmentResponse> = flow {
         emit(
             BitgoeulApiHandler<SearchDepartmentResponse>()
-                .httpRequest { lectureAPI.searchDepartment(keyword = keyword) }
+                .httpRequest { lectureAPI.getSearchDepartment(keyword = keyword) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
@@ -93,7 +93,7 @@ class LectureDataSourceImpl @Inject constructor(
     override fun searchDivision(keyword: String): Flow<SearchDivisionResponse> = flow {
         emit(
             BitgoeulApiHandler<SearchDivisionResponse>()
-                .httpRequest { lectureAPI.searchDivision(keyword = keyword) }
+                .httpRequest { lectureAPI.getSearchDivision(keyword = keyword) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)

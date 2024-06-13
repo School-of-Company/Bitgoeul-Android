@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserDataSource {
     fun changePassword(body: ChangePasswordRequest): Flow<Unit>
-    fun inquiryMyPage(): Flow<GetMyPageResponse>
+    fun getMyPage(): Flow<GetMyPageResponse>
 }

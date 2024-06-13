@@ -18,8 +18,8 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun inquiryMyPage(): Flow<GetMyPageEntity> {
-        return userDataSource.inquiryMyPage()
+    override fun getMyPage(): Flow<GetMyPageEntity> {
+        return userDataSource.getMyPage()
             .transform { response ->
                 response.toEntity()
             }

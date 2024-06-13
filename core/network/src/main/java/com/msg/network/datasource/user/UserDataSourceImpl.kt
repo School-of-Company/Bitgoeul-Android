@@ -21,10 +21,10 @@ class UserDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override fun inquiryMyPage(): Flow<GetMyPageResponse> = flow {
+    override fun getMyPage(): Flow<GetMyPageResponse> = flow {
         emit(
             BitgoeulApiHandler<GetMyPageResponse>()
-                .httpRequest { userAPI.inquiryMyPage() }
+                .httpRequest { userAPI.getMyPage() }
                 .sendRequest()
         )
     }
