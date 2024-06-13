@@ -13,5 +13,5 @@ interface UserAPI {
     )
 
     @GET("user")
-    suspend fun inquiryMyPage(): InquiryMyPageResponse
+    suspend fun getMyPage(): InquiryMyPageResponse
 }

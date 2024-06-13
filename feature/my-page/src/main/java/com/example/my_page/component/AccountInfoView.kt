@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.entity.user.InquiryMyPageEntity
+import com.msg.model.entity.user.GetMyPageEntity
 
 
 @Composable
 internal fun AccountInfoView(
-    data: InquiryMyPageEntity,
+    data: GetMyPageEntity,
     modifier: Modifier
 ) {
     BitgoeulAndroidTheme { colors, typography ->

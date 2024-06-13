@@ -2,7 +2,7 @@ package com.msg.model.entity.user
 
 import com.msg.model.enumdata.Authority
 
-data class InquiryMyPageEntity(
+data class GetMyPageEntity(
     val name: String,
     val email: String,
     val phoneNumber: String,
