@@ -24,7 +24,7 @@ import com.example.my_page.viewmodel.MyPageViewModel
 import com.msg.common.event.Event
 import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.entity.user.InquiryMyPageEntity
+import com.msg.model.entity.user.GetMyPageEntity
 
 @Composable
 internal fun MyPageRoute(
@@ -58,7 +58,7 @@ internal fun MyPageRoute(
 
 private suspend fun getMyPageData(
     viewModel: MyPageViewModel,
-    onSuccess: (data: InquiryMyPageEntity) -> Unit
+    onSuccess: (data: GetMyPageEntity) -> Unit
 ) {
     viewModel.getMyPageResponse.collect { response ->
         when (response) {
@@ -75,7 +75,7 @@ internal fun MyPageScreen(
     onPasswordChangeClicked: () -> Unit,
     onLogOutClicked: () -> Unit,
     onWithdrawClicked: () -> Unit,
-    data: InquiryMyPageEntity,
+    data: GetMyPageEntity,
     modifier: Modifier = Modifier
 ) {
     val showDialog = remember { mutableStateOf(false) }
@@ -134,7 +134,7 @@ fun MyPageScreenPre() {
         onPasswordChangeClicked = {},
         onLogOutClicked = {},
         onWithdrawClicked = {},
-        data = InquiryMyPageEntity(
+        data = GetMyPageEntity(
             name = "채종인",
             email = "bitgoeul@gmail.com",
             phoneNumber = "010-0000-0000",

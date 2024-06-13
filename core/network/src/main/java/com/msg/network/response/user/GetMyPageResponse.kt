@@ -1,8 +1,8 @@
-package com.msg.model.entity.user
+package com.msg.network.response.user
 
 import com.msg.model.enumdata.Authority
 
-data class InquiryMyPageEntity(
+data class GetMyPageResponse(
     val name: String,
     val email: String,
     val phoneNumber: String,

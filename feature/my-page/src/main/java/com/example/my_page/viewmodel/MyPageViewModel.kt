@@ -9,8 +9,8 @@ import com.msg.common.event.Event
 import com.msg.domain.usecase.auth.LogoutUseCase
 import com.msg.domain.usecase.auth.WithdrawUseCase
 import com.msg.domain.usecase.user.ChangePasswordUseCase
-import com.msg.domain.usecase.user.InquiryMyPageUseCase
-import com.msg.model.entity.user.InquiryMyPageEntity
+import com.msg.domain.usecase.user.GetMyPageUseCase
+import com.msg.model.entity.user.GetMyPageEntity
 import com.msg.model.param.user.ChangePasswordParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,13 +21,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val inquiryMyPageUseCase: InquiryMyPageUseCase,
+    private val getMyPageUseCase: GetMyPageUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase
 ) : ViewModel() {
 
-    private val _getMyPageResponse = MutableStateFlow<Event<InquiryMyPageEntity>>(Event.Loading)
+    private val _getMyPageResponse = MutableStateFlow<Event<GetMyPageEntity>>(Event.Loading)
     val getMyPageResponse = _getMyPageResponse.asStateFlow()
 
     private val _getLogoutResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -40,7 +40,7 @@ class MyPageViewModel @Inject constructor(
     val getChangePasswordResponse = _getChangePasswordResponse.asStateFlow()
 
     var myPageData = mutableStateOf(
-        InquiryMyPageEntity(
+        GetMyPageEntity(
             name = "",
             email = "",
             phoneNumber = "",
@@ -51,7 +51,7 @@ class MyPageViewModel @Inject constructor(
         private set
 
     internal fun inquiryMyPage() = viewModelScope.launch {
-        inquiryMyPageUseCase().onSuccess {
+        getMyPageUseCase().onSuccess {
             it.catch { remoteError ->
                 _getMyPageResponse.value = remoteError.errorHandling()
             }.collect { response ->

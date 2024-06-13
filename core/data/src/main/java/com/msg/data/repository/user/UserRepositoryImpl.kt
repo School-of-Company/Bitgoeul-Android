@@ -2,7 +2,7 @@ package com.msg.data.repository.user
 
 import com.msg.data.mapper.user.toEntity
 import com.msg.data.mapper.user.toRequest
-import com.msg.model.entity.user.InquiryMyPageEntity
+import com.msg.model.entity.user.GetMyPageEntity
 import com.msg.model.param.user.ChangePasswordParam
 import com.msg.network.datasource.user.UserDataSource
 import kotlinx.coroutines.flow.Flow
@@ -18,8 +18,8 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun inquiryMyPage(): Flow<InquiryMyPageEntity> {
-        return userDataSource.inquiryMyPage()
+    override fun getMyPage(): Flow<GetMyPageEntity> {
+        return userDataSource.getMyPage()
             .transform { response ->
                 response.toEntity()
             }

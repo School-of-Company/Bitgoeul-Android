@@ -13,11 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.entity.user.InquiryMyPageEntity
+import com.msg.model.entity.user.GetMyPageEntity
 
 @Composable
 internal fun MyInfoView(
-    data: InquiryMyPageEntity,
+    data: GetMyPageEntity,
     modifier: Modifier
 ) {
     val organization = data.organization.split("/")
