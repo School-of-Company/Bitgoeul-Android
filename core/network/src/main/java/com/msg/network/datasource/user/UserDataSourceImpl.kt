@@ -3,29 +3,17 @@ package com.msg.network.datasource.user
 import com.msg.network.api.UserAPI
 import com.msg.network.request.user.ChangePasswordRequest
 import com.msg.network.response.user.GetMyPageResponse
-import com.msg.network.util.BitgoeulApiHandler
-import kotlinx.coroutines.Dispatchers
+import com.msg.network.util.makeRequest
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class UserDataSourceImpl @Inject constructor(
     private val userAPI: UserAPI
 ) : UserDataSource {
-    override fun changePassword(body: ChangePasswordRequest): Flow<Unit> = flow {
-        emit(
-            BitgoeulApiHandler<Unit>()
-                .httpRequest { userAPI.changePassword(body = body) }
-                .sendRequest()
-        )
-    }.flowOn(Dispatchers.IO)
+    override fun changePassword(body: ChangePasswordRequest): Flow<Unit> =
+        makeRequest { userAPI.changePassword(body = body) }
 
-    override fun getMyPage(): Flow<GetMyPageResponse> = flow {
-        emit(
-            BitgoeulApiHandler<GetMyPageResponse>()
-                .httpRequest { userAPI.getMyPage() }
-                .sendRequest()
-        )
-    }
+
+    override fun getMyPage(): Flow<GetMyPageResponse> =
+        makeRequest { userAPI.getMyPage() }
 }

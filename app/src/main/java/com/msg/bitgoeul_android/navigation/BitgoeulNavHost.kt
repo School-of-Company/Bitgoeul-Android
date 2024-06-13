@@ -88,7 +88,7 @@ fun BitgoeulNavHost(
             onBackClicked = navController::navigateToLogin
         )
         signUpScreen(
-            onBackClicked = navController::popBackStack,
+            onBackClicked = navController::navigateUp,
             onEnterFinished = navController::navigateToSignUpFinish
         )
         signUpFinishScreen(
@@ -97,41 +97,41 @@ fun BitgoeulNavHost(
         studentActivityScreen(
             onAddClicked = navController::navigateToAddActivity,
             onItemClicked = navController::navigateToStudentDetailActivity,
-            onBackClicked = navController::popBackStack
+            onBackClicked = navController::navigateUp
         )
         studentDetailActivityScreen(
-            onActionEnd = navController::popBackStack,
+            onActionEnd = navController::navigateUp,
             onEditClicked = navController::navigateToAddActivity,
-            onBackClicked = navController::popBackStack
+            onBackClicked = navController::navigateUp
         )
         studentAddActivityScreen(
-            onActionClicked = navController::popBackStack,
+            onActionClicked = navController::navigateUp,
             onSettingClicked = navController::navigateToDetailSettingActivity,
-            onBackClicked = navController::popBackStack
+            onBackClicked = navController::navigateUp
         )
         studentDetailSettingActivityScreen(
-            onCloseClicked = navController::popBackStack,
-            onApplyClicked = navController::popBackStack
+            onCloseClicked = navController::navigateUp,
+            onApplyClicked = navController::navigateUp
         )
         lectureListScreen(
             onOpenClicked = navController::navigateToLectureOpen,
             onItemClicked = navController::navigateToLectureDetail,
         )
         lectureDetailScreen(
-            onBackClicked = navController::popBackStack,
+            onBackClicked = navController::navigateUp,
             onLectureTakingStudentListScreenClicked = navController::navigateToLectureTakingStudentList
         )
         lectureTakingStudentListScreen(
-            onBackClicked = navController::popBackStack,
+            onBackClicked = navController::navigateUp,
         )
         lectureOpenScreen(
-            onActionClicked = navController::popBackStack,
+            onActionClicked = navController::navigateUp,
             onSettingClicked = navController::navigateToLectureDetailSetting,
-            onBackClicked = navController::popBackStack,
+            onBackClicked = navController::navigateUp,
         )
         lectureDetailSettingScreen(
-            onCloseClicked = navController::popBackStack,
-            onApplyClicked = navController::popBackStack,
+            onCloseClicked = navController::navigateUp,
+            onApplyClicked = navController::navigateUp,
         )
         myPageScreen(
             onPasswordChangeClicked = navController::navigateToPasswordChange,
@@ -140,7 +140,7 @@ fun BitgoeulNavHost(
         )
         changePasswordScreen(
             onSuccessScreenButtonClicked = navController::navigateToMyPage,
-            onBackClicked = navController::popBackStack
+            onBackClicked = navController::navigateUp
         )
         postScreen(
             onItemClick = navController::navigateToPostDetailPage,
@@ -148,22 +148,22 @@ fun BitgoeulNavHost(
         )
         postDetailScreen(
             onEditClicked = navController::navigateToPostAddPage,
-            onDeleteClicked = navController::popBackStack,
-            onBackClicked = navController::popBackStack
+            onDeleteClicked = navController::navigateUp,
+            onBackClicked = navController::navigateUp
         )
         postAddScreen(
             onSettingClicked = navController::navigateToPostDetailSettingPage,
-            onBackClicked = navController::popBackStack,
-            onAddClicked = navController::popBackStack
+            onBackClicked = navController::navigateUp,
+            onAddClicked = navController::navigateUp
         )
         postDetailSettingScreen(
-            onCloseClicked = navController::popBackStack
+            onCloseClicked = navController::navigateUp
         )
         clubScreen(
             onItemClicked = navController::navigateToClubDetailPage
         )
         clubDetailScreen(
-            onBackClickedByAdmin = navController::popBackStack,
+            onBackClickedByAdmin = navController::navigateUp,
             onBackClicked = navController::navigateToMainPage
         )
         mainPageScreen(
@@ -174,7 +174,7 @@ fun BitgoeulNavHost(
             onEditClicked = navController::navigateToAddCertificationPage
         )
         addCertificationScreen(
-            onBackClicked = navController::popBackStack
+            onBackClicked = navController::navigateUp
         )
     }
 }
