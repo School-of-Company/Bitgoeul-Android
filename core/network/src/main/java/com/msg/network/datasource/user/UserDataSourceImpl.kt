@@ -2,7 +2,7 @@ package com.msg.network.datasource.user
 
 import com.msg.network.api.UserAPI
 import com.msg.network.request.user.ChangePasswordRequest
-import com.msg.network.response.user.InquiryMyPageResponse
+import com.msg.network.response.user.GetMyPageResponse
 import com.msg.network.util.BitgoeulApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -21,9 +21,9 @@ class UserDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override fun inquiryMyPage(): Flow<InquiryMyPageResponse> = flow {
+    override fun inquiryMyPage(): Flow<GetMyPageResponse> = flow {
         emit(
-            BitgoeulApiHandler<InquiryMyPageResponse>()
+            BitgoeulApiHandler<GetMyPageResponse>()
                 .httpRequest { userAPI.inquiryMyPage() }
                 .sendRequest()
         )
