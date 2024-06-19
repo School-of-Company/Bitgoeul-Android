@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class SearchDepartmentResponse(
-    @Json(name = "departments") val departments: List<String>
+    @Json(name = "departments") val departments: List<String>,
 )

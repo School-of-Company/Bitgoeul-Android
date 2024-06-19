@@ -9,5 +9,5 @@ data class WritePostRequest(
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
     @Json(name = "links") val links: List<String>,
-    @Json(name = "feedType") val feedType: FeedType
+    @Json(name = "feedType") val feedType: FeedType,
 )

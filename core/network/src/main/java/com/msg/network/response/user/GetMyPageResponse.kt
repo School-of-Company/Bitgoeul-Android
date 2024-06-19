@@ -10,5 +10,5 @@ data class GetMyPageResponse(
     @Json(name = "email") val email: String,
     @Json(name = "phoneNumber") val phoneNumber: String,
     @Json(name = "authority") val authority: Authority,
-    @Json(name = "organization") val organization: String
+    @Json(name = "organization") val organization: String,
 )

@@ -16,7 +16,7 @@ data class GetStudentActivityListResponse (
     val sort: Sort,
     val first: Boolean,
     val size: Int,
-    val empty: Boolean
+    val empty: Boolean,
 ) {
     data class Pageable(
         val sort: Sort,
@@ -24,12 +24,12 @@ data class GetStudentActivityListResponse (
         val pageNumber: Int,
         val offset: Int,
         val paged: Boolean,
-        val unpaged: Boolean
+        val unpaged: Boolean,
     )
 
     data class Sort(
         val unsorted: Boolean,
         val sorted: Boolean,
-        val empty: Boolean
+        val empty: Boolean,
     )
 }

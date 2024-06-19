@@ -12,5 +12,5 @@ data class GetDetailPostResponse(
     @Json(name = "content") val content: String,
     @Json(name = "feedType") val feedType: FeedType,
     @Json(name = "modifiedAt") val modifiedAt: LocalDateTime,
-    @Json(name = "links") val links: List<String>
+    @Json(name = "links") val links: List<String>,
 )

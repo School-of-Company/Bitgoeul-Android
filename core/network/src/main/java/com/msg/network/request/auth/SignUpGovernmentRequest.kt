@@ -14,5 +14,5 @@ data class SignUpGovernmentRequest(
     @Json(name = "clubName") val clubName: String,
     @Json(name = "governmentName") val governmentName: String,
     @Json(name = "position") val position: String,
-    @Json(name = "sectors") val sectors: String
+    @Json(name = "sectors") val sectors: String,
 )

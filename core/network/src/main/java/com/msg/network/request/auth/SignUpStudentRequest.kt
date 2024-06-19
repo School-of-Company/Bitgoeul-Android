@@ -15,5 +15,5 @@ data class SignUpStudentRequest(
     @Json(name = "grade") val grade: Int,
     @Json(name = "classRoom") val classRoom: Int,
     @Json(name = "number") val number: Int,
-    @Json(name = "admissionNumber") val admissionNumber: Int
+    @Json(name = "admissionNumber") val admissionNumber: Int,
 )

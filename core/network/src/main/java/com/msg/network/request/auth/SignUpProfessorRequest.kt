@@ -12,5 +12,5 @@ data class SignUpProfessorRequest(
     @Json(name = "password") val password: String,
     @Json(name = "highSchool") val highSchool: HighSchool,
     @Json(name = "clubName") val clubName: String,
-    @Json(name = "university") val university: String
+    @Json(name = "university") val university: String,
 )

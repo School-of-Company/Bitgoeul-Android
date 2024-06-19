@@ -11,5 +11,5 @@ data class SignUpBbozzakTeacherRequest(
     @Json(name = "phoneNumber") val phoneNumber: String,
     @Json(name = "password") val password: String,
     @Json(name = "highSchool") val highSchool: HighSchool,
-    @Json(name = "clubName") val clubName: String
+    @Json(name = "clubName") val clubName: String,
 )

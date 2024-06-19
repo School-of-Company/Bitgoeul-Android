@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class GetPostListResponse(
-    @Json(name = "posts") val posts: List<PostModel>
+    @Json(name = "posts") val posts: List<PostModel>,
 )

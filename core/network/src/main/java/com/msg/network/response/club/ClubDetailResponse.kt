@@ -11,15 +11,15 @@ data class ClubDetailResponse(
     @Json(name = "highSchoolName") val highSchoolName: String,
     @Json(name = "headCount") val headCount: Int,
     @Json(name = "students") val students: List<Student>,
-    @Json(name = "teacher") val teacher: Teacher
+    @Json(name = "teacher") val teacher: Teacher,
 ) {
     data class Student(
         @Json(name = "id") val id: UUID,
-        @Json(name = "name") val name: String
+        @Json(name = "name") val name: String,
     )
 
     data class Teacher(
         @Json(name = "id") val id: UUID,
-        @Json(name = "name") val name: String
+        @Json(name = "name") val name: String,
     )
 }

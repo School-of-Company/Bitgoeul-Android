@@ -7,5 +7,5 @@ import java.time.LocalDate
 @JsonClass(generateAdapter = true)
 data class WriteCertificationRequest(
     @Json(name = "name") val name: String,
-    @Json(name = "acquisitionDate") val acquisitionDate: LocalDate
+    @Json(name = "acquisitionDate") val acquisitionDate: LocalDate,
 )

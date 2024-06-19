@@ -11,5 +11,5 @@ data class UserListContentResponse(
     @Json(name = "id") val id: UUID,
     @Json(name = "name") val name: String,
     @Json(name = "authority") val authority: Authority,
-    @Json(name = "approveStatus") val approveStatus: ApproveStatus
+    @Json(name = "approveStatus") val approveStatus: ApproveStatus,
 )

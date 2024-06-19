@@ -7,12 +7,12 @@ import java.util.UUID
 
 @JsonClass(generateAdapter = true)
 data class SearchProfessorResponse(
-    @Json(name = "instructors") var instructors: List<Instructors>
+    @Json(name = "instructors") var instructors: List<Instructors>,
 ) {
     data class Instructors(
         @Json(name = "id") val id: UUID,
         @Json(name = "name") val name: String,
         @Json(name = "organization") val organization: String,
-        @Json(name = "authority") val authority: Authority
+        @Json(name = "authority") val authority: Authority,
     )
 }

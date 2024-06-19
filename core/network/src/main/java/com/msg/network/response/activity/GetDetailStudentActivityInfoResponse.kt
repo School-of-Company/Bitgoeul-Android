@@ -15,5 +15,5 @@ data class GetDetailStudentActivityInfoResponse(
     @Json(name = "credit") val credit: Int,
     @Json(name = "activityDate") val activityDate: LocalDate,
     @Json(name = "modifiedAt") val modifiedAt: LocalDateTime,
-    @Json(name = "approveState") val approveState: ApproveStatus
+    @Json(name = "approveState") val approveState: ApproveStatus,
 )
