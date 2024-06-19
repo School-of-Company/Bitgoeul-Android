@@ -1,6 +1,5 @@
 package com.msg.network.util
 
-import com.google.gson.JsonParser
 import com.msg.common.exception.NeedLoginException
 import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.network.BuildConfig
