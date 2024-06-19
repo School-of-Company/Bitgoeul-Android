@@ -13,6 +13,7 @@ import com.msg.network.api.LectureAPI
 import com.msg.network.api.PostAPI
 import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +22,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -48,20 +50,27 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideRetrofitInstance(
-        okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(gsonConverterFactory)
-            .build()
+    @Singleton
+    fun provideMoshiInstance(): Moshi {
+        return Moshi.Builder().build()
     }
 
     @Provides
-    fun provideGsonConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
+    @Singleton
+    fun provideConverterFactory(moshi: Moshi): MoshiConverterFactory {
+        return MoshiConverterFactory.create(moshi)
+    }
+
+    @Provides
+    fun provideRetrofitInstance(
+        okHttpClient: OkHttpClient,
+        moshiConverterFactory: MoshiConverterFactory
+        ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(moshiConverterFactory)
+            .build()
     }
 
     @Provides

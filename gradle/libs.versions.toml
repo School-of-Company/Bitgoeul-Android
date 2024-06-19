@@ -23,6 +23,7 @@ androidxTestRunner = "1.5.2"
 androidx-test-ext-junit = "1.1.5"
 androidxWindowManager = "1.0.0"
 coil = "2.4.0"
+converter-moshi = "2.9.0"
 firebaseBom = "31.2.0"
 firebaseCrashlyticsPlugin = "2.9.2"
 firebasePerfPlugin = "1.4.2"
@@ -46,6 +47,7 @@ retrofit = "2.9.0"
 retrofitKotlinxSerializableJson = "1.0.0"
 room = "2.5.2"
 kotlin2 = "1.9.10"
+moshi = "1.15.0"
 
 [libraries]
 #Define Library
@@ -99,9 +101,12 @@ protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref 
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "gson" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializableJson" }
+retrofit-moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "converter-moshi" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
 
 #Define Dependeicies used in build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

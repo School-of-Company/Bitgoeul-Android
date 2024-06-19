@@ -1,10 +1,11 @@
 package com.msg.network.util
 
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import com.msg.common.exception.NeedLoginException
 import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.network.BuildConfig
+import com.msg.network.response.auth.AuthTokenResponse
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -55,14 +56,15 @@ class AuthInterceptor @Inject constructor(
                     .addHeader("RefreshToken", "Bearer $refreshToken")
                     .build()
 
-                val jsonParser = JsonParser()
+                val moshi = Moshi.Builder().build()
+                val adapter: JsonAdapter<AuthTokenResponse> = moshi.adapter(AuthTokenResponse::class.java)
                 val response = client.newCall(refreshRequest).execute()
                 if (response.isSuccessful) {
-                    val token = jsonParser.parse(response.body!!.string()) as JsonObject
-                    dataSource.setAccessToken(token["accessToken"].toString()).first()
-                    dataSource.setAccessTokenExp(token["accessExpiration"].toString()).first()
-                    dataSource.setRefreshToken(token["refreshToken"].toString()).first()
-                    dataSource.setRefreshTokenExp(token["refreshExpiration"].toString()).first()
+                    val token = adapter.fromJson(response.body!!.string()) ?: throw NeedLoginException()
+                    dataSource.setAccessToken(token.accessExpiredAt).first()
+                    dataSource.setAccessTokenExp(token.refreshExpiredAt).first()
+                    dataSource.setRefreshToken(token.accessToken).first()
+                    dataSource.setRefreshTokenExp(token.refreshToken).first()
                 } else throw NeedLoginException()
             } else {
                 builder.addHeader("Authorization", "Bearer $accessToken")

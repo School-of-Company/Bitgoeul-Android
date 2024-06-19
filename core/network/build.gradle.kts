@@ -31,6 +31,9 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.retrofit.gson.converter)
+    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.moshi)
+    kapt(libs.retrofit.moshi.codegen)
 }
 
 fun getApiKey(propertyKey: String): String {

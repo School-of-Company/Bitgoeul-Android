@@ -1,10 +1,13 @@
 package com.msg.network.request.post
 
 import com.msg.model.enumdata.FeedType
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class WritePostRequest(
-    val title: String,
-    val content: String,
-    val links: List<String>,
-    val feedType: FeedType
+    @Json(name = "title") val title: String,
+    @Json(name = "content") val content: String,
+    @Json(name = "links") val links: List<String>,
+    @Json(name = "feedType") val feedType: FeedType,
 )
