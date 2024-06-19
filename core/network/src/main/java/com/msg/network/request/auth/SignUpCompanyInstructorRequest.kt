@@ -1,13 +1,16 @@
 package com.msg.network.request.auth
 
 import com.msg.model.enumdata.HighSchool
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class SignUpCompanyInstructorRequest(
-    val email: String,
-    val name: String,
-    val phoneNumber: String,
-    val password: String,
-    val highSchool: HighSchool,
-    val clubName: String,
-    val company: String
+    @Json(name = "email") val email: String,
+    @Json(name = "name") val name: String,
+    @Json(name = "phoneNumber") val phoneNumber: String,
+    @Json(name = "password") val password: String,
+    @Json(name = "highSchool") val highSchool: HighSchool,
+    @Json(name = "clubName") val clubName: String,
+    @Json(name = "company") val company: String
 )
