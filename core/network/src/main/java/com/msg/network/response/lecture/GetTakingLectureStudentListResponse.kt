@@ -1,22 +1,25 @@
 package com.msg.network.response.lecture
 
 import com.msg.model.enumdata.HighSchool
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.util.UUID
 
+@JsonClass(generateAdapter = true)
 data class GetTakingLectureStudentListResponse(
-    val students: List<Students>,
+    @Json(name = "students") val students: List<Students>,
 ) {
     data class Students(
-        val id: UUID,
-        val email: String,
-        val name: String,
-        val grade: Int,
-        val classNumber: Int,
-        val number: Int,
-        val phoneNumber: String,
-        val school: HighSchool,
-        val clubName: String,
-        val cohort: Int,
-        val isCompleted: Boolean,
+        @Json(name = "id") val id: UUID,
+        @Json(name = "email") val email: String,
+        @Json(name = "name") val name: String,
+        @Json(name = "grade") val grade: Int,
+        @Json(name = "classNumber") val classNumber: Int,
+        @Json(name = "number") val number: Int,
+        @Json(name = "phoneNumber") val phoneNumber: String,
+        @Json(name = "school") val school: HighSchool,
+        @Json(name = "clubName") val clubName: String,
+        @Json(name = "cohort") val cohort: Int,
+        @Json(name = "isCompleted") val isCompleted: Boolean,
     )
 }

@@ -1,7 +1,11 @@
 package com.msg.network.response.club
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class ClubListResponse(
-    val id: Long,
-    val name: String,
-    val schoolName: String
+    @Json(name = "id") val id: Long,
+    @Json(name = "name") val name: String,
+    @Json(name = "schoolName") val schoolName: String
 )

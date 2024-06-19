@@ -1,7 +1,10 @@
 package com.msg.network.response.activity
 
 import com.msg.model.model.activity.GetStudentActivityModel
+import com.squareup.moshi.JsonClass
 
+
+@JsonClass(generateAdapter = true)
 data class GetStudentActivityListResponse (
     val content: List<GetStudentActivityModel>,
     val pageable: Pageable,

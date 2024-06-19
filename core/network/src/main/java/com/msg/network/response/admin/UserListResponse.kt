@@ -1,5 +1,8 @@
 package com.msg.network.response.admin
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class UserListResponse(
     val content: List<UserListContentResponse>,
     val pageable: Pageable,
