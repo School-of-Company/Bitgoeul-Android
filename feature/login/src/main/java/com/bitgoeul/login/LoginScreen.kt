@@ -93,7 +93,7 @@ private suspend fun getLoginData(
 @Composable
 internal fun LoginScreen(
     onSignUpClicked: () -> Unit,
-    onLoginClicked: (String, String) -> Unit = { _, _ -> },
+    onLoginClicked: (String, String) -> Unit,
     onFindPasswordClicked: () -> Unit,
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -228,7 +228,8 @@ internal fun LoginScreen(
 @Composable
 private fun LoginScreenPre() {
     LoginScreen(
-        onSignUpClicked = {},
-        onFindPasswordClicked = {},
+        onSignUpClicked = { /*TODO*/ },
+        onLoginClicked = { _, _ -> },
+        onFindPasswordClicked = { /*TODO*/ }
     )
 }
