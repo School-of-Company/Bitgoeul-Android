@@ -57,4 +57,10 @@ class ClubRepositoryImpl @Inject constructor(
             body = body.toRequest()
         )
     }
+
+    override fun deleteClub(id: Long): Flow<Unit> {
+        return clubDataSource.deleteClub(
+            id = id
+        )
+    }
 }

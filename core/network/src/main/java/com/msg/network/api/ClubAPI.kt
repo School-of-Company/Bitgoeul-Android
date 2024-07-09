@@ -6,6 +6,7 @@ import com.msg.network.response.club.ClubDetailResponse
 import com.msg.network.response.club.ClubListResponse
 import com.msg.network.response.club.StudentBelongClubResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.Path
@@ -36,5 +37,10 @@ interface ClubAPI {
     suspend fun patchClub(
         @Path("id") id: Long,
         @Body body: PatchClubRequest
+    )
+
+    @DELETE("club/{id}")
+    suspend fun deleteClub(
+        @Path("id") id: Long
     )
 }

@@ -12,4 +12,5 @@ interface ClubDataSource {
     fun getStudentBelongClubDetail(id:Long, studentId: UUID): Flow<StudentBelongClubResponse>
     fun getMyClubDetail(): Flow<ClubDetailResponse>
     fun patchClub(id: Long, body: PatchClubRequest): Flow<Unit>
+    fun deleteClub(id: Long): Flow<Unit>
 }

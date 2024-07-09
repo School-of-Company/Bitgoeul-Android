@@ -26,4 +26,7 @@ class ClubDataSourceImpl @Inject constructor(
 
     override fun patchClub(id: Long, body: PatchClubRequest): Flow<Unit> =
         makeRequest { clubAPI.patchClub(id = id, body = body) }
+
+    override fun deleteClub(id: Long): Flow<Unit> =
+        makeRequest { clubAPI.deleteClub(id = id) }
 }

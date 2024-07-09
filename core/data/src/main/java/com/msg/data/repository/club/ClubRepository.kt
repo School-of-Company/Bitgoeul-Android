@@ -14,4 +14,5 @@ interface ClubRepository {
     fun getStudentBelongClubDetail(id: Long, studentId: UUID): Flow<StudentBelongClubEntity>
     fun getMyClubDetail(): Flow<ClubDetailEntity>
     fun patchClub(id: Long, body: PatchClubParam): Flow<Unit>
+    fun deleteClub(id: Long): Flow<Unit>
 }
