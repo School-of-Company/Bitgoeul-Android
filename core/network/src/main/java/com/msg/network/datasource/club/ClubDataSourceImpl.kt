@@ -3,6 +3,7 @@ package com.msg.network.datasource.club
 import com.msg.network.response.club.*
 import com.msg.model.enumdata.HighSchool
 import com.msg.network.api.ClubAPI
+import com.msg.network.request.club.PatchClubRequest
 import com.msg.network.util.makeRequest
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -22,4 +23,7 @@ class ClubDataSourceImpl @Inject constructor(
 
     override fun getMyClubDetail(): Flow<ClubDetailResponse> =
         makeRequest { clubAPI.getMyClubDetail() }
+
+    override fun patchClub(id: Long, body: PatchClubRequest): Flow<Unit> =
+        makeRequest { clubAPI.patchClub(id = id, body = body) }
 }
