@@ -18,6 +18,8 @@ import com.msg.network.datasource.lecture.LectureDataSource
 import com.msg.network.datasource.lecture.LectureDataSourceImpl
 import com.msg.network.datasource.post.PostDataSource
 import com.msg.network.datasource.post.PostDataSourceImpl
+import com.msg.network.datasource.school.SchoolDataSource
+import com.msg.network.datasource.school.SchoolDataSourceImpl
 import com.msg.network.datasource.user.UserDataSource
 import com.msg.network.datasource.user.UserDataSourceImpl
 import dagger.Binds
@@ -77,4 +79,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindEmailDataSource(
         emailDataSourceImpl: EmailDataSourceImpl
     ): EmailDataSource
+
+    @Binds
+    abstract fun bindSchoolDataSource(
+        schoolDataSourceImpl: SchoolDataSourceImpl
+    ): SchoolDataSource
 }

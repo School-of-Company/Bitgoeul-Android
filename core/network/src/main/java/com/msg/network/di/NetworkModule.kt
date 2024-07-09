@@ -11,6 +11,7 @@ import com.msg.network.api.EmailAPI
 import com.msg.network.api.FaqAPI
 import com.msg.network.api.LectureAPI
 import com.msg.network.api.PostAPI
+import com.msg.network.api.SchoolAPI
 import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
 import com.squareup.moshi.Moshi
@@ -23,6 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -112,4 +114,8 @@ object NetworkModule {
     @Provides
     fun provideEmailAPI(retrofit: Retrofit): EmailAPI =
         retrofit.create(EmailAPI::class.java)
+
+    @Provides
+    fun provideSchoolAPI(retrofit: Retrofit): SchoolAPI =
+        retrofit.create(SchoolAPI::class.java)
  }
