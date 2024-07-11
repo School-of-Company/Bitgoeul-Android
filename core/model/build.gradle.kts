@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.okhttp.logging)
+    implementation(libs.okhttp)
 }

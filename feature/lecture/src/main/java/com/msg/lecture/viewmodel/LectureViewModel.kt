@@ -213,7 +213,11 @@ class LectureViewModel @Inject constructor(
             isRegistered = true,
             lecturer = "",
             credit = 0,
-            essentialComplete = false
+            essentialComplete = false,
+            locationX = "",
+            locationY = "",
+            address = "",
+            locationDetails = ""
         )
     )
         private set
@@ -338,7 +342,9 @@ class LectureViewModel @Inject constructor(
                 lectureType = lectureType,
                 credit = credit,
                 maxRegisteredUser = maxRegisteredUser,
-                essentialComplete = essentialComplete
+                essentialComplete = essentialComplete,
+                address = "",
+                locationDetails = ""
             )
         ).onSuccess {
             it.catch { remoteError ->

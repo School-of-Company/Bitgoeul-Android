@@ -476,7 +476,11 @@ private fun LectureDetailScreenPre() {
             lectureStatus = LectureStatus.OPEN,
             essentialComplete = true,
             headCount = 0,
-            isRegistered = false
+            isRegistered = false,
+            locationX = "",
+            locationY = "",
+            address = "",
+            locationDetails = ""
         ),
         onBackClicked = {},
         onApplicationClicked = {},
