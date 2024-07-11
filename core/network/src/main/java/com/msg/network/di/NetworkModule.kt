@@ -10,6 +10,7 @@ import com.msg.network.api.ClubAPI
 import com.msg.network.api.EmailAPI
 import com.msg.network.api.FaqAPI
 import com.msg.network.api.LectureAPI
+import com.msg.network.api.MapAPI
 import com.msg.network.api.PostAPI
 import com.msg.network.api.SchoolAPI
 import com.msg.network.api.UserAPI
@@ -118,4 +119,8 @@ object NetworkModule {
     @Provides
     fun provideSchoolAPI(retrofit: Retrofit): SchoolAPI =
         retrofit.create(SchoolAPI::class.java)
+
+    @Provides
+    fun provideMapAPI(retrofit: Retrofit): MapAPI =
+        retrofit.create(MapAPI::class.java)
  }
