@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SchoolDataSource {
     fun getSchoolList(): Flow<GetSchoolListResponse>
+    fun getSchoolName(): Flow<List<String>>
 }

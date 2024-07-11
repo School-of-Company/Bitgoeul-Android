@@ -11,4 +11,7 @@ class SchoolDataSourceImpl @Inject constructor(
 ) : SchoolDataSource {
     override fun getSchoolList(): Flow<GetSchoolListResponse> =
         makeRequest { schoolAPI.getSchoolList() }
+
+    override fun getSchoolName(): Flow<List<String>> =
+        makeRequest { schoolAPI.getSchoolName() }
 }

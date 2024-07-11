@@ -15,4 +15,8 @@ class SchoolRepositoryImpl @Inject constructor(
             response.toEntity()
         }
     }
+
+    override fun getSchoolName(): Flow<List<String>> {
+        return schoolDataSource.getSchoolName()
+    }
 }

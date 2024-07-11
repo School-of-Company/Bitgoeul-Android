@@ -6,4 +6,7 @@ import retrofit2.http.GET
 interface SchoolAPI {
     @GET("school")
     suspend fun getSchoolList(): GetSchoolListResponse
+
+    @GET("school/name")
+    suspend fun getSchoolName(): List<String>
 }
