@@ -16,6 +16,8 @@ import com.msg.data.repository.faq.FaqRepository
 import com.msg.data.repository.faq.FaqRepositoryImpl
 import com.msg.data.repository.lecture.LectureRepository
 import com.msg.data.repository.lecture.LectureRepositoryImpl
+import com.msg.data.repository.map.MapRepository
+import com.msg.data.repository.map.MapRepositoryImpl
 import com.msg.data.repository.post.PostRepository
 import com.msg.data.repository.post.PostRepositoryImpl
 import com.msg.data.repository.school.SchoolRepository
@@ -84,4 +86,9 @@ abstract class RepositoryModule {
     abstract fun bindSchoolRepository(
         schoolRepositoryImpl: SchoolRepositoryImpl
     ): SchoolRepository
+
+    @Binds
+    abstract fun bindMapRepository(
+        mapRepositoryImpl: MapRepositoryImpl
+    ): MapRepository
 }
