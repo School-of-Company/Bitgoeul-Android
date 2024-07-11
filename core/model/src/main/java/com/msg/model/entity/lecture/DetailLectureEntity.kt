@@ -23,5 +23,9 @@ data class DetailLectureEntity(
     val isRegistered: Boolean,
     val lecturer: String,
     val credit: Int,
+    val locationX: String,
+    val locationY: String,
+    val address: String,
+    val locationDetails: String,
     val essentialComplete: Boolean,
 )

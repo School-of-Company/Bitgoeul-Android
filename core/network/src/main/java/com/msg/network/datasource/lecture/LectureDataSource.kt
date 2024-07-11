@@ -9,6 +9,7 @@ interface LectureDataSource {
     fun openLecture(body: OpenLectureRequest): Flow<Unit>
     fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListResponse>
     fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
+    fun patchLecture(id: UUID, body: OpenLectureRequest): Flow<Unit>
     fun lectureApplication(id: UUID): Flow<Unit>
     fun lectureApplicationCancel(id: UUID): Flow<Unit>
     fun searchProfessor(keyword: String): Flow<SearchProfessorResponse>

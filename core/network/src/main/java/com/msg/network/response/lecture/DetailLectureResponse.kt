@@ -26,5 +26,9 @@ data class DetailLectureResponse(
     @Json(name = "isRegistered") val isRegistered: Boolean,
     @Json(name = "lecturer") val lecturer: String,
     @Json(name = "credit") val credit: Int,
+    @Json(name = "locationX") val locationX: String,
+    @Json(name = "locationY") val locationY: String,
+    @Json(name = "address") val address: String,
+    @Json(name = "locationDetails") val locationDetails: String,
     @Json(name = "essentialComplete") val essentialComplete: Boolean,
 )
