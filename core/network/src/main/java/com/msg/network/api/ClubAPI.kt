@@ -1,10 +1,14 @@
 package com.msg.network.api
 
 import com.msg.model.enumdata.HighSchool
+import com.msg.network.request.club.PatchClubRequest
 import com.msg.network.response.club.ClubDetailResponse
 import com.msg.network.response.club.ClubListResponse
 import com.msg.network.response.club.StudentBelongClubResponse
+import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.UUID
@@ -28,4 +32,15 @@ interface ClubAPI {
 
     @GET("club/my")
     suspend fun getMyClubDetail(): ClubDetailResponse
+
+    @PATCH("club/{id}")
+    suspend fun patchClub(
+        @Path("id") id: Long,
+        @Body body: PatchClubRequest
+    )
+
+    @DELETE("club/{id}")
+    suspend fun deleteClub(
+        @Path("id") id: Long
+    )
 }

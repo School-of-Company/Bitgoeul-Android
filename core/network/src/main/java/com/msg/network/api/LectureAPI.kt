@@ -37,6 +37,12 @@ interface LectureAPI {
         @Path("id") id: UUID,
     ): DetailLectureResponse
 
+    @PATCH("lecture/{id}")
+    suspend fun patchLecture(
+        @Path("id") id: UUID,
+        @Body body: OpenLectureRequest
+    )
+
     @POST("lecture/{id}")
     suspend fun lectureApplication(
         @Path("id") id: UUID,

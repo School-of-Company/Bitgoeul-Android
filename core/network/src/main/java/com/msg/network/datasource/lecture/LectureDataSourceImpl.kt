@@ -20,6 +20,9 @@ class LectureDataSourceImpl @Inject constructor(
     override fun getDetailLecture(id: UUID): Flow<DetailLectureResponse> =
         makeRequest { lectureAPI.getDetailLecture(id) }
 
+    override fun patchLecture(id: UUID, body: OpenLectureRequest): Flow<Unit> =
+        makeRequest { lectureAPI.patchLecture(id = id, body = body) }
+
     override fun lectureApplication(id: UUID): Flow<Unit> =
         makeRequest { lectureAPI.lectureApplication(id) }
 
