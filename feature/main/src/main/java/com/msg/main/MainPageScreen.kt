@@ -81,7 +81,7 @@ internal fun MainPageScreenRoute(
     MainPageScreen(
         data = viewModel.faqList,
         event = error,
-        role = Authority.valueOf(role),
+        role = role,
         onAddClicked = { question, answer ->
             viewModel.addFaq(
                 question = question,
@@ -125,7 +125,7 @@ internal fun MainPageScreen(
     modifier: Modifier = Modifier,
     data: List<GetFAQDetailEntity>,
     event: Event<List<GetFAQDetailEntity>>,
-    role: Authority,
+    role: String,
     onAddClicked: (question: String, answer: String) -> Unit,
     onDialogButtonClicked: () -> Unit
 ) {
@@ -320,7 +320,7 @@ internal fun MainPageScreen(
                 )
                 Spacer(modifier = modifier.height(64.dp))
                 FaqSection(data = data)
-                if (role == Authority.ROLE_ADMIN) {
+                if (role == "ROLE_ADMIN") {
                     AddFaqItem(
                         questionValue = questionValue.value,
                         onQuestionValueChanged = {
@@ -389,7 +389,7 @@ fun MainPageScreenPre() {
             )
         ),
         onAddClicked = {_,_->},
-        role = Authority.ROLE_ADMIN,
+        role = "ROLE_ADMIN",
         event = Event.Success(),
         onDialogButtonClicked = {}
     )
