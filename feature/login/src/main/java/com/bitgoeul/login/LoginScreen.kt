@@ -1,6 +1,7 @@
 package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,7 +44,7 @@ internal fun LoginRoute(
     onSignUpClicked: () -> Unit,
     onFindPasswordClicked: () -> Unit,
     onLoginClicked: () -> Unit,
-    viewModel: AuthViewModel = hiltViewModel(),
+    viewModel: AuthViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current

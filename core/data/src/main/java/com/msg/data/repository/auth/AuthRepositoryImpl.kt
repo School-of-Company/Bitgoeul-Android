@@ -28,7 +28,7 @@ class AuthRepositoryImpl @Inject constructor(
         return remoteDataSource.login(
             body = body.toRequest()
         ).transform { response ->
-            response.toEntity()
+            emit(response.toEntity())
         }
     }
 
