@@ -1,10 +1,12 @@
 package com.msg.data.repository.club
 
 import com.msg.data.mapper.club.toEntity
+import com.msg.data.mapper.club.toRequest
 import com.msg.model.entity.club.ClubDetailEntity
 import com.msg.model.entity.club.ClubListEntity
 import com.msg.model.entity.club.StudentBelongClubEntity
 import com.msg.model.enumdata.HighSchool
+import com.msg.model.param.club.PatchClubParam
 import com.msg.network.datasource.club.ClubDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -47,5 +49,18 @@ class ClubRepositoryImpl @Inject constructor(
             .transform { response ->
                 response.toEntity()
             }
+    }
+
+    override fun patchClub(id: Long, body: PatchClubParam): Flow<Unit> {
+        return clubDataSource.patchClub(
+            id = id,
+            body = body.toRequest()
+        )
+    }
+
+    override fun deleteClub(id: Long): Flow<Unit> {
+        return clubDataSource.deleteClub(
+            id = id
+        )
     }
 }

@@ -18,6 +18,8 @@ data class OpenLectureParam(
     val lectureDates: List<LectureDates>,
     val lectureType: String,
     val credit: Int,
+    val address: String,
+    val locationDetails: String,
     val maxRegisteredUser: Int,
     val essentialComplete: Boolean,
 )

@@ -16,6 +16,8 @@ fun OpenLectureParam.toRequest() = OpenLectureRequest(
     lectureDates = lectureDates,
     lectureType = lectureType,
     credit = credit,
+    address = address,
+    locationDetails = locationDetails,
     maxRegisteredUser = maxRegisteredUser,
     essentialComplete = essentialComplete,
 )

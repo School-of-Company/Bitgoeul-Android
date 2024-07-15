@@ -21,5 +21,7 @@ data class OpenLectureRequest(
     @Json(name = "lectureType") val lectureType: String,
     @Json(name = "credit") val credit: Int,
     @Json(name = "maxRegisteredUser") val maxRegisteredUser: Int,
+    @Json(name = "address") val address: String,
+    @Json(name = "locationDetails") val locationDetails: String,
     @Json(name = "essentialComplete") val essentialComplete: Boolean,
 )

@@ -17,6 +17,7 @@ interface LectureRepository {
     fun openLecture(body: OpenLectureParam): Flow<Unit>
     fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListEntity>
     fun getDetailLecture(id: UUID): Flow<DetailLectureEntity>
+    fun patchLecture(id: UUID, body: OpenLectureParam): Flow<Unit>
     fun lectureApplication(id: UUID): Flow<Unit>
     fun lectureApplicationCancel(id: UUID): Flow<Unit>
     fun searchProfessor(keyword: String): Flow<SearchProfessorEntity>

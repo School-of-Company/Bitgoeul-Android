@@ -49,6 +49,13 @@ class LectureRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun patchLecture(id: UUID, body: OpenLectureParam): Flow<Unit> {
+        return lectureDataSource.patchLecture(
+            id = id,
+            body = body.toRequest()
+        )
+    }
+
     override fun lectureApplication(id: UUID): Flow<Unit> {
         return lectureDataSource.lectureApplication(
             id = id

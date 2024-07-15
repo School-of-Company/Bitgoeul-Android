@@ -21,5 +21,9 @@ fun DetailLectureResponse.toEntity() = DetailLectureEntity(
     isRegistered = isRegistered,
     lecturer = lecturer,
     credit = credit,
+    locationX = locationX,
+    locationY = locationY,
+    address = address,
+    locationDetails = locationDetails,
     essentialComplete = essentialComplete
 )
