@@ -5,6 +5,7 @@ import java.util.Properties
 plugins {
     id("bitgoeul.android.core")
     id("bitgoeul.android.hilt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -30,10 +31,10 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
-    implementation(libs.retrofit.gson.converter)
     implementation(libs.retrofit.moshi.converter)
     implementation(libs.moshi)
-    kapt(libs.retrofit.moshi.codegen)
+    ksp(libs.retrofit.moshi.codegen)
+    implementation(libs.moshi.kotlin)
 }
 
 fun getApiKey(propertyKey: String): String {
