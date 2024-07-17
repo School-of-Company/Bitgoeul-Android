@@ -1,6 +1,6 @@
 package com.msg.model.enumdata
 
 enum class LectureStatus(lectureStatus: String) {
-    OPEN("수강신청 열림"),
-    CLOSE("수강신청 닫힘")
+    OPENED("수강신청 열림"),
+    CLOSED("수강신청 닫힘")
 }

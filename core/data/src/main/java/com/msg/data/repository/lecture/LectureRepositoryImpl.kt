@@ -37,7 +37,7 @@ class LectureRepositoryImpl @Inject constructor(
             size = size,
             type = type
         ).transform { response ->
-            response.toEntity()
+            emit(response.toEntity())
         }
     }
 

@@ -337,7 +337,7 @@ internal fun LectureDetailScreen(
             }
 
             when (data.lectureStatus) {
-                LectureStatus.OPEN -> {
+                LectureStatus.OPENED  -> {
                     Column(
                         modifier = modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Bottom
@@ -383,7 +383,7 @@ internal fun LectureDetailScreen(
                     }
                 }
 
-                LectureStatus.CLOSE -> {
+                LectureStatus.CLOSED -> {
                     Column(
                         modifier = modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Bottom
@@ -473,7 +473,7 @@ private fun LectureDetailScreenPre() {
                 )
             ),
             maxRegisteredUser = 30,
-            lectureStatus = LectureStatus.OPEN,
+            lectureStatus = LectureStatus.OPENED,
             essentialComplete = true,
             headCount = 0,
             isRegistered = false,

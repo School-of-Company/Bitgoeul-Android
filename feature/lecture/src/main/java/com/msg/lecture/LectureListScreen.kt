@@ -33,9 +33,9 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureFilterDialog
 import com.msg.lecture.component.LectureList
 import com.msg.lecture.viewmodel.LectureViewModel
-import com.msg.model.entity.lecture.ContentArray
+import com.msg.model.entity.lecture.LectureListEntity.Lectures.ContentArray
 import com.msg.model.entity.lecture.LectureListEntity
-import com.msg.model.entity.lecture.Lectures
+import com.msg.model.entity.lecture.LectureListEntity.Lectures
 import com.msg.model.enumdata.LectureStatus
 import com.msg.model.enumdata.Semester
 import java.util.UUID
@@ -73,9 +73,35 @@ internal fun LectureListRoute(
         onFilterChanged = { type ->
             viewModel.lectureList.value = LectureListEntity(
                 lectures = Lectures(
-                    content = emptyList()
+                    content = emptyList(),
+                    pageable = Lectures.Pageable(
+                        sort = Lectures.Sort(
+                            empty = true,
+                            sorted = false,
+                            unsorted = true
+                        ),
+                        offset = 0L,
+                        pageNumber = 0,
+                        pageSize = 10,
+                        paged = true,
+                        unpaged = false
+                    ),
+                    last = false,
+                    totalPages = 0,
+                    totalElements = 0,
+                    size = 10,
+                    number = 0,
+                    first = true,
+                    sort = Lectures.Sort(
+                        empty = true,
+                        sorted = false,
+                        unsorted = true
+                    ),
+                    numberOfElements = 0,
+                    empty = true
                 )
             )
+
             viewModel.getLectureList(
                 page = 0,
                 size = 10,
@@ -198,64 +224,92 @@ internal fun LectureListScreen(
 @Preview
 @Composable
 private fun LectureListScreenPre() {
-    LectureListScreen(
-        data = LectureListEntity(
-            lectures = Lectures(
-                content = listOf(
-                    ContentArray(
-                        id = UUID.randomUUID(),
-                        name = "코틀린",
-                        lecturer = "김코틀린교수",
-                        lectureType = "상호학점인정교육과정",
-                        startDate = "2021-09-01",
-                        endDate = "2021-09-30",
-                        lectureStatus = LectureStatus.OPEN,
-                        headCount = 10,
-                        maxRegisteredUser = 20,
-                        department = "컴퓨터공학과",
-                        division = "전공",
-                        essentialComplete = true,
-                        line = "A계열",
-                        content = "코틀린은 자바보다 훨씬 좋지롱 코틀린 최고~ 코틀린은 자바보다 훨씬 좋지롱 코틀린 최고~ 코틀린은 자바보다 훨씬 좋지롱 코틀린 최고~ 코틀린은 자바보다 훨씬 좋지롱 코틀린 최고~",
-                        semester = Semester.THIRD_YEAR_SPRING_SEMESTER,
-                    ),
-                    ContentArray(
-                        id = UUID.randomUUID(),
-                        name = "자바",
-                        lecturer = "김자바교수",
-                        lectureType = "상호학점인정교육과정",
-                        startDate = "2021-09-01",
-                        endDate = "2021-09-30",
-                        lectureStatus = LectureStatus.OPEN,
-                        headCount = 10,
-                        maxRegisteredUser = 20,
-                        department = "컴퓨터공학과",
-                        division = "전공",
-                        essentialComplete = true,
-                        line = "A계열",
-                        content = "자바가 코틀린보다 더 형이지롱~ 자바가 코틀린보다 더 형이지롱~ 자바가 코틀린보다 더 형이지롱~ 자바가 코틀린보다 더 형이지롱~ 자바가 코틀린보다 더 형이지롱~ 자바가 코틀린보다 더 형이지롱~",
-                        semester = Semester.THIRD_YEAR_SPRING_SEMESTER,
-                    ),
-                    ContentArray(
-                        id = UUID.randomUUID(),
-                        name = "안드로이드",
-                        lecturer = "김안드로이드교수",
-                        lectureType = "상호학점인정교육과정",
-                        startDate = "2021-09-01",
-                        endDate = "2021-09-30",
-                        lectureStatus = LectureStatus.OPEN,
-                        headCount = 10,
-                        maxRegisteredUser = 20,
-                        department = "컴퓨터공학과",
-                        division = "전공",
-                        essentialComplete = true,
-                        line = "A계열",
-                        content = "iOS는 안드로이드보다 구리지롱 ~ iOS는 안드로이드보다 구리지롱 ~ iOS는 안드로이드보다 구리지롱 ~ iOS는 안드로이드보다 구리지롱 ~ iOS는 안드로이드보다 구리지롱 ~",
-                        semester = Semester.THIRD_YEAR_SPRING_SEMESTER,
-                    ),
+    val initialLectureList = LectureListEntity(
+        lectures = Lectures(
+            content = listOf(
+                ContentArray(
+                    id = UUID.randomUUID(),
+                    name = "코틀린",
+                    lecturer = "김코틀린교수",
+                    lectureType = "상호학점인정교육과정",
+                    startDate = "2021-09-01",
+                    endDate = "2021-09-30",
+                    lectureStatus = LectureStatus.OPENED,
+                    headCount = 10,
+                    maxRegisteredUser = 20,
+                    department = "컴퓨터공학과",
+                    division = "전공",
+                    essentialComplete = true,
+                    line = "A계열",
+                    content = "코틀린은 자바보다 훨씬 좋지롱 코틀린 최고~",
+                    semester = Semester.THIRD_YEAR_SPRING_SEMESTER,
+                ),
+                ContentArray(
+                    id = UUID.randomUUID(),
+                    name = "자바",
+                    lecturer = "김자바교수",
+                    lectureType = "상호학점인정교육과정",
+                    startDate = "2021-09-01",
+                    endDate = "2021-09-30",
+                    lectureStatus = LectureStatus.OPENED,
+                    headCount = 10,
+                    maxRegisteredUser = 20,
+                    department = "컴퓨터공학과",
+                    division = "전공",
+                    essentialComplete = true,
+                    line = "A계열",
+                    content = "자바가 코틀린보다 더 형이지롱~",
+                    semester = Semester.THIRD_YEAR_SPRING_SEMESTER,
+                ),
+                ContentArray(
+                    id = UUID.randomUUID(),
+                    name = "안드로이드",
+                    lecturer = "김안드로이드교수",
+                    lectureType = "상호학점인정교육과정",
+                    startDate = "2021-09-01",
+                    endDate = "2021-09-30",
+                    lectureStatus = LectureStatus.OPENED,
+                    headCount = 10,
+                    maxRegisteredUser = 20,
+                    department = "컴퓨터공학과",
+                    division = "전공",
+                    essentialComplete = true,
+                    line = "A계열",
+                    content = "iOS는 안드로이드보다 구리지롱 ~",
+                    semester = Semester.THIRD_YEAR_SPRING_SEMESTER,
                 )
-            )
-        ),
+            ),
+            pageable = Lectures.Pageable(
+                sort = Lectures.Sort(
+                    empty = true,
+                    sorted = false,
+                    unsorted = true
+                ),
+                offset = 0L,
+                pageNumber = 0,
+                pageSize = 10,
+                paged = true,
+                unpaged = false
+            ),
+            last = true,
+            totalPages = 1,
+            totalElements = 3,
+            size = 10,
+            number = 0,
+            first = true,
+            sort = Lectures.Sort(
+                empty = true,
+                sorted = false,
+                unsorted = true
+            ),
+            numberOfElements = 3,
+            empty = false
+        )
+    )
+
+
+    LectureListScreen(
+        data = initialLectureList,
         onOpenClicked = {},
         onItemClicked = {},
         onFilterChanged = { type -> },
