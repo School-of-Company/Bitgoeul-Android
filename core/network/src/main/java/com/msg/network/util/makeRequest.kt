@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 internal inline fun <reified T> makeRequest(crossinline apiCall: suspend () -> T): Flow<T> = flow {
-    emit(BitgoeulApiHandler<T>()
+    emit(
+        BitgoeulApiHandler<T>()
         .httpRequest { apiCall() }
-        .sendRequest())
+        .sendRequest()
+    )
 }.flowOn(Dispatchers.IO)
