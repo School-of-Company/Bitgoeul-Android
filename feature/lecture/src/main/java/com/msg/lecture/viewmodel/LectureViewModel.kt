@@ -88,16 +88,16 @@ class LectureViewModel @Inject constructor(
 
     var lectureList = mutableStateOf(
         LectureListEntity(
-            lectures = Lectures(
+            lectures = LectureListEntity.Lectures(
                 content = listOf(
-                    ContentArray(
+                    LectureListEntity.Lectures.ContentArray(
                         id = UUID.randomUUID(),
                         name = "",
                         content = "",
                         startDate = LocalDateTime.now().toString(),
                         endDate = LocalDateTime.now().toString(),
                         lectureType = "",
-                        lectureStatus = LectureStatus.OPEN,
+                        lectureStatus = LectureStatus.OPENED,
                         headCount = 0,
                         maxRegisteredUser = 0,
                         lecturer = "",
@@ -107,7 +107,32 @@ class LectureViewModel @Inject constructor(
                         line = "",
                         essentialComplete = false
                     )
-                )
+                ),
+                pageable = LectureListEntity.Lectures.Pageable(
+                    sort = LectureListEntity.Lectures.Sort(
+                        empty = true,
+                        sorted = false,
+                        unsorted = true
+                    ),
+                    offset = 0L,
+                    pageNumber = 0,
+                    pageSize = 10,
+                    paged = true,
+                    unpaged = false
+                ),
+                last = true,
+                totalPages = 1,
+                totalElements = 1,
+                size = 10,
+                number = 0,
+                first = true,
+                sort = LectureListEntity.Lectures.Sort(
+                    empty = true,
+                    sorted = false,
+                    unsorted = true
+                ),
+                numberOfElements = 1,
+                empty = false
             )
         )
     )
@@ -207,7 +232,7 @@ class LectureViewModel @Inject constructor(
                 )
             ),
             lectureType = "",
-            lectureStatus = LectureStatus.OPEN,
+            lectureStatus = LectureStatus.OPENED,
             headCount = 0,
             maxRegisteredUser = 0,
             isRegistered = true,

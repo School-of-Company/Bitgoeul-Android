@@ -31,7 +31,7 @@ import com.msg.design_system.component.checkbox.BitGoeulCheckBox
 import com.msg.design_system.component.description.ContentDescriptionText
 import com.msg.design_system.component.icon.DivideRectangleIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
-import com.msg.model.entity.lecture.ContentArray
+import com.msg.model.entity.lecture.LectureListEntity.Lectures.ContentArray
 import com.msg.model.entity.lecture.Students
 import com.msg.model.enumdata.Semester
 import java.util.UUID
