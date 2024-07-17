@@ -1,6 +1,5 @@
 package com.msg.lecture
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -56,7 +55,6 @@ internal fun LectureListRoute(
             size = 10,
             type = type.value
         )
-        Log.e("LectureList LaunchedEffect 실행", "실행됨")
         getLectureList(
             viewModel = viewModel,
             onSuccess = { response ->
