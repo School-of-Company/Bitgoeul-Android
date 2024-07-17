@@ -16,7 +16,7 @@ class SchoolRepositoryImpl @Inject constructor(
 ) : SchoolRepository {
     override fun getSchoolList(): Flow<GetSchoolListEntity> {
         return schoolDataSource.getSchoolList().transform { response ->
-            response.toEntity()
+            emit(response.toEntity())
         }
     }
 

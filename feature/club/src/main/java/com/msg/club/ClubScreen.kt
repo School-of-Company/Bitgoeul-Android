@@ -63,7 +63,7 @@ internal fun ClubScreenRoute(
     ClubScreen(
         data = viewModel.clubList,
         onSettingClicked = {
-            viewModel.getClubList(HighSchool.valueOf(it))
+            viewModel.getClubList(HighSchool.valueOf(it).toString())
             key = it
         },
         onItemClicked = {

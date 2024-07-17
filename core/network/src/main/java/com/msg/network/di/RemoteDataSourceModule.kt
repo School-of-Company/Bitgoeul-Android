@@ -10,6 +10,8 @@ import com.msg.network.datasource.certification.CertificationDataSource
 import com.msg.network.datasource.certification.CertificationDataSourceImpl
 import com.msg.network.datasource.club.ClubDataSource
 import com.msg.network.datasource.club.ClubDataSourceImpl
+import com.msg.network.datasource.company.CompanyDataSource
+import com.msg.network.datasource.company.CompanyDataSourceImpl
 import com.msg.network.datasource.email.EmailDataSource
 import com.msg.network.datasource.email.EmailDataSourceImpl
 import com.msg.network.datasource.faq.FaqDataSource
@@ -86,6 +88,11 @@ abstract class RemoteDataSourceModule {
     abstract fun bindSchoolDataSource(
         schoolDataSourceImpl: SchoolDataSourceImpl
     ): SchoolDataSource
+
+    @Binds
+    abstract fun bindCompanyDataSource(
+        companyDataSourceImpl: CompanyDataSourceImpl
+    ): CompanyDataSource
 
     @Binds
     abstract fun bindMapDataSource(

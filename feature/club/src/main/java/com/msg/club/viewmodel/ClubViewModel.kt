@@ -93,7 +93,7 @@ class ClubViewModel @Inject constructor(
     }
 
     internal fun getClubList(
-        highSchool: HighSchool,
+        highSchool: String,
     ) = viewModelScope.launch {
         getClubListUseCase(highSchool = highSchool).onSuccess {
             it.catch { remoteError ->

@@ -21,7 +21,7 @@ class FaqRepositoryImpl @Inject constructor(
     override fun getFrequentlyAskedQuestionsList(): Flow<List<GetFrequentlyAskedQuestionDetailEntity>> {
         return faqDataSource.getFrequentlyAskedQuestionsList()
             .transform { response ->
-                response.map { it.toEntity() }
+                emit(response.map { it.toEntity() })
             }
     }
 }
