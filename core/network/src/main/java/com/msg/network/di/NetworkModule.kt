@@ -15,6 +15,7 @@ import com.msg.network.api.PostAPI
 import com.msg.network.api.SchoolAPI
 import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
+import com.msg.network.util.UUIDAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -55,7 +56,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideMoshiInstance(): Moshi {
-        return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        return Moshi.Builder().add(UUIDAdapter()).add(KotlinJsonAdapterFactory()).build()
     }
 
     @Provides
