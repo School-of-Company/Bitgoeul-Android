@@ -99,7 +99,6 @@ internal fun EmailSendInformScreen(
 ) {
     BitgoeulAndroidTheme { color, typography ->
         Surface {
-            Log.e("Screen나옴", "test")
             Column(
                 modifier = modifier
                     .background(color = color.WHITE)
