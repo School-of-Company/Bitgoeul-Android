@@ -14,6 +14,7 @@ import com.msg.network.api.LectureAPI
 import com.msg.network.api.MapAPI
 import com.msg.network.api.PostAPI
 import com.msg.network.api.SchoolAPI
+import com.msg.network.api.UniversityAPI
 import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
 import com.squareup.moshi.Moshi
@@ -123,6 +124,10 @@ object NetworkModule {
     @Provides
     fun provideCompanyAPI(retrofit: Retrofit): CompanyAPI =
         retrofit.create(CompanyAPI::class.java)
+
+    @Provides
+    fun provideUniversityAPI(retrofit: Retrofit): UniversityAPI =
+        retrofit.create(UniversityAPI::class.java)
 
     @Provides
     fun provideMapAPI(retrofit: Retrofit): MapAPI =

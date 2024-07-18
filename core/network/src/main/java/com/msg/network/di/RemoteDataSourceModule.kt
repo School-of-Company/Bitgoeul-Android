@@ -24,6 +24,8 @@ import com.msg.network.datasource.post.PostDataSource
 import com.msg.network.datasource.post.PostDataSourceImpl
 import com.msg.network.datasource.school.SchoolDataSource
 import com.msg.network.datasource.school.SchoolDataSourceImpl
+import com.msg.network.datasource.university.UniversityDataSource
+import com.msg.network.datasource.university.UniversityDataSourceImpl
 import com.msg.network.datasource.user.UserDataSource
 import com.msg.network.datasource.user.UserDataSourceImpl
 import dagger.Binds
@@ -93,6 +95,11 @@ abstract class RemoteDataSourceModule {
     abstract fun bindCompanyDataSource(
         companyDataSourceImpl: CompanyDataSourceImpl
     ): CompanyDataSource
+
+    @Binds
+    abstract fun bindUniversityDataSource(
+        universityDataSourceImpl: UniversityDataSourceImpl
+    ): UniversityDataSource
 
     @Binds
     abstract fun bindMapDataSource(

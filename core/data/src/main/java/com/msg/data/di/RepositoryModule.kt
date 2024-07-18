@@ -22,6 +22,8 @@ import com.msg.data.repository.post.PostRepository
 import com.msg.data.repository.post.PostRepositoryImpl
 import com.msg.data.repository.school.SchoolRepository
 import com.msg.data.repository.school.SchoolRepositoryImpl
+import com.msg.data.repository.university.UniversityRepository
+import com.msg.data.repository.university.UniversityRepositoryImpl
 import com.msg.data.repository.user.UserRepository
 import com.msg.data.repository.user.UserRepositoryImpl
 import dagger.Binds
@@ -86,6 +88,11 @@ abstract class RepositoryModule {
     abstract fun bindSchoolRepository(
         schoolRepositoryImpl: SchoolRepositoryImpl
     ): SchoolRepository
+
+    @Binds
+    abstract fun bindUniversityRepository(
+        universityRepositoryImpl: UniversityRepositoryImpl
+    ): UniversityRepository
 
     @Binds
     abstract fun bindMapRepository(
