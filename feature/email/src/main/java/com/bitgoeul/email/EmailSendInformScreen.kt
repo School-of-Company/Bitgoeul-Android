@@ -1,7 +1,6 @@
 package com.bitgoeul.email
 
 import com.msg.model.entity.email.GetEmailAuthenticateStatusEntity
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
