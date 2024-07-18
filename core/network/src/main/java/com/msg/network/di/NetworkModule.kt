@@ -10,6 +10,7 @@ import com.msg.network.api.ClubAPI
 import com.msg.network.api.CompanyAPI
 import com.msg.network.api.EmailAPI
 import com.msg.network.api.FaqAPI
+import com.msg.network.api.GovernmentAPI
 import com.msg.network.api.LectureAPI
 import com.msg.network.api.MapAPI
 import com.msg.network.api.PostAPI
@@ -128,6 +129,10 @@ object NetworkModule {
     @Provides
     fun provideUniversityAPI(retrofit: Retrofit): UniversityAPI =
         retrofit.create(UniversityAPI::class.java)
+
+    @Provides
+    fun provideGovernmentAPI(retrofit: Retrofit): GovernmentAPI =
+        retrofit.create(GovernmentAPI::class.java)
 
     @Provides
     fun provideMapAPI(retrofit: Retrofit): MapAPI =

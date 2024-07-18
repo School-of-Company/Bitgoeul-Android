@@ -16,7 +16,7 @@ class UniversityRepositoryImpl @Inject constructor(
 
     override fun getUniversity(): Flow<GetUniversityEntity> {
         return universityDataSource.getUniversity().transform {
-            it.toEntity()
+            emit(it.toEntity())
         }
     }
 

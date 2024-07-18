@@ -14,6 +14,8 @@ import com.msg.data.repository.email.EmailRepository
 import com.msg.data.repository.email.EmailRepositoryImpl
 import com.msg.data.repository.faq.FaqRepository
 import com.msg.data.repository.faq.FaqRepositoryImpl
+import com.msg.data.repository.government.GovernmentRepository
+import com.msg.data.repository.government.GovernmentRepositoryImpl
 import com.msg.data.repository.lecture.LectureRepository
 import com.msg.data.repository.lecture.LectureRepositoryImpl
 import com.msg.data.repository.map.MapRepository
@@ -93,6 +95,11 @@ abstract class RepositoryModule {
     abstract fun bindUniversityRepository(
         universityRepositoryImpl: UniversityRepositoryImpl
     ): UniversityRepository
+
+    @Binds
+    abstract fun bindGovernmentRepository(
+        governmentRepositoryImpl: GovernmentRepositoryImpl
+    ): GovernmentRepository
 
     @Binds
     abstract fun bindMapRepository(

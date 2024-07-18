@@ -16,6 +16,8 @@ import com.msg.network.datasource.email.EmailDataSource
 import com.msg.network.datasource.email.EmailDataSourceImpl
 import com.msg.network.datasource.faq.FaqDataSource
 import com.msg.network.datasource.faq.FaqDataSourceImpl
+import com.msg.network.datasource.government.GovernmentDataSource
+import com.msg.network.datasource.government.GovernmentDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
 import com.msg.network.datasource.lecture.LectureDataSourceImpl
 import com.msg.network.datasource.map.MapDataSource
@@ -100,6 +102,11 @@ abstract class RemoteDataSourceModule {
     abstract fun bindUniversityDataSource(
         universityDataSourceImpl: UniversityDataSourceImpl
     ): UniversityDataSource
+
+    @Binds
+    abstract fun bindGovernmentDataSource(
+        governmentDataSourceImpl: GovernmentDataSourceImpl
+    ): GovernmentDataSource
 
     @Binds
     abstract fun bindMapDataSource(
