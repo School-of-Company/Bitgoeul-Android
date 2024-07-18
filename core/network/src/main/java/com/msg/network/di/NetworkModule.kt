@@ -7,12 +7,15 @@ import com.msg.network.api.AdminAPI
 import com.msg.network.api.AuthAPI
 import com.msg.network.api.CertificationAPI
 import com.msg.network.api.ClubAPI
+import com.msg.network.api.CompanyAPI
 import com.msg.network.api.EmailAPI
 import com.msg.network.api.FaqAPI
+import com.msg.network.api.GovernmentAPI
 import com.msg.network.api.LectureAPI
 import com.msg.network.api.MapAPI
 import com.msg.network.api.PostAPI
 import com.msg.network.api.SchoolAPI
+import com.msg.network.api.UniversityAPI
 import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
 import com.msg.network.util.UUIDAdapter
@@ -120,6 +123,18 @@ object NetworkModule {
     @Provides
     fun provideSchoolAPI(retrofit: Retrofit): SchoolAPI =
         retrofit.create(SchoolAPI::class.java)
+
+    @Provides
+    fun provideCompanyAPI(retrofit: Retrofit): CompanyAPI =
+        retrofit.create(CompanyAPI::class.java)
+
+    @Provides
+    fun provideUniversityAPI(retrofit: Retrofit): UniversityAPI =
+        retrofit.create(UniversityAPI::class.java)
+
+    @Provides
+    fun provideGovernmentAPI(retrofit: Retrofit): GovernmentAPI =
+        retrofit.create(GovernmentAPI::class.java)
 
     @Provides
     fun provideMapAPI(retrofit: Retrofit): MapAPI =

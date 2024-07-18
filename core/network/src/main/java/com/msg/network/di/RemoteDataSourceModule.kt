@@ -10,10 +10,14 @@ import com.msg.network.datasource.certification.CertificationDataSource
 import com.msg.network.datasource.certification.CertificationDataSourceImpl
 import com.msg.network.datasource.club.ClubDataSource
 import com.msg.network.datasource.club.ClubDataSourceImpl
+import com.msg.network.datasource.company.CompanyDataSource
+import com.msg.network.datasource.company.CompanyDataSourceImpl
 import com.msg.network.datasource.email.EmailDataSource
 import com.msg.network.datasource.email.EmailDataSourceImpl
 import com.msg.network.datasource.faq.FaqDataSource
 import com.msg.network.datasource.faq.FaqDataSourceImpl
+import com.msg.network.datasource.government.GovernmentDataSource
+import com.msg.network.datasource.government.GovernmentDataSourceImpl
 import com.msg.network.datasource.lecture.LectureDataSource
 import com.msg.network.datasource.lecture.LectureDataSourceImpl
 import com.msg.network.datasource.map.MapDataSource
@@ -22,6 +26,8 @@ import com.msg.network.datasource.post.PostDataSource
 import com.msg.network.datasource.post.PostDataSourceImpl
 import com.msg.network.datasource.school.SchoolDataSource
 import com.msg.network.datasource.school.SchoolDataSourceImpl
+import com.msg.network.datasource.university.UniversityDataSource
+import com.msg.network.datasource.university.UniversityDataSourceImpl
 import com.msg.network.datasource.user.UserDataSource
 import com.msg.network.datasource.user.UserDataSourceImpl
 import dagger.Binds
@@ -86,6 +92,21 @@ abstract class RemoteDataSourceModule {
     abstract fun bindSchoolDataSource(
         schoolDataSourceImpl: SchoolDataSourceImpl
     ): SchoolDataSource
+
+    @Binds
+    abstract fun bindCompanyDataSource(
+        companyDataSourceImpl: CompanyDataSourceImpl
+    ): CompanyDataSource
+
+    @Binds
+    abstract fun bindUniversityDataSource(
+        universityDataSourceImpl: UniversityDataSourceImpl
+    ): UniversityDataSource
+
+    @Binds
+    abstract fun bindGovernmentDataSource(
+        governmentDataSourceImpl: GovernmentDataSourceImpl
+    ): GovernmentDataSource
 
     @Binds
     abstract fun bindMapDataSource(

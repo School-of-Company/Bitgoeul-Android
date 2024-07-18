@@ -22,14 +22,17 @@ class AuthInterceptor @Inject constructor(
         val request = chain.request()
         val builder = request.newBuilder()
         val currentTime = System.currentTimeMillis().toLocalDateTime()
-        val ignorePath = listOf("/auth", "/faq")
+        val ignorePath = listOf("/auth", "/faq", "/club/name", "/school/name", "/company", "/university", "/government")
         val ignoreMethod = listOf("POST", "GET")
         val path = request.url.encodedPath
         val method = request.method
 
-        ignorePath.forEachIndexed { index, s ->
-            if (path.contains(s) && ignoreMethod[index] == method) {
-                return chain.proceed(request)
+        run breaking@{
+            ignorePath.forEachIndexed { index, s ->
+                if (path.contains(s) && ignoreMethod[index] == method) {
+                    if (ignorePath.subList(4, 6).contains(s) && index == 0) return@breaking
+                    return chain.proceed(request)
+                }
             }
         }
 

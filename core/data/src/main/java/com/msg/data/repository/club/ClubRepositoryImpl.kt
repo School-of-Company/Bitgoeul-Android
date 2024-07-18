@@ -7,6 +7,7 @@ import com.msg.model.entity.club.ClubListEntity
 import com.msg.model.entity.club.StudentBelongClubEntity
 import com.msg.model.enumdata.HighSchool
 import com.msg.model.param.club.PatchClubParam
+import com.msg.model.param.club.PostClubParam
 import com.msg.network.datasource.club.ClubDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -16,12 +17,18 @@ import javax.inject.Inject
 class ClubRepositoryImpl @Inject constructor(
     private val clubDataSource: ClubDataSource,
 ) : ClubRepository {
-    override fun getClubList(highSchool: HighSchool): Flow<List<ClubListEntity>> {
+    override fun getClubList(highSchool: String): Flow<List<ClubListEntity>> {
         return clubDataSource.getClubList(
             highSchool = highSchool
         ).transform { response ->
             response.map { it.toEntity() }
         }
+    }
+
+    override fun getClubListForSignUp(highSchool: String): Flow<List<String>> {
+        return clubDataSource.getClubListForSignUp(
+            highSchool = highSchool
+        )
     }
 
     override fun getClubDetail(id: Long): Flow<ClubDetailEntity> {
@@ -49,6 +56,13 @@ class ClubRepositoryImpl @Inject constructor(
             .transform { response ->
                 response.toEntity()
             }
+    }
+
+    override fun postClub(schoolId: UUID, body: PostClubParam): Flow<Unit> {
+        return clubDataSource.postClub(
+            schoolId = schoolId,
+            body = body.toRequest()
+        )
     }
 
     override fun patchClub(id: Long, body: PatchClubParam): Flow<Unit> {
