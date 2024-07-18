@@ -2,6 +2,7 @@ package com.msg.lecture
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,11 +17,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,7 +46,10 @@ internal fun LectureOpenRoute(
     onSettingClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
+    val focusManager = LocalFocusManager.current
+
     LectureOpenScreen(
+        focusManager = focusManager,
         onActionClicked = {
             viewModel.openLecture(
                 name = viewModel.name.value,
@@ -73,12 +81,13 @@ internal fun LectureOpenRoute(
 
 @Composable
 internal fun LectureOpenScreen(
+    modifier: Modifier = Modifier,
+    focusManager: FocusManager,
     onActionClicked: () -> Unit,
     onBackClicked: () -> Unit,
     onSettingClicked: (name: String, content: String) -> Unit,
     savedName: String,
     savedContent: String,
-    modifier: Modifier = Modifier,
 ) {
     val name = remember { mutableStateOf(savedName) }
     val content = remember { mutableStateOf(savedContent) }
@@ -90,118 +99,127 @@ internal fun LectureOpenScreen(
 
     val scrollState = rememberScrollState()
 
-    BitgoeulAndroidTheme { colors, typography ->
-        Box(
-            modifier = modifier
-                .background(color = colors.WHITE)
-                .padding(horizontal = 28.dp)
-        ) {
-            Column(
+    CompositionLocalProvider(LocalFocusManager provides focusManager) {
+        BitgoeulAndroidTheme { colors, typography ->
+            Box(
                 modifier = modifier
-                    .fillMaxSize()
                     .background(color = colors.WHITE)
+                    .padding(horizontal = 28.dp)
             ) {
-                Spacer(modifier = modifier.height(20.dp))
-
-                GoBackTopBar(
-                    icon = { GoBackIcon() },
-                    text = "돌아가기"
-                ) {
-                    onBackClicked()
-                }
-
-                Spacer(modifier = modifier.height(16.dp))
-
                 Column(
                     modifier = modifier
-                        .verticalScroll(scrollState)
-                        .fillMaxHeight()
-                ) {
-                    BasicTextField(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        value = name.value,
-                        onValueChange = { if (it.length <= maxTitleLength) name.value = it },
-                        textStyle = typography.titleSmall,
-                        decorationBox = { innerTextField ->
-                            if (name.value.isEmpty()) Text(
-                                text = "강의 제목 (100자 이내)",
-                                style = typography.titleSmall,
-                                color = colors.G1
-                            )
-                            innerTextField()
+                        .fillMaxSize()
+                        .background(color = colors.WHITE)
+                        .pointerInput(Unit) {
+                            detectTapGestures {
+                                focusManager.clearFocus()
+                            }
                         }
-                    )
+                ) {
+                    Spacer(modifier = modifier.height(20.dp))
+
+                    GoBackTopBar(
+                        icon = { GoBackIcon() },
+                        text = "돌아가기"
+                    ) {
+                        onBackClicked()
+                    }
 
                     Spacer(modifier = modifier.height(16.dp))
 
+                    Column(
+                        modifier = modifier
+                            .verticalScroll(scrollState)
+                            .fillMaxHeight()
+                    ) {
+                        BasicTextField(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            value = name.value,
+                            onValueChange = { if (it.length <= maxTitleLength) name.value = it },
+                            textStyle = typography.titleSmall,
+                            decorationBox = { innerTextField ->
+                                if (name.value.isEmpty()) Text(
+                                    text = "강의 제목 (100자 이내)",
+                                    style = typography.titleSmall,
+                                    color = colors.G1
+                                )
+                                innerTextField()
+                            }
+                        )
+
+                        Spacer(modifier = modifier.height(16.dp))
+
+                        HorizontalDivider(
+                            modifier = modifier.fillMaxWidth(),
+                            thickness = 1.dp,
+                            color = colors.G9
+                        )
+
+                        Spacer(modifier = modifier.height(16.dp))
+
+                        BasicTextField(
+                            modifier = modifier.fillMaxWidth(),
+                            value = content.value,
+                            onValueChange = {
+                                if (it.length <= maxContentLength) content.value = it
+                            },
+                            textStyle = typography.bodySmall,
+                            decorationBox = { innerTextField ->
+                                if (content.value.isEmpty()) Text(
+                                    text = "본문 입력 (1000자 이내)",
+                                    style = typography.bodySmall,
+                                    color = colors.G1
+                                )
+                                innerTextField()
+                            }
+                        )
+                    }
+                }
+
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                ) {
                     HorizontalDivider(
                         modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
                         color = colors.G9
                     )
 
+                    Spacer(modifier = modifier.height(24.dp))
+
+                    DetailSettingButton(
+                        modifier = modifier
+                            .fillMaxWidth(),
+                        type = "강의"
+                    ) {
+                        onSettingClicked(name.value, content.value)
+                    }
+
+                    Spacer(modifier = modifier.height(8.dp))
+
+                    BitgoeulButton(
+                        text = "강의 개설 신청",
+                        modifier = modifier
+                            .fillMaxWidth(),
+                        state = if (name.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
+                    ) {
+                        isDialogVisible.value = true
+                    }
                     Spacer(modifier = modifier.height(16.dp))
-
-                    BasicTextField(
-                        modifier = modifier.fillMaxWidth(),
-                        value = content.value,
-                        onValueChange = { if (it.length <= maxContentLength) content.value = it },
-                        textStyle = typography.bodySmall,
-                        decorationBox = { innerTextField ->
-                            if (content.value.isEmpty()) Text(
-                                text = "본문 입력 (1000자 이내)",
-                                style = typography.bodySmall,
-                                color = colors.G1
-                            )
-                            innerTextField()
-                        }
-                    )
                 }
-            }
 
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-            ) {
-                HorizontalDivider(
-                    modifier = modifier.fillMaxWidth(),
-                    thickness = 1.dp,
-                    color = colors.G9
+                PositiveActionDialog(
+                    title = "강의 개설하시겠습니까?",
+                    positiveAction = "개설",
+                    content = name.value,
+                    isVisible = isDialogVisible.value,
+                    onQuit = { isDialogVisible.value = false },
+                    onActionClicked = onActionClicked
                 )
-
-                Spacer(modifier = modifier.height(24.dp))
-
-                DetailSettingButton(
-                    modifier = modifier
-                        .fillMaxWidth(),
-                    type = "강의"
-                ) {
-                    onSettingClicked(name.value, content.value)
-                }
-
-                Spacer(modifier = modifier.height(8.dp))
-
-                BitgoeulButton(
-                    text = "강의 개설 신청",
-                    modifier = modifier
-                        .fillMaxWidth(),
-                    state = if (name.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
-                ) {
-                    isDialogVisible.value = true
-                }
-                Spacer(modifier = modifier.height(16.dp))
             }
-
-            PositiveActionDialog(
-                title = "강의 개설하시겠습니까?",
-                positiveAction = "개설",
-                content = name.value,
-                isVisible = isDialogVisible.value,
-                onQuit = { isDialogVisible.value = false },
-                onActionClicked = onActionClicked
-            )
         }
     }
 }
@@ -214,6 +232,7 @@ private fun LectureOpenScreenPre() {
         onBackClicked = {},
         onSettingClicked = { _, _ -> },
         savedName = "코틀린",
-        savedContent = "코틀린은 자바 가상 머신에서 돌아가는 프로그래밍 언어로, 자바와 100% 호환되는 언어입니다."
+        savedContent = "코틀린은 자바 가상 머신에서 돌아가는 프로그래밍 언어로, 자바와 100% 호환되는 언어입니다.",
+        focusManager = LocalFocusManager.current
     )
 }

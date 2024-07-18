@@ -1,7 +1,6 @@
 package com.bitgoeul.email
 
 import com.msg.model.entity.email.GetEmailAuthenticateStatusEntity
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -99,7 +98,6 @@ internal fun EmailSendInformScreen(
 ) {
     BitgoeulAndroidTheme { color, typography ->
         Surface {
-            Log.e("Screen나옴", "test")
             Column(
                 modifier = modifier
                     .background(color = color.WHITE)
