@@ -25,4 +25,5 @@ interface AuthRepository {
     fun withdraw(): Flow<Unit>
     fun saveToken(data: AuthTokenEntity): Flow<Unit>
     fun getAuthority(): Flow<Authority>
+    fun getTokenAccess(): Flow<String>
 }

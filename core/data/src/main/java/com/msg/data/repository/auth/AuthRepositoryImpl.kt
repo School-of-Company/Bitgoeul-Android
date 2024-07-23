@@ -94,4 +94,8 @@ class AuthRepositoryImpl @Inject constructor(
     override fun getAuthority(): Flow<Authority> {
         return localDataSource.getAuthority()
     }
+
+    override fun getTokenAccess(): Flow<String> {
+        return localDataSource.getRefreshToken()
+    }
 }
