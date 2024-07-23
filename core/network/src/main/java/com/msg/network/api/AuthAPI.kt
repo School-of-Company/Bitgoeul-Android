@@ -9,8 +9,10 @@ import com.msg.network.request.auth.SignUpJobClubTeacherRequest
 import com.msg.network.request.auth.SignUpProfessorRequest
 import com.msg.network.request.auth.SignUpStudentRequest
 import com.msg.network.response.auth.AuthTokenResponse
+import com.msg.network.response.auth.TokenAccessResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
@@ -60,4 +62,9 @@ interface AuthAPI {
 
     @DELETE("auth/withdraw")
     suspend fun withdraw()
+
+    @PATCH("auth")
+    suspend fun tokenAccess(
+        @Header("RefreshToken") refreshToken: String
+    ): TokenAccessResponse
 }
