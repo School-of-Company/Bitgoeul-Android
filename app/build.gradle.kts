@@ -21,6 +21,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:model"))
     implementation(project(":core:domain"))
+    implementation(project(":core:network"))
     implementation(project(":core:design-system"))
     implementation(project(":feature:login"))
     implementation(project(":feature:sign-up"))
