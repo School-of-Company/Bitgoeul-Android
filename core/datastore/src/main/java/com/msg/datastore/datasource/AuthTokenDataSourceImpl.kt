@@ -22,6 +22,10 @@ class AuthTokenDataSourceImpl @Inject constructor(
         return updateAuthToken { it.toBuilder().setAccessToken(accessToken).build() }
     }
 
+    override fun deleteAccessToken(): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().clearAccessToken().build() }
+    }
+
     override fun getAccessTokenExp(): Flow<LocalDateTime> = authToken.data
         .transform { data ->
             data.accessExp?.let {
@@ -33,6 +37,10 @@ class AuthTokenDataSourceImpl @Inject constructor(
         return updateAuthToken { it.toBuilder().setAccessExp(accessTokenExp).build() }
     }
 
+    override fun deleteAccessTokenExp(): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().clearAccessExp().build() }
+    }
+
     override fun getRefreshToken(): Flow<String> = authToken.data
         .transform { data ->
             emit(data.refreshToken ?: "")
@@ -40,6 +48,10 @@ class AuthTokenDataSourceImpl @Inject constructor(
 
     override fun setRefreshToken(refreshToken: String): Flow<Unit> {
         return updateAuthToken { it.toBuilder().setRefreshToken(refreshToken).build() }
+    }
+
+    override fun deleteRefreshToken(): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().clearRefreshToken().build() }
     }
 
     override fun getRefreshTokenExp(): Flow<LocalDateTime> = authToken.data
@@ -53,6 +65,10 @@ class AuthTokenDataSourceImpl @Inject constructor(
         return updateAuthToken { it.toBuilder().setRefreshExp(refreshTokenExp).build() }
     }
 
+    override fun deleteRefreshTokenExp(): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().clearRefreshExp().build() }
+    }
+
     override fun getAuthority(): Flow<Authority> = authToken.data
         .transform { data ->
             data.authority?.let { authority ->
@@ -64,6 +80,10 @@ class AuthTokenDataSourceImpl @Inject constructor(
 
     override fun setAuthority(authority: Authority): Flow<Unit> {
         return updateAuthToken { it.toBuilder().setAuthority(authority.name).build() }
+    }
+
+    override fun deleteAuthority(): Flow<Unit> {
+        return updateAuthToken { it.toBuilder().clearAuthority().build() }
     }
 
     private fun updateAuthToken(update: (AuthToken) -> AuthToken): Flow<Unit> = flow {
