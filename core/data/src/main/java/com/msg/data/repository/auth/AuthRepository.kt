@@ -1,6 +1,7 @@
 package com.msg.data.repository.auth
 
 import com.msg.model.entity.auth.AuthTokenEntity
+import com.msg.model.entity.auth.TokenAccessEntity
 import com.msg.model.enumdata.Authority
 import com.msg.model.param.auth.FindPasswordParam
 import com.msg.model.param.auth.LoginParam
@@ -26,4 +27,5 @@ interface AuthRepository {
     fun saveToken(data: AuthTokenEntity): Flow<Unit>
     fun getAuthority(): Flow<Authority>
     fun getTokenAccess(): Flow<String>
+    fun tokenAccess(refreshToken: String): Flow<TokenAccessEntity>
 }
