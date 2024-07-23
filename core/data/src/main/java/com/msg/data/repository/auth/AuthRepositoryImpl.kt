@@ -4,6 +4,7 @@ import com.msg.data.mapper.auth.toEntity
 import com.msg.data.mapper.auth.toRequest
 import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.model.entity.auth.AuthTokenEntity
+import com.msg.model.entity.auth.TokenAccessEntity
 import com.msg.model.enumdata.Authority
 import com.msg.model.param.auth.FindPasswordParam
 import com.msg.model.param.auth.LoginParam
@@ -97,5 +98,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun getTokenAccess(): Flow<String> {
         return localDataSource.getRefreshToken()
+    }
+
+    override fun tokenAccess(refreshToken: String): Flow<TokenAccessEntity> {
+        return remoteDataSource.tokenAccess(refreshToken = refreshToken).transform { response ->
+            emit(response.toEntity())
+        }
     }
 }
