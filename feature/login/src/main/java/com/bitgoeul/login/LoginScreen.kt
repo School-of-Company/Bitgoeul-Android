@@ -15,6 +15,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -29,6 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.bitgoeul.login.navigation.loginRoute
 import com.bitgoeul.login.viewmodel.AuthViewModel
 import com.msg.common.event.Event
 import com.msg.design_system.R
@@ -41,6 +46,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
 import com.msg.design_system.util.checkEmailRegex
 import com.msg.design_system.util.checkPasswordRegex
+import com.msg.main.navigation.mainPageRoute
 import com.msg.ui.makeToast
 import kotlinx.coroutines.launch
 
@@ -54,6 +60,19 @@ internal fun LoginRoute(
     val focusManager = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val navigateRoute by viewModel.navigateRoute.collectAsStateWithLifecycle()
+
+
+    LaunchedEffect(Unit) {
+        viewModel.validateTokenNavigate()
+    }
+
+    LaunchedEffect(navigateRoute) {
+        when (navigateRoute) {
+            loginRoute -> {}
+            mainPageRoute -> { onLoginClicked() }
+        }
+    }
 
     LoginScreen(
         focusManager = focusManager,
@@ -67,6 +86,7 @@ internal fun LoginRoute(
                     onSuccess = {
                         makeToast(context, "로그인에 성공하였습니다.")
                         onLoginClicked()
+                        viewModel.validateTokenNavigate()
                     },
                     onFailure = {
                         makeToast(context, "로그인에 실패하였습니다. 다시 시도해주세요")
