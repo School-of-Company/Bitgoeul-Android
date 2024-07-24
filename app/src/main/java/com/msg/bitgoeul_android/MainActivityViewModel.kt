@@ -12,6 +12,8 @@ import com.msg.main.navigation.mainPageRoute
 import com.msg.model.entity.auth.TokenAccessEntity
 import com.msg.network.util.isDateExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,8 +26,8 @@ class MainActivityViewModel @Inject constructor(
     private var refreshToken: String = authTokenDataSource.getRefreshToken().toString()
     private var refreshTokenTime: String = authTokenDataSource.getRefreshTokenExp().toString()
 
-    private val _navigateRoute = MutableLiveData<String>()
-    val navigateRoute: LiveData<String> = _navigateRoute
+    private val _navigateRoute = MutableStateFlow(loginRoute)
+    val navigateRoute: StateFlow<String> get() = _navigateRoute
 
     init {
         validateToken()
