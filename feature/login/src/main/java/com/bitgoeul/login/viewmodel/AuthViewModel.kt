@@ -1,15 +1,23 @@
 package com.bitgoeul.login.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bitgoeul.login.navigation.loginRoute
 import com.msg.common.errorhandling.errorHandling
 import com.msg.common.event.Event
+import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.domain.usecase.auth.LoginUseCase
 import com.msg.domain.usecase.auth.SaveTokenUseCase
+import com.msg.domain.usecase.auth.TokenAccessUseCase
+import com.msg.main.navigation.mainPageRoute
 import com.msg.model.entity.auth.AuthTokenEntity
+import com.msg.model.entity.auth.TokenAccessEntity
 import com.msg.model.param.auth.LoginParam
+import com.msg.network.util.isDateExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -19,12 +27,29 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
+    private val tokenAccessUseCase: TokenAccessUseCase,
+    private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
+    private var refreshToken: String = authTokenDataSource.getRefreshToken().toString()
+    private var refreshTokenTime: String = authTokenDataSource.getRefreshTokenExp().toString()
+
     private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
     val saveTokenRequest = _saveTokenResponse.asStateFlow()
 
     private val _loginResponse = MutableStateFlow<Event<AuthTokenEntity>>(Event.Loading)
     val loginResponse = _loginResponse.asStateFlow()
+
+    private val _navigateRoute = MutableStateFlow(loginRoute)
+    val navigateRoute: StateFlow<String> get() = _navigateRoute
+
+    fun validateTokenNavigate() = viewModelScope.launch {
+        if (tokenValid()) {
+            refreshToken()
+        } else {
+            clearTokenData()
+            _navigateRoute.value = loginRoute
+        }
+    }
 
     internal fun login(
         email: String,
@@ -58,4 +83,45 @@ class AuthViewModel @Inject constructor(
             _saveTokenResponse.value = it.errorHandling()
         }
     }
+
+    private fun clearTokenData() {
+        with(authTokenDataSource) {
+            deleteRefreshTokenExp()
+            deleteAccessTokenExp()
+            deleteAuthority()
+        }
+        refreshToken = ""
+        refreshTokenTime = ""
+    }
+
+    private fun tokenValid() : Boolean {
+        return refreshToken.isNotEmpty() && !refreshTokenTime.isDateExpired()
+    }
+
+    private fun refreshToken() = viewModelScope.launch {
+        tokenAccessUseCase("Bearer $refreshToken")
+            .onSuccess { result ->
+                result.catch {
+                    Log.e("Login Failure", it.message.toString())
+                }.collect { newToken ->
+                    updateTokenData(newToken)
+                    _navigateRoute.value = mainPageRoute
+                }
+            }.onFailure {
+                Log.e("Login onFailure", it.message.toString())
+                _navigateRoute.value = loginRoute
+            }
+    }
+
+    private fun updateTokenData(newToken: TokenAccessEntity) {
+        with(authTokenDataSource) {
+            setAccessToken(newToken.accessToken)
+            setAccessTokenExp(newToken.accessExpiredAt)
+            setRefreshToken(newToken.refreshToken)
+            setRefreshTokenExp(newToken.refreshExpiredAt)
+        }
+        refreshToken = newToken.refreshToken
+        refreshTokenTime = newToken.refreshExpiredAt
+    }
+
 }
