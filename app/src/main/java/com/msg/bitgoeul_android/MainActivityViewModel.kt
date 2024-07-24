@@ -8,6 +8,7 @@ import com.msg.data.repository.auth.AuthRepository
 import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.domain.usecase.auth.TokenAccessUseCase
 import com.msg.main.navigation.mainPageRoute
+import com.msg.model.entity.auth.TokenAccessEntity
 import com.msg.network.util.isDateExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -27,46 +28,56 @@ class MainActivityViewModel @Inject constructor(
         get() = _navigateRoute
 
     init {
-        checkExp()
+        validateToken()
     }
 
-    private fun checkExp() {
-        if (refreshTokenTime.isDateExpired()) {
-            with(authTokenDataSource) {
-                deleteRefreshTokenExp()
-                deleteAccessTokenExp()
-                deleteAuthority()
-            }
-            refreshToken = ""
-            refreshTokenTime = ""
-        }
-
-        if (refreshToken.isEmpty() || refreshToken == "") {
-            _navigateRoute = loginRoute
-        } else {
+    private fun validateToken() {
+        if (tokenValid()) {
             _navigateRoute = mainPageRoute
-            login()
+            refreshToken()
+        } else {
+            clearTokenData()
+            _navigateRoute = loginRoute
         }
     }
 
-    private fun login() = viewModelScope.launch {
+    private fun clearTokenData() {
+        with(authTokenDataSource) {
+            deleteRefreshTokenExp()
+            deleteAccessTokenExp()
+            deleteAuthority()
+        }
+        refreshToken = ""
+        refreshTokenTime = ""
+    }
+
+    private fun tokenValid() : Boolean {
+        return refreshToken.isNotEmpty() && !refreshTokenTime.isDateExpired()
+    }
+
+
+    private fun refreshToken() = viewModelScope.launch {
         tokenAccessUseCase("Bearer $refreshToken")
             .onSuccess { result ->
                 result.catch {
                     Log.e("Login Failure", it.message.toString())
                 }.collect { newToken ->
-                    with(authTokenDataSource) {
-                        setAccessToken(newToken.accessToken)
-                        setAccessTokenExp(newToken.accessExpiredAt)
-                        setRefreshToken(newToken.refreshToken)
-                        setRefreshTokenExp(newToken.refreshExpiredAt)
-                    }
-                    refreshToken = newToken.refreshToken
-                    refreshTokenTime = newToken.refreshExpiredAt
+                    updateTokenData(newToken)
                     _navigateRoute = mainPageRoute
                 }
             }.onFailure {
                 Log.e("Login onFailure", it.message.toString())
             }
+    }
+
+    private fun updateTokenData(newToken: TokenAccessEntity) {
+        with(authTokenDataSource) {
+            setAccessToken(newToken.accessToken)
+            setAccessTokenExp(newToken.accessExpiredAt)
+            setRefreshToken(newToken.refreshToken)
+            setRefreshTokenExp(newToken.refreshExpiredAt)
+        }
+        refreshToken = newToken.refreshToken
+        refreshTokenTime = newToken.refreshExpiredAt
     }
 }
