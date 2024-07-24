@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val remoteDataSource: AuthDataSource,
-    private val localDataSource: AuthTokenDataSource
+    private val localDataSource: AuthTokenDataSource,
 ) : AuthRepository {
     override fun login(body: LoginParam): Flow<AuthTokenEntity> {
         return remoteDataSource.login(
