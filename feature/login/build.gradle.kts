@@ -6,3 +6,9 @@ plugins {
 android {
     namespace = "com.msg.login"
 }
+
+dependencies {
+    implementation(project(":core:datastore"))
+    implementation(project(":core:network"))
+    implementation(project(":feature:main"))
+}
