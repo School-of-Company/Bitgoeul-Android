@@ -1,10 +1,11 @@
 package com.msg.bitgoeul_android
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitgoeul.login.navigation.loginRoute
-import com.msg.data.repository.auth.AuthRepository
 import com.msg.datastore.datasource.AuthTokenDataSource
 import com.msg.domain.usecase.auth.TokenAccessUseCase
 import com.msg.main.navigation.mainPageRoute
@@ -23,9 +24,8 @@ class MainActivityViewModel @Inject constructor(
     private var refreshToken: String = authTokenDataSource.getRefreshToken().toString()
     private var refreshTokenTime: String = authTokenDataSource.getRefreshTokenExp().toString()
 
-    private var _navigateRoute: String = loginRoute
-    val navigateRoute: String
-        get() = _navigateRoute
+    private val _navigateRoute = MutableLiveData<String>()
+    val navigateRoute: LiveData<String> = _navigateRoute
 
     init {
         validateToken()
@@ -33,11 +33,11 @@ class MainActivityViewModel @Inject constructor(
 
     private fun validateToken() {
         if (tokenValid()) {
-            _navigateRoute = mainPageRoute
+            _navigateRoute.value = mainPageRoute
             refreshToken()
         } else {
             clearTokenData()
-            _navigateRoute = loginRoute
+            _navigateRoute.value = loginRoute
         }
     }
 
@@ -63,7 +63,7 @@ class MainActivityViewModel @Inject constructor(
                     Log.e("Login Failure", it.message.toString())
                 }.collect { newToken ->
                     updateTokenData(newToken)
-                    _navigateRoute = mainPageRoute
+                    _navigateRoute.value = mainPageRoute
                 }
             }.onFailure {
                 Log.e("Login onFailure", it.message.toString())
