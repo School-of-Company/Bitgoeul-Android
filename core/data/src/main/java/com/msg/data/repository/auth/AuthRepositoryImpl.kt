@@ -100,8 +100,8 @@ class AuthRepositoryImpl @Inject constructor(
         return localDataSource.getRefreshToken()
     }
 
-    override fun tokenAccess(): Flow<TokenAccessEntity> {
-        return remoteDataSource.tokenAccess().transform { response ->
+    override fun tokenAccess(refreshToken: String): Flow<TokenAccessEntity> {
+        return remoteDataSource.tokenAccess(refreshToken = refreshToken).transform { response ->
             emit(response.toEntity())
         }
     }
