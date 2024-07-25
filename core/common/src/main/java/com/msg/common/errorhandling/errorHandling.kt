@@ -72,5 +72,5 @@ suspend fun <T> Throwable.errorHandling(
     }
 
 private fun errorLog(tag: String, msg: String?) {
-    Log.d("ErrorHandling-$tag", msg ?: "알 수 없는 오류")
+    Log.e("ErrorHandling-$tag", msg ?: "알 수 없는 오류")
 }
