@@ -1,6 +1,7 @@
 package com.bitgoeul.login
 
 import android.content.pm.ActivityInfo
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.bitgoeul.login.navigation.loginRoute
 import com.bitgoeul.login.viewmodel.AuthViewModel
 import com.msg.common.event.Event
@@ -62,7 +62,6 @@ internal fun LoginRoute(
     val context = LocalContext.current
     val navigateRoute by viewModel.navigateRoute.collectAsStateWithLifecycle()
 
-
     LaunchedEffect(Unit) {
         viewModel.validateTokenNavigate()
     }
@@ -86,7 +85,6 @@ internal fun LoginRoute(
                     onSuccess = {
                         makeToast(context, "로그인에 성공하였습니다.")
                         onLoginClicked()
-                        viewModel.validateTokenNavigate()
                     },
                     onFailure = {
                         makeToast(context, "로그인에 실패하였습니다. 다시 시도해주세요")
