@@ -45,7 +45,7 @@ class LectureRepositoryImpl @Inject constructor(
         return lectureDataSource.getDetailLecture(
             id = id
         ).transform { response ->
-            response.toEntity()
+            emit(response.toEntity())
         }
     }
 
