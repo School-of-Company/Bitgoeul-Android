@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,6 +42,18 @@ class AuthViewModel @Inject constructor(
 
     internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
 
+    fun validateTokenNavigate() = viewModelScope.launch {
+        Log.d("AuthViewModel", "Validating token")
+        Log.d("AuthViewModel", "RefreshTime : $refreshTokenTime")
+        Log.d("AuthViewModel", "RefreshToken : $refreshToken")
+        if (tokenValid()) {
+            Log.d("AuthViewModel", "Token is valid, refreshing token")
+            _navigateRoute.value = mainPageRoute
+        } else {
+            Log.d("AuthViewModel", "Token is invalid, clearing token data")
+            refreshToken()
+        }
+    }
     internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 
     internal fun login(
@@ -78,5 +91,38 @@ class AuthViewModel @Inject constructor(
 
     internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
 
-    internal fun onPasswordChange(value: String) { savedStateHandle[PASSWORD] = value }
+    private fun tokenValid() : Boolean {
+        return refreshToken.isNotEmpty() && refreshTokenTime.isNotEmpty() && !refreshTokenTime.isDateExpired()
+    }
+
+    private fun refreshToken() = viewModelScope.launch {
+        Log.d("AuthViewModel", "Attempting to refresh token")
+        tokenAccessUseCase("Bearer $refreshToken")
+            .onSuccess { result ->
+                result.catch {
+                    Log.e("Login Failure", it.message.toString())
+                }.collect { newToken ->
+                    Log.d("AuthViewModel", "Token refreshed successfully")
+                    updateTokenData(newToken)
+                    _navigateRoute.value = mainPageRoute
+                }
+            }.onFailure {
+                Log.e("Login onFailure", it.message.toString())
+                clearTokenData()
+                _navigateRoute.value = loginRoute
+            }
+    }
+
+    private fun updateTokenData(newToken: TokenAccessEntity) {
+        viewModelScope.launch {
+            with(authTokenDataSource) {
+                setAccessToken(newToken.accessToken)
+                setAccessTokenExp(newToken.accessExpiredAt)
+                setRefreshToken(newToken.refreshToken)
+                setRefreshTokenExp(newToken.refreshExpiredAt)
+            }
+            refreshToken = newToken.refreshToken
+            refreshTokenTime = newToken.refreshExpiredAt
+        }
+    }
 }
