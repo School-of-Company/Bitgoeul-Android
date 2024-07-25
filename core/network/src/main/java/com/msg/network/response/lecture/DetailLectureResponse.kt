@@ -4,7 +4,6 @@ import com.msg.model.enumdata.LectureStatus
 import com.msg.model.model.lecture.LectureDates
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @JsonClass(generateAdapter = true)
@@ -15,7 +14,7 @@ data class DetailLectureResponse(
     @Json(name = "division") val division: String,
     @Json(name = "department") val department: String,
     @Json(name = "line") val line: String,
-    @Json(name = "createAt") val createAt: LocalDate,
+    @Json(name = "createAt") val createAt: LocalDateTime,
     @Json(name = "startDate") val startDate: LocalDateTime,
     @Json(name = "endDate") val endDate: LocalDateTime,
     @Json(name = "lectureDates") val lectureDates: List<LectureDates>,
