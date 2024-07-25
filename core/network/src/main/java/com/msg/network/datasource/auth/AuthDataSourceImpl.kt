@@ -40,6 +40,6 @@ class AuthDataSourceImpl @Inject constructor(
     override fun withdraw(): Flow<Unit> =
         makeRequest { authAPI.withdraw() }
 
-    override fun tokenAccess(refreshToken: String): Flow<TokenAccessResponse> =
-        makeRequest { authAPI.tokenAccess(refreshToken = refreshToken) }
+    override fun tokenAccess(): Flow<TokenAccessResponse> =
+        makeRequest { authAPI.tokenAccess() }
 }

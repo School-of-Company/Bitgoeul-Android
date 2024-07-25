@@ -6,7 +6,7 @@ import javax.inject.Inject
 class TokenAccessUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(refreshToken: String) = runCatching {
-        authRepository.tokenAccess(refreshToken = refreshToken)
+    suspend operator fun invoke() = runCatching {
+        authRepository.tokenAccess()
     }
 }

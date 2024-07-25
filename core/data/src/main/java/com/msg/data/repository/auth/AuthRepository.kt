@@ -27,5 +27,5 @@ interface AuthRepository {
     fun saveToken(data: AuthTokenEntity): Flow<Unit>
     fun getAuthority(): Flow<Authority>
     fun getTokenAccess(): Flow<String>
-    fun tokenAccess(refreshToken: String): Flow<TokenAccessEntity>
+    fun tokenAccess(): Flow<TokenAccessEntity>
 }
