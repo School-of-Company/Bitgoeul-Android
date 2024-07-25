@@ -72,7 +72,6 @@ class AuthInterceptor @Inject constructor(
             if (method == "DELETE") {
                 builder.addHeader("RefreshToken", "Bearer $refreshToken")
             }
-            builder.addHeader("Authorization", "Bearer $accessToken")
         }
         return chain.proceed(builder.build())
     }
