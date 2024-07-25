@@ -15,5 +15,5 @@ interface AuthDataSource {
     fun findPassword(body: FindPasswordRequest): Flow<Unit>
     fun logout(): Flow<Unit>
     fun withdraw(): Flow<Unit>
-    fun tokenAccess(): Flow<TokenAccessResponse>
+    fun tokenAccess(refreshToken: String): Flow<TokenAccessResponse>
 }

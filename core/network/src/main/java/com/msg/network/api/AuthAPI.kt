@@ -64,5 +64,7 @@ interface AuthAPI {
     suspend fun withdraw()
 
     @PATCH("auth")
-    suspend fun tokenAccess(): TokenAccessResponse
+    suspend fun tokenAccess(
+        @Header("RefreshToken") refreshToken: String
+    ): TokenAccessResponse
 }
