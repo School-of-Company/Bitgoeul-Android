@@ -116,7 +116,7 @@ class AuthViewModel @Inject constructor(
     internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
 
     private fun tokenValid() : Boolean {
-        return _refreshToken.value.isNotEmpty() && _refreshTokenTime.value.isNotEmpty() && _refreshTokenTime.value.isDateExpired()
+        return _refreshToken.value.isNotEmpty() && _refreshTokenTime.value.isNotEmpty() && !_refreshTokenTime.value.isDateExpired()
     }
 
     private fun refreshToken() = viewModelScope.launch {
