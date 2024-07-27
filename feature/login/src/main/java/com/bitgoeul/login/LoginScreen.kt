@@ -64,8 +64,10 @@ internal fun LoginRoute(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val navigateRoute by viewModel.navigateRoute.collectAsStateWithLifecycle()
+    val refreshToken by viewModel.refreshToken.collectAsStateWithLifecycle()
+    val refreshTokenTime by viewModel.refreshTokenTime.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(refreshToken, refreshTokenTime) {
         viewModel.validateTokenNavigate()
     }
 

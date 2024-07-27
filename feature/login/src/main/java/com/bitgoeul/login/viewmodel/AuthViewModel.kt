@@ -30,6 +30,8 @@ class AuthViewModel @Inject constructor(
     private val saveTokenUseCase: SaveTokenUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private var _refreshToken = MutableStateFlow("")
+    var refreshToken: StateFlow<String> = _refreshToken.asStateFlow()
     companion object {
         private const val EMAIL = "email"
         private const val PASSWORD = "password"
@@ -37,10 +39,13 @@ class AuthViewModel @Inject constructor(
     private var refreshToken: String = ""
     private var refreshTokenTime: String = ""
 
+    private var _refreshTokenTime = MutableStateFlow("")
+    var refreshTokenTime: StateFlow<String> = _refreshTokenTime.asStateFlow()
+
     init {
         viewModelScope.launch {
-            authTokenDataSource.getRefreshToken().collect { refreshToken = it }
-            authTokenDataSource.getRefreshTokenExp().collect { refreshTokenTime = it.toString() }
+            authTokenDataSource.getRefreshToken().collect { _refreshToken.value = it }
+            authTokenDataSource.getRefreshTokenExp().collect { _refreshTokenTime.value = it.toString() }
         }
     }
 
@@ -99,15 +104,24 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    private fun clearTokenData() {
+        with(authTokenDataSource) {
+            deleteRefreshTokenExp()
+            deleteAccessTokenExp()
+            deleteAuthority()
+        }
+        _refreshToken.value = ""
+        _refreshTokenTime.value = ""
+    }
     internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
 
     private fun tokenValid() : Boolean {
-        return refreshToken.isNotEmpty() && refreshTokenTime.isNotEmpty() && !refreshTokenTime.isDateExpired()
+        return _refreshToken.value.isNotEmpty() && _refreshTokenTime.value.isNotEmpty() && _refreshTokenTime.value.isDateExpired()
     }
 
     private fun refreshToken() = viewModelScope.launch {
         Log.d("AuthViewModel", "Attempting to refresh token")
-        tokenAccessUseCase("Bearer $refreshToken")
+        tokenAccessUseCase("Bearer ${_refreshToken.value}")
             .onSuccess { result ->
                 result.catch {
                     Log.e("Login Failure", it.message.toString())
@@ -131,8 +145,8 @@ class AuthViewModel @Inject constructor(
                 setRefreshToken(newToken.refreshToken)
                 setRefreshTokenExp(newToken.refreshExpiredAt)
             }
-            refreshToken = newToken.refreshToken
-            refreshTokenTime = newToken.refreshExpiredAt
+            _refreshToken.value = newToken.refreshToken
+            _refreshTokenTime.value = newToken.refreshExpiredAt
         }
     }
 }
