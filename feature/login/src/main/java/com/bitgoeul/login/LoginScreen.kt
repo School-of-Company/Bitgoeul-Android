@@ -64,7 +64,7 @@ internal fun LoginRoute(
     val refreshToken by viewModel.refreshToken.collectAsStateWithLifecycle()
     val refreshTokenTime by viewModel.refreshTokenTime.collectAsStateWithLifecycle()
 
-    LaunchedEffect(refreshToken, refreshTokenTime) {
+    LaunchedEffect(Unit, refreshToken, refreshTokenTime) {
         viewModel.validateTokenNavigate()
     }
 
