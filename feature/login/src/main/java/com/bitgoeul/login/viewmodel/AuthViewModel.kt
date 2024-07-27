@@ -31,8 +31,15 @@ class AuthViewModel @Inject constructor(
     private val tokenAccessUseCase: TokenAccessUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
-    private var refreshToken: String = authTokenDataSource.getRefreshToken().toString()
-    private var refreshTokenTime: String = authTokenDataSource.getRefreshTokenExp().toString()
+    private var refreshToken: String = ""
+    private var refreshTokenTime: String = ""
+
+    init {
+        viewModelScope.launch {
+            authTokenDataSource.getRefreshToken().collect { refreshToken = it }
+            authTokenDataSource.getRefreshTokenExp().collect { refreshTokenTime = it.toString() }
+        }
+    }
 
     private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
     val saveTokenRequest = _saveTokenResponse.asStateFlow()
