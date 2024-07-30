@@ -221,7 +221,7 @@ class LectureViewModel @Inject constructor(
             division = "",
             department = "",
             line = "",
-            createAt = LocalDate.now(),
+            createAt = LocalDateTime.now(),
             startDate = LocalDateTime.now(),
             endDate = LocalDateTime.now(),
             lectureDates = listOf(
