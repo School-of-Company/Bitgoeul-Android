@@ -7,4 +7,5 @@
 /captures
 .externalNativeBuild
 .cxx
+core/design-system/src/main/res/values/bitgoeul_app_key.xml
 local.properties
