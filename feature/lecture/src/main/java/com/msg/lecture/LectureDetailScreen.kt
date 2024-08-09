@@ -54,22 +54,22 @@ internal fun LectureDetailRoute(
     onLectureTakingStudentListScreenClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
-    val id = viewModel.selectedLectureId.value
     val role = viewModel.role
+    val lectureDetailData = viewModel.lectureDetailData
 
-    LaunchedEffect(true) {
-        viewModel.getDetailLecture(id = id)
+
+    LaunchedEffect(Unit) {
         getLectureDetailData(
             viewModel = viewModel,
             onSuccess = { lectureDetailData ->
-                viewModel.lectureDetailData.value = lectureDetailData
+                viewModel.setLectureDetailData(lectureDetailData)
             }
         )
     }
 
     LectureDetailScreen(
         role = role,
-        data = viewModel.lectureDetailData.value,
+        data = lectureDetailData.value,
         onBackClicked = onBackClicked,
         onLectureTakingStudentListScreenClicked = onLectureTakingStudentListScreenClicked,
         onApplicationCancelClicked = {
