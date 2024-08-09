@@ -337,9 +337,11 @@ internal fun LectureDetailScreen(
             }
 
             when (data.lectureStatus) {
-                LectureStatus.OPENED  -> {
+                LectureStatus.OPENED -> {
                     Column(
-                        modifier = modifier.fillMaxSize(),
+                        modifier = modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 24.dp),
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         Box(
