@@ -149,7 +149,7 @@ internal fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(24.dp))
 
                 Text(
-                    text = "# " + data.lectureType,
+                    text = "# ${data.lectureType}",
                     color = colors.P3,
                     style = typography.labelMedium,
                 )
@@ -160,7 +160,7 @@ internal fun LectureDetailScreen(
                     modifier = modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = data.division,
+                        text = "${data.division}",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -176,7 +176,7 @@ internal fun LectureDetailScreen(
                     Spacer(modifier = modifier.width(8.dp))
 
                     Text(
-                        text = data.line,
+                        text = "${data.line}",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -193,7 +193,7 @@ internal fun LectureDetailScreen(
 
 
                     Text(
-                        text = data.department + " 학과",
+                        text = "${data.department} 학과",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -203,7 +203,7 @@ internal fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(4.dp))
 
                 Text(
-                    text = data.name,
+                    text = "${data.name}",
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                 )
@@ -216,7 +216,7 @@ internal fun LectureDetailScreen(
                 ) {
 
                     Text(
-                        text = data.semester,
+                        text = "${data.semester}",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
