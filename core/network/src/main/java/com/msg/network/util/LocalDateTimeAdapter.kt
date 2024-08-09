@@ -13,7 +13,6 @@ class LocalDateTimeAdapter {
     @FromJson
     fun fromJson(json: String): LocalDateTime {
         return try {
-            Log.e("fromJson parsing block", "실행")
             LocalDateTime.parse(json, formatter)
         } catch (e: DateTimeParseException) {
             LocalDateTime.parse(json, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
