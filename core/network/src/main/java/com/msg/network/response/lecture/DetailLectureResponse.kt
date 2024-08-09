@@ -1,10 +1,11 @@
 package com.msg.network.response.lecture
 
 import com.msg.model.enumdata.LectureStatus
-import com.msg.model.model.lecture.LectureDates
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @JsonClass(generateAdapter = true)
 data class DetailLectureResponse(
@@ -30,4 +31,11 @@ data class DetailLectureResponse(
     @Json(name = "address") val address: String,
     @Json(name = "locationDetails") val locationDetails: String,
     @Json(name = "essentialComplete") val essentialComplete: Boolean,
-)
+) {
+    @JsonClass(generateAdapter = true)
+    data class LectureDates(
+        @Json(name = "completeDate") val completeDate: LocalDate,
+        @Json(name = "startTime") val startTime: LocalTime,
+        @Json(name = "endTime") val endTime: LocalTime
+    )
+}
