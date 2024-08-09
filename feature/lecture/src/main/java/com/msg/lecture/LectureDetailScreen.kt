@@ -38,6 +38,7 @@ import com.msg.design_system.component.icon.KebabIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureExcelDownloadBottomSheet
+import com.msg.lecture.component.LectureKakaoMap
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.entity.lecture.DetailLectureEntity
 import com.msg.model.enumdata.LectureStatus
@@ -115,6 +116,17 @@ internal fun LectureDetailScreen(
     val isPositiveActionDialogVisible = remember { mutableStateOf(false) }
     val isNegativeDialogVisible = remember { mutableStateOf(false) }
     val isApplicationState = remember { mutableStateOf(false) }
+    val locationX = remember { mutableStateOf(data.locationX) }
+    val locationY = remember { mutableStateOf(data.locationY) }
+    val isLocationLoaded = remember { mutableStateOf(false) }
+
+    LaunchedEffect(data) {
+        if (data.locationX.isNotEmpty() && data.locationY.isNotEmpty()) {
+            locationX.value = data.locationX
+            locationY.value = data.locationY
+            isLocationLoaded.value = true
+        }
+    }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box(
@@ -284,6 +296,40 @@ internal fun LectureDetailScreen(
                     color = colors.G2,
                     style = typography.bodySmall
                 )
+
+                Spacer(modifier = modifier.height(24.dp))
+
+                Text(
+                    text = "강의 장소",
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                )
+
+                Spacer(modifier = modifier.height(16.dp))
+
+                Text(
+                    text = "${data.address}",
+                    color = colors.G2,
+                    style = typography.bodySmall
+                )
+
+                Spacer(modifier = modifier.height(4.dp))
+
+                Text(
+                    text = "${data.locationDetails}",
+                    color = colors.G2,
+                    style = typography.bodySmall
+                )
+
+                Spacer(modifier = modifier.height(4.dp))
+
+                if (isLocationLoaded.value) {
+                    LectureKakaoMap(
+                        modifier = modifier.fillMaxWidth(),
+                        locationX = locationX.value.toDouble(),
+                        locationY = locationY.value.toDouble()
+                    )
+                }
 
                 Spacer(modifier = modifier.height(24.dp))
 
