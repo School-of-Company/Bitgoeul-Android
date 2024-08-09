@@ -66,9 +66,9 @@ internal fun LectureListRoute(
         data = viewModel.lectureList.value,
         onOpenClicked = onOpenClicked,
         onItemClicked = { id ->
-            onItemClicked()
             viewModel.selectedLectureId.value = id
             viewModel.getDetailLecture(id)
+            onItemClicked()
         },
         onFilterChanged = { type ->
             viewModel.lectureList.value = LectureListEntity(

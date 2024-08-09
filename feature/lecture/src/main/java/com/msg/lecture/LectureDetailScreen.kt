@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +39,7 @@ import com.msg.design_system.component.icon.KebabIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.lecture.component.LectureExcelDownloadBottomSheet
+import com.msg.lecture.component.LectureKakaoMap
 import com.msg.lecture.viewmodel.LectureViewModel
 import com.msg.model.entity.lecture.DetailLectureEntity
 import com.msg.model.enumdata.LectureStatus
@@ -47,6 +49,7 @@ import com.msg.ui.util.toLocalTimeFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import com.msg.design_system.R
 
 @Composable
 internal fun LectureDetailRoute(
@@ -54,22 +57,22 @@ internal fun LectureDetailRoute(
     onLectureTakingStudentListScreenClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
-    val id = viewModel.selectedLectureId.value
     val role = viewModel.role
+    val lectureDetailData = viewModel.lectureDetailData
 
-    LaunchedEffect(true) {
-        viewModel.getDetailLecture(id = id)
+
+    LaunchedEffect(Unit) {
         getLectureDetailData(
             viewModel = viewModel,
             onSuccess = { lectureDetailData ->
-                viewModel.lectureDetailData.value = lectureDetailData
+                viewModel.setLectureDetailData(lectureDetailData)
             }
         )
     }
 
     LectureDetailScreen(
         role = role,
-        data = viewModel.lectureDetailData.value,
+        data = lectureDetailData.value,
         onBackClicked = onBackClicked,
         onLectureTakingStudentListScreenClicked = onLectureTakingStudentListScreenClicked,
         onApplicationCancelClicked = {
@@ -115,6 +118,17 @@ internal fun LectureDetailScreen(
     val isPositiveActionDialogVisible = remember { mutableStateOf(false) }
     val isNegativeDialogVisible = remember { mutableStateOf(false) }
     val isApplicationState = remember { mutableStateOf(false) }
+    val locationX = remember { mutableStateOf(data.locationX) }
+    val locationY = remember { mutableStateOf(data.locationY) }
+    val isLocationLoaded = remember { mutableStateOf(false) }
+
+    LaunchedEffect(data) {
+        if (data.locationX.isNotEmpty() && data.locationY.isNotEmpty()) {
+            locationX.value = data.locationX
+            locationY.value = data.locationY
+            isLocationLoaded.value = true
+        }
+    }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box(
@@ -149,7 +163,7 @@ internal fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(24.dp))
 
                 Text(
-                    text = "# " + data.lectureType,
+                    text = "# ${data.lectureType}",
                     color = colors.P3,
                     style = typography.labelMedium,
                 )
@@ -160,7 +174,7 @@ internal fun LectureDetailScreen(
                     modifier = modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = data.division,
+                        text = "${data.division}",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -176,7 +190,7 @@ internal fun LectureDetailScreen(
                     Spacer(modifier = modifier.width(8.dp))
 
                     Text(
-                        text = data.line,
+                        text = "${data.line}",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -193,7 +207,7 @@ internal fun LectureDetailScreen(
 
 
                     Text(
-                        text = data.department + " 학과",
+                        text = "${data.department} 학과",
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -203,7 +217,7 @@ internal fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(4.dp))
 
                 Text(
-                    text = data.name,
+                    text = "${data.name}",
                     color = colors.BLACK,
                     style = typography.bodyLarge,
                 )
@@ -216,7 +230,23 @@ internal fun LectureDetailScreen(
                 ) {
 
                     Text(
-                        text = data.semester,
+                        text = when (data.semester) {
+                            "FIRST_YEAR_FALL_SEMESTER" -> {
+                                stringResource(id = R.string.first_year_second_semester)
+                            }
+                            "SECOND_YEAR_SPRING_SEMESTER" -> {
+                                stringResource(id = R.string.second_year_first_semester)
+                            }
+                            "SECOND_YEAR_FALL_SEMESTER" -> {
+                                stringResource(id = R.string.second_year_second_semester)
+                            }
+                            "THIRD_YEAR_SPRING_SEMESTER" -> {
+                                stringResource(id = R.string.third_year_first_semester)
+                            }
+                            else -> {
+                                "학기 정보 없음 고객센터에 문의 바람."
+                            }
+                        },
                         color = colors.G2,
                         style = typography.labelMedium
                     )
@@ -288,6 +318,40 @@ internal fun LectureDetailScreen(
                 Spacer(modifier = modifier.height(24.dp))
 
                 Text(
+                    text = "강의 장소",
+                    color = colors.BLACK,
+                    style = typography.bodyLarge,
+                )
+
+                Spacer(modifier = modifier.height(16.dp))
+
+                Text(
+                    text = "${data.address}",
+                    color = colors.G2,
+                    style = typography.bodySmall
+                )
+
+                Spacer(modifier = modifier.height(4.dp))
+
+                Text(
+                    text = "${data.locationDetails}",
+                    color = colors.G2,
+                    style = typography.bodySmall
+                )
+
+                Spacer(modifier = modifier.height(4.dp))
+
+                if (isLocationLoaded.value) {
+                    LectureKakaoMap(
+                        modifier = modifier.fillMaxWidth(),
+                        locationX = locationX.value.toDouble(),
+                        locationY = locationY.value.toDouble()
+                    )
+                }
+
+                Spacer(modifier = modifier.height(24.dp))
+
+                Text(
                     text = "강의 수강 날짜",
                     color = colors.BLACK,
                     style = typography.bodyLarge,
@@ -319,7 +383,7 @@ internal fun LectureDetailScreen(
                     style = typography.bodySmall
                 )
             }
-            when(role) {
+            when (role) {
                 "ROLE_ADMIN" -> {
                     BitgoeulButton(
                         text = "수강 명단 확인",
@@ -337,9 +401,11 @@ internal fun LectureDetailScreen(
             }
 
             when (data.lectureStatus) {
-                LectureStatus.OPENED  -> {
+                LectureStatus.OPENED -> {
                     Column(
-                        modifier = modifier.fillMaxSize(),
+                        modifier = modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 24.dp),
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         Box(
@@ -385,7 +451,9 @@ internal fun LectureDetailScreen(
 
                 LectureStatus.CLOSED -> {
                     Column(
-                        modifier = modifier.fillMaxSize(),
+                        modifier = modifier
+                            .padding(horizontal = 24.dp)
+                            .fillMaxSize(),
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         Box(
@@ -460,7 +528,7 @@ private fun LectureDetailScreenPre() {
             name = "컴퓨터 프로그래밍",
             semester = "2021년 1학기",
             credit = 3,
-            createAt = LocalDate.now(),
+            createAt = LocalDateTime.now(),
             lecturer = "홍길동",
             content = "컴퓨터 프로그래밍에 대한 강의입니다.",
             startDate = LocalDateTime.now(),
@@ -479,7 +547,7 @@ private fun LectureDetailScreenPre() {
             isRegistered = false,
             locationX = "",
             locationY = "",
-            address = "",
+            address = "광주 광산구 호남대길 100 호남대학교",
             locationDetails = ""
         ),
         onBackClicked = {},

@@ -2,7 +2,6 @@ package com.msg.model.entity.lecture
 
 import com.msg.model.enumdata.LectureStatus
 import com.msg.model.model.lecture.LectureDates
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class DetailLectureEntity(
@@ -12,7 +11,7 @@ data class DetailLectureEntity(
     val division: String,
     val department: String,
     val line: String,
-    val createAt: LocalDate,
+    val createAt: LocalDateTime,
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
     val lectureDates: List<LectureDates>,

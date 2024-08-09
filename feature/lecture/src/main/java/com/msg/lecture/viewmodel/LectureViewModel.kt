@@ -221,7 +221,7 @@ class LectureViewModel @Inject constructor(
             division = "",
             department = "",
             line = "",
-            createAt = LocalDate.now(),
+            createAt = LocalDateTime.now(),
             startDate = LocalDateTime.now(),
             endDate = LocalDateTime.now(),
             lectureDates = listOf(
@@ -569,6 +569,10 @@ class LectureViewModel @Inject constructor(
             }.onFailure { error ->
                 _downloadExcelFileResponse.value = error.errorHandling()
             }
+    }
+
+    internal fun setLectureDetailData(data: DetailLectureEntity) {
+        lectureDetailData.value = data
     }
 
     private fun saveFileToStorage(

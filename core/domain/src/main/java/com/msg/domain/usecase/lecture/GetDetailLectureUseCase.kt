@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetDetailLectureUseCase @Inject constructor(
     private val lectureRepository: LectureRepository
 ) {
-    suspend operator fun invoke(id: UUID) = runCatching {
+    operator fun invoke(id: UUID) = runCatching {
         lectureRepository.getDetailLecture(id = id)
     }
 }
