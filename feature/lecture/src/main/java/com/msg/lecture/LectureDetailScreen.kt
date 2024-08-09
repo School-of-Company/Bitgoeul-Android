@@ -385,7 +385,9 @@ internal fun LectureDetailScreen(
 
                 LectureStatus.CLOSED -> {
                     Column(
-                        modifier = modifier.fillMaxSize(),
+                        modifier = modifier
+                            .padding(horizontal = 24.dp)
+                            .fillMaxSize(),
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         Box(
