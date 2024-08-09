@@ -571,6 +571,10 @@ class LectureViewModel @Inject constructor(
             }
     }
 
+    internal fun setLectureDetailData(data: DetailLectureEntity) {
+        lectureDetailData.value = data
+    }
+
     private fun saveFileToStorage(
         response: DownloadExcelFileEntity
     ) {
