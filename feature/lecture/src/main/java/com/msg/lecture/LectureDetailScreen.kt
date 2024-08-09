@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,6 +49,7 @@ import com.msg.ui.util.toLocalTimeFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import com.msg.design_system.R
 
 @Composable
 internal fun LectureDetailRoute(
@@ -228,7 +230,23 @@ internal fun LectureDetailScreen(
                 ) {
 
                     Text(
-                        text = "${data.semester}",
+                        text = when (data.semester) {
+                            "FIRST_YEAR_FALL_SEMESTER" -> {
+                                stringResource(id = R.string.first_year_second_semester)
+                            }
+                            "SECOND_YEAR_SPRING_SEMESTER" -> {
+                                stringResource(id = R.string.second_year_first_semester)
+                            }
+                            "SECOND_YEAR_FALL_SEMESTER" -> {
+                                stringResource(id = R.string.second_year_second_semester)
+                            }
+                            "THIRD_YEAR_SPRING_SEMESTER" -> {
+                                stringResource(id = R.string.third_year_first_semester)
+                            }
+                            else -> {
+                                "학기 정보 없음 고객센터에 문의 바람."
+                            }
+                        },
                         color = colors.G2,
                         style = typography.labelMedium
                     )
