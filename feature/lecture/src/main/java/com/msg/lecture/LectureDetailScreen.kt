@@ -462,7 +462,7 @@ private fun LectureDetailScreenPre() {
             name = "컴퓨터 프로그래밍",
             semester = "2021년 1학기",
             credit = 3,
-            createAt = LocalDate.now(),
+            createAt = LocalDateTime.now(),
             lecturer = "홍길동",
             content = "컴퓨터 프로그래밍에 대한 강의입니다.",
             startDate = LocalDateTime.now(),
@@ -481,7 +481,7 @@ private fun LectureDetailScreenPre() {
             isRegistered = false,
             locationX = "",
             locationY = "",
-            address = "",
+            address = "광주 광산구 호남대길 100 호남대학교",
             locationDetails = ""
         ),
         onBackClicked = {},
