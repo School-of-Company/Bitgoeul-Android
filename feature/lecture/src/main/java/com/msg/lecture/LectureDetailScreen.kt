@@ -365,7 +365,7 @@ internal fun LectureDetailScreen(
                     style = typography.bodySmall
                 )
             }
-            when(role) {
+            when (role) {
                 "ROLE_ADMIN" -> {
                     BitgoeulButton(
                         text = "수강 명단 확인",
