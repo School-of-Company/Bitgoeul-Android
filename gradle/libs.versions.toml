@@ -48,6 +48,7 @@ retrofitKotlinxSerializableJson = "1.0.0"
 room = "2.5.2"
 kotlin2 = "1.9.10"
 moshi = "1.15.0"
+kakaoMaps = "2.9.5"
 
 [libraries]
 #Define Library
@@ -107,6 +108,7 @@ retrofit-moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-co
 retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+kakao-maps = { group = "com.kakao.maps.open", name = "android", version.ref = "kakaoMaps" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 
