@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +29,7 @@ import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.checkPasswordRegex
+import com.msg.design_system.R
 
 @Composable
 internal fun PasswordChangeRoute(
@@ -84,7 +85,7 @@ internal fun PasswordChangeScreen(
                 Spacer(modifier = modifier.height(20.dp))
                 GoBackTopBar(
                     icon = { GoBackIcon() },
-                    text = "돌아가기"
+                    text = stringResource(R.string.go_back)
                 ) {
                     onBackClicked()
                 }
@@ -93,15 +94,15 @@ internal fun PasswordChangeScreen(
                     modifier = modifier.padding(horizontal = 28.dp)
                 ) {
                     Text(
-                        text = "비밀번호 변경",
+                        text = stringResource(R.string.change_password),
                         style = typography.titleLarge,
                         color = colors.BLACK
                     )
                     Spacer(modifier = modifier.height(54.dp))
                     PasswordTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "현재 비밀번호 입력",
-                        errorText = "비밀번호가 일치하지 않습니다",
+                        placeholder = stringResource(R.string.current_password),
+                        errorText = stringResource(R.string.disagree_password),
                         onValueChange = {
                             currentPassword.value = it
                         },
@@ -113,7 +114,7 @@ internal fun PasswordChangeScreen(
                     Spacer(modifier = modifier.height(16.dp))
                     PasswordTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "새 비밀번호 입력",
+                        placeholder = stringResource(R.string.new_password),
                         errorText = "비밀번호는 8~24 영어 + 숫자  + 특수문자 로 해주세요",
                         onValueChange = {
                             newPassword.value = it
@@ -126,8 +127,8 @@ internal fun PasswordChangeScreen(
                     Spacer(modifier = modifier.height(16.dp))
                     PasswordTextField(
                         modifier = modifier.fillMaxWidth(),
-                        placeholder = "새 비밀번호 확인",
-                        errorText = "비밀번호가 일치하지 않습니다",
+                        placeholder = stringResource(R.string.check_new_password),
+                        errorText = stringResource(R.string.disagree_password),
                         onValueChange = {
                             checkPassword.value = it
                             isSamePassword.value = newPassword.value == checkPassword.value
@@ -144,7 +145,7 @@ internal fun PasswordChangeScreen(
                         modifier = modifier
                             .fillMaxWidth()
                             .padding(horizontal = 28.dp),
-                        text = "변경하기"
+                        text = stringResource(R.string.change)
                     ) {
                         onPasswordChangeClicked(currentPassword.value, newPassword.value)
                         showSuccessScreen.value = true
@@ -155,9 +156,9 @@ internal fun PasswordChangeScreen(
             if (showSuccessScreen.value) {
                 SuccessScreen(
                     modifier = modifier,
-                    title = "비밀번호 변경 완료",
-                    content = "비밀번호 변경을 성공적으로 완료했습니다.",
-                    buttonText = "돌아가기"
+                    title = stringResource(R.string.finish_change_password),
+                    content = stringResource(R.string.success_change_password),
+                    buttonText = stringResource(R.string.go_back)
                 ) {
                     onSuccessScreenButtonClicked()
                 }
