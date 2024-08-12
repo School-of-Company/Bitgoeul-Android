@@ -2,6 +2,7 @@ package com.example.my_page.viewmodel
 
 import com.msg.model.enumdata.Authority
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.common.errorhandling.errorHandling
@@ -24,8 +25,15 @@ class MyPageViewModel @Inject constructor(
     private val getMyPageUseCase: GetMyPageUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val logoutUseCase: LogoutUseCase,
-    private val changePasswordUseCase: ChangePasswordUseCase
+    private val changePasswordUseCase: ChangePasswordUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    companion object {
+        private const val CURRENT_PASSWORD = "currentPassword"
+        private const val NEW_PASSWORD = "newPassword"
+        private const val CHECK_PASSWORD = "checkPassword"
+    }
 
     private val _getMyPageResponse = MutableStateFlow<Event<GetMyPageEntity>>(Event.Loading)
     val getMyPageResponse = _getMyPageResponse.asStateFlow()
@@ -49,6 +57,12 @@ class MyPageViewModel @Inject constructor(
         )
     )
         private set
+
+    internal var currentPassword = savedStateHandle.getStateFlow(key = CURRENT_PASSWORD, initialValue = "")
+
+    internal var newPassword = savedStateHandle.getStateFlow(key = NEW_PASSWORD, initialValue = "")
+
+    internal var checkPassword = savedStateHandle.getStateFlow(key = CHECK_PASSWORD, initialValue = "")
 
     internal fun inquiryMyPage() = viewModelScope.launch {
         getMyPageUseCase().onSuccess {
@@ -105,4 +119,10 @@ class MyPageViewModel @Inject constructor(
             _getChangePasswordResponse.value = error.errorHandling()
         }
     }
+
+    internal fun onCurrentPasswordChange(value: String) { savedStateHandle[CURRENT_PASSWORD] = value }
+
+    internal fun onNewPasswordChange(value: String) { savedStateHandle[NEW_PASSWORD] = value }
+
+    internal fun onCheckPasswordChange(value: String) { savedStateHandle[CHECK_PASSWORD] = value }
 }
