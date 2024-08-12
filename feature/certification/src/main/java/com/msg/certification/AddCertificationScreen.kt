@@ -38,10 +38,8 @@ internal fun AddCertificationScreenRoute(
     onBackClicked: () -> Unit,
     onAddClicked: () -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
 
     AddCertificationScreen(
-        focusManager = focusManager,
         selectedName = viewModel.selectedTitle.value,
         selectedDate = viewModel.selectedDate.value,
         onBackClicked = {
@@ -59,7 +57,7 @@ internal fun AddCertificationScreenRoute(
 @Composable
 internal fun AddCertificationScreen(
     modifier: Modifier = Modifier,
-    focusManager: FocusManager,
+    focusManager: FocusManager = LocalFocusManager.current,
     selectedName: String,
     selectedDate: LocalDate?,
     onBackClicked: () -> Unit,
@@ -68,63 +66,61 @@ internal fun AddCertificationScreen(
     val name = remember { mutableStateOf(selectedName) }
     val date = remember { mutableStateOf(selectedDate) }
 
-    CompositionLocalProvider(LocalFocusManager provides focusManager) {
-        BitgoeulAndroidTheme { colors, _ ->
-            Box(
+    BitgoeulAndroidTheme { colors, _ ->
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = colors.WHITE)
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                    }
+                }
+        ) {
+            val context = LocalContext.current
+            Column(
                 modifier = modifier
                     .fillMaxSize()
-                    .background(color = colors.WHITE)
-                    .pointerInput(Unit) {
-                        detectTapGestures {
-                            focusManager.clearFocus()
+                    .padding(
+                        top = 24.dp,
+                        bottom = 14.dp,
+                        start = 28.dp,
+                        end = 28.dp
+                    ),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                DetailSettingTopBar(
+                    text = "자격증 세부 설정",
+                    onBackClicked = onBackClicked
+                )
+                AddCertificationSection(
+                    onValueChange = {
+                        name.value = it
+                    },
+                    onButtonClicked = {
+                        name.value = ""
+                    }
+                )
+                AddAcquisitionDateSection(
+                    onDatePickerQuit = {
+                        date.value = it
+                    },
+                    acquisitionDate = date.value?.toKoreanFormat() ?: ""
+                )
+                Spacer(modifier = modifier.weight(1f))
+                BitgoeulButton(
+                    modifier = modifier.fillMaxWidth(),
+                    text = "자격증 등록",
+                    onClicked = {
+                        if (name.value.isBlank()) {
+                            makeToast(context, "자격증 이름을 입력해주세요")
+                        } else if (date.value == null) {
+                            makeToast(context, "취득일을 입력해주세요")
+                        } else {
+                            onAddClicked(name.value, date.value!!)
                         }
                     }
-            ) {
-                val context = LocalContext.current
-                Column(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(
-                            top = 24.dp,
-                            bottom = 14.dp,
-                            start = 28.dp,
-                            end = 28.dp
-                        ),
-                    verticalArrangement = Arrangement.spacedBy(24.dp)
-                ) {
-                    DetailSettingTopBar(
-                        text = "자격증 세부 설정",
-                        onBackClicked = onBackClicked
-                    )
-                    AddCertificationSection(
-                        onValueChange = {
-                            name.value = it
-                        },
-                        onButtonClicked = {
-                            name.value = ""
-                        }
-                    )
-                    AddAcquisitionDateSection(
-                        onDatePickerQuit = {
-                            date.value = it
-                        },
-                        acquisitionDate = date.value?.toKoreanFormat() ?: ""
-                    )
-                    Spacer(modifier = modifier.weight(1f))
-                    BitgoeulButton(
-                        modifier = modifier.fillMaxWidth(),
-                        text = "자격증 등록",
-                        onClicked = {
-                            if (name.value.isBlank()) {
-                                makeToast(context, "자격증 이름을 입력해주세요")
-                            } else if (date.value == null) {
-                                makeToast(context, "취득일을 입력해주세요")
-                            } else {
-                                onAddClicked(name.value, date.value!!)
-                            }
-                        }
-                    )
-                }
+                )
             }
         }
     }
@@ -136,7 +132,7 @@ internal fun AddCertificationScreen(
 fun AddCertificationScreenPre() {
     AddCertificationScreen(
         onBackClicked = {},
-        onAddClicked = {_,_->},
+        onAddClicked = { _, _ -> },
         selectedName = "",
         selectedDate = null,
         focusManager = LocalFocusManager.current

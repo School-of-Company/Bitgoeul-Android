@@ -43,10 +43,8 @@ internal fun PostAddScreenRoute(
     onSettingClicked: () -> Unit,
     onAddClicked: () -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
 
     PostAddScreen(
-        focusManager = focusManager,
         onBackClicked = onBackClicked,
         onSettingClicked = { title, content ->
             viewModel.savedTitle.value = title
@@ -82,7 +80,7 @@ internal fun PostAddScreenRoute(
 @Composable
 internal fun PostAddScreen(
     modifier: Modifier = Modifier,
-    focusManager: FocusManager,
+    focusManager: FocusManager = LocalFocusManager.current,
     onBackClicked: () -> Unit,
     onSettingClicked: (title: String, content: String) -> Unit,
     onAddClicked: (feedType: FeedType, title: String, content: String) -> Unit,
@@ -101,99 +99,97 @@ internal fun PostAddScreen(
         FeedType.EMPLOYMENT -> "게시글"
         FeedType.NOTICE -> "공지사항"
     }
-    CompositionLocalProvider(LocalFocusManager provides focusManager) {
-        BitgoeulAndroidTheme { colors, typography ->
-            Surface(
+    BitgoeulAndroidTheme { colors, typography ->
+        Surface(
+            modifier = modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                    }
+                }
+        ) {
+            Column(
                 modifier = modifier
                     .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectTapGestures {
-                            focusManager.clearFocus()
-                        }
-                    }
+                    .background(color = colors.WHITE)
             ) {
+                Spacer(modifier = modifier.height(20.dp))
+                GoBackTopBar(
+                    icon = { GoBackIcon() },
+                    text = "돌아가기"
+                ) {
+                    onBackClicked()
+                }
+                Spacer(modifier = modifier.height(16.dp))
                 Column(
                     modifier = modifier
-                        .fillMaxSize()
-                        .background(color = colors.WHITE)
+                        .padding(horizontal = 28.dp)
+                        .verticalScroll(scrollState)
+                        .weight(1f)
                 ) {
-                    Spacer(modifier = modifier.height(20.dp))
-                    GoBackTopBar(
-                        icon = { GoBackIcon() },
-                        text = "돌아가기"
+                    BasicTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        value = title.value,
+                        onValueChange = { if (it.length <= maxTitleLength) title.value = it },
+                        textStyle = typography.titleSmall,
+                        decorationBox = { innerTextField ->
+                            if (title.value.isEmpty()) Text(
+                                text = "$typeText 제목 (100자 이내)",
+                                style = typography.titleSmall,
+                                color = colors.G1
+                            )
+                            innerTextField()
+                        }
+                    )
+                    Spacer(modifier = modifier.height(16.dp))
+                    HorizontalDivider(
+                        modifier = Modifier.fillMaxWidth(),
+                        thickness = 1.dp,
+                        color = colors.G9
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    BasicTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        value = content.value,
+                        onValueChange = { if (it.length <= maxTitleLength) content.value = it },
+                        textStyle = typography.bodySmall,
+                        decorationBox = { innerTextField ->
+                            if (content.value.isEmpty()) Text(
+                                text = "본문 입력 (1000자 이내)",
+                                style = typography.bodySmall,
+                                color = colors.G1
+                            )
+                            innerTextField()
+                        }
+                    )
+                }
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 28.dp)
+                ) {
+                    HorizontalDivider(
+                        modifier = Modifier.fillMaxWidth(),
+                        thickness = 1.dp,
+                        color = colors.G9
+                    )
+                    Spacer(modifier = modifier.height(24.dp))
+                    DetailSettingButton(
+                        modifier = modifier.fillMaxWidth(),
+                        type = typeText
                     ) {
-                        onBackClicked()
+                        onSettingClicked(title.value, content.value)
+                    }
+                    Spacer(modifier = modifier.height(8.dp))
+                    BitgoeulButton(
+                        modifier = modifier.fillMaxWidth(),
+                        text = "$typeText 추가",
+                        state = if (title.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
+                    ) {
+                        onAddClicked(feedType, title.value, content.value)
                     }
                     Spacer(modifier = modifier.height(16.dp))
-                    Column(
-                        modifier = modifier
-                            .padding(horizontal = 28.dp)
-                            .verticalScroll(scrollState)
-                            .weight(1f)
-                    ) {
-                        BasicTextField(
-                            modifier = modifier.fillMaxWidth(),
-                            value = title.value,
-                            onValueChange = { if (it.length <= maxTitleLength) title.value = it },
-                            textStyle = typography.titleSmall,
-                            decorationBox = { innerTextField ->
-                                if (title.value.isEmpty()) Text(
-                                    text = "$typeText 제목 (100자 이내)",
-                                    style = typography.titleSmall,
-                                    color = colors.G1
-                                )
-                                innerTextField()
-                            }
-                        )
-                        Spacer(modifier = modifier.height(16.dp))
-                        HorizontalDivider(
-                            modifier = Modifier.fillMaxWidth(),
-                            thickness = 1.dp,
-                            color = colors.G9
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        BasicTextField(
-                            modifier = modifier.fillMaxWidth(),
-                            value = content.value,
-                            onValueChange = { if (it.length <= maxTitleLength) content.value = it },
-                            textStyle = typography.bodySmall,
-                            decorationBox = { innerTextField ->
-                                if (content.value.isEmpty()) Text(
-                                    text = "본문 입력 (1000자 이내)",
-                                    style = typography.bodySmall,
-                                    color = colors.G1
-                                )
-                                innerTextField()
-                            }
-                        )
-                    }
-                    Column(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 28.dp)
-                    ) {
-                        HorizontalDivider(
-                            modifier = Modifier.fillMaxWidth(),
-                            thickness = 1.dp,
-                            color = colors.G9
-                        )
-                        Spacer(modifier = modifier.height(24.dp))
-                        DetailSettingButton(
-                            modifier = modifier.fillMaxWidth(),
-                            type = typeText
-                        ) {
-                            onSettingClicked(title.value, content.value)
-                        }
-                        Spacer(modifier = modifier.height(8.dp))
-                        BitgoeulButton(
-                            modifier = modifier.fillMaxWidth(),
-                            text = "$typeText 추가",
-                            state = if (title.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
-                        ) {
-                            onAddClicked(feedType, title.value, content.value)
-                        }
-                        Spacer(modifier = modifier.height(16.dp))
-                    }
                 }
             }
         }

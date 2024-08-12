@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -164,10 +165,10 @@ internal fun SignUpScreen(
         password: String,
         position: String,
         sectors: String
-    ) -> Unit
+    ) -> Unit,
+    focusManager: FocusManager = LocalFocusManager.current
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-    val focusManager = LocalFocusManager.current
 
     val signUpState = remember { mutableStateOf(Belong) }
 
