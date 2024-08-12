@@ -58,14 +58,14 @@ internal fun PasswordChangeScreen(
     onSuccessScreenButtonClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val currentPassword = remember { mutableStateOf("") }
-    val newPassword = remember { mutableStateOf("") }
-    val checkPassword = remember { mutableStateOf("") }
+    val (isCurrentPassword, setIsCurrentPassword) = remember { mutableStateOf("") }
+    val (isNewPassword, setIsNewPassword) = remember { mutableStateOf("") }
+    val (isCheckPassword, setIsCheckPassword) = remember { mutableStateOf("") }
 
     val isWrongPassword = remember { mutableStateOf(false) }
     val isSamePassword = remember { mutableStateOf(true) }
 
-    val showSuccessScreen = remember { mutableStateOf(false) }
+    val (isShowSuccessScreen, setIsShowSuccessScreen) = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
@@ -103,9 +103,7 @@ internal fun PasswordChangeScreen(
                         modifier = modifier.fillMaxWidth(),
                         placeholder = stringResource(R.string.current_password),
                         errorText = stringResource(R.string.disagree_password),
-                        onValueChange = {
-                            currentPassword.value = it
-                        },
+                        onValueChange = setIsCurrentPassword,
                         onLinkClicked = {},
                         isError = isWrongPassword.value,
                         isLinked = false,
@@ -116,11 +114,9 @@ internal fun PasswordChangeScreen(
                         modifier = modifier.fillMaxWidth(),
                         placeholder = stringResource(R.string.new_password),
                         errorText = "비밀번호는 8~24 영어 + 숫자  + 특수문자 로 해주세요",
-                        onValueChange = {
-                            newPassword.value = it
-                        },
+                        onValueChange = setIsNewPassword,
                         onLinkClicked = {},
-                        isError = newPassword.value.checkPasswordRegex(),
+                        isError = isNewPassword.checkPasswordRegex(),
                         isLinked = false,
                         isDisabled = false
                     )
@@ -130,8 +126,8 @@ internal fun PasswordChangeScreen(
                         placeholder = stringResource(R.string.check_new_password),
                         errorText = stringResource(R.string.disagree_password),
                         onValueChange = {
-                            checkPassword.value = it
-                            isSamePassword.value = newPassword.value == checkPassword.value
+                            setIsCheckPassword(it)
+                            isSamePassword.value = isNewPassword == isCheckPassword
                         },
                         onLinkClicked = {},
                         isError = !isSamePassword.value,
@@ -147,13 +143,13 @@ internal fun PasswordChangeScreen(
                             .padding(horizontal = 28.dp),
                         text = stringResource(R.string.change)
                     ) {
-                        onPasswordChangeClicked(currentPassword.value, newPassword.value)
-                        showSuccessScreen.value = true
+                        onPasswordChangeClicked(isCurrentPassword, isNewPassword)
+                        setIsShowSuccessScreen(true)
                     }
                     Spacer(modifier = modifier.height(56.dp))
                 }
             }
-            if (showSuccessScreen.value) {
+            if (isShowSuccessScreen) {
                 SuccessScreen(
                     modifier = modifier,
                     title = stringResource(R.string.finish_change_password),

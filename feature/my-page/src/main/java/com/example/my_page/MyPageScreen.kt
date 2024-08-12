@@ -78,7 +78,7 @@ internal fun MyPageScreen(
     data: GetMyPageEntity,
     modifier: Modifier = Modifier
 ) {
-    val showDialog = remember { mutableStateOf(false) }
+    val (isDialogOpen, setIsDialogOpen) = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -110,7 +110,7 @@ internal fun MyPageScreen(
                 onPasswordChangeClicked = onPasswordChangeClicked,
                 onLogOutClicked = onLogOutClicked,
                 onWithdrawClicked = {
-                    showDialog.value = true
+                    setIsDialogOpen(true)
                 }
             )
             Spacer(modifier = modifier.height(24.dp))
@@ -119,8 +119,8 @@ internal fun MyPageScreen(
             title = "회원 탈퇴하시겠습니까?",
             negativeAction = "탈퇴",
             content = "회원 탈퇴하면 계정을 복구할 수 없으며,\n회원가입을 다시 진행해야 합니다!",
-            isVisible = showDialog.value,
-            onQuit = { showDialog.value = false }
+            isVisible = isDialogOpen,
+            onQuit = { setIsDialogOpen(false) }
         ) {
             onWithdrawClicked()
         }
