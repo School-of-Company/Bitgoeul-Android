@@ -40,9 +40,9 @@ internal fun PasswordChangeRoute(
     onBackClicked: () -> Unit,
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
-    val currentPassword by viewModel.currentPassword.collectAsStateWithLifecycle()
-    val newPassword by viewModel.newPassword.collectAsStateWithLifecycle()
-    val checkPassword by viewModel.checkPassword.collectAsStateWithLifecycle()
+    val isCurrentPassword by viewModel.currentPassword.collectAsStateWithLifecycle()
+    val isNewPassword by viewModel.newPassword.collectAsStateWithLifecycle()
+    val isCheckPassword by viewModel.checkPassword.collectAsStateWithLifecycle()
 
     PasswordChangeScreen(
         onPasswordChangeClicked = { currentPassword, newPassword ->
@@ -53,9 +53,9 @@ internal fun PasswordChangeRoute(
         },
         onSuccessScreenButtonClicked = onSuccessScreenButtonClicked,
         onBackClicked = onBackClicked,
-        currentPassword = currentPassword,
-        newPassword = newPassword,
-        checkPassword = checkPassword,
+        currentPassword = isCurrentPassword,
+        newPassword = isNewPassword,
+        checkPassword = isCheckPassword,
         onNewPasswordChange = viewModel::onNewPasswordChange,
         onCurrentPasswordChange = viewModel::onCurrentPasswordChange,
         onCheckPasswordChange = viewModel::onCheckPasswordChange
