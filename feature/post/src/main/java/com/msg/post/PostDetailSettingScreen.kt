@@ -16,7 +16,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,10 +37,8 @@ internal fun PostDetailSettingScreenRoute(
     viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onCloseClicked: () -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
 
     PostDetailSettingScreen(
-        focusManager = focusManager,
         links = viewModel.links,
         onCloseClicked = {
             onCloseClicked()
@@ -57,7 +54,7 @@ internal fun PostDetailSettingScreenRoute(
 @Composable
 internal fun PostDetailSettingScreen(
     modifier: Modifier = Modifier,
-    focusManager: FocusManager,
+    focusManager: FocusManager = LocalFocusManager.current,
     links: MutableList<String>,
     onCloseClicked: () -> Unit,
     onClickAddButton: () -> Unit,
@@ -69,44 +66,42 @@ internal fun PostDetailSettingScreen(
     val addedLinks = links
     val count = remember { mutableIntStateOf(links.count()) }
 
-    CompositionLocalProvider(LocalFocusManager provides focusManager) {
-        BitgoeulAndroidTheme { colors, typography ->
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(color = colors.WHITE)
-                    .pointerInput(Unit) {
-                        detectTapGestures {
-                            focusManager.clearFocus()
-                        }
+    BitgoeulAndroidTheme { colors, typography ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = colors.WHITE)
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        focusManager.clearFocus()
                     }
-            ) {
-                Spacer(modifier = modifier.height(24.dp))
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 28.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "게시글 세부 설정",
-                        style = typography.titleSmall,
-                        color = colors.BLACK
-                    )
-                    IconButton(
-                        onClick = onCloseClicked,
-                        content = { CloseIcon() }
-                    )
                 }
-                Spacer(modifier = modifier.height(28.dp))
-                AddLinkSection(
-                    modifier = modifier,
-                    links = links,
-                    onClickAddButton = onClickAddButton,
-                    onValueChanged = onValueChanged
+        ) {
+            Spacer(modifier = modifier.height(24.dp))
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 28.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "게시글 세부 설정",
+                    style = typography.titleSmall,
+                    color = colors.BLACK
+                )
+                IconButton(
+                    onClick = onCloseClicked,
+                    content = { CloseIcon() }
                 )
             }
+            Spacer(modifier = modifier.height(28.dp))
+            AddLinkSection(
+                modifier = modifier,
+                links = links,
+                onClickAddButton = onClickAddButton,
+                onValueChanged = onValueChanged
+            )
         }
     }
 }
@@ -121,7 +116,7 @@ fun PostDetailSettingScreenPre() {
         ),
         onCloseClicked = {},
         onClickAddButton = {},
-        onValueChanged = {_,_ ->},
+        onValueChanged = { _, _ -> },
         focusManager = LocalFocusManager.current
     )
 }

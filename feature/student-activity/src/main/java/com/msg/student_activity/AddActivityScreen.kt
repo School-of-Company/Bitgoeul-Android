@@ -15,7 +15,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -42,10 +41,8 @@ fun AddActivityRoute(
     onBackClicked: () -> Unit,
     viewModel: StudentActivityViewModel = hiltViewModel()
 ) {
-    val focusManager = LocalFocusManager.current
 
     AddActivityScreen(
-        focusManager = focusManager,
         onActionClicked = {
             onActionClicked()
             viewModel.addActivityInfo(
@@ -70,7 +67,7 @@ fun AddActivityRoute(
 @Composable
 fun AddActivityScreen(
     modifier: Modifier = Modifier,
-    focusManager: FocusManager,
+    focusManager: FocusManager = LocalFocusManager.current,
     onActionClicked: () -> Unit,
     onSettingClicked: (title: String, content: String) -> Unit,
     onBackClicked: () -> Unit,
@@ -89,111 +86,109 @@ fun AddActivityScreen(
 
     val scrollState = rememberScrollState()
 
-    CompositionLocalProvider(LocalFocusManager provides focusManager) {
-        BitgoeulAndroidTheme { colors, typography ->
-            Surface(
+    BitgoeulAndroidTheme { colors, typography ->
+        Surface(
+            modifier = modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                    }
+                }
+        ) {
+            Column(
                 modifier = modifier
                     .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectTapGestures {
-                            focusManager.clearFocus()
-                        }
-                    }
+                    .background(color = colors.WHITE)
             ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                GoBackTopBar(
+                    icon = { GoBackIcon() },
+                    text = "돌아가기"
+                ) {
+                    onBackClicked()
+                }
+                Spacer(modifier = modifier.height(16.dp))
                 Column(
                     modifier = modifier
-                        .fillMaxSize()
-                        .background(color = colors.WHITE)
+                        .padding(horizontal = 28.dp)
+                        .verticalScroll(scrollState)
+                        .weight(1f)
                 ) {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    GoBackTopBar(
-                        icon = { GoBackIcon() },
-                        text = "돌아가기"
-                    ) {
-                        onBackClicked()
-                    }
+                    BasicTextField(
+                        modifier = modifier
+                            .fillMaxWidth(),
+                        value = title.value,
+                        onValueChange = { if (it.length <= maxTitleLength) title.value = it },
+                        textStyle = typography.titleSmall,
+                        decorationBox = { innerTextField ->
+                            if (title.value.isEmpty()) Text(
+                                text = "활동 제목 (100자 이내)",
+                                style = typography.titleSmall,
+                                color = colors.G1
+                            )
+                            innerTextField()
+                        }
+                    )
                     Spacer(modifier = modifier.height(16.dp))
-                    Column(
-                        modifier = modifier
-                            .padding(horizontal = 28.dp)
-                            .verticalScroll(scrollState)
-                            .weight(1f)
-                    ) {
-                        BasicTextField(
-                            modifier = modifier
-                                .fillMaxWidth(),
-                            value = title.value,
-                            onValueChange = { if (it.length <= maxTitleLength) title.value = it },
-                            textStyle = typography.titleSmall,
-                            decorationBox = { innerTextField ->
-                                if (title.value.isEmpty()) Text(
-                                    text = "활동 제목 (100자 이내)",
-                                    style = typography.titleSmall,
-                                    color = colors.G1
-                                )
-                                innerTextField()
-                            }
-                        )
-                        Spacer(modifier = modifier.height(16.dp))
-                        HorizontalDivider(
-                            modifier = modifier.fillMaxWidth(),
-                            thickness = 1.dp,
-                            color = colors.G9
-                        )
-                        Spacer(modifier = modifier.height(16.dp))
-                        BasicTextField(
-                            modifier = modifier.fillMaxWidth(),
-                            value = content.value,
-                            onValueChange = {
-                                if (it.length <= maxContentLength) content.value = it
-                            },
-                            textStyle = typography.bodySmall,
-                            decorationBox = { innerTextField ->
-                                if (content.value.isEmpty()) Text(
-                                    text = "본문 입력 (1000자 이내)",
-                                    style = typography.bodySmall,
-                                    color = colors.G1
-                                )
-                                innerTextField()
-                            }
-                        )
-                    }
-                    Column(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 28.dp)
-                    ) {
-                        HorizontalDivider(
-                            modifier = modifier.fillMaxWidth(),
-                            thickness = 1.dp,
-                            color = colors.G9
-                        )
-                        Spacer(modifier = modifier.height(24.dp))
-                        DetailSettingButton(
-                            modifier = modifier.fillMaxWidth(),
-                            type = "활동"
-                        ) {
-                            onSettingClicked(title.value, content.value)
+                    HorizontalDivider(
+                        modifier = modifier.fillMaxWidth(),
+                        thickness = 1.dp,
+                        color = colors.G9
+                    )
+                    Spacer(modifier = modifier.height(16.dp))
+                    BasicTextField(
+                        modifier = modifier.fillMaxWidth(),
+                        value = content.value,
+                        onValueChange = {
+                            if (it.length <= maxContentLength) content.value = it
+                        },
+                        textStyle = typography.bodySmall,
+                        decorationBox = { innerTextField ->
+                            if (content.value.isEmpty()) Text(
+                                text = "본문 입력 (1000자 이내)",
+                                style = typography.bodySmall,
+                                color = colors.G1
+                            )
+                            innerTextField()
                         }
-                        Spacer(modifier = modifier.height(8.dp))
-                        BitgoeulButton(
-                            modifier = modifier.fillMaxWidth(),
-                            text = "활동 추가",
-                            state = if (title.value.isNotEmpty() && content.value.isNotEmpty() && detailState) ButtonState.Enable else ButtonState.Disable
-                        ) {
-                            isDialogVisible.value = true
-                        }
-                        Spacer(modifier = modifier.height(16.dp))
-                    }
-                    PositiveActionDialog(
-                        title = "활동 추가하시겠습니까?",
-                        positiveAction = "신청",
-                        content = title.value,
-                        isVisible = isDialogVisible.value,
-                        onQuit = { isDialogVisible.value = false },
-                        onActionClicked = onActionClicked
                     )
                 }
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 28.dp)
+                ) {
+                    HorizontalDivider(
+                        modifier = modifier.fillMaxWidth(),
+                        thickness = 1.dp,
+                        color = colors.G9
+                    )
+                    Spacer(modifier = modifier.height(24.dp))
+                    DetailSettingButton(
+                        modifier = modifier.fillMaxWidth(),
+                        type = "활동"
+                    ) {
+                        onSettingClicked(title.value, content.value)
+                    }
+                    Spacer(modifier = modifier.height(8.dp))
+                    BitgoeulButton(
+                        modifier = modifier.fillMaxWidth(),
+                        text = "활동 추가",
+                        state = if (title.value.isNotEmpty() && content.value.isNotEmpty() && detailState) ButtonState.Enable else ButtonState.Disable
+                    ) {
+                        isDialogVisible.value = true
+                    }
+                    Spacer(modifier = modifier.height(16.dp))
+                }
+                PositiveActionDialog(
+                    title = "활동 추가하시겠습니까?",
+                    positiveAction = "신청",
+                    content = title.value,
+                    isVisible = isDialogVisible.value,
+                    onQuit = { isDialogVisible.value = false },
+                    onActionClicked = onActionClicked
+                )
             }
         }
     }
