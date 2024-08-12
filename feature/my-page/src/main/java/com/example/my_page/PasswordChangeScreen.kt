@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
@@ -75,8 +76,8 @@ internal fun PasswordChangeScreen(
     onSuccessScreenButtonClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val isWrongPassword = remember { mutableStateOf(false) }
-    val isSamePassword = remember { mutableStateOf(true) }
+    val isWrongPassword by remember { mutableStateOf(false) }
+    var isSamePassword by remember { mutableStateOf(true) }
 
     val (isShowSuccessScreen, setIsShowSuccessScreen) = remember { mutableStateOf(false) }
 
@@ -118,7 +119,7 @@ internal fun PasswordChangeScreen(
                         errorText = stringResource(R.string.disagree_password),
                         onValueChange = onCurrentPasswordChange,
                         onLinkClicked = {},
-                        isError = isWrongPassword.value,
+                        isError = isWrongPassword,
                         isLinked = false,
                         isDisabled = false
                     )
@@ -140,10 +141,10 @@ internal fun PasswordChangeScreen(
                         errorText = stringResource(R.string.disagree_password),
                         onValueChange = {
                             onCheckPasswordChange(it)
-                            isSamePassword.value = newPassword == checkPassword
+                            isSamePassword = newPassword == checkPassword
                         },
                         onLinkClicked = {},
-                        isError = !isSamePassword.value,
+                        isError = !isSamePassword,
                         isLinked = false,
                         isDisabled = false
                     )
