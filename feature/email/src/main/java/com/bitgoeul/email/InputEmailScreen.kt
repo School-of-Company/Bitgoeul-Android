@@ -40,10 +40,10 @@ internal fun InputEmailRoute(
     onNextClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
-    val email by viewModel.email.collectAsStateWithLifecycle()
+    val isEmail by viewModel.email.collectAsStateWithLifecycle()
 
     InputEmailScreen(
-        email = email,
+        email = isEmail,
         onEmailChange = viewModel::onEmailChange,
         onBackClicked = onBackClicked,
         onNextClicked = { email ->
