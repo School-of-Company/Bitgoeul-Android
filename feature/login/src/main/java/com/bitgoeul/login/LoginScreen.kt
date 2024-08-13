@@ -169,7 +169,7 @@ internal fun LoginScreen(
                             onEmailChange(it)
                         },
                         isError = isEmailErrorStatus,
-                        onButtonClicked = { setIsEmailErrorStatus(isTextStatus.isNullOrBlank()) },
+                        onButtonClicked = { setIsEmailErrorStatus(isTextStatus.isBlank()) },
                         isLinked = false,
                         isDisabled = false,
                         isReadOnly = false,
