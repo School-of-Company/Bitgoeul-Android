@@ -68,11 +68,11 @@ internal fun PasswordChangeSuccessScreen(
                 Spacer(modifier = modifier.weight(1f))
 
                 BitgoeulButton(
-                    text = "돌아가기",
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(bottom = 14.dp)
                         .fillMaxWidth()
                         .height(52.dp),
+                    text = "돌아가기",
                     state = ButtonState.Enable,
                     onClicked = {
                         onBackClicked()
