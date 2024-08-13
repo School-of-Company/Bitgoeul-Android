@@ -28,7 +28,7 @@ class EmailViewModel @Inject constructor(
 ) : ViewModel() {
     companion object {
         private const val EMAIL = "email"
-        private const val NEW_PASSWORD = "newPassword"
+
     }
 
     private val _sendLinkToEmailResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -42,7 +42,8 @@ class EmailViewModel @Inject constructor(
 
     internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
 
-    internal var newPassword = savedStateHandle.getStateFlow(key = NEW_PASSWORD, initialValue = "")
+    var newPassword = mutableStateOf("")
+        private set
 
     internal fun getEmailAuthenticateStatus() = viewModelScope.launch {
        getEmailAuthenticateStatusUseCase(
@@ -92,6 +93,4 @@ class EmailViewModel @Inject constructor(
     }
 
     internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
-
-    internal fun onNewPassword(value: String) { savedStateHandle[NEW_PASSWORD] = value }
 }
