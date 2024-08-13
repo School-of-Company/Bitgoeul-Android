@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.club.component.ClubInfoSection
 import com.msg.club.component.ClubMemberInfoListSection
 import com.msg.club.viewmodel.ClubViewModel
+import com.msg.design_system.R
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.color.BitgoeulColor
@@ -57,7 +59,7 @@ internal fun ClubDetailScreen(
         Spacer(modifier = modifier.height(20.dp))
         GoBackTopBar(
             icon = { GoBackIcon() },
-            text = "돌아가기",
+            text = stringResource(R.string.go_back),
             onClicked = onBackClicked
         )
         Spacer(modifier = modifier.height(16.dp))
