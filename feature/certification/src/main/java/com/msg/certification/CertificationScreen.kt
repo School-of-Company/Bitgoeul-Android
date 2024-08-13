@@ -76,8 +76,8 @@ internal fun CertificationScreenRoute(
         onHumanIconClicked = onHumanIconClicked,
         onEditClicked = { id, title, date ->
             viewModel.selectedCertificationId.value = id
-            viewModel.selectedTitle.value = title
-            viewModel.selectedDate.value = date
+            viewModel.onSelectedTitleChange(title)
+            viewModel.onSelectedDateChange(date)
             onEditClicked()
         },
         onPlusClicked = onEditClicked,
