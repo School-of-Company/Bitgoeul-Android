@@ -40,16 +40,12 @@ internal fun AddCertificationScreenRoute(
     onAddClicked: () -> Unit
 ) {
     val selectedTitle by viewModel.selectedTitle.collectAsStateWithLifecycle()
-    val selectedDate by viewModel.selectedDate.collectAsStateWithLifecycle()
 
     AddCertificationScreen(
         selectedName = selectedTitle,
-        selectedDate = selectedDate,
-        onSelectedDateChange = viewModel::onSelectedDateChange,
+        selectedDate = viewModel.selectedDate.value,
         onSelectedNameChange = viewModel::onSelectedTitleChange,
-        onBackClicked = {
-            onBackClicked()
-        },
+        onBackClicked = { onBackClicked() },
         onAddClicked = { name, acquisitionDate ->
             viewModel.selectedCertificationId.value?.let {
                 viewModel.editCertification(name = name, acquisitionDate = acquisitionDate)
@@ -64,12 +60,13 @@ internal fun AddCertificationScreen(
     modifier: Modifier = Modifier,
     focusManager: FocusManager = LocalFocusManager.current,
     selectedName: String,
-    selectedDate: LocalDate?,
     onSelectedNameChange: (String) -> Unit,
-    onSelectedDateChange: (LocalDate?) -> Unit,
     onBackClicked: () -> Unit,
+    selectedDate: LocalDate?,
     onAddClicked: (name: String, acquisitionDate: LocalDate) -> Unit
 ) {
+    val (isDate, setIsDate) = remember { mutableStateOf(selectedDate) }
+
     BitgoeulAndroidTheme { colors, _ ->
         Box(
             modifier = modifier
@@ -102,8 +99,8 @@ internal fun AddCertificationScreen(
                     onButtonClicked = { onSelectedNameChange("") }
                 )
                 AddAcquisitionDateSection(
-                    onDatePickerQuit = onSelectedDateChange,
-                    acquisitionDate = selectedDate?.toKoreanFormat() ?: ""
+                    onDatePickerQuit = setIsDate,
+                    acquisitionDate = isDate?.toKoreanFormat() ?: ""
                 )
                 Spacer(modifier = modifier.weight(1f))
                 BitgoeulButton(
@@ -112,10 +109,10 @@ internal fun AddCertificationScreen(
                     onClicked = {
                         if (selectedName.isBlank()) {
                             makeToast(context, "자격증 이름을 입력해주세요")
-                        } else if (selectedDate == null) {
+                        } else if (isDate == null) {
                             makeToast(context, "취득일을 입력해주세요")
                         } else {
-                            onAddClicked(selectedName, selectedDate)
+                            onAddClicked(selectedName, isDate)
                         }
                     }
                 )
@@ -135,6 +132,5 @@ fun AddCertificationScreenPre() {
         selectedDate = null,
         focusManager = LocalFocusManager.current,
         onSelectedNameChange = {},
-        onSelectedDateChange = {}
     )
 }
