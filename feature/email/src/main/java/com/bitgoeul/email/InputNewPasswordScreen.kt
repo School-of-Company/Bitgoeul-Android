@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
@@ -24,6 +22,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bitgoeul.email.viewmodel.EmailViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
@@ -32,6 +31,7 @@ import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.design_system.util.checkPasswordRegex
 import com.msg.ui.makeToast
 
 @Composable
@@ -40,11 +40,17 @@ internal fun InputNewPasswordRoute(
     onNextClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
+    val firstInputPassword by viewModel.firstInputPassword.collectAsStateWithLifecycle()
+    val secondInputPassword by viewModel.secondInputPassword.collectAsStateWithLifecycle()
 
     InputNewPasswordScreen(
+        firstInputPassword = firstInputPassword,
+        secondInputPassword = secondInputPassword,
+        onFirstInputPasswordChange = viewModel::onFirstInputPasswordChange,
+        onSecondInputPasswordChange = viewModel::onSecondInputPasswordChange,
         onBackClicked = onBackClicked,
         onNextClicked = { newPassword ->
-            viewModel.onNewPassword(newPassword)
+            viewModel.onNewPasswordChange(newPassword)
             viewModel.findPassword()
             onNextClicked()
         },
@@ -54,15 +60,15 @@ internal fun InputNewPasswordRoute(
 @Composable
 internal fun InputNewPasswordScreen(
     modifier: Modifier = Modifier,
+    firstInputPassword: String,
+    secondInputPassword: String,
+    onFirstInputPasswordChange: (String) -> Unit,
+    onSecondInputPasswordChange: (String) -> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
     onBackClicked: () -> Unit,
     onNextClicked: (String) -> Unit,
     context: Context = LocalContext.current
 ) {
-    val passwordPattern = Regex("^(?=.*[A-Za-z0-9])[A-Za-z0-9!@#$%^&*]{8,24}$")
-    val firstInputPassword = remember { mutableStateOf("") }
-    val secondInputPassword = remember { mutableStateOf("") }
-
     BitgoeulAndroidTheme { color, typography ->
         Surface {
             Column(
@@ -104,12 +110,10 @@ internal fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { inputPassword ->
-                        firstInputPassword.value = inputPassword
-                    },
+                    onValueChange = onFirstInputPasswordChange,
                     errorText = "비밀번호는 8~24자 영문, 숫자, 특수문자 1개 이상이어야 합니다.",
                     isDisabled = false,
-                    isError = !passwordPattern.matches(firstInputPassword.value) && firstInputPassword.value.isNotEmpty(),
+                    isError = firstInputPassword.checkPasswordRegex() && firstInputPassword.isNotEmpty(),
                     isLinked = false,
                     isReverseTrailingIcon = false,
                     onButtonClicked = {},
@@ -121,12 +125,10 @@ internal fun InputNewPasswordScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { inputPassword ->
-                        secondInputPassword.value = inputPassword
-                    },
+                    onValueChange = onSecondInputPasswordChange,
                     errorText = "비밀번호가 일치하지 않습니다.",
                     isDisabled = false,
-                    isError = firstInputPassword.value != secondInputPassword.value,
+                    isError = firstInputPassword != secondInputPassword,
                     isLinked = false,
                     isReverseTrailingIcon = false,
                     onButtonClicked = {},
@@ -142,10 +144,10 @@ internal fun InputNewPasswordScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     text = "다음으로",
-                    state = if (firstInputPassword.value.isNotEmpty() && secondInputPassword.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
+                    state = if (firstInputPassword.isNotEmpty() && secondInputPassword.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
                     onClicked = {
-                        if (passwordPattern.matches(firstInputPassword.value)) {
-                            onNextClicked(secondInputPassword.value)
+                        if (firstInputPassword.checkPasswordRegex()) {
+                            onNextClicked(secondInputPassword)
                         } else {
                             makeToast(context, "비밀번호는 8~24자 영문, 숫자, 특수문자 1개 이상이어야 합니다.")
                         }
