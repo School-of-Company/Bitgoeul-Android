@@ -122,7 +122,6 @@ internal fun LoginScreen(
     val (isEmailErrorStatus, setIsEmailErrorStatus) = rememberSaveable { mutableStateOf(false) }
     val isPasswordErrorStatus by rememberSaveable{ mutableStateOf(false) }
     val isErrorTextShow by rememberSaveable { mutableStateOf(false) }
-    var isTextStatus = ""
 
     BitgoeulAndroidTheme { color, type ->
         Surface {
@@ -164,12 +163,9 @@ internal fun LoginScreen(
                             .height(54.dp),
                         placeholder = stringResource(id = R.string.email),
                         errorText = stringResource(id = R.string.error_text_email),
-                        onValueChange = {
-                            isTextStatus = it
-                            onEmailChange(it)
-                        },
+                        onValueChange = onEmailChange,
                         isError = isEmailErrorStatus,
-                        onButtonClicked = { setIsEmailErrorStatus(isTextStatus.isBlank()) },
+                        onButtonClicked = { setIsEmailErrorStatus(email.isBlank()) },
                         isLinked = false,
                         isDisabled = false,
                         isReadOnly = false,
