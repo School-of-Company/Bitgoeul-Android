@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
@@ -65,7 +65,7 @@ internal fun AddCertificationScreen(
     selectedDate: LocalDate?,
     onAddClicked: (name: String, acquisitionDate: LocalDate) -> Unit
 ) {
-    val (isDate, setIsDate) = remember { mutableStateOf(selectedDate) }
+    val (isDate, setIsDate) = rememberSaveable { mutableStateOf(selectedDate) }
 
     BitgoeulAndroidTheme { colors, _ ->
         Box(
