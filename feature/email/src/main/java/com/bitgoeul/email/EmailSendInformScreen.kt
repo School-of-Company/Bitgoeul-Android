@@ -132,7 +132,6 @@ internal fun EmailSendInformScreen(
                 Spacer(modifier = modifier.weight(1f))
 
             }
-
         }
     }
 }
