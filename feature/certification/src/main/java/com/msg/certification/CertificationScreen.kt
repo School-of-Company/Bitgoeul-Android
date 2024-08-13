@@ -35,7 +35,6 @@ import com.msg.model.entity.club.StudentBelongClubEntity
 import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
 import com.msg.model.entity.lecture.SignUpLectures
 import com.msg.ui.DevicePreviews
-import com.msg.ui.util.toDotFormat
 import java.time.LocalDate
 import java.util.UUID
 
