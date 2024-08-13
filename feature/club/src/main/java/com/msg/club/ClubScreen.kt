@@ -97,8 +97,7 @@ internal fun ClubScreen(
     onSettingClicked: (String) -> Unit,
     onItemClicked: (Long) -> Unit
 ) {
-    val scrollState = rememberScrollState()
-    val isDialogOpened = remember { mutableStateOf(false) }
+    val (isDialogOpened, setIsDialogOpened) = remember { mutableStateOf(false) }
     val schoolList = HighSchool.entries.getSchoolNameFromEnum()
 
     BitgoeulAndroidTheme { colors, typography ->  
@@ -125,9 +124,7 @@ internal fun ClubScreen(
                     Spacer(modifier = modifier.weight(1f))
                     IconButton(
                         content = { GreySettingIcon() },
-                        onClick = {
-                            isDialogOpened.value = true
-                        }
+                        onClick = { setIsDialogOpened(true) }
                     )
                 }
                 Spacer(modifier = modifier.height(40.dp))
@@ -157,14 +154,12 @@ internal fun ClubScreen(
             }
         }
             GetClubListDialog(
-                onQuit = {
-                    isDialogOpened.value = it
-                },
+                onQuit = setIsDialogOpened,
                 onItemClicked = {
                     onSettingClicked(it)
                 },
                 list = schoolList,
-                isVisible = isDialogOpened.value
+                isVisible = isDialogOpened
             )
     }
 }
@@ -173,9 +168,7 @@ internal fun ClubScreen(
 @Composable
 fun ClubScreenPre() {
     ClubScreen(
-        data = listOf(
-
-        ),
+        data = listOf(),
         onSettingClicked = {},
         onItemClicked = {}
     )
