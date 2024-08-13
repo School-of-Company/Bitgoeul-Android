@@ -35,6 +35,7 @@ import com.msg.model.entity.club.StudentBelongClubEntity
 import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
 import com.msg.model.entity.lecture.SignUpLectures
 import com.msg.ui.DevicePreviews
+import com.msg.ui.util.toDotFormat
 import java.time.LocalDate
 import java.util.UUID
 
@@ -77,7 +78,7 @@ internal fun CertificationScreenRoute(
         onEditClicked = { id, title, date ->
             viewModel.selectedCertificationId.value = id
             viewModel.onSelectedTitleChange(title)
-            viewModel.onSelectedDateChange(date)
+            viewModel.selectedDate.value = date
             onEditClicked()
         },
         onPlusClicked = onEditClicked,
