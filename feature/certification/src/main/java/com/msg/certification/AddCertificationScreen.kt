@@ -45,7 +45,7 @@ internal fun AddCertificationScreenRoute(
         selectedName = selectedTitle,
         selectedDate = viewModel.selectedDate.value,
         onSelectedNameChange = viewModel::onSelectedTitleChange,
-        onBackClicked = { onBackClicked() },
+        onBackClicked = onBackClicked,
         onAddClicked = { name, acquisitionDate ->
             viewModel.selectedCertificationId.value?.let {
                 viewModel.editCertification(name = name, acquisitionDate = acquisitionDate)
