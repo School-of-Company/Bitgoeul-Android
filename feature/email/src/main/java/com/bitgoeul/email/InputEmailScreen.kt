@@ -116,15 +116,13 @@ internal fun InputEmailScreen(
                 Spacer(modifier = modifier.weight(1f))
 
                 BitgoeulButton(
-                    text = "다음으로",
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(bottom = 14.dp)
                         .fillMaxWidth()
                         .height(52.dp),
+                    text = "다음으로",
                     state = if (email.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
-                    onClicked = {
-                        onNextClicked(email)
-                    }
+                    onClicked = { onNextClicked(email) }
                 )
             }
         }

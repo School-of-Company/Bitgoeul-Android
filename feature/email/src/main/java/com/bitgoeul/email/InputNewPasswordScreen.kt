@@ -45,7 +45,7 @@ internal fun InputNewPasswordRoute(
         onBackClicked = onBackClicked,
         focusManager = focusManager,
         onNextClicked = { newPassword ->
-            viewModel.newPassword.value = newPassword
+            viewModel.onNewPassword(newPassword)
             viewModel.findPassword()
             onNextClicked()
         },
@@ -139,11 +139,11 @@ internal fun InputNewPasswordScreen(
                     Spacer(modifier = modifier.weight(1f))
 
                     BitgoeulButton(
-                        text = "다음으로",
-                        modifier = Modifier
+                        modifier = modifier
                             .padding(bottom = 14.dp)
                             .fillMaxWidth()
                             .height(52.dp),
+                        text = "다음으로",
                         state = if (firstInputPassword.value.isNotEmpty() && secondInputPassword.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
                         onClicked = {
                             if (passwordPattern.matches(firstInputPassword.value)) {
