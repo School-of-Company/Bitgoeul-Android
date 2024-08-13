@@ -191,7 +191,7 @@ internal fun LoginScreen(
                         placeholder = stringResource(id = R.string.password),
                         errorText = stringResource(id = R.string.wrong_password),
                         onValueChange = onPasswordChange,
-                        onLinkClicked = { onFindPasswordClicked() },
+                        onLinkClicked = onFindPasswordClicked,
                         isError = isPasswordErrorStatus,
                         isLinked = true,
                         linkText = stringResource(id = R.string.find_password),
