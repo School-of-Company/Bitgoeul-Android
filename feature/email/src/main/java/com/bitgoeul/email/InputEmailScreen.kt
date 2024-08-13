@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bitgoeul.email.viewmodel.EmailViewModel
 import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
@@ -38,11 +40,14 @@ internal fun InputEmailRoute(
     onNextClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
+    val email by viewModel.email.collectAsStateWithLifecycle()
 
     InputEmailScreen(
+        email = email,
+        onEmailChange = viewModel::onEmailChange,
         onBackClicked = onBackClicked,
         onNextClicked = { email ->
-            viewModel.email.value = email
+            viewModel.onEmailChange(email)
             viewModel.sendLinkToEmail()
             onNextClicked()
         }
@@ -52,12 +57,12 @@ internal fun InputEmailRoute(
 @Composable
 internal fun InputEmailScreen(
     modifier: Modifier = Modifier,
+    email: String,
+    onEmailChange: (String) -> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
     onBackClicked: () -> Unit,
     onNextClicked: (String) -> Unit,
 ) {
-    val email = remember { mutableStateOf("") }
-
     BitgoeulAndroidTheme { color, typography ->
         Surface {
             Column(
@@ -98,9 +103,7 @@ internal fun InputEmailScreen(
 
                 DefaultTextField(
                     modifier = modifier.fillMaxWidth(),
-                    onValueChange = { inputEmail ->
-                        email.value = inputEmail
-                    },
+                    onValueChange = onEmailChange,
                     errorText = "",
                     isDisabled = false,
                     isError = false,
@@ -118,9 +121,9 @@ internal fun InputEmailScreen(
                         .padding(bottom = 14.dp)
                         .fillMaxWidth()
                         .height(52.dp),
-                    state = if (email.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
+                    state = if (email.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
                     onClicked = {
-                        onNextClicked(email.value)
+                        onNextClicked(email)
                     }
                 )
             }
