@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 
@@ -37,7 +38,6 @@ class CertificationViewModel @Inject constructor(
 ) : ViewModel() {
     companion object {
         private const val SELECTED_TITLE = "selectedTitle"
-        private const val SELECTED_DATE = "selectedDate"
     }
 
     private val role = getRole().toString()
@@ -68,7 +68,8 @@ class CertificationViewModel @Inject constructor(
 
     internal var selectedTitle = savedStateHandle.getStateFlow(key = SELECTED_TITLE, initialValue = "")
 
-    internal var selectedDate = savedStateHandle.getStateFlow(key = SELECTED_DATE, initialValue = null as LocalDate?)
+    var selectedDate = mutableStateOf<LocalDate?>(null)
+        private set
 
     var certificationList = mutableStateListOf<CertificationListEntity>()
         private set
@@ -195,6 +196,4 @@ class CertificationViewModel @Inject constructor(
     }
 
     internal fun onSelectedTitleChange(value: String) { savedStateHandle[SELECTED_TITLE] = value }
-
-    internal fun onSelectedDateChange(value: LocalDate?) { savedStateHandle[SELECTED_DATE] = value }
 }
