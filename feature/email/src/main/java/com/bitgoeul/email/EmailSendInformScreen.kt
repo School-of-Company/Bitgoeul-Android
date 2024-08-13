@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bitgoeul.email.viewmodel.EmailViewModel
 import com.msg.common.event.Event
 import com.msg.design_system.R
@@ -36,6 +38,8 @@ internal fun EmailSendInformRoute(
     onMoveNewPasswordClicked: () -> Unit,
     viewModel: EmailViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 ) {
+    val emailText by viewModel.email.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
     val activity = LocalContext.current as ComponentActivity
     val coroutineScope = rememberCoroutineScope()
@@ -68,7 +72,7 @@ internal fun EmailSendInformRoute(
 
     EmailSendInformScreen(
         onBackClicked = onBackClicked,
-        emailText = viewModel.email.value
+        emailText = emailText
     )
 }
 
