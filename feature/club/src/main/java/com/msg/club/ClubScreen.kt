@@ -97,7 +97,6 @@ internal fun ClubScreen(
     onSettingClicked: (String) -> Unit,
     onItemClicked: (Long) -> Unit
 ) {
-    val scrollState = rememberScrollState()
     val (isDialogOpened, setIsDialogOpened) = remember { mutableStateOf(false) }
     val schoolList = HighSchool.entries.getSchoolNameFromEnum()
 
