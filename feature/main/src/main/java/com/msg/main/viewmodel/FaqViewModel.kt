@@ -1,6 +1,7 @@
 package com.msg.main.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.common.errorhandling.errorHandling
@@ -22,7 +23,13 @@ class FaqViewModel @Inject constructor(
     private val addFAQUseCase: AddFAQUseCase,
     private val getFAQUseCase: GetFAQUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    companion object {
+        private const val ANSWER = "answer"
+        private const val QUESTION = "question"
+    }
 
     val role = getRole().toString()
 
@@ -36,6 +43,10 @@ class FaqViewModel @Inject constructor(
         private set
 
     private var errorCode: Int = 200
+
+    internal var answer = savedStateHandle.getStateFlow(key = ANSWER, initialValue = "")
+
+    internal var question = savedStateHandle.getStateFlow(key = QUESTION, initialValue = "")
 
     internal fun addFaq(
         question: String,
@@ -75,4 +86,8 @@ class FaqViewModel @Inject constructor(
     private fun getRole() = viewModelScope.launch {
         getAuthorityUseCase()
     }
+
+    internal fun onAnswerChange(value: String) { savedStateHandle[ANSWER] = value }
+
+    internal fun onQuestionChange(value: String) { savedStateHandle[QUESTION] = value }
 }
