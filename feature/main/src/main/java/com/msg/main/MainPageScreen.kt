@@ -1,6 +1,5 @@
 package com.msg.main
 
-import com.msg.model.enumdata.Authority
 import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,8 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -60,8 +57,8 @@ internal fun MainPageScreenRoute(
     viewModel: FaqViewModel = hiltViewModel(),
     onLoginClicked: () -> Unit
 ) {
-    val answer by viewModel.answer.collectAsStateWithLifecycle()
-    val question by viewModel.question.collectAsStateWithLifecycle()
+    val answerValue by viewModel.answer.collectAsStateWithLifecycle()
+    val questionValue by viewModel.question.collectAsStateWithLifecycle()
 
     val role = viewModel.role
     var error: Event<List<GetFAQDetailEntity>> = Event.Loading
@@ -84,8 +81,8 @@ internal fun MainPageScreenRoute(
     }
 
     MainPageScreen(
-        answer = answer,
-        question = question,
+        answer = answerValue,
+        question = questionValue,
         onAnswerChange = viewModel::onAnswerChange,
         onQuestionChange = viewModel::onQuestionChange,
         data = viewModel.faqList,
