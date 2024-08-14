@@ -19,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msg.common.event.Event
 import com.msg.design_system.R
 import com.msg.design_system.component.dialog.BitgoeulAlertDialog
@@ -58,6 +60,9 @@ internal fun MainPageScreenRoute(
     viewModel: FaqViewModel = hiltViewModel(),
     onLoginClicked: () -> Unit
 ) {
+    val answer by viewModel.answer.collectAsStateWithLifecycle()
+    val question by viewModel.question.collectAsStateWithLifecycle()
+
     val role = viewModel.role
     var error: Event<List<GetFAQDetailEntity>> = Event.Loading
     var isReLaunched = false
@@ -79,6 +84,10 @@ internal fun MainPageScreenRoute(
     }
 
     MainPageScreen(
+        answer = answer,
+        question = question,
+        onAnswerChange = viewModel::onAnswerChange,
+        onQuestionChange = viewModel::onQuestionChange,
         data = viewModel.faqList,
         event = error,
         role = role,
@@ -123,6 +132,10 @@ private suspend fun getFaqList(
 @Composable
 internal fun MainPageScreen(
     modifier: Modifier = Modifier,
+    answer: String,
+    question: String,
+    onAnswerChange: (String) -> Unit,
+    onQuestionChange: (String) -> Unit,
     data: List<GetFAQDetailEntity>,
     event: Event<List<GetFAQDetailEntity>>,
     role: String,
@@ -147,13 +160,9 @@ internal fun MainPageScreen(
         NBCollegeData
     )
 
-    val questionValue = remember { mutableStateOf("") }
-    val answerValue = remember { mutableStateOf("") }
-
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
-            modifier = modifier
-                .fillMaxSize()
+            modifier = modifier.fillMaxSize()
         ) {
             Column(
                 modifier = modifier
@@ -322,15 +331,11 @@ internal fun MainPageScreen(
                 FaqSection(data = data)
                 if (role == "ROLE_ADMIN") {
                     AddFaqItem(
-                        questionValue = questionValue.value,
-                        onQuestionValueChanged = {
-                            questionValue.value = it
-                        },
-                        answerValue = answerValue.value,
-                        onAnswerValueChanged = {
-                            answerValue.value = it
-                        },
-                        onAddClicked = { onAddClicked(questionValue.value, answerValue.value) }
+                        questionValue = question,
+                        onQuestionValueChanged = onQuestionChange,
+                        answerValue = answer,
+                        onAnswerValueChanged = onAnswerChange,
+                        onAddClicked = { onAddClicked(question, answer) }
                     )
                 }
                 Spacer(modifier = modifier.height(24.dp))
@@ -391,6 +396,10 @@ fun MainPageScreenPre() {
         onAddClicked = {_,_->},
         role = "ROLE_ADMIN",
         event = Event.Success(),
-        onDialogButtonClicked = {}
+        onDialogButtonClicked = {},
+        answer = "",
+        question = "",
+        onAnswerChange = {},
+        onQuestionChange = {}
     )
 }
