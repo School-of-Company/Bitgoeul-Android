@@ -11,8 +11,10 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -30,7 +32,7 @@ internal fun FaqItem(
     modifier: Modifier = Modifier,
     data: GetFrequentlyAskedQuestionDetailEntity
 ) {
-    val isSelected = remember { mutableStateOf(false) }
+    var isSelected by rememberSaveable { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, _ ->
         ElevatedCard(
@@ -46,7 +48,7 @@ internal fun FaqItem(
                     shape = RoundedCornerShape(12.dp)
                 )
                 .clickable {
-                    isSelected.value = !isSelected.value
+                    isSelected = !isSelected
                 }
         ) {
             Spacer(modifier = modifier.height(16.dp))
@@ -75,7 +77,7 @@ internal fun FaqItem(
                     }
                 }
             )
-            if (isSelected.value) {
+            if (isSelected) {
                 Spacer(modifier = modifier.height(12.dp))
                 HorizontalDivider(
                     modifier = modifier.padding(horizontal = 13.dp),

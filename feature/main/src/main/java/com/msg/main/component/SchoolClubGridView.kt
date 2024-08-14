@@ -49,7 +49,6 @@ internal fun AutoSchoolClubGridView(
                 }
             }
         }
-
     }
 }
 
@@ -102,9 +101,10 @@ private fun List<String>.getActualList(): List<List<String>> {
 @Composable
 private fun String.getClubChipWidth(): Dp {
     val width = remember { mutableStateOf(0.dp) }
-    val shouldShowCompose = remember { mutableStateOf(true) }
+    val (shouldShowCompose, setShouldShowCompose) = remember { mutableStateOf(true) }
     val density = LocalDensity.current
-    if (shouldShowCompose.value) {
+
+    if (shouldShowCompose) {
         ClubChipView(
             clubName = this,
             modifier = Modifier.onGloballyPositioned {
@@ -113,7 +113,7 @@ private fun String.getClubChipWidth(): Dp {
             }
         )
     }
-    shouldShowCompose.value = false
+    setShouldShowCompose(false)
     return width.value
 }
 

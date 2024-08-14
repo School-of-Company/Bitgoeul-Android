@@ -17,8 +17,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,9 +36,9 @@ internal fun AddFaqItem(
     onAnswerValueChanged: (String) -> Unit,
     onAddClicked: () -> Unit
 ) {
-    val isSelected = remember { mutableStateOf(false) }
-    val questionHintVisible = remember { derivedStateOf { questionValue.isEmpty() } }
-    val answerHintVisible = remember { derivedStateOf { answerValue.isEmpty() } }
+    val (isSelected, setIsSelected) = rememberSaveable { mutableStateOf(false) }
+    val questionHintVisible by remember { derivedStateOf { questionValue.isEmpty() } }
+    val answerHintVisible by remember { derivedStateOf { answerValue.isEmpty() } }
     val interactionSource = remember { MutableInteractionSource() }
 
     BitgoeulAndroidTheme { colors, typography ->
@@ -56,14 +58,14 @@ internal fun AddFaqItem(
                 )
         ) {
             Spacer(modifier = modifier.height(16.dp))
-            if (!isSelected.value) {
+            if (!isSelected) {
                 Text(
                     modifier = modifier
                         .clickable(
                             indication = null,
                             interactionSource = interactionSource
                         ) {
-                            isSelected.value = true
+                            setIsSelected(true)
                         }
                         .padding(horizontal = 20.dp),
                     text = "+ 자주 묻는 질문 추가하기",
@@ -82,7 +84,7 @@ internal fun AddFaqItem(
                                 style = typography.bodySmall,
                                 color = colors.P5
                             )
-                            if (questionHintVisible.value) Text(
+                            if (questionHintVisible) Text(
                                 text = "질문 작성하기",
                                 style = typography.bodySmall,
                                 color = colors.G1
@@ -110,7 +112,7 @@ internal fun AddFaqItem(
                                 style = typography.bodySmall,
                                 color = colors.P5
                             )
-                            if (answerHintVisible.value) Text(
+                            if (answerHintVisible) Text(
                                 text = "답변 작성하기",
                                 style = typography.bodySmall,
                                 color = colors.G1
@@ -136,7 +138,7 @@ internal fun AddFaqItem(
                             indication = null,
                             interactionSource = interactionSource
                         ) {
-                            isSelected.value = false
+                            setIsSelected(false)
                         },
                         text = "취소",
                         style = typography.bodySmall,
@@ -150,7 +152,7 @@ internal fun AddFaqItem(
                             interactionSource = interactionSource
                         ) {
                             onAddClicked()
-                            isSelected.value = false
+                            setIsSelected(false)
                         },
                         text = "작성",
                         style = typography.bodySmall,
