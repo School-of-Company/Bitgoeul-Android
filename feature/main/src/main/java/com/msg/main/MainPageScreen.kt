@@ -150,7 +150,7 @@ internal fun MainPageScreen(
     val enterpriseDoingList = listOf("현장 맞춤형 교육", "현장 실습", "고졸 채용")
     val governmentDoingList = listOf("산업 인력 분석", "특화프로그램 운영", "고졸채용네트워크 구축")
 
-    val highSchoolList = HighSchool.values()
+    val highSchoolList = HighSchool.entries
     val collegeList = listOf(
         SWCollegeData,
         HNCollegeData,
