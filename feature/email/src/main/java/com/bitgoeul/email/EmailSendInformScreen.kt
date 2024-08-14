@@ -76,9 +76,6 @@ internal fun EmailSendInformRoute(
     )
 }
 
-
-
-
 private suspend fun getEmailAuthenticateStatus(
     viewModel: EmailViewModel,
     onSuccess: (data: GetEmailAuthenticateStatusEntity) -> Unit,

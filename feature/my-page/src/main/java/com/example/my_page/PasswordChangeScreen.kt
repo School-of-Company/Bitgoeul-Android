@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -76,10 +76,10 @@ internal fun PasswordChangeScreen(
     onSuccessScreenButtonClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val isWrongPassword by remember { mutableStateOf(false) }
-    var isSamePassword by remember { mutableStateOf(true) }
+    val isWrongPassword by rememberSaveable { mutableStateOf(false) }
+    var isSamePassword by rememberSaveable { mutableStateOf(true) }
 
-    val (isShowSuccessScreen, setIsShowSuccessScreen) = remember { mutableStateOf(false) }
+    val (isShowSuccessScreen, setIsShowSuccessScreen) = rememberSaveable { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
