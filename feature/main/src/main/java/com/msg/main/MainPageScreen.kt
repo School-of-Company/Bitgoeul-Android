@@ -2,6 +2,7 @@ package com.msg.main
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -133,15 +134,14 @@ internal fun MainPageScreen(
     question: String,
     onAnswerChange: (String) -> Unit,
     onQuestionChange: (String) -> Unit,
+    scrollState: ScrollState = rememberScrollState(),
+    highSchoolScrollState: ScrollState = rememberScrollState(),
     data: List<GetFAQDetailEntity>,
     event: Event<List<GetFAQDetailEntity>>,
     role: String,
     onAddClicked: (question: String, answer: String) -> Unit,
     onDialogButtonClicked: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
-    val highSchoolScrollState = rememberScrollState()
-
     val highSchoolDoingList = listOf("교육과정 운영", "진로 지도", "학생 관리")
     val collegeDoingList = listOf("기업 연계 교육", "심화 교육", "후학습 지원")
     val enterpriseDoingList = listOf("현장 맞춤형 교육", "현장 실습", "고졸 채용")
