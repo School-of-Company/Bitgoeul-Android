@@ -20,6 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -62,7 +65,7 @@ internal fun MainPageScreenRoute(
     val questionValue by viewModel.question.collectAsStateWithLifecycle()
 
     val role = viewModel.role
-    var error: Event<List<GetFAQDetailEntity>> = Event.Loading
+    var error: Event<List<GetFAQDetailEntity>> by remember { mutableStateOf(Event.Loading) }
     var isReLaunched = false
     val activity = LocalContext.current as Activity
 
