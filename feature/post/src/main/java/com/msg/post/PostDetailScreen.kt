@@ -105,7 +105,7 @@ internal fun PostDetailScreen(
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val isDialogShow = remember { mutableStateOf(false) }
+    val (isDialogShow, setIsDialogShow)  = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box {
@@ -183,7 +183,7 @@ internal fun PostDetailScreen(
                             modifier = Modifier.fillMaxWidth(),
                             text = "삭제하기"
                         ) {
-                            isDialogShow.value = true
+                            setIsDialogShow(true)
                         }
                     }
                     Row(
@@ -202,8 +202,8 @@ internal fun PostDetailScreen(
                 title = "게시글을 삭제하시겠습니까?",
                 negativeAction = "삭제",
                 content = data.title,
-                isVisible = isDialogShow.value,
-                onQuit = { isDialogShow.value = false },
+                isVisible = isDialogShow,
+                onQuit = { setIsDialogShow(false) },
                 onActionClicked = { onDeleteClicked(id) }
             )
         }
