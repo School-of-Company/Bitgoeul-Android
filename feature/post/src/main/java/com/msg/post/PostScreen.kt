@@ -164,7 +164,7 @@ internal fun PostScreen(
 
 @Preview
 @Composable
-private fun Priview() {
+private fun postScreenPreview() {
     PostScreen(
         role = "",
         onAddClicked = {},
