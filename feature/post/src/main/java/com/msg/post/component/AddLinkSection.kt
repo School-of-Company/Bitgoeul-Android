@@ -23,7 +23,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 
 @Composable
 internal fun AddLinkSection(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     links: List<String>,
     onClickAddButton: () -> Unit,
     onValueChanged: (index: Int, item: String) -> Unit
