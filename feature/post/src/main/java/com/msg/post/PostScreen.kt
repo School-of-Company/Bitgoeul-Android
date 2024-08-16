@@ -14,9 +14,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.common.event.Event
@@ -38,22 +41,14 @@ internal fun PostScreenRoute(
     onAddClicked: () -> Unit
 ) {
     val role = viewModel.role
-    var state = FeedType.EMPLOYMENT
+    val state = remember { mutableStateOf(viewModel.currentFeedType.value) }
 
     LaunchedEffect(true, state) {
-        viewModel.getPostList(
-            type = state
-        )
+        viewModel.getPostList(type = state.value)
         getPostList(
             viewModel = viewModel,
-            onSuccess = {
-                viewModel.postList.value = it
-            },
-            onFailure = {
-                viewModel.postList.value = GetPostListEntity(
-                    posts = emptyList()
-                )
-            }
+            onSuccess = { viewModel.postList.value = it },
+            onFailure = { viewModel.postList.value = GetPostListEntity(posts = emptyList()) }
         )
     }
 
@@ -70,13 +65,11 @@ internal fun PostScreenRoute(
         },
         data = viewModel.postList.value,
         onViewChangeClicked = {
-            viewModel.postList.value = GetPostListEntity(
-                posts = emptyList()
-            )
+            viewModel.postList.value = GetPostListEntity(posts = emptyList())
             viewModel.getPostList(type = it)
-            state = it
+            state.value = it
         },
-        feedType = viewModel.currentFeedType.value
+        viewState = state.value,
     )
 }
 
@@ -106,17 +99,15 @@ internal fun PostScreen(
     onItemClicked: (UUID) -> Unit,
     onViewChangeClicked: (type: FeedType) -> Unit,
     data: GetPostListEntity,
-    feedType: FeedType = FeedType.EMPLOYMENT
+    viewState: FeedType,
 ) {
-    val roleField = listOf(
-        Authority.ROLE_ADMIN.toString(),
-        Authority.ROLE_BBOZZAK.toString(),
-        Authority.ROLE_PROFESSOR.toString(),
-        Authority.ROLE_COMPANY_INSTRUCTOR.toString(),
-        Authority.ROLE_GOVERNMENT.toString()
-    )
-
-    var viewState: FeedType = feedType
+    val roleField = setOf(
+        Authority.ROLE_ADMIN,
+        Authority.ROLE_BBOZZAK,
+        Authority.ROLE_PROFESSOR,
+        Authority.ROLE_COMPANY_INSTRUCTOR,
+        Authority.ROLE_GOVERNMENT
+    ).map { it.toString() }
 
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -138,9 +129,8 @@ internal fun PostScreen(
                 Spacer(modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        viewState =
-                            if (viewState == FeedType.EMPLOYMENT) FeedType.NOTICE else FeedType.EMPLOYMENT
-                        onViewChangeClicked(viewState)
+                        val newViewState = if (viewState == FeedType.EMPLOYMENT) FeedType.NOTICE else FeedType.EMPLOYMENT
+                        onViewChangeClicked(newViewState)
                     },
                     content = {
                         when (viewState) {
@@ -170,4 +160,17 @@ internal fun PostScreen(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun Priview() {
+    PostScreen(
+        role = "",
+        onAddClicked = {},
+        onItemClicked = {},
+        onViewChangeClicked = {},
+        data = GetPostListEntity(posts = emptyList()),
+        viewState = FeedType.EMPLOYMENT
+    )
 }
