@@ -150,11 +150,11 @@ internal fun PostAddScreen(
                     )
                     Spacer(modifier = modifier.height(16.dp))
                     HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
                         color = colors.G9
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = modifier.height(16.dp))
                     BasicTextField(
                         modifier = modifier.fillMaxWidth(),
                         value = content,
@@ -176,7 +176,7 @@ internal fun PostAddScreen(
                         .padding(horizontal = 28.dp)
                 ) {
                     HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
                         color = colors.G9
                     )

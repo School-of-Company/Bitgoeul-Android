@@ -176,21 +176,19 @@ internal fun PostDetailScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 if (role == Authority.ROLE_ADMIN) {
-                    Row(
-                        modifier = Modifier.weight(0.45f)
-                    ) {
+                    Row(modifier = modifier.weight(0.45f)) {
                         NegativeBitgoeulButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             text = "삭제하기"
                         ) {
                             setIsDialogShow(true)
                         }
                     }
                     Row(
-                        modifier = Modifier.weight(0.45f)
+                        modifier = modifier.weight(0.45f)
                     ) {
                         BitgoeulButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             text = "수정하기"
                         ) {
                             onEditClicked()
