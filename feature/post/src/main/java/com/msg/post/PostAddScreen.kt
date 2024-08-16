@@ -1,6 +1,7 @@
 package com.msg.post
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -80,6 +81,7 @@ internal fun PostAddScreenRoute(
 internal fun PostAddScreen(
     modifier: Modifier = Modifier,
     focusManager: FocusManager = LocalFocusManager.current,
+    scrollState: ScrollState = rememberScrollState(),
     onBackClicked: () -> Unit,
     onSettingClicked: (title: String, content: String) -> Unit,
     onAddClicked: (feedType: FeedType, title: String, content: String) -> Unit,
@@ -91,8 +93,6 @@ internal fun PostAddScreen(
     val content = remember { mutableStateOf(savedContent) }
 
     val maxTitleLength = 100
-
-    val scrollState = rememberScrollState()
 
     val typeText = when (feedType) {
         FeedType.EMPLOYMENT -> "게시글"

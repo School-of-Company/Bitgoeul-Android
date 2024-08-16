@@ -2,6 +2,7 @@ package com.msg.post
 
 import com.msg.model.enumdata.Authority
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -96,6 +97,7 @@ private suspend fun getDetailPost(
 @Composable
 internal fun PostDetailScreen(
     modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState(),
     data: GetDetailPostEntity,
     id: UUID,
     role: Authority = Authority.ROLE_USER,
@@ -103,8 +105,6 @@ internal fun PostDetailScreen(
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
-
     val isDialogShow = remember { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
