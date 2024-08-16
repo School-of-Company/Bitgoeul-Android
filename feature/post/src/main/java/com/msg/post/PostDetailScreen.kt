@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -105,7 +106,7 @@ internal fun PostDetailScreen(
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val (isDialogShow, setIsDialogShow)  = remember { mutableStateOf(false) }
+    val (isDialogShow, setIsDialogShow)  = rememberSaveable { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box {
