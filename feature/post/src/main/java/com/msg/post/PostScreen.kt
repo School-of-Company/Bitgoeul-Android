@@ -135,7 +135,7 @@ internal fun PostScreen(
                     style = typography.titleMedium,
                     color = colors.BLACK
                 )
-                Spacer(Modifier.weight(1f))
+                Spacer(modifier.weight(1f))
                 IconButton(
                     onClick = {
                         viewState =
