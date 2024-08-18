@@ -48,7 +48,7 @@ internal fun PostScreenRoute(
         getPostList(
             viewModel = viewModel,
             onSuccess = { viewModel.postList.value = it },
-            onFailure = { viewModel.postList.value = GetPostListEntity(posts = emptyList()) }
+            onFailure = { viewModel.clearPostList() }
         )
     }
 
