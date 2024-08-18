@@ -2,6 +2,7 @@ package com.msg.post
 
 import com.msg.model.enumdata.Authority
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -96,6 +97,7 @@ private suspend fun getDetailPost(
 @Composable
 internal fun PostDetailScreen(
     modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState(),
     data: GetDetailPostEntity,
     id: UUID,
     role: Authority = Authority.ROLE_USER,
@@ -103,9 +105,7 @@ internal fun PostDetailScreen(
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
-
-    val isDialogShow = remember { mutableStateOf(false) }
+    val (isDialogShow, setIsDialogShow)  = rememberSaveable { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box {
@@ -176,21 +176,19 @@ internal fun PostDetailScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 if (role == Authority.ROLE_ADMIN) {
-                    Row(
-                        modifier = Modifier.weight(0.45f)
-                    ) {
+                    Row(modifier = modifier.weight(0.45f)) {
                         NegativeBitgoeulButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             text = "삭제하기"
                         ) {
-                            isDialogShow.value = true
+                            setIsDialogShow(true)
                         }
                     }
                     Row(
-                        modifier = Modifier.weight(0.45f)
+                        modifier = modifier.weight(0.45f)
                     ) {
                         BitgoeulButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             text = "수정하기"
                         ) {
                             onEditClicked()
@@ -202,8 +200,8 @@ internal fun PostDetailScreen(
                 title = "게시글을 삭제하시겠습니까?",
                 negativeAction = "삭제",
                 content = data.title,
-                isVisible = isDialogShow.value,
-                onQuit = { isDialogShow.value = false },
+                isVisible = isDialogShow,
+                onQuit = { setIsDialogShow(false) },
                 onActionClicked = { onDeleteClicked(id) }
             )
         }

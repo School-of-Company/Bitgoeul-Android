@@ -2,6 +2,7 @@ package com.msg.post.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.common.errorhandling.errorHandling
@@ -28,9 +29,14 @@ class PostViewModel @Inject constructor(
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
     private val sendPostUseCase: SendPostUseCase,
-    private val getAuthorityUseCase: GetAuthorityUseCase
-
+    private val getAuthorityUseCase: GetAuthorityUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    companion object {
+        private const val TITLE = "title"
+        private const val CONTENT = "content"
+    }
+
     val role = getRole().toString()
 
     private val _deletePostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -61,9 +67,7 @@ class PostViewModel @Inject constructor(
         private set
 
     var postList = mutableStateOf(
-        GetPostListEntity(
-            posts = listOf()
-        )
+        GetPostListEntity(posts = listOf())
     )
         private set
 
@@ -73,11 +77,9 @@ class PostViewModel @Inject constructor(
     var currentFeedType = mutableStateOf(FeedType.EMPLOYMENT)
         private set
 
-    var savedTitle = mutableStateOf("")
-        private set
+    internal var title = savedStateHandle.getStateFlow(key = TITLE, initialValue = "")
 
-    var savedContent = mutableStateOf("")
-        private set
+    internal var content = savedStateHandle.getStateFlow(key = CONTENT, initialValue = "")
 
     var selectedId = mutableStateOf<UUID>(UUID.randomUUID())
         private set
@@ -192,8 +194,8 @@ class PostViewModel @Inject constructor(
     }
 
     internal fun getFilledEditPage() {
-        savedTitle.value = detailPost.value.title
-        savedContent.value = detailPost.value.content
+        onTitleChange(detailPost.value.title)
+        onContentChange(detailPost.value.content)
         links.addAll(detailPost.value.links)
         isEditPage.value = true
     }
@@ -201,4 +203,11 @@ class PostViewModel @Inject constructor(
     private fun getRole() = viewModelScope.launch {
         getAuthorityUseCase()
     }
+
+    internal fun clearPostList() { postList.value = GetPostListEntity(posts = emptyList()) }
+
+    internal fun onTitleChange(value: String) { savedStateHandle[TITLE] = value }
+
+    internal fun onContentChange(value: String) { savedStateHandle[CONTENT] = value }
+
 }

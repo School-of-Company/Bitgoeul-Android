@@ -1,6 +1,7 @@
 package com.msg.post
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.button.DetailSettingButton
@@ -42,12 +43,20 @@ internal fun PostAddScreenRoute(
     onSettingClicked: () -> Unit,
     onAddClicked: () -> Unit
 ) {
+    val titleValue by viewModel.title.collectAsStateWithLifecycle()
+    val contentValue by viewModel.content.collectAsStateWithLifecycle()
+    val isFeedType = viewModel.currentFeedType.value
+
+    val typeText = when (isFeedType) {
+        FeedType.EMPLOYMENT -> "게시글"
+        FeedType.NOTICE -> "공지사항"
+    }
 
     PostAddScreen(
         onBackClicked = onBackClicked,
         onSettingClicked = { title, content ->
-            viewModel.savedTitle.value = title
-            viewModel.savedContent.value = content
+            viewModel.onTitleChange(title)
+            viewModel.onContentChange(content)
             onSettingClicked()
         },
         onAddClicked = { feedType, title, content ->
@@ -65,14 +74,18 @@ internal fun PostAddScreenRoute(
                     content = content
                 )
             }
-            viewModel.savedContent.value = ""
-            viewModel.savedTitle.value = ""
+            viewModel.onContentChange("")
+            viewModel.onTitleChange("")
             viewModel.isEditPage.value = false
             onAddClicked()
         },
-        savedTitle = viewModel.savedTitle.value,
-        savedContent = viewModel.savedContent.value,
-        feedType = viewModel.currentFeedType.value
+        title = titleValue,
+        content = contentValue,
+        onTitleChange = viewModel::onTitleChange,
+        onContentChange = viewModel::onContentChange,
+        maxTitleLength = 100,
+        typeText = typeText,
+        feedType = isFeedType,
     )
 }
 
@@ -80,24 +93,18 @@ internal fun PostAddScreenRoute(
 internal fun PostAddScreen(
     modifier: Modifier = Modifier,
     focusManager: FocusManager = LocalFocusManager.current,
+    scrollState: ScrollState = rememberScrollState(),
     onBackClicked: () -> Unit,
     onSettingClicked: (title: String, content: String) -> Unit,
     onAddClicked: (feedType: FeedType, title: String, content: String) -> Unit,
-    savedTitle: String,
-    savedContent: String,
-    feedType: FeedType
+    title: String,
+    content: String,
+    onTitleChange: (String) -> Unit,
+    onContentChange: (String) -> Unit,
+    maxTitleLength: Int,
+    feedType: FeedType,
+    typeText: String
 ) {
-    val title = remember { mutableStateOf(savedTitle) }
-    val content = remember { mutableStateOf(savedContent) }
-
-    val maxTitleLength = 100
-
-    val scrollState = rememberScrollState()
-
-    val typeText = when (feedType) {
-        FeedType.EMPLOYMENT -> "게시글"
-        FeedType.NOTICE -> "공지사항"
-    }
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
             modifier = modifier
@@ -129,11 +136,11 @@ internal fun PostAddScreen(
                 ) {
                     BasicTextField(
                         modifier = modifier.fillMaxWidth(),
-                        value = title.value,
-                        onValueChange = { if (it.length <= maxTitleLength) title.value = it },
+                        value = title,
+                        onValueChange = { if (it.length <= maxTitleLength) onTitleChange(it) },
                         textStyle = typography.titleSmall,
                         decorationBox = { innerTextField ->
-                            if (title.value.isEmpty()) Text(
+                            if (title.isEmpty()) Text(
                                 text = "$typeText 제목 (100자 이내)",
                                 style = typography.titleSmall,
                                 color = colors.G1
@@ -143,18 +150,18 @@ internal fun PostAddScreen(
                     )
                     Spacer(modifier = modifier.height(16.dp))
                     HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
                         color = colors.G9
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = modifier.height(16.dp))
                     BasicTextField(
                         modifier = modifier.fillMaxWidth(),
-                        value = content.value,
-                        onValueChange = { if (it.length <= maxTitleLength) content.value = it },
+                        value = content,
+                        onValueChange = { if (it.length <= maxTitleLength) onContentChange(it) },
                         textStyle = typography.bodySmall,
                         decorationBox = { innerTextField ->
-                            if (content.value.isEmpty()) Text(
+                            if (content.isEmpty()) Text(
                                 text = "본문 입력 (1000자 이내)",
                                 style = typography.bodySmall,
                                 color = colors.G1
@@ -169,7 +176,7 @@ internal fun PostAddScreen(
                         .padding(horizontal = 28.dp)
                 ) {
                     HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
                         color = colors.G9
                     )
@@ -178,15 +185,15 @@ internal fun PostAddScreen(
                         modifier = modifier.fillMaxWidth(),
                         type = typeText
                     ) {
-                        onSettingClicked(title.value, content.value)
+                        onSettingClicked(title, content)
                     }
                     Spacer(modifier = modifier.height(8.dp))
                     BitgoeulButton(
                         modifier = modifier.fillMaxWidth(),
                         text = "$typeText 추가",
-                        state = if (title.value.isNotEmpty() && content.value.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
+                        state = if (title.isNotEmpty() && content.isNotEmpty()) ButtonState.Enable else ButtonState.Disable
                     ) {
-                        onAddClicked(feedType, title.value, content.value)
+                        onAddClicked(feedType, title, content)
                     }
                     Spacer(modifier = modifier.height(16.dp))
                 }
@@ -202,9 +209,13 @@ fun PostAddScreenPre() {
         onBackClicked = {},
         onSettingClicked = { _, _ -> },
         onAddClicked = { _, _, _ -> },
-        savedTitle = "",
-        savedContent = "",
         feedType = FeedType.NOTICE,
-        focusManager = LocalFocusManager.current
+        focusManager = LocalFocusManager.current,
+        title = "제목",
+        content = "내용",
+        onTitleChange = {},
+        onContentChange = {},
+        maxTitleLength = 100,
+        typeText = "공지사항"
     )
 }
