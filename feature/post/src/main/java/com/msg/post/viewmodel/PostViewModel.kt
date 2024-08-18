@@ -31,7 +31,6 @@ class PostViewModel @Inject constructor(
     private val sendPostUseCase: SendPostUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
     private val savedStateHandle: SavedStateHandle
-
 ) : ViewModel() {
     companion object {
         private const val TITLE = "title"
@@ -68,9 +67,7 @@ class PostViewModel @Inject constructor(
         private set
 
     var postList = mutableStateOf(
-        GetPostListEntity(
-            posts = listOf()
-        )
+        GetPostListEntity(posts = listOf())
     )
         private set
 
@@ -206,6 +203,8 @@ class PostViewModel @Inject constructor(
     private fun getRole() = viewModelScope.launch {
         getAuthorityUseCase()
     }
+
+    internal fun clearPostList() { postList.value = GetPostListEntity(posts = emptyList()) }
 
     internal fun onTitleChange(value: String) { savedStateHandle[TITLE] = value }
 
