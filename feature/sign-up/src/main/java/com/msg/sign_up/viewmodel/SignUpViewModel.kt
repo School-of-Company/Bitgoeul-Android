@@ -52,10 +52,14 @@ class SignUpViewModel @Inject constructor(
         private const val SECTORS = "sectors"
         private const val EMAIL = "email"
         private const val PASSWORD = "password"
+        private const val BELONG = "belong"
+        private const val REPASSWORD = "rePassword"
     }
 
     private val _signUpResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val signUpResponse = _signUpResponse.asStateFlow()
+
+    internal var belong = savedStateHandle.getStateFlow(key = BELONG, initialValue = "")
 
     internal var job = savedStateHandle.getStateFlow(key = JOB, initialValue = "")
 
@@ -84,6 +88,8 @@ class SignUpViewModel @Inject constructor(
     internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
 
     internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
+
+    internal var rePassword = savedStateHandle.getStateFlow(key = REPASSWORD, initialValue = "")
 
     fun signUp() = viewModelScope.launch {
         when (job.value) {
@@ -246,4 +252,8 @@ class SignUpViewModel @Inject constructor(
     internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
 
     internal fun onPasswordChange(value: String) { savedStateHandle[PASSWORD] = value }
+
+    internal fun onBelongChange(value: String) { savedStateHandle[BELONG] = value }
+
+    internal fun onRePasswordChange(value: String) { savedStateHandle[REPASSWORD] = value }
 }
