@@ -26,6 +26,7 @@ import com.msg.certification.component.AddAcquisitionDateSection
 import com.msg.certification.component.AddCertificationSection
 import com.msg.certification.viewmodel.CertificationViewModel
 import com.msg.design_system.component.button.BitgoeulButton
+import com.msg.design_system.component.modifier.padding.paddingHorizontal
 import com.msg.design_system.component.topbar.DetailSettingTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.ui.DevicePreviews
@@ -82,11 +83,10 @@ internal fun AddCertificationScreen(
             Column(
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(
+                    .paddingHorizontal(
                         top = 24.dp,
                         bottom = 14.dp,
-                        start = 28.dp,
-                        end = 28.dp
+                        horizontal = 28.dp
                     ),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
