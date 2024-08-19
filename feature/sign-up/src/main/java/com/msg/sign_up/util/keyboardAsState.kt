@@ -8,7 +8,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalView
-import com.msg.sign_up.util.enum.Keyboard
+import com.msg.sign_up.util.enums.Keyboard
 
 @Composable
 internal fun keyboardAsState(): State<Keyboard> {
