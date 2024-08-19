@@ -47,8 +47,8 @@ import com.msg.sign_up.data.BelongList
 import com.msg.sign_up.data.HighSchoolList
 import com.msg.sign_up.data.OutsideJobList
 import com.msg.sign_up.data.SchoolJobList
-import com.msg.sign_up.util.enum.Keyboard
-import com.msg.sign_up.util.enum.SignUpState
+import com.msg.sign_up.util.enums.Keyboard
+import com.msg.sign_up.util.enums.SignUpState
 import com.msg.sign_up.util.keyboardAsState
 import com.msg.sign_up.util.searchClubBySchool
 import com.msg.sign_up.util.searchingInList
