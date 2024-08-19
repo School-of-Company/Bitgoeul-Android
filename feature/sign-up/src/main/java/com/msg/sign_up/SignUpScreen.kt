@@ -1,10 +1,8 @@
 package com.msg.sign_up
 
 import android.content.pm.ActivityInfo
-import android.graphics.Rect
-import android.util.Log
-import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,104 +17,42 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.button.ButtonState
 import com.msg.design_system.component.icon.GoBackIcon
+import com.msg.design_system.component.modifier.padding.paddingHorizontal
 import com.msg.design_system.component.textfield.DefaultTextField
 import com.msg.design_system.component.textfield.PasswordTextField
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.util.LockScreenOrientation
-import com.msg.sign_up.SignUpState.Belong
-import com.msg.sign_up.SignUpState.Club
-import com.msg.sign_up.SignUpState.College
-import com.msg.sign_up.SignUpState.Email
-import com.msg.sign_up.SignUpState.Enrollment
-import com.msg.sign_up.SignUpState.Enterprise
-import com.msg.sign_up.SignUpState.Government
-import com.msg.sign_up.SignUpState.GradeAndNumber
-import com.msg.sign_up.SignUpState.Job
-import com.msg.sign_up.SignUpState.Loading
-import com.msg.sign_up.SignUpState.Name
-import com.msg.sign_up.SignUpState.Password
-import com.msg.sign_up.SignUpState.PhoneNumber
-import com.msg.sign_up.SignUpState.Position
-import com.msg.sign_up.SignUpState.RePassword
-import com.msg.sign_up.SignUpState.School
-import com.msg.sign_up.SignUpState.Sectors
+import com.msg.design_system.util.checkPasswordRegex
 import com.msg.sign_up.component.SignUpBottomSheet
 import com.msg.sign_up.data.BelongList
 import com.msg.sign_up.data.HighSchoolList
 import com.msg.sign_up.data.OutsideJobList
 import com.msg.sign_up.data.SchoolJobList
+import com.msg.sign_up.util.enum.Keyboard
+import com.msg.sign_up.util.enum.SignUpState
+import com.msg.sign_up.util.keyboardAsState
 import com.msg.sign_up.util.searchClubBySchool
 import com.msg.sign_up.util.searchingInList
 import com.msg.sign_up.viewmodel.SignUpViewModel
-
-enum class SignUpState {
-    Belong,
-    Job,
-    School,
-    Club,
-    Name,
-    College,
-    Enterprise,
-    Government,
-    Enrollment,
-    GradeAndNumber,
-    Position,
-    Sectors,
-    PhoneNumber,
-    Email,
-    Password,
-    RePassword,
-    Loading
-}
-
-enum class Keyboard {
-    Opened, Closed
-}
-
-@Composable
-private fun keyboardAsState(): State<Keyboard> {
-    val keyboardState = remember { mutableStateOf(Keyboard.Closed) }
-    val view = LocalView.current
-    DisposableEffect(view) {
-        val onGlobalListener = ViewTreeObserver.OnGlobalLayoutListener {
-            val rect = Rect()
-            view.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = view.rootView.height
-            val keypadHeight = screenHeight - rect.bottom
-            keyboardState.value = if (keypadHeight > screenHeight * 0.15) {
-                Keyboard.Opened
-            } else {
-                Keyboard.Closed
-            }
-        }
-        view.viewTreeObserver.addOnGlobalLayoutListener(onGlobalListener)
-
-        onDispose {
-            view.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalListener)
-        }
-    }
-
-    return keyboardState
-}
 
 @Composable
 internal fun SignUpRoute(
@@ -124,23 +60,82 @@ internal fun SignUpRoute(
     onBackClicked: () -> Unit,
     onEnterFinished: () -> Unit
 ) {
+    val belongValue by viewModel.belong.collectAsStateWithLifecycle()
+    val jobValue by viewModel.job.collectAsStateWithLifecycle()
+    val schoolValue by viewModel.school.collectAsStateWithLifecycle()
+    val clubValue by viewModel.club.collectAsStateWithLifecycle()
+    val nameValue by viewModel.name.collectAsStateWithLifecycle()
+    val phoneNumberValue by viewModel.phoneNumber.collectAsStateWithLifecycle()
+    val collegeValue by viewModel.college.collectAsStateWithLifecycle()
+    val enrollmentValue by viewModel.enrollment.collectAsStateWithLifecycle()
+    val enterpriseValue by viewModel.enterprise.collectAsStateWithLifecycle()
+    val governmentValue by viewModel.government.collectAsStateWithLifecycle()
+    val gradeAndNumberValue by viewModel.gradeAndNumber.collectAsStateWithLifecycle()
+    val positionValue by viewModel.position.collectAsStateWithLifecycle()
+    val sectorsValue by viewModel.sectors.collectAsStateWithLifecycle()
+    val emailValue by viewModel.email.collectAsStateWithLifecycle()
+    val passwordValue by viewModel.password.collectAsStateWithLifecycle()
+    val rePasswordValue by viewModel.rePassword.collectAsStateWithLifecycle()
+
+    val outsideJobListForSearch = OutsideJobList
+    val schoolJobListForSearch = SchoolJobList
+    var belongListForSearch by rememberSaveable { mutableStateOf(BelongList) }
+
     SignUpScreen(
+        belong = belongValue,
+        job = jobValue,
+        school = schoolValue,
+        club = clubValue,
+        name = nameValue,
+        phoneNumber = phoneNumberValue,
+        college = collegeValue,
+        enrollment = enrollmentValue,
+        enterprise = enterpriseValue,
+        government = governmentValue,
+        gradeAndNumber = gradeAndNumberValue,
+        position = positionValue,
+        sectors = sectorsValue,
+        email = emailValue,
+        password = passwordValue,
+        rePassword = rePasswordValue,
+        onBelongChange = viewModel::onBelongChange,
+        onJobChange = viewModel::onJobChange,
+        onSchoolChange = viewModel::onSchoolChange,
+        onClubChange = viewModel::onClubChange,
+        onNameChange = viewModel::onNameChange,
+        onPhoneNumberChange = viewModel::onPhoneNumberChange,
+        onCollegeChange = viewModel::onCollegeChange,
+        onEnrollmentChange = viewModel::onEnrollmentChange,
+        onEnterpriseChange = viewModel::onEnterpriseChange,
+        onGovernmentChange = viewModel::onGovernmentChange,
+        onGradeAndNumberChange = viewModel::onGradeAndNumberChange,
+        onPositionChange = viewModel::onPositionChange,
+        onSectorsChange = viewModel::onSectorsChange,
+        onEmailChange = viewModel::onEmailChange,
+        onPasswordChange = viewModel::onPasswordChange,
+        onRePasswordChange = viewModel::onRePasswordChange,
         onBackClicked = onBackClicked,
-        onEnterFinished = { job: String, school: String, club: String, name: String, phoneNumber: String, college: String, enrollment: Int, enterprise: String, government: String, gradeAndNumber: String, email: String, password: String, position: String, sectors: String ->
-            viewModel.job.value = job
-            viewModel.school.value = school
-            viewModel.club.value = club
-            viewModel.name.value = name
-            viewModel.phoneNumber.value = phoneNumber
-            viewModel.college.value = college
-            viewModel.enrollment.intValue = enrollment
-            viewModel.enterprise.value = enterprise
-            viewModel.government.value = government
-            viewModel.gradeAndNumber.value = gradeAndNumber
-            viewModel.position.value = position
-            viewModel.sectors.value = sectors
-            viewModel.email.value = email
-            viewModel.password.value = password
+        outsideJobListForSearch = outsideJobListForSearch,
+        schoolJobListForSearch = schoolJobListForSearch,
+        belongListForSearch = belongListForSearch,
+        onBelongListForSearchChange = { newBelongList ->
+            belongListForSearch = newBelongList
+        },
+        onEnterFinished = { job, school, club, name, phoneNumber, college, enrollment, enterprise, government, gradeAndNumber, email, password, position, sectors ->
+            viewModel.onJobChange(job)
+            viewModel.onSchoolChange(school)
+            viewModel.onClubChange(club)
+            viewModel.onNameChange(name)
+            viewModel.onPhoneNumberChange(phoneNumber)
+            viewModel.onCollegeChange(college)
+            viewModel.onEnrollmentChange(enrollment)
+            viewModel.onEnterpriseChange(enterprise)
+            viewModel.onGovernmentChange(government)
+            viewModel.onGradeAndNumberChange(gradeAndNumber)
+            viewModel.onPositionChange(position)
+            viewModel.onSectorsChange(sectors)
+            viewModel.onEmailChange(email)
+            viewModel.onPasswordChange(password)
             viewModel.signUp()
             onEnterFinished()
         }
@@ -149,7 +144,46 @@ internal fun SignUpRoute(
 
 @Composable
 internal fun SignUpScreen(
+    modifier: Modifier = Modifier,
+    belong: String,
+    job: String,
+    school: String,
+    club: String,
+    name: String,
+    phoneNumber: String,
+    college: String,
+    enrollment: Int,
+    enterprise: String,
+    government: String,
+    gradeAndNumber: String,
+    position: String,
+    sectors: String,
+    email: String,
+    password: String,
+    rePassword: String,
+    onBelongChange: (String) -> Unit,
+    onJobChange: (String) -> Unit,
+    onSchoolChange: (String) -> Unit,
+    onClubChange: (String) -> Unit,
+    onNameChange: (String) -> Unit,
+    onPhoneNumberChange: (String) -> Unit,
+    onCollegeChange: (String) -> Unit,
+    onEnrollmentChange: (Int) -> Unit,
+    onEnterpriseChange: (String) -> Unit,
+    onGovernmentChange: (String) -> Unit,
+    onGradeAndNumberChange: (String) -> Unit,
+    onPositionChange: (String) -> Unit,
+    onSectorsChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onRePasswordChange: (String) -> Unit,
     onBackClicked: () -> Unit,
+    outsideJobListForSearch: List<String>,
+    schoolJobListForSearch: List<String>,
+    belongListForSearch: List<String>,
+    onBelongListForSearchChange: (List<String>) -> Unit,
+    focusManager: FocusManager = LocalFocusManager.current,
+    scrollState: ScrollState = rememberScrollState(),
     onEnterFinished: (
         job: String,
         school: String,
@@ -166,105 +200,77 @@ internal fun SignUpScreen(
         position: String,
         sectors: String
     ) -> Unit,
-    focusManager: FocusManager = LocalFocusManager.current
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
-    val signUpState = remember { mutableStateOf(Belong) }
+    val (isSignUpState, isSetSignUpState) = rememberSaveable { mutableStateOf(SignUpState.Belong) }
 
-    val showSignUpBottomSheet = remember { mutableStateOf(false) }
-    val showJobTextField = remember { mutableStateOf(false) }
-    val showSchoolTextField = remember { mutableStateOf(false) }
-    val showClubTextField = remember { mutableStateOf(false) }
-    val showNameTextField = remember { mutableStateOf(false) }
-    val showCollegeTextField = remember { mutableStateOf(false) }
-    val showEnterpriseTextField = remember { mutableStateOf(false) }
-    val showGovernmentTextField = remember { mutableStateOf(false) }
-    val showEnrollmentTextField = remember { mutableStateOf(false) }
-    val showGradeAndNumberTextField = remember { mutableStateOf(false) }
-    val showPositionTextField = remember { mutableStateOf(false) }
-    val showSectorsTextField = remember { mutableStateOf(false) }
-    val showPhoneNumberTextField = remember { mutableStateOf(false) }
-    val showEmailTextField = remember { mutableStateOf(false) }
-    val showPasswordTextField = remember { mutableStateOf(false) }
-    val showRePasswordTextField = remember { mutableStateOf(false) }
-    val isLoading = remember { mutableStateOf(false) }
+    val (isShowSignUpBottomSheet, isSetShowSignUpBottomSheet) = rememberSaveable { mutableStateOf(false) }
+    val (isShowJobTextField, isSetShowJobTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowSchoolTextField, isSetShowSchoolTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowClubTextField, isSetShowClubTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowNameTextField, isSetShowNameTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowCollegeTextField, isSetShowCollegeTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowEnterpriseTextField, isSetShowEnterpriseTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowGovernmentTextField, isSetShowGovernmentTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowEnrollmentTextField, isSetShowEnrollmentTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowGradeAndNumberTextField, isSetShowGradeAndNumberTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowPositionTextField, isSetShowPositionTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowSectorsTextField, isSetShowSectorsTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowPhoneNumberTextField, isSetShowPhoneNumberTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowEmailTextField, isSetShowEmailTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowPasswordTextField, isSetShowPasswordTextField) = rememberSaveable { mutableStateOf(false) }
+    val (isShowRePasswordTextField, isSetShowRePasswordTextField) = rememberSaveable { mutableStateOf(false) }
 
-    val isSelectedBelong = remember { mutableStateOf(false) }
-    val isSelectedJob = remember { mutableStateOf(false) }
-    val isSelectedSchool = remember { mutableStateOf(false) }
-    val isSelectedClub = remember { mutableStateOf(false) }
-    val isSelectedName = remember { mutableStateOf(false) }
-    val isSelectedPhoneNumber = remember { mutableStateOf(false) }
-    val isSelectedCollege = remember { mutableStateOf(false) }
-    val isSelectedEnrollment = remember { mutableStateOf(false) }
-    val isSelectedEnterprise = remember { mutableStateOf(false) }
-    val isSelectedGovernment = remember { mutableStateOf(false) }
-    val isSelectedGradeAndNumber = remember { mutableStateOf(false) }
-    val isSelectedPosition = remember { mutableStateOf(false) }
-    val isSelectedSectors = remember { mutableStateOf(false) }
-    val isSelectedEmail = remember { mutableStateOf(false) }
-    val isSelectedPassword = remember { mutableStateOf(false) }
-    val isSelectedRePassword = remember { mutableStateOf(false) }
-    val isActivatedBeforePhoneNumber = remember { mutableStateOf(false) }
+    val isLoading by rememberSaveable { mutableStateOf(false) }
 
+    val (isSelectedBelong, isSetSelectedBelong) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedJob, isSetSelectedJob) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedSchool, isSetSelectedSchool) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedClub, isSetSelectedClub) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedName, isSetSelectedName) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedPhoneNumber, isSetSelectedPhoneNumber) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedCollege, isSetSelectedCollege) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedEnrollment, isSetSelectedEnrollment) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedEnterprise, isSetSelectedEnterprise) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedGovernment, isSetSelectedGovernment) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedGradeAndNumber, isSetSelectedGradeAndNumber) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedPosition, isSetSelectedPosition) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedSectors, isSetSelectedSectors) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedEmail, isSetSelectedEmail) = rememberSaveable { mutableStateOf(false) }
+    val (isSelectedPassword, isSetSelectedPassword) = rememberSaveable { mutableStateOf(false) }
+    var isSelectedRePassword by rememberSaveable { mutableStateOf(false) }
+    var isActivatedBeforePhoneNumber by rememberSaveable { mutableStateOf(false) }
 
-    val belong = remember { mutableStateOf("") }
-    val job = remember { mutableStateOf("") }
-    val school = remember { mutableStateOf("") }
-    val club = remember { mutableStateOf("") }
-    val name = remember { mutableStateOf("") }
-    val phoneNumber = remember { mutableStateOf("") }
-    val college = remember { mutableStateOf("") }
-    val enrollment = remember { mutableIntStateOf(0) }
-    val enterprise = remember { mutableStateOf("") }
-    val government = remember { mutableStateOf("") }
-    val gradeAndNumber = remember { mutableStateOf("") }
-    val position = remember { mutableStateOf("") }
-    val sectors = remember { mutableStateOf("") }
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-    val rePassword = remember { mutableStateOf("a") }
+    val (isSchoolListForSearch, isSetSchoolListForSearch) = rememberSaveable { mutableStateOf(HighSchoolList) }
+    val (isClubListForSearch, isSetClubListForSearch) = rememberSaveable { mutableStateOf(school.searchClubBySchool()) }
 
-    var belongListForSearch = BelongList
-    val outsideJobListForSearch = OutsideJobList
-    val schoolJobListForSearch = SchoolJobList
-    val schoolListForSearch = remember { mutableStateOf(HighSchoolList) }
-    val clubListForSearch = remember { mutableStateOf(school.value.searchClubBySchool()) }
-
-    val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,24}$")
-
-    val isApplicationButtonEnabled = remember { mutableStateOf(false) }
+    val (isApplicationButtonEnabled, isSetApplicationButtonEnabled) = rememberSaveable { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(colors.WHITE)
         ) {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .background(colors.WHITE)
                     .padding(horizontal = 28.dp)
             ) {
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = modifier.height(20.dp))
                 GoBackTopBar(
                     icon = { GoBackIcon() },
                     text = "돌아가기",
-                    onClicked = { onBackClicked() }
+                    onClicked = onBackClicked
                 )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Spacer(
-                        modifier = Modifier.height(16.dp)
-                    )
-                    when (signUpState.value) {
-                        Belong -> {
-                            if (isSelectedBelong.value) {
-                                showJobTextField.value = false
-                                job.value = ""
+                Column(modifier = modifier.fillMaxWidth()) {
+                    Spacer(modifier = modifier.height(16.dp))
+                    when (isSignUpState) {
+                        SignUpState.Belong -> {
+                            if (isSelectedBelong) {
+                                isSetShowJobTextField(false)
+                                onJobChange("")
                             }
                             Text(
                                 text = "만나서 반가워요!",
@@ -278,12 +284,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Job -> {
-                            if (isSelectedJob.value) {
-                                showSchoolTextField.value = false
-                                school.value = ""
+                        SignUpState.Job -> {
+                            if (isSelectedJob) {
+                                isSetShowSchoolTextField(false)
+                                onSchoolChange("")
                             }
-                            showJobTextField.value = true
+                            isSetShowJobTextField(true)
                             Text(
                                 text = "만나서 반가워요!",
                                 style = typography.titleLarge,
@@ -296,12 +302,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        School -> {
-                            if (isSelectedSchool.value) {
-                                showClubTextField.value = false
-                                club.value = ""
+                        SignUpState.School -> {
+                            if (isSelectedSchool) {
+                                isSetShowClubTextField(false)
+                                onClubChange("")
                             }
-                            showSchoolTextField.value = true
+                            isSetShowSchoolTextField(true)
                             Text(
                                 text = "학교 선택",
                                 style = typography.titleLarge,
@@ -314,12 +320,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Club -> {
-                            if (isSelectedClub.value) {
-                                showNameTextField.value = false
-                                name.value = ""
+                        SignUpState.Club -> {
+                            if (isSelectedClub) {
+                                isSetShowNameTextField(false)
+                                onNameChange("")
                             }
-                            showClubTextField.value = true
+                            isSetShowClubTextField(true)
                             Text(
                                 text = "동아리 선택",
                                 style = typography.titleLarge,
@@ -332,19 +338,19 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Name -> {
-                            if (isSelectedName.value) {
-                                showPhoneNumberTextField.value = false
-                                showCollegeTextField.value = false
-                                showEnrollmentTextField.value = false
-                                showEnterpriseTextField.value = false
-                                showGovernmentTextField.value = false
-                                college.value = ""
-                                enrollment.value = 0
-                                enterprise.value = ""
-                                government.value = ""
+                        SignUpState.Name -> {
+                            if (isSelectedName) {
+                                isSetShowPhoneNumberTextField(false)
+                                isSetShowCollegeTextField(false)
+                                isSetShowEnrollmentTextField(false)
+                                isSetShowEnterpriseTextField(false)
+                                isSetShowGovernmentTextField(false)
+                                onCollegeChange("")
+                                onEnrollmentChange(0)
+                                onEnterpriseChange("")
+                                onGovernmentChange("")
                             }
-                            showNameTextField.value = true
+                            isSetShowNameTextField(true)
                             Text(
                                 text = "이름 입력",
                                 style = typography.titleLarge,
@@ -357,12 +363,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        College -> {
-                            if (isSelectedCollege.value) {
-                                showPhoneNumberTextField.value = false
-                                phoneNumber.value = ""
+                        SignUpState.College -> {
+                            if (isSelectedCollege) {
+                                isSetShowPhoneNumberTextField(false)
+                                onPhoneNumberChange("")
                             }
-                            showCollegeTextField.value = true
+                            isSetShowCollegeTextField(true)
                             Text(
                                 text = "대학 입력",
                                 style = typography.titleLarge,
@@ -375,12 +381,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Enterprise -> {
-                            if (isSelectedEnterprise.value) {
-                                showPhoneNumberTextField.value = false
-                                phoneNumber.value = ""
+                        SignUpState.Enterprise -> {
+                            if (isSelectedEnterprise) {
+                                isSetShowPhoneNumberTextField(false)
+                                onPhoneNumberChange("")
                             }
-                            showEnterpriseTextField.value = true
+                            isSetShowEnterpriseTextField(true)
                             Text(
                                 text = "기업 입력",
                                 style = typography.titleLarge,
@@ -393,12 +399,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Government -> {
-                            if (isSelectedGovernment.value) {
-                                showPositionTextField.value = false
-                                sectors.value = ""
+                        SignUpState.Government -> {
+                            if (isSelectedGovernment) {
+                                isSetShowPositionTextField(false)
+                                onSectorsChange("")
                             }
-                            showGovernmentTextField.value = true
+                            isSetShowGovernmentTextField(true)
                             Text(
                                 text = "기관입력",
                                 style = typography.titleLarge,
@@ -411,13 +417,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Enrollment -> {
-                            Log.d("TAG", "hello")
-                            if (isSelectedEnrollment.value) {
-                                showGradeAndNumberTextField.value = false
-                                gradeAndNumber.value = ""
+                        SignUpState.Enrollment -> {
+                            if (isSelectedEnrollment) {
+                                isSetShowPhoneNumberTextField(false)
+                                onGradeAndNumberChange("")
                             }
-                            showEnrollmentTextField.value = true
+                            isSetShowEnrollmentTextField(true)
                             Text(
                                 text = "입학년도 입력",
                                 style = typography.titleLarge,
@@ -430,12 +435,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        GradeAndNumber -> {
-                            if (isSelectedGradeAndNumber.value) {
-                                showPhoneNumberTextField.value = false
-                                phoneNumber.value = ""
+                        SignUpState.GradeAndNumber -> {
+                            if (isSelectedGradeAndNumber) {
+                                isSetShowPhoneNumberTextField(false)
+                                onPhoneNumberChange("")
                             }
-                            showGradeAndNumberTextField.value = true
+                            isSetShowGradeAndNumberTextField(true)
                             Text(
                                 text = "학번 입력",
                                 style = typography.titleLarge,
@@ -448,12 +453,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Position -> {
-                            if (isSelectedPosition.value) {
-                                showSectorsTextField.value = false
-                                position.value = ""
+                        SignUpState.Position -> {
+                            if (isSelectedPosition) {
+                                isSetShowPhoneNumberTextField(false)
+                                onPositionChange("")
                             }
-                            showPositionTextField.value = true
+                            isSetShowPositionTextField(true)
                             Text(
                                 text = "업종 입력",
                                 style = typography.titleLarge,
@@ -466,12 +471,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Sectors -> {
-                            if (isSelectedSectors.value) {
-                                showPhoneNumberTextField.value = false
-                                phoneNumber.value = ""
+                        SignUpState.Sectors -> {
+                            if (isSelectedSectors) {
+                                isSetShowPhoneNumberTextField(false)
+                                onPhoneNumberChange("")
                             }
-                            showSectorsTextField.value = true
+                            isSetShowSectorsTextField(true)
                             Text(
                                 text = "직책 입력",
                                 style = typography.titleLarge,
@@ -484,12 +489,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        PhoneNumber -> {
-                            if (isSelectedPhoneNumber.value) {
-                                showEmailTextField.value = false
-                                email.value = ""
+                        SignUpState.PhoneNumber -> {
+                            if (isSelectedPhoneNumber) {
+                                isSetShowEmailTextField(false)
+                                onEmailChange("")
                             }
-                            showPhoneNumberTextField.value = true
+                            isSetShowPhoneNumberTextField(true)
                             Text(
                                 text = "전화번호 입력",
                                 style = typography.titleLarge,
@@ -502,12 +507,12 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Email -> {
-                            if (isSelectedEmail.value) {
-                                showPasswordTextField.value = false
-                                password.value = ""
+                        SignUpState.Email -> {
+                            if (isSelectedEmail) {
+                                isSetShowPasswordTextField(false)
+                                onPasswordChange("")
                             }
-                            showEmailTextField.value = true
+                            isSetShowEmailTextField(true)
                             Text(
                                 text = "이메일 입력",
                                 style = typography.titleLarge,
@@ -520,13 +525,13 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Password -> {
-                            if (isSelectedPassword.value) {
-                                showRePasswordTextField.value = false
-                                rePassword.value = ""
-                                isApplicationButtonEnabled.value = false
+                        SignUpState.Password -> {
+                            if (isSelectedPassword) {
+                                isSetShowRePasswordTextField(false)
+                                onRePasswordChange("")
+                                isSetApplicationButtonEnabled(false)
                             }
-                            showPasswordTextField.value = true
+                            isSetShowPasswordTextField(true)
                             Text(
                                 text = "비밀번호 입력",
                                 style = typography.titleLarge,
@@ -539,8 +544,8 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        RePassword -> {
-                            showRePasswordTextField.value = true
+                        SignUpState.RePassword -> {
+                            isSetShowRePasswordTextField(true)
                             Text(
                                 text = "비밀번호 재입력",
                                 style = typography.titleLarge,
@@ -553,87 +558,88 @@ internal fun SignUpScreen(
                             )
                         }
 
-                        Loading ->
-                            if (password.value == rePassword.value) {
-                                isApplicationButtonEnabled.value = true
-                            }
+                        SignUpState.Loading ->
+                            if (password == rePassword) { isSetApplicationButtonEnabled(true) }
                     }
-                    Spacer(modifier = Modifier.height(32.dp))
-                    val scrollState = rememberScrollState()
+                    Spacer(modifier = modifier.height(32.dp))
                     Column(
-                        modifier = Modifier.verticalScroll(scrollState),
+                        modifier = modifier.verticalScroll(scrollState),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        if (showRePasswordTextField.value && showPasswordTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedRePassword.value = true
+                        if (isShowRePasswordTextField && isShowPasswordTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSelectedRePassword = false
                             PasswordTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value && (password.value == rePassword.value)) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked && (password == rePassword))
+                                            isSetSignUpState(
+                                                continueToNextField(
+                                                    isSignUpState,
+                                                    job
+                                                )
+                                            )
                                     },
                                 placeholder = "비밀번호",
                                 errorText = "비밀번호가 일치하지 않습니다",
-                                onValueChange = {
-                                    rePassword.value = it
-                                },
+                                onValueChange = onRePasswordChange,
                                 onLinkClicked = {},
-                                isError = password.value == rePassword.value,
+                                isError = password == rePassword,
                                 isLinked = false,
                                 isDisabled = false,
                                 onClicked = {
-                                    if (signUpState.value != RePassword) signUpState.value =
-                                        RePassword
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.RePassword) isSetSignUpState(SignUpState.RePassword)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showPasswordTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedPassword.value = true
+                        if (isShowPasswordTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedPassword(true)
                             PasswordTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked)
+                                            isSetSignUpState(
+                                                continueToNextField(
+                                                    isSignUpState,
+                                                    job
+                                                )
+                                            )
                                     },
                                 placeholder = "비밀번호",
                                 errorText = "비밀번호는 규칙에 맞게 입력해주세요",
-                                onValueChange = {
-                                    password.value = it
-                                },
+                                onValueChange = onPasswordChange,
                                 onLinkClicked = {},
-                                isError = !passwordRegex.matches(password.value),
+                                isError = !password.checkPasswordRegex(),
                                 isLinked = false,
                                 isDisabled = false,
                                 onClicked = {
-                                    if (signUpState.value != Password) signUpState.value = Password
-                                    showRePasswordTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.Password) isSetSignUpState(SignUpState.Password)
+                                    isSetShowRePasswordTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showEmailTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedEmail.value = true
+                        if (isShowEmailTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedEmail(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked)
+                                            isSetSignUpState(
+                                                continueToNextField(
+                                                    isSignUpState,
+                                                    job
+                                                )
+                                            )
                                     },
                                 placeholder = "이메일",
                                 isError = false,
@@ -641,30 +647,27 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    email.value = it
-                                },
-                                onButtonClicked = { email.value = "" },
+                                onValueChange = onEmailChange,
+                                onButtonClicked = { onEmailChange("") },
                                 isReadOnly = false,
                                 onClicked = {
-                                    if (signUpState.value != Email) signUpState.value = Email
-                                    showPasswordTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.Email) isSetSignUpState(SignUpState.Email)
+                                    isSetShowPasswordTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showPhoneNumberTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedPhoneNumber.value = true
+                        if (isShowPhoneNumberTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedPhoneNumber(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "전화번호",
                                 isError = false,
@@ -672,32 +675,28 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    phoneNumber.value = it
-                                },
-                                onButtonClicked = { phoneNumber.value = "" },
+                                onValueChange = onPhoneNumberChange,
+                                onButtonClicked = { onPhoneNumberChange("") },
                                 isReadOnly = false,
                                 isNumberOnly = true,
                                 onClicked = {
-                                    if (signUpState.value != PhoneNumber) signUpState.value =
-                                        PhoneNumber
-                                    showEmailTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.PhoneNumber) isSetSignUpState(SignUpState.PhoneNumber)
+                                    isSetShowEmailTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showGradeAndNumberTextField.value && showEnrollmentTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedGradeAndNumber.value = true
+                        if (isShowGradeAndNumberTextField && isShowEnrollmentTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedGradeAndNumber(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "학번",
                                 isError = false,
@@ -705,33 +704,29 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    gradeAndNumber.value = it
-                                },
-                                onButtonClicked = { gradeAndNumber.value = "" },
+                                onValueChange = onGradeAndNumberChange,
+                                onButtonClicked = { onGradeAndNumberChange("") },
                                 isReadOnly = false,
                                 isNumberOnly = true,
                                 onClicked = {
-                                    if (signUpState.value != GradeAndNumber) signUpState.value =
-                                        GradeAndNumber
-                                    isActivatedBeforePhoneNumber.value = true
-                                    showPhoneNumberTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.GradeAndNumber) isSetSignUpState(SignUpState.GradeAndNumber)
+                                    isActivatedBeforePhoneNumber = true
+                                    isSetShowPhoneNumberTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showSectorsTextField.value && showPositionTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedSectors.value = true
+                        if (isShowSectorsTextField && isShowPositionTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedSectors(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "직책 입력",
                                 isError = false,
@@ -739,32 +734,28 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    position.value = it
-                                },
-                                onButtonClicked = { position.value = "" },
+                                onValueChange = onPositionChange,
+                                onButtonClicked = { onPositionChange("") },
                                 isReadOnly = false,
                                 onClicked = {
-                                    if (signUpState.value != Sectors) signUpState.value =
-                                        Sectors
-                                    isActivatedBeforePhoneNumber.value = true
-                                    showPhoneNumberTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.Sectors) isSetSignUpState(SignUpState.Sectors)
+                                    isActivatedBeforePhoneNumber = true
+                                    isSetShowPhoneNumberTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showPositionTextField.value && showGovernmentTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedPosition.value = true
+                        if (isShowPositionTextField && isShowGovernmentTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedPosition(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "소속 기관의 업종",
                                 isError = false,
@@ -772,31 +763,29 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    sectors.value = it
-                                },
-                                onButtonClicked = { sectors.value = "" },
+                                onValueChange = onSectorsChange,
+                                onButtonClicked = { onSectorsChange("") },
                                 isReadOnly = false,
                                 onClicked = {
-                                    if (signUpState.value != Position) signUpState.value =
-                                        Position
-                                    showSectorsTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.Position) isSetSignUpState(
+                                        SignUpState.Position
+                                    )
+                                    isSetShowSectorsTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showGovernmentTextField.value && showNameTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedGovernment.value = true
+                        if (isShowGovernmentTextField && isShowNameTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedGovernment(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "소속 기관명",
                                 isError = false,
@@ -804,32 +793,28 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    government.value = it
-                                },
-                                onButtonClicked = { government.value = "" },
+                                onValueChange = onGovernmentChange,
+                                onButtonClicked = { onGovernmentChange("") },
                                 isReadOnly = false,
                                 onClicked = {
-                                    if (signUpState.value != Government) signUpState.value =
-                                        Government
-                                    isActivatedBeforePhoneNumber.value = true
-                                    showPhoneNumberTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.Government) isSetSignUpState(SignUpState.Government)
+                                    isActivatedBeforePhoneNumber = true
+                                    isSetShowPhoneNumberTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showCollegeTextField.value && showNameTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedCollege.value = true
+                        if (isShowCollegeTextField && isShowNameTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedCollege(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "소속 대학명",
                                 isError = false,
@@ -837,31 +822,28 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    college.value = it
-                                },
-                                onButtonClicked = { college.value = "" },
+                                onValueChange = onCollegeChange,
+                                onButtonClicked = { onCollegeChange("") },
                                 isReadOnly = false,
                                 onClicked = {
-                                    if (signUpState.value != College) signUpState.value = College
-                                    isActivatedBeforePhoneNumber.value = true
-                                    showPhoneNumberTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.College) isSetSignUpState(SignUpState.College)
+                                    isActivatedBeforePhoneNumber = true
+                                    isSetShowPhoneNumberTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showEnterpriseTextField.value && showNameTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedEnterprise.value = false
+                        if (isShowEnterpriseTextField && isShowNameTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedEnterprise(false)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "소속 기업명",
                                 isError = false,
@@ -869,32 +851,28 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    enterprise.value = it
-                                },
-                                onButtonClicked = { enterprise.value = "" },
+                                onValueChange = onEnterpriseChange,
+                                onButtonClicked = { onEnterpriseChange("") },
                                 isReadOnly = false,
                                 onClicked = {
-                                    if (signUpState.value != Enterprise) signUpState.value =
-                                        Enterprise
-                                    isActivatedBeforePhoneNumber.value = true
-                                    showPhoneNumberTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.Enterprise) isSetSignUpState(SignUpState.Enterprise)
+                                    isActivatedBeforePhoneNumber = true
+                                    isSetShowPhoneNumberTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showEnrollmentTextField.value && showNameTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedEnrollment.value = true
+                        if (isShowEnrollmentTextField && isShowNameTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedEnrollment(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "입학년도",
                                 isError = false,
@@ -902,32 +880,30 @@ internal fun SignUpScreen(
                                 isDisabled = false,
                                 isReverseTrailingIcon = false,
                                 errorText = "",
-                                onValueChange = {
-                                    enrollment.value = it.toInt()
-                                },
-                                onButtonClicked = { enrollment.value = 0 },
+                                onValueChange = { onEnrollmentChange.toString() },
+                                onButtonClicked = { onEnrollmentChange(0) },
                                 isReadOnly = false,
                                 isNumberOnly = true,
                                 onClicked = {
-                                    if (signUpState.value != Enrollment) signUpState.value =
-                                        Enrollment
-                                    showGradeAndNumberTextField.value = false
-                                    isClicked.value = true
+                                    if (isSignUpState != SignUpState.Enrollment) isSetSignUpState(
+                                        SignUpState.Enrollment
+                                    )
+                                    isSetShowPhoneNumberTextField(false)
+                                    isSetClicked(true)
                                 }
                             )
                         }
-                        if (showNameTextField.value && showClubTextField.value) {
-                            val isClicked = remember { mutableStateOf(false) }
-                            if (keyboardAsState().value == Keyboard.Closed) {
-                                focusManager.clearFocus()
-                            }
-                            isSelectedName.value = true
+                        if (isShowNameTextField && isShowClubTextField) {
+                            val (isClicked, isSetClicked) = remember { mutableStateOf(false) }
+                            if (keyboardAsState().value == Keyboard.Closed) { focusManager.clearFocus() }
+                            isSetSelectedName(true)
                             DefaultTextField(
-                                modifier = Modifier
+                                modifier = modifier
                                     .fillMaxWidth()
                                     .onFocusChanged {
-                                        if (!it.isFocused && isClicked.value) signUpState.value =
-                                            continueToNextField(signUpState.value, job.value)
+                                        if (!it.isFocused && isClicked) isSetSignUpState(
+                                            continueToNextField(isSignUpState, job)
+                                        )
                                     },
                                 placeholder = "이름",
                                 isError = false,
@@ -936,32 +912,31 @@ internal fun SignUpScreen(
                                 isReverseTrailingIcon = false,
                                 errorText = "",
                                 onValueChange = {
-                                    name.value = it
+                                    onNameChange(it)
                                     if (it.length == 3) continueToNextField(
-                                        signUpState.value,
-                                        job.value
+                                        isSignUpState,
+                                        job
                                     )
                                 },
-                                onButtonClicked = { name.value = "" },
+                                onButtonClicked = { onNameChange("") },
                                 isReadOnly = false,
                                 onClicked = {
-                                    if (signUpState.value != Name) signUpState.value = Name
-                                    if (job.value == "취업동아리 선생님") isActivatedBeforePhoneNumber.value =
-                                        true
-                                    isClicked.value = true
-                                    showEnrollmentTextField.value = false
-                                    showPhoneNumberTextField.value = false
-                                    showEnterpriseTextField.value = false
-                                    showCollegeTextField.value = false
-                                    showGovernmentTextField.value = false
+                                    if (isSignUpState != SignUpState.Name) isSetSignUpState(SignUpState.Name)
+                                    if (job == "취업동아리 선생님") isActivatedBeforePhoneNumber = true
+                                    isSetClicked(true)
+                                    isSetShowEnrollmentTextField(false)
+                                    isSetShowPhoneNumberTextField(false)
+                                    isSetShowEnterpriseTextField(false)
+                                    isSetShowCollegeTextField(false)
+                                    isSetShowGovernmentTextField(false)
                                 }
                             )
                         }
-                        if (showClubTextField.value && showSchoolTextField.value) {
-                            clubListForSearch.value = school.value.searchClubBySchool()
-                            isSelectedClub.value = true
+                        if (isShowClubTextField && isShowSchoolTextField) {
+                            isSetClubListForSearch(school.searchClubBySchool())
+                            isSetSelectedClub(true)
                             DefaultTextField(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = modifier.fillMaxWidth(),
                                 placeholder = "동아리",
                                 isError = false,
                                 isLinked = false,
@@ -969,20 +944,20 @@ internal fun SignUpScreen(
                                 isReverseTrailingIcon = true,
                                 errorText = "",
                                 onValueChange = {},
-                                onButtonClicked = { club.value = "" },
+                                onButtonClicked = { onClubChange("") },
                                 isReadOnly = true,
                                 onClicked = {
-                                    if (signUpState.value != Club) signUpState.value = Club
-                                    showSignUpBottomSheet.value = true
-                                    showNameTextField.value = false
+                                    if (isSignUpState != SignUpState.Club) isSetSignUpState(SignUpState.Club)
+                                    isSetShowSignUpBottomSheet(true)
+                                    isSetShowNameTextField(false)
                                 },
-                                value = club.value
+                                value = club
                             )
                         }
-                        if (showSchoolTextField.value && showJobTextField.value) {
-                            isSelectedSchool.value = true
+                        if (isShowSchoolTextField && isShowJobTextField) {
+                            isSetSelectedSchool(true)
                             DefaultTextField(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = modifier.fillMaxWidth(),
                                 placeholder = "학교",
                                 isError = false,
                                 isLinked = false,
@@ -990,177 +965,150 @@ internal fun SignUpScreen(
                                 isReverseTrailingIcon = true,
                                 errorText = "",
                                 onValueChange = {},
-                                onButtonClicked = { school.value = "" },
+                                onButtonClicked = { onSchoolChange("") },
                                 isReadOnly = true,
                                 onClicked = {
-                                    if (signUpState.value != School) signUpState.value = School
-                                    showSignUpBottomSheet.value = true
-                                    showClubTextField.value = false
+                                    if (isSignUpState != SignUpState.School) isSetSignUpState(SignUpState.School)
+                                    isSetShowSignUpBottomSheet(true)
+                                    isSetShowClubTextField(false)
                                 },
-                                value = school.value
+                                value = school
                             )
                         }
-                        if (showJobTextField.value) {
-                            isSelectedJob.value = true
+                        if (isShowJobTextField) {
+                            isSetSelectedJob(true)
                             DefaultTextField(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = modifier.fillMaxWidth(),
                                 placeholder = "직업",
                                 isError = false,
                                 isLinked = false,
-                                isDisabled = isLoading.value,
+                                isDisabled = isLoading,
                                 isReverseTrailingIcon = true,
                                 errorText = "",
                                 onValueChange = {},
-                                onButtonClicked = { job.value = "" },
+                                onButtonClicked = { onJobChange("") },
                                 isReadOnly = true,
                                 onClicked = {
-                                    if (signUpState.value != Job) signUpState.value = Job
-                                    showSignUpBottomSheet.value = true
-                                    showSchoolTextField.value = false
+                                    if (isSignUpState != SignUpState.Job) isSetSignUpState(SignUpState.Job)
+                                    isSetShowSignUpBottomSheet(true)
+                                    isSetShowSchoolTextField(false)
                                 },
-                                value = job.value
+                                value = job
                             )
                         }
                         DefaultTextField(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             placeholder = "소속",
                             isError = false,
                             isLinked = false,
-                            isDisabled = isLoading.value,
+                            isDisabled = isLoading,
                             errorText = "",
                             onValueChange = {},
-                            onButtonClicked = { belong.value = "" },
+                            onButtonClicked = { onBelongChange("") },
                             isReadOnly = true,
                             isReverseTrailingIcon = true,
                             onClicked = {
-                                if (signUpState.value != Belong) signUpState.value = Belong
-                                showSignUpBottomSheet.value = true
+                                if (isSignUpState != SignUpState.Belong) isSetSignUpState(SignUpState.Belong)
+                                isSetShowSignUpBottomSheet(true)
                             },
-                            value = belong.value
+                            value = belong
                         )
                     }
                 }
             }
-            if (showSignUpBottomSheet.value) {
-                when (signUpState.value) {
-                    Belong -> {
+            if (isShowSignUpBottomSheet) {
+                when (isSignUpState) {
+                    SignUpState.Belong -> {
                         SignUpBottomSheet(
                             list = belongListForSearch,
-                            selectedItem = belong.value,
-                            onSelectedItemChanged = {
-                                if (belong.value != it) belong.value = it else belong.value = ""
-                            },
+                            selectedItem = belong,
+                            onSelectedItemChanged = { if (belong != it) onBelongChange(it) else onBelongChange("") },
                             onQuit = {
-                                showSignUpBottomSheet.value = false
+                                isSetShowSignUpBottomSheet(false)
                                 focusManager.clearFocus()
-                                if (belong.value.isNotEmpty()) signUpState.value =
-                                    continueToNextField(signUpState.value, belong.value)
-                                isSelectedBelong.value = true
-                                showJobTextField.value = true
+                                if (belong.isNotEmpty()) isSetSignUpState(continueToNextField(isSignUpState, belong))
+                                isSetSelectedBelong(true)
+                                isSetShowJobTextField(true)
                             },
                             isSearching = false,
-                            onValueChanged = {
-                                belongListForSearch = searchingInList(it, BelongList)
-                            }
-                        ) {
-
-                        }
+                            onValueChanged = { onBelongListForSearchChange(searchingInList(it, BelongList)) }
+                        ) {}
                     }
 
-                    Job -> {
+                    SignUpState.Job -> {
                         SignUpBottomSheet(
-                            list = if (belong.value == "학교") schoolJobListForSearch else outsideJobListForSearch,
-                            selectedItem = job.value,
+                            list = if (belong == "학교") schoolJobListForSearch else outsideJobListForSearch,
+                            selectedItem = job,
                             isSearching = false,
-                            onSelectedItemChanged = {
-                                if (job.value != it) job.value = it else job.value = ""
-                            },
+                            onSelectedItemChanged = { if (job != it) onJobChange(it) else onJobChange("") },
                             onQuit = {
-                                showSignUpBottomSheet.value = false
+                                isSetShowSignUpBottomSheet(false)
                                 focusManager.clearFocus()
-                                signUpState.value =
-                                    continueToNextField(signUpState.value, job.value)
+                                isSetSignUpState(continueToNextField(isSignUpState, job))
                             },
                             onValueChanged = {}
-                        ) {
-
-                        }
+                        ) {}
                     }
 
-                    School -> {
+                    SignUpState.School -> {
                         SignUpBottomSheet(
-                            list = schoolListForSearch.value,
-                            selectedItem = school.value,
+                            list = isSchoolListForSearch,
+                            selectedItem = school,
                             isSearching = true,
-                            onSelectedItemChanged = {
-                                if (school.value != it) school.value = it else school.value = ""
-                            },
+                            onSelectedItemChanged = { if (school != it) onSchoolChange(it) else onSchoolChange("") },
                             onQuit = {
-                                showSignUpBottomSheet.value = false
+                                isSetShowSignUpBottomSheet(false)
                                 focusManager.clearFocus()
-                                signUpState.value =
-                                    continueToNextField(signUpState.value, job.value)
+                                isSetSignUpState(continueToNextField(isSignUpState, job))
                             },
-                            onValueChanged = {
-                                schoolListForSearch.value = searchingInList(it, HighSchoolList)
-                            }
-                        ) {
-
-                        }
+                            onValueChanged = { isSetSchoolListForSearch(searchingInList(it, HighSchoolList)) }
+                        ) {}
                     }
 
-                    Club -> {
+                    SignUpState.Club -> {
                         SignUpBottomSheet(
-                            list = clubListForSearch.value,
-                            selectedItem = club.value,
+                            list = isClubListForSearch,
+                            selectedItem = club,
                             isSearching = true,
-                            onSelectedItemChanged = {
-                                if (club.value != it) club.value = it else club.value = ""
-                            },
+                            onSelectedItemChanged = { if (club != it) onClubChange(it) else onClubChange("") },
                             onQuit = {
-                                showSignUpBottomSheet.value = false
+                                isSetShowSignUpBottomSheet(false)
                                 focusManager.clearFocus()
-                                signUpState.value =
-                                    continueToNextField(signUpState.value, job.value)
+                                isSetSignUpState(continueToNextField(isSignUpState, job))
                             },
-                            onValueChanged = {
-                                clubListForSearch.value =
-                                    searchingInList(it, school.value.searchClubBySchool())
-                            }
-                        ) {
-
-                        }
+                            onValueChanged = { isSetClubListForSearch(searchingInList(it, school.searchClubBySchool())) }
+                        ) {}
                     }
 
                     else -> {
-                        showSignUpBottomSheet.value = false
+                        isSetShowSignUpBottomSheet(false)
                     }
                 }
             }
             BitgoeulButton(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
-                    .padding(start = 28.dp, end = 28.dp, bottom = 16.dp)
+                    .paddingHorizontal(horizontal = 28.dp, bottom = 16.dp)
                     .wrapContentHeight()
                     .align(Alignment.BottomCenter),
                 text = "회원가입 신청하기",
-                state = if (isApplicationButtonEnabled.value) ButtonState.Enable else ButtonState.Disable,
+                state = if (isApplicationButtonEnabled) ButtonState.Enable else ButtonState.Disable,
                 onClicked = {
                     onEnterFinished(
-                        job.value,
-                        school.value,
-                        club.value,
-                        name.value,
-                        phoneNumber.value,
-                        college.value,
-                        enrollment.intValue,
-                        enterprise.value,
-                        government.value,
-                        gradeAndNumber.value,
-                        email.value,
-                        password.value,
-                        position.value,
-                        sectors.value
+                        job,
+                        school,
+                        club,
+                        name,
+                        phoneNumber,
+                        college,
+                        enrollment,
+                        enterprise,
+                        government,
+                        gradeAndNumber,
+                        email,
+                        password,
+                        position,
+                        sectors
                     )
                 }
             )
@@ -1173,38 +1121,35 @@ fun continueToNextField(
     signUpInfo: String
 ): SignUpState {
     when (signUpState) {
-        Belong -> return Job
-        Job -> return School
-        School -> return Club
-        Club -> return Name
-        Name -> {
+        SignUpState.Belong -> return SignUpState.Job
+        SignUpState.Job -> return SignUpState.School
+        SignUpState.School -> return SignUpState.Club
+        SignUpState.Club -> return SignUpState.Name
+        SignUpState.Name -> {
             when (signUpInfo) {
-                "학생" -> return Enrollment
-                "취업동아리 선생님" -> return PhoneNumber
-                "기업강사" -> return Enterprise
-                "대학교수" -> return College
-                "유관기관" -> return Government
-                "뽀짝 선생님" -> return Government
+                "학생" -> return SignUpState.Enrollment
+                "취업동아리 선생님" -> return SignUpState.PhoneNumber
+                "기업강사" -> return SignUpState.Enterprise
+                "대학교수" -> return SignUpState.College
+                "유관기관" -> return SignUpState.Government
+                "뽀짝 선생님" -> return SignUpState.Government
             }
         }
 
-        College -> return PhoneNumber
-        Enterprise -> return PhoneNumber
-        Government -> return Position
-        Enrollment -> {
-            Log.d("TAG", "here")
-            return GradeAndNumber
-        }
-        GradeAndNumber -> return PhoneNumber
-        Position -> return Sectors
-        Sectors -> return PhoneNumber
-        Password -> return RePassword
-        RePassword -> return Loading
-        Loading -> return Loading
-        PhoneNumber -> return Email
-        Email -> return Password
+        SignUpState.College -> return SignUpState.PhoneNumber
+        SignUpState.Enterprise -> return SignUpState.PhoneNumber
+        SignUpState.Government -> return SignUpState.Position
+        SignUpState.Enrollment -> { return SignUpState.GradeAndNumber }
+        SignUpState.GradeAndNumber -> return SignUpState.PhoneNumber
+        SignUpState.Position -> return SignUpState.Sectors
+        SignUpState.Sectors -> return SignUpState.PhoneNumber
+        SignUpState.Password -> return SignUpState.RePassword
+        SignUpState.RePassword -> return SignUpState.Loading
+        SignUpState.Loading -> return SignUpState.Loading
+        SignUpState.PhoneNumber -> return SignUpState.Email
+        SignUpState.Email -> return SignUpState.Password
     }
-    return Loading
+    return SignUpState.Loading
 }
 
 @Preview
@@ -1212,6 +1157,42 @@ fun continueToNextField(
 fun SignUpScreenPre() {
     SignUpScreen(
         onBackClicked = {},
-        onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _, _, _-> }
+        onEnterFinished = { _, _, _, _, _, _, _, _, _, _, _, _, _, _-> },
+        onBelongChange = {},
+        belong = "",
+        onJobChange = {},
+        job = "",
+        onSchoolChange = {},
+        school = "",
+        onClubChange = {},
+        club = "",
+        onNameChange = {},
+        name = "",
+        onPhoneNumberChange = {},
+        phoneNumber = "",
+        onCollegeChange = {},
+        college = "",
+        onEnrollmentChange = {},
+        enrollment = 0,
+        onEnterpriseChange = {},
+        enterprise = "",
+        onGovernmentChange = {},
+        government = "",
+        onGradeAndNumberChange = {},
+        gradeAndNumber = "",
+        onPositionChange = {},
+        position = "",
+        onPasswordChange = {},
+        password = "",
+        onRePasswordChange = {},
+        rePassword = "",
+        onSectorsChange = {},
+        sectors = "",
+        onEmailChange = {},
+        email = "",
+        outsideJobListForSearch = listOf(),
+        schoolJobListForSearch = listOf(),
+        belongListForSearch = listOf(),
+        onBelongListForSearchChange = {}
     )
 }
