@@ -455,7 +455,7 @@ internal fun SignUpScreen(
 
                         SignUpState.Position -> {
                             if (isSelectedPosition) {
-                                isSetShowPhoneNumberTextField(false)
+                                isSetShowSectorsTextField(false)
                                 onPositionChange("")
                             }
                             isSetShowPositionTextField(true)
@@ -888,7 +888,7 @@ internal fun SignUpScreen(
                                     if (isSignUpState != SignUpState.Enrollment) isSetSignUpState(
                                         SignUpState.Enrollment
                                     )
-                                    isSetShowPhoneNumberTextField(false)
+                                    isSetShowGradeAndNumberTextField(false)
                                     isSetClicked(true)
                                 }
                             )
