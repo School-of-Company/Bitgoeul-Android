@@ -63,7 +63,7 @@ internal fun LectureTakingStudentList(
     data: List<Students>?,
     onChangeCompleteState: (isComplete: Boolean, studentId: UUID) -> Unit,
 ) {
-    BitgoeulAndroidTheme { colors, typography ->
+    BitgoeulAndroidTheme { _, _ ->
         LazyColumn(
             modifier = modifier
                 .padding(vertical = 24.dp)
