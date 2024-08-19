@@ -89,7 +89,7 @@ class SignUpViewModel @Inject constructor(
 
     internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 
-    internal var rePassword = savedStateHandle.getStateFlow(key = REPASSWORD, initialValue = "")
+    internal var rePassword = savedStateHandle.getStateFlow(key = REPASSWORD, initialValue = "a")
 
     fun signUp() = viewModelScope.launch {
         when (job.value) {
