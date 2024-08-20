@@ -1,6 +1,5 @@
 package com.bitgoeul.login.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitgoeul.login.navigation.loginRoute
@@ -30,15 +29,11 @@ class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
     private val savedStateHandle: SavedStateHandle
+    private val tokenAccessUseCase: TokenAccessUseCase,
+    private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
     private var _refreshToken = MutableStateFlow("")
     var refreshToken: StateFlow<String> = _refreshToken.asStateFlow()
-    companion object {
-        private const val EMAIL = "email"
-        private const val PASSWORD = "password"
-    }
-    private var refreshToken: String = ""
-    private var refreshTokenTime: String = ""
 
     private var _refreshTokenTime = MutableStateFlow("")
     var refreshTokenTime: StateFlow<String> = _refreshTokenTime.asStateFlow()
@@ -50,13 +45,18 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    companion object {
+        private const val EMAIL = "email"
+        private const val PASSWORD = "password"
+    }
     private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
     val saveTokenRequest = _saveTokenResponse.asStateFlow()
 
     private val _loginResponse = MutableStateFlow<Event<AuthTokenEntity>>(Event.Loading)
     val loginResponse = _loginResponse.asStateFlow()
 
-    internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
+    private val _navigateRoute = MutableStateFlow(loginRoute)
+    val navigateRoute: StateFlow<String> get() = _navigateRoute
 
     private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
     val navigationEvent = _navigationEvent.asSharedFlow()
@@ -83,8 +83,9 @@ class AuthViewModel @Inject constructor(
             refreshToken()
         }
     }
-    internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 
+    internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
+    internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
     internal fun login(
         email: String,
         password: String
@@ -125,7 +126,6 @@ class AuthViewModel @Inject constructor(
         _refreshToken.value = ""
         _refreshTokenTime.value = ""
     }
-    internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
 
     private fun tokenValid() : Boolean {
         return !_refreshToken.value.isNullOrEmpty() && !_refreshTokenTime.value.isNullOrEmpty() && !_refreshTokenTime.value.isDateExpired()
