@@ -1,5 +1,7 @@
 package com.msg.student_activity
 
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ScrollState
 import com.msg.model.enumdata.Authority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -43,28 +46,28 @@ import java.util.UUID
 
 @Composable
 fun ActivityDetailRoute(
+    viewModel: StudentActivityViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onActionEnd: () -> Unit,
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit,
-    viewModel: StudentActivityViewModel = hiltViewModel()
 ) {
     val role = viewModel.role
     val id = viewModel.selectedActivityId.value
+
     viewModel.getDetailStudentActivity(id = id)
     LaunchedEffect(true) {
         getActivityData(
             viewModel = viewModel,
-            onSuccess = {
-                viewModel.studentDetailActivityData.value = it
-            }
+            onSuccess = { viewModel.studentDetailActivityData.value = it }
         )
     }
     ActivityDetailScreen(
         data = viewModel.studentDetailActivityData.value,
         role = role,
-        onDeleteClicked = { viewModel.deleteActivityInfo(it) },
-        onRejectClicked = { viewModel.rejectActivityInfo(it) },
-        onApproveClicked = { viewModel.approveActivityInfo(it) },
+        onWhichNegativeChange = viewModel::onWhichNegativeChange,
+        onDeleteClicked = viewModel::deleteActivityInfo,
+        onRejectClicked = viewModel::rejectActivityInfo,
+        onApproveClicked = viewModel::approveActivityInfo,
         onActionEnd = onActionEnd,
         onEditClicked = onEditClicked,
         onBackClicked = onBackClicked
@@ -88,8 +91,11 @@ suspend fun getActivityData(
 
 @Composable
 fun ActivityDetailScreen(
+    modifier: Modifier = Modifier,
     data: GetDetailStudentActivityInfoEntity,
     role: String = Authority.ROLE_USER.toString(),
+    scrollState: ScrollState = rememberScrollState(),
+    onWhichNegativeChange: (String) -> Unit,
     onDeleteClicked: (UUID) -> Unit,
     onRejectClicked: (UUID) -> Unit,
     onApproveClicked: (UUID) -> Unit,
@@ -97,21 +103,18 @@ fun ActivityDetailScreen(
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
-
-    val isNegativeDialogShow = remember { mutableStateOf(false) }
-    val isPositiveDialogShow = remember { mutableStateOf(false) }
-    val whichNegative = remember { mutableStateOf("") }
+    val (isNegativeDialogShow, isSetNegativeDialogShow) = rememberSaveable { mutableStateOf(false) }
+    val (isPositiveDialogShow, isSetPositionDialogShow) = rememberSaveable { mutableStateOf(false) }
 
     BitgoeulAndroidTheme { colors, typography ->
         Box {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .background(color = colors.WHITE)
                     .verticalScroll(scrollState)
             ) {
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = modifier.height(20.dp))
                 GoBackTopBar(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
@@ -119,12 +122,12 @@ fun ActivityDetailScreen(
                     onBackClicked()
                 }
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(horizontal = 28.dp)
                 ) {
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = modifier.height(24.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -147,15 +150,15 @@ fun ActivityDetailScreen(
                             color = colors.G1
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = modifier.height(4.dp))
                     Text(
                         text = data.title,
                         style = typography.bodyLarge,
                         color = colors.BLACK
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = modifier.height(4.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -170,7 +173,7 @@ fun ActivityDetailScreen(
                             color = colors.G2
                         )
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = modifier.height(24.dp))
                     Text(
                         text = data.content,
                         fontSize = 16.sp,
@@ -179,11 +182,11 @@ fun ActivityDetailScreen(
                         fontFamily = FontFamily(Font(com.msg.design_system.R.font.pretendard_regular)),
                         color = colors.BLACK
                     )
-                    Spacer(modifier = Modifier.height(68.dp))
+                    Spacer(modifier = modifier.height(68.dp))
                 }
             }
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
                     .padding(horizontal = 28.dp, vertical = 16.dp),
@@ -191,46 +194,44 @@ fun ActivityDetailScreen(
             ) {
                 if (role == Authority.ROLE_TEACHER.toString()) {
                     Row(
-                        modifier = Modifier.weight(0.45f)
+                        modifier = modifier.weight(0.45f)
                     ) {
                         NegativeBitgoeulButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             text = "활동 거부"
                         ) {
-                            whichNegative.value = "reject"
-                            isNegativeDialogShow.value = true
+                            onWhichNegativeChange("reject")
+                            isSetNegativeDialogShow(true)
                         }
                     }
                     Row(
-                        modifier = Modifier.weight(0.45f)
+                        modifier = modifier.weight(0.45f)
                     ) {
                         BitgoeulButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             text = "활동 승인"
                         ) {
-                            isPositiveDialogShow.value = true
+                            isSetPositionDialogShow(true)
                         }
                     }
                 } else if (role == Authority.ROLE_STUDENT.toString()) {
                     Row(
-                        modifier = Modifier.weight(0.45f)
+                        modifier = modifier.weight(0.45f)
                     ) {
                         BitgoeulButton(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             text = "활동 수정"
                         ) {
                             onEditClicked()
                         }
                     }
-                    Row(
-                        modifier = Modifier.weight(0.45f)
-                    ) {
+                    Row(modifier = modifier.weight(0.45f)) {
                         NegativeBitgoeulButton(
                             modifier = Modifier.fillMaxWidth(),
                             text = "활동 삭제"
                         ) {
-                            isNegativeDialogShow.value = true
-                            whichNegative.value = "delete"
+                            isSetNegativeDialogShow(true)
+                            onWhichNegativeChange("delete")
                         }
                     }
                 }
@@ -240,8 +241,8 @@ fun ActivityDetailScreen(
             title = if (role == Authority.ROLE_STUDENT.toString()) "활동 삭제하시겠습니까?" else "활동 거부하시겠습니까?",
             negativeAction = if (role == Authority.ROLE_STUDENT.toString()) "삭제" else "거부",
             content = data.title,
-            isVisible = isNegativeDialogShow.value,
-            onQuit = { isNegativeDialogShow.value = false },
+            isVisible = isNegativeDialogShow,
+            onQuit = { isSetNegativeDialogShow(false) },
             onActionClicked = {
                 if (role == Authority.ROLE_STUDENT.toString()) onDeleteClicked(data.id) else onRejectClicked(data.id)
                 onActionEnd()
@@ -252,8 +253,8 @@ fun ActivityDetailScreen(
             title = "활동 승인하시겠습니까?",
             positiveAction = "승인",
             content = data.title,
-            isVisible = isPositiveDialogShow.value,
-            onQuit = { isPositiveDialogShow.value = false },
+            isVisible = isPositiveDialogShow,
+            onQuit = { isSetPositionDialogShow(false) },
             onActionClicked = {
                 onApproveClicked(data.id)
                 onActionEnd()
