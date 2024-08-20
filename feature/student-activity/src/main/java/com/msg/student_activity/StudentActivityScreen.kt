@@ -1,6 +1,5 @@
 package com.msg.student_activity
 
-import androidx.activity.ComponentActivity
 import com.msg.model.enumdata.Authority
 import com.msg.model.enumdata.Authority.Companion.from
 import androidx.compose.foundation.background
@@ -19,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.common.event.Event
@@ -34,7 +32,7 @@ import java.util.UUID
 
 @Composable
 fun StudentActivityRoute(
-    viewModel: StudentActivityViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    viewModel: StudentActivityViewModel = hiltViewModel(),
     onAddClicked: () -> Unit,
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,

@@ -1,6 +1,5 @@
 package com.msg.student_activity
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -22,9 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.input.pointer.pointerInput import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,7 +38,7 @@ import java.time.LocalDate
 
 @Composable
 fun AddActivityRoute(
-    viewModel: StudentActivityViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    viewModel: StudentActivityViewModel = hiltViewModel(),
     onActionClicked: () -> Unit,
     onSettingClicked: () -> Unit,
     onBackClicked: () -> Unit

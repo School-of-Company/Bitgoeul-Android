@@ -1,6 +1,5 @@
 package com.msg.student_activity
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import com.msg.model.enumdata.Authority
 import androidx.compose.foundation.background
@@ -22,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -46,7 +44,7 @@ import java.util.UUID
 
 @Composable
 fun ActivityDetailRoute(
-    viewModel: StudentActivityViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    viewModel: StudentActivityViewModel = hiltViewModel(),
     onActionEnd: () -> Unit,
     onEditClicked: () -> Unit,
     onBackClicked: () -> Unit,
