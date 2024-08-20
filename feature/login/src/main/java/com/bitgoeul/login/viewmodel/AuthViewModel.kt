@@ -1,5 +1,7 @@
 package com.bitgoeul.login.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitgoeul.login.navigation.loginRoute
@@ -28,7 +30,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
     private val tokenAccessUseCase: TokenAccessUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
 ) : ViewModel() {
@@ -86,6 +88,7 @@ class AuthViewModel @Inject constructor(
 
     internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
     internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
+
     internal fun login(
         email: String,
         password: String
@@ -161,4 +164,8 @@ class AuthViewModel @Inject constructor(
             _refreshTokenTime.value = newToken.refreshExpiredAt
         }
     }
+
+    internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
+
+    internal fun onPasswordChange(value: String) { savedStateHandle[PASSWORD] = value }
 }
