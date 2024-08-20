@@ -1,5 +1,6 @@
 package com.msg.student_activity
 
+import androidx.activity.ComponentActivity
 import com.msg.model.enumdata.Authority
 import com.msg.model.enumdata.Authority.Companion.from
 import androidx.compose.foundation.background
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.common.event.Event
@@ -32,10 +34,10 @@ import java.util.UUID
 
 @Composable
 fun StudentActivityRoute(
+    viewModel: StudentActivityViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onAddClicked: () -> Unit,
     onItemClicked: () -> Unit,
     onBackClicked: () -> Unit,
-    viewModel: StudentActivityViewModel = hiltViewModel(),
     id: UUID? = null
 ) {
     val role = viewModel.role
@@ -83,6 +85,7 @@ suspend fun getActivityList(
 
 @Composable
 fun StudentActivityScreen(
+    modifier: Modifier = Modifier,
     data: List<GetStudentActivityModel>? = null,
     onAddClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
@@ -90,28 +93,19 @@ fun StudentActivityScreen(
     role: Authority,
 ) {
     BitgoeulAndroidTheme { colors, typography ->  
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.background(colors.WHITE)
-            ) {
-                Spacer(modifier = Modifier
-                    .height(20.dp)
-                )
+        Surface(modifier = modifier.fillMaxSize()) {
+            Column(modifier = modifier.background(colors.WHITE)) {
+                Spacer(modifier = modifier.height(20.dp))
                 GoBackTopBar(
                     icon = { GoBackIcon() },
                     text = "돌아가기"
                 ) {
                     onBackClicked()
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                Column (
-                    modifier = Modifier.padding(horizontal = 28.dp)
-                ) {
+                Spacer(modifier = modifier.height(8.dp))
+                Column (modifier = modifier.padding(horizontal = 28.dp)) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
