@@ -60,7 +60,6 @@ internal fun LoginRoute(
     val focusManager = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-    val navigateRoute by viewModel.navigateRoute.collectAsStateWithLifecycle()
     val refreshToken by viewModel.refreshToken.collectAsStateWithLifecycle()
     val refreshTokenTime by viewModel.refreshTokenTime.collectAsStateWithLifecycle()
 
@@ -68,10 +67,13 @@ internal fun LoginRoute(
         viewModel.validateTokenNavigate()
     }
 
-    LaunchedEffect(navigateRoute) {
-        when (navigateRoute) {
-            loginRoute -> {}
-            mainPageRoute -> { onLoginClicked() }
+    LaunchedEffect(key1 = viewModel.navigationEvent) {
+        viewModel.navigationEvent.collect { event ->
+            when (event) {
+                AuthViewModel.NavigationEvent.NavigateToMain -> {
+                    onLoginClicked()
+                }
+            }
         }
     }
 
