@@ -12,15 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.entity.university.GetUniversityEntity
+import com.msg.model.entity.university.GetUniversityEntity.University
 import com.msg.model.ui.CollegeData
 
 @Composable
 internal fun CollegeCardView(
     modifier: Modifier = Modifier,
-    data: CollegeData
+    data: University,
 ) {
     var departmentList = ""
-    data.departmentName.forEach {
+    data.departments.forEach {
         departmentList = "$departmentList$it, "
     }
     BitgoeulAndroidTheme { colors, typography ->
@@ -34,13 +36,13 @@ internal fun CollegeCardView(
         ) {
             Spacer(modifier = modifier.height(24.dp))
             Text(
-                text = data.collegeName,
+                text = data.universityName,
                 style = typography.bodyLarge,
                 color = colors.P3
             )
             Spacer(modifier = modifier.height(12.dp))
             Text(
-                text = departmentList,
+                text = departmentList.dropLast(1),
                 style = typography.bodySmall,
                 color = colors.G4
             )
@@ -50,10 +52,10 @@ internal fun CollegeCardView(
 
 @Composable
 fun CollegeCardViewList(
-    data: List<CollegeData>
+    data: GetUniversityEntity
 ) {
     Column {
-        data.forEach {
+        data.universities.forEach {
             CollegeCardView(data = it)
         }
     }

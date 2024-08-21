@@ -1,8 +1,6 @@
 package com.msg.main
 
-import com.msg.model.enumdata.Authority
 import android.app.Activity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -21,15 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.common.event.Event
-import com.msg.design_system.R
 import com.msg.design_system.component.dialog.BitgoeulAlertDialog
 import com.msg.design_system.component.icon.GwangjuIcon
 import com.msg.design_system.component.icon.OfficeOfEducationIcon
@@ -42,20 +36,20 @@ import com.msg.main.component.FaqSection
 import com.msg.main.component.HighSchoolCardView
 import com.msg.main.component.HorizontalInfiniteBannerLoopPager
 import com.msg.main.component.HorizontalInfiniteLoopPager
-import com.msg.main.viewmodel.FaqViewModel
-import com.msg.model.enumdata.HighSchool
-import com.msg.model.ui.CSTCollegeData
-import com.msg.model.ui.DKCollegeData
-import com.msg.model.ui.HNCollegeData
-import com.msg.model.ui.NBCollegeData
-import com.msg.model.ui.SWCollegeData
-import com.msg.model.ui.SYCollegeData
+import com.msg.main.viewmodel.MainViewModel
+import com.msg.model.entity.company.GetCompanyListEntity
+import com.msg.model.entity.government.GetGovernmentEntity
+import com.msg.model.entity.school.GetSchoolListEntity
+import com.msg.model.entity.university.GetUniversityEntity
+import com.msg.model.enumdata.Field
+import com.msg.model.model.school.SchoolModel
 import com.msg.ui.DevicePreviews
+import java.util.UUID
 import com.msg.model.entity.faq.GetFrequentlyAskedQuestionDetailEntity as GetFAQDetailEntity
 
 @Composable
 internal fun MainPageScreenRoute(
-    viewModel: FaqViewModel = hiltViewModel(),
+    viewModel: MainViewModel = hiltViewModel(),
     onLoginClicked: () -> Unit
 ) {
     val role = viewModel.role
@@ -76,10 +70,38 @@ internal fun MainPageScreenRoute(
                 error = it
             }
         )
+        getSchoolList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.highSchoolList.value = it
+            }
+        )
+        getUniversityList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.universityList.value = it
+            }
+        )
+        getCompanyList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.companyList.value = it
+            }
+        )
+        getGovernmentList(
+            viewModel = viewModel,
+            onSuccess = {
+                viewModel.governmentList.value = it
+            }
+        )
     }
 
     MainPageScreen(
         data = viewModel.faqList,
+        highSchoolList = viewModel.highSchoolList.value,
+        universityList = viewModel.universityList.value,
+        companyList = viewModel.companyList.value,
+        governmentList = viewModel.governmentList.value,
         event = error,
         role = role,
         onAddClicked = { question, answer ->
@@ -104,7 +126,7 @@ internal fun MainPageScreenRoute(
 }
 
 private suspend fun getFaqList(
-    viewModel: FaqViewModel,
+    viewModel: MainViewModel,
     onSuccess: (data: List<GetFAQDetailEntity>) -> Unit,
     onFailure: (error: Event<List<GetFAQDetailEntity>>) -> Unit
 ) {
@@ -120,10 +142,70 @@ private suspend fun getFaqList(
     }
 }
 
+private suspend fun getSchoolList(
+    viewModel: MainViewModel,
+    onSuccess: (data: GetSchoolListEntity) -> Unit,
+) {
+    viewModel.getSchoolListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
+
+private suspend fun getUniversityList(
+    viewModel: MainViewModel,
+    onSuccess: (data: GetUniversityEntity) -> Unit
+) {
+    viewModel.getUniversityListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
+
+private suspend fun getCompanyList(
+    viewModel: MainViewModel,
+    onSuccess: (data: GetCompanyListEntity) -> Unit
+) {
+    viewModel.getCompanyListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
+
+private suspend fun getGovernmentList(
+    viewModel: MainViewModel,
+    onSuccess: (data: GetGovernmentEntity) -> Unit
+) {
+    viewModel.getGovernmentListResponse.collect { response ->
+        when (response) {
+            is Event.Success -> {
+                onSuccess(response.data!!)
+            }
+            else -> {}
+        }
+    }
+}
+
 @Composable
 internal fun MainPageScreen(
     modifier: Modifier = Modifier,
     data: List<GetFAQDetailEntity>,
+    highSchoolList: GetSchoolListEntity,
+    universityList: GetUniversityEntity,
+    companyList: GetCompanyListEntity,
+    governmentList: GetGovernmentEntity,
     event: Event<List<GetFAQDetailEntity>>,
     role: String,
     onAddClicked: (question: String, answer: String) -> Unit,
@@ -132,20 +214,10 @@ internal fun MainPageScreen(
     val scrollState = rememberScrollState()
     val highSchoolScrollState = rememberScrollState()
 
-    val highSchoolDoingList = listOf("교육과정 운영", "진로 지도", "학생 관리")
-    val collegeDoingList = listOf("기업 연계 교육", "심화 교육", "후학습 지원")
-    val enterpriseDoingList = listOf("현장 맞춤형 교육", "현장 실습", "고졸 채용")
-    val governmentDoingList = listOf("산업 인력 분석", "특화프로그램 운영", "고졸채용네트워크 구축")
-
-    val highSchoolList = HighSchool.values()
-    val collegeList = listOf(
-        SWCollegeData,
-        HNCollegeData,
-        CSTCollegeData,
-        DKCollegeData,
-        SYCollegeData,
-        NBCollegeData
-    )
+    val highSchoolDoingList = listOf("교육과정_운영", "진로_지도", "학생_관리")
+    val collegeDoingList = listOf("기업연계교육", "심화교육", "후학습지원")
+    val enterpriseDoingList = listOf("현장맞춤형교육", "현장실습", "고졸채용")
+    val governmentDoingList = listOf("산업인력_분석", "특화프로그램_운영", "고졸채용네트워크_구축")
 
     val questionValue = remember { mutableStateOf("") }
     val answerValue = remember { mutableStateOf("") }
@@ -160,16 +232,6 @@ internal fun MainPageScreen(
                     .verticalScroll(scrollState)
                     .background(color = colors.WHITE)
             ) {
-                Image(
-                    modifier = modifier
-                        .height(332.dp)
-                        .fillMaxWidth(),
-                    painter = painterResource(id = R.mipmap.banner_main),
-                    contentDescription = "Banner image of main page",
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.BottomCenter
-                )
-                Spacer(modifier = modifier.height(16.dp))
                 Column(
                     modifier = modifier.padding(28.dp)
                 ) {
@@ -186,25 +248,29 @@ internal fun MainPageScreen(
                     Spacer(modifier = modifier.height(16.dp))
                     BitgoeulInfoCardView(
                         modifier = modifier,
-                        title = "\uD83C\uDFEB 직업계고",
+                        title = "직업계고",
+                        icon = "\uD83C\uDFEB",
                         contentList = highSchoolDoingList
                     )
                     Spacer(modifier = modifier.height(16.dp))
                     BitgoeulInfoCardView(
                         modifier = modifier,
-                        title = "\uD83C\uDF93 지역대학",
+                        title = "지역대학",
+                        icon = "\uD83C\uDF93",
                         contentList = collegeDoingList
                     )
                     Spacer(modifier = modifier.height(16.dp))
                     BitgoeulInfoCardView(
                         modifier = modifier,
-                        title = "\uD83C\uDFE2 지역기업",
+                        title = "지역기업",
+                        icon = "\uD83C\uDFE2",
                         contentList = enterpriseDoingList
                     )
                     Spacer(modifier = modifier.height(16.dp))
                     BitgoeulInfoCardView(
                         modifier = modifier,
-                        title = "\uD83D\uDCBC 유관기관",
+                        title = "유관기관",
+                        icon = "\uD83D\uDCBC",
                         contentList = governmentDoingList
                     )
                     Spacer(modifier = modifier.height(64.dp))
@@ -223,7 +289,7 @@ internal fun MainPageScreen(
                         modifier = modifier.horizontalScroll(highSchoolScrollState),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        highSchoolList.forEach {
+                        highSchoolList.schools.forEach {
                             HighSchoolCardView(
                                 modifier = modifier,
                                 school = it
@@ -249,13 +315,7 @@ internal fun MainPageScreen(
                 }
                 HorizontalInfiniteLoopPager(
                     bannerType = "Club",
-                    list = listOf(
-                        "Future",
-                        "Energy",
-                        "MedicalHealth",
-                        "AI",
-                        "CultureIndustry"
-                    )
+                    list = Field.entries
                 )
                 Column(
                     modifier = modifier.padding(horizontal = 28.dp)
@@ -271,7 +331,7 @@ internal fun MainPageScreen(
                         style = typography.labelMedium,
                         color = colors.G1
                     )
-                    CollegeCardViewList(data = collegeList)
+                    CollegeCardViewList(data = universityList)
                     Spacer(modifier = modifier.height(64.dp))
                     Text(
                         text = "참여 기업 소개",
@@ -287,13 +347,8 @@ internal fun MainPageScreen(
                 }
                 HorizontalInfiniteLoopPager(
                     bannerType = "Industry",
-                    list = listOf(
-                        "Future",
-                        "Energy",
-                        "MedicalHealth",
-                        "AI",
-                        "CultureIndustry"
-                    )
+                    list = Field.entries,
+                    companyData = companyList
                 )
                 Spacer(modifier = modifier.height(64.dp))
                 Text(
@@ -310,13 +365,8 @@ internal fun MainPageScreen(
                 )
                 Spacer(modifier = modifier.height(24.dp))
                 HorizontalInfiniteBannerLoopPager(
-                    list = listOf(
-                        "Medical",
-                        "AI",
-                        "Culture",
-                        "Energy",
-                        "FutureTransport"
-                    )
+                    data = governmentList,
+                    list = Field.entries
                 )
                 Spacer(modifier = modifier.height(64.dp))
                 FaqSection(data = data)
@@ -386,6 +436,64 @@ fun MainPageScreenPre() {
                 id = 0,
                 question = "학원에서 자격증 과정을 운영할 수 있나요?",
                 answer = "불가능 합니다. 그러나, 학교 주관으로 학원강사를 섭외할 수는 있고, 학원시설 이용비, 학원강사 수당 지급은 가능 합니다."
+            )
+        ),
+        highSchoolList = GetSchoolListEntity(
+            listOf(SchoolModel(
+                id = 0,
+                schoolName = "광주소프트웨어마이스터고등학교",
+                line = "",
+                department = listOf(),
+                logoImageUrl = "https://media.licdn.com/dms/image/C560BAQEV41Od9boKag/company-logo_200_200/0/1640911244845?e=2147483647&v=beta&t=Rl96EXJTFPLuPtUmzN6-Wa807_9xDnvEhkDvTCXgnlM",
+                clubs = listOf(
+                    SchoolModel.Club(
+                        id = UUID.randomUUID(),
+                        clubName = "devGsm",
+                        field = Field.AI_CONVERGENCE.toString()
+                    )
+                )
+            ))
+        ),
+        universityList = GetUniversityEntity(
+            universities = listOf(
+                GetUniversityEntity.University(
+                    id = 0,
+                    universityName = "송원대학교",
+                    departments = listOf(
+                        "철도운전관제시스템과",
+                        "철도차량전기시스템과",
+                        "미용예술학과",
+                        "철도운전경영과"
+                    )
+                )
+            )
+        ),
+        companyList = GetCompanyListEntity(
+            companies = listOf(
+                GetCompanyListEntity.Company(
+                    id = 0,
+                    companyName = "광주동물메디컬센터",
+                    field = Field.CULTURE.toString()
+                ),
+                GetCompanyListEntity.Company(
+                    id = 0,
+                    companyName = "24시노아동물메디컬센터",
+                    field = Field.CULTURE.toString()
+                ),
+                GetCompanyListEntity.Company(
+                    id = 0,
+                    companyName = "한국조경수협회",
+                    field = Field.CULTURE.toString()
+                )
+            )
+        ),
+        governmentList = GetGovernmentEntity(
+            governments = listOf(
+                GetGovernmentEntity.Government(
+                    id = 0,
+                    field = Field.ENERGY.toString(),
+                    governmentName = "에너지밸리기업개발원"
+                )
             )
         ),
         onAddClicked = {_,_->},

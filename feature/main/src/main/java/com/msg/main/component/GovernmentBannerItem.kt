@@ -19,52 +19,55 @@ import com.msg.design_system.component.icon.EnergyIcon
 import com.msg.design_system.component.icon.FutureTransportIcon
 import com.msg.design_system.component.icon.MedicalIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.entity.government.GetGovernmentEntity
+import com.msg.model.enumdata.Field
 
 @Composable
 internal fun GovernmentBannerItem(
     modifier: Modifier = Modifier,
-    field: String
+    data: List<String>,
+    field: Field
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         val uiData: UiData = when (field) {
-            "Medical" -> {
+            Field.MEDICAL_HEALTHCARE -> {
                 UiData(
                     color = colors.P3,
                     field = "의료\n헬스케어",
-                    logo = { MedicalIcon() },
-                    governmentList = listOf("(사)한국평생교육연합회")
+                    logo = null,
+                    governmentList = data
                 )
             }
-            "AI" -> {
+            Field.AI_CONVERGENCE -> {
                 UiData(
                     color = colors.P2,
                     field = "AI\n융복합",
-                    logo = { AiIcon() },
-                    governmentList = listOf("(사)스마트인재개발원")
+                    logo = null,
+                    governmentList = data
                 )
             }
-            "Culture" -> {
+            Field.CULTURE -> {
                 UiData(
                     color = colors.P1,
                     field = "문화\n산업",
                     logo = null,
-                    governmentList = listOf("시청자미디어재단", "(재)광주정보문화산업진흥원", "광주광역시청소년삶디자인센터")
+                    governmentList = data
                 )
             }
-            "Energy" -> {
+            Field.ENERGY -> {
                 UiData(
                     color = colors.P4,
                     field = "에너지\n산업",
-                    logo = { EnergyIcon() },
-                    governmentList = listOf("에너지밸리기업개발원")
+                    logo = null,
+                    governmentList = data
                 )
             }
-            "FutureTransport" -> {
+            Field.FUTURISTIC_TRANSPORTATION_EQUIPMENT -> {
                 UiData(
                     color = colors.P5,
                     field = "미래형\n운송기기",
-                    logo = { FutureTransportIcon() },
-                    governmentList = listOf("(재)광주그린카진흥원")
+                    logo = null,
+                    governmentList = data
                 )
             }
             else -> {
@@ -72,7 +75,7 @@ internal fun GovernmentBannerItem(
                     color = colors.G1,
                     field = "error\ntext",
                     logo = {},
-                    governmentList = listOf("error")
+                    governmentList = data
                 )
             }
         }
@@ -121,5 +124,8 @@ data class UiData(
 @Preview
 @Composable
 fun GovernmentBannerItemPre() {
-    GovernmentBannerItem(field = "Medical")
+    GovernmentBannerItem(
+        field = Field.MEDICAL_HEALTHCARE,
+        data = listOf("한국평생교육연합회")
+    )
 }

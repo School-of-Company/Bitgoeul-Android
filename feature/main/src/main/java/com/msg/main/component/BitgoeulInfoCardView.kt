@@ -11,8 +11,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -21,6 +23,7 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 internal fun BitgoeulInfoCardView(
     modifier: Modifier,
     title: String,
+    icon: String,
     contentList: List<String>
 ) {
     BitgoeulAndroidTheme { colors, typography ->
@@ -33,23 +36,27 @@ internal fun BitgoeulInfoCardView(
                 contentColor = Color.Transparent
             )
         ) {
-            Box(modifier = modifier
-                .padding(16.dp)
+            Box(
+                modifier = modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterHorizontally)
             ) {
-                Column {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = icon,
+                        style = typography.titleLarge,
+                        color = colors.BLACK,
+                        textAlign = TextAlign.Center,
+                    )
                     Text(
                         text = title,
                         style = typography.titleSmall,
                         color = colors.BLACK
                     )
-                    Spacer(modifier = modifier.height(8.dp))
-                    contentList.forEach {
-                        Text(
-                            text = "    • $it",
-                            style = typography.bodyMedium,
-                            color = colors.G2
-                        )
-                    }
+                    Spacer(modifier = modifier.height(16.dp))
+                    AutoTagGridView(rowItems = contentList)
                 }
             }
         }
@@ -61,7 +68,8 @@ internal fun BitgoeulInfoCardView(
 fun BitgoeulInfoCardViewPre() {
     BitgoeulInfoCardView(
         modifier = Modifier,
-        title = "\uD83C\uDFEB 직업계고",
+        title = "직업계고",
+        icon = "\uD83C\uDFEB ",
         contentList = listOf("교육과정 운영", "진로 지도", "학생 관리")
     )
 }
