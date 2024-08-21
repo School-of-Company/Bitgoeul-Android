@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
@@ -24,7 +25,7 @@ internal fun AutoSchoolClubGridView(
     school: String,
     rowItems: List<String>,
 ) {
-    val actualItems = rowItems.getActualList()
+    val actualItems = rowItems.getActualList(isTag = false)
 
     BitgoeulAndroidTheme { colors, typography ->
         Column {
@@ -32,7 +33,7 @@ internal fun AutoSchoolClubGridView(
             Text(
                 text = school,
                 style = typography.bodyLarge,
-                color = colors.WHITE
+                color = colors.P3
             )
             Spacer(modifier = modifier.height(16.dp))
             Column(
@@ -58,7 +59,7 @@ internal fun AutoSchoolClubGridView(
 internal fun AutoIndustryGridView(
     rowItems: List<String>,
 ) {
-    val actualItems = rowItems.getActualList()
+    val actualItems = rowItems.getActualList(isTag = false)
 
     Column {
         Column(
@@ -78,21 +79,44 @@ internal fun AutoIndustryGridView(
 }
 
 @Composable
-private fun List<String>.getActualList(): List<List<String>> {
+internal fun AutoTagGridView(
+    rowItems: List<String>,
+) {
+    val actualItems = rowItems.getActualList(isTag = true)
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        for (element in actualItems) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                element.forEach {
+                    TagChipView(tagText = it)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun List<String>.getActualList(isTag: Boolean): List<List<String>> {
     val configuration = LocalConfiguration.current
     val actualItems: MutableList<MutableList<String>> = mutableListOf(mutableListOf())
+    val issueList = listOf("주식회사 금철", "특화프로그램_운영")
 
     var width = 56.dp
     val screenWidth = configuration.screenWidthDp.dp
     var rows = 0
 
     for (element in this) {
-        if (width.plus(element.getClubChipWidth()) < screenWidth && element != "주식회사 금철") {
-            width += element.getClubChipWidth() + 16.dp
+        if (width.plus(element.getChipWidth(isTag)) < screenWidth && !issueList.contains(element)) {
+            width += element.getChipWidth(isTag) + if (isTag) 8.dp else 16.dp
             actualItems[rows].add(element)
         } else {
             actualItems.add(mutableListOf(element))
-            width = 56.dp + element.getClubChipWidth() + 16.dp
+            width = 56.dp + element.getChipWidth(isTag) + if (isTag) 8.dp else 16.dp
             rows += 1
         }
     }
@@ -100,18 +124,28 @@ private fun List<String>.getActualList(): List<List<String>> {
 }
 
 @Composable
-private fun String.getClubChipWidth(): Dp {
+private fun String.getChipWidth(isTag: Boolean): Dp {
     val width = remember { mutableStateOf(0.dp) }
     val shouldShowCompose = remember { mutableStateOf(true) }
     val density = LocalDensity.current
     if (shouldShowCompose.value) {
-        ClubChipView(
-            clubName = this,
-            modifier = Modifier.onGloballyPositioned {
-                width.value = with(density) { it.size.width.toDp() }
-                return@onGloballyPositioned
-            }
-        )
+        if (isTag) {
+            TagChipView(
+                tagText = this,
+                modifier = Modifier.onGloballyPositioned {
+                    width.value = with(density) { it.size.width.toDp() }
+                    return@onGloballyPositioned
+                }
+            )
+        } else {
+            ClubChipView(
+                clubName = this,
+                modifier = Modifier.onGloballyPositioned {
+                    width.value = with(density) { it.size.width.toDp() }
+                    return@onGloballyPositioned
+                }
+            )
+        }
     }
     shouldShowCompose.value = false
     return width.value
