@@ -10,6 +10,8 @@ import com.msg.data.repository.certification.CertificationRepository
 import com.msg.data.repository.certification.CertificationRepositoryImpl
 import com.msg.data.repository.club.ClubRepository
 import com.msg.data.repository.club.ClubRepositoryImpl
+import com.msg.data.repository.company.CompanyRepository
+import com.msg.data.repository.company.CompanyRepositoryImpl
 import com.msg.data.repository.email.EmailRepository
 import com.msg.data.repository.email.EmailRepositoryImpl
 import com.msg.data.repository.faq.FaqRepository
@@ -95,6 +97,11 @@ abstract class RepositoryModule {
     abstract fun bindUniversityRepository(
         universityRepositoryImpl: UniversityRepositoryImpl
     ): UniversityRepository
+
+    @Binds
+    abstract fun bindCompanyRepository(
+        companyRepositoryImpl: CompanyRepositoryImpl
+    ): CompanyRepository
 
     @Binds
     abstract fun bindGovernmentRepository(
