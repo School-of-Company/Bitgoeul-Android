@@ -40,7 +40,7 @@ fun IndustryBanner(
                     modifier = modifier.align(Alignment.CenterHorizontally),
                     text = field.text,
                     style = typography.titleMedium,
-                    color = colors.WHITE
+                    color = colors.BLACK
                 )
                 Spacer(modifier = modifier.height(24.dp))
                 Column(
