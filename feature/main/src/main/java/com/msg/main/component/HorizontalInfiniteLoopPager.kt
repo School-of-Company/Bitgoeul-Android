@@ -13,16 +13,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.msg.design_system.component.pager.PagerIndicator
-import com.msg.main.banner.club.AiFusionAndIntegrationClubBanner
-import com.msg.main.banner.club.CultureIndustryClubBanner
-import com.msg.main.banner.club.EnergyIndustryClubBanner
-import com.msg.main.banner.club.FutureTransportClubBanner
-import com.msg.main.banner.club.MedicalHealthClubBanner
-import com.msg.main.banner.industry.AiFusionAndIntegrationBanner
-import com.msg.main.banner.industry.CultureIndustryBanner
-import com.msg.main.banner.industry.EnergyIndustryBanner
-import com.msg.main.banner.industry.FutureTransportationBanner
-import com.msg.main.banner.industry.MedicalHealthBanner
+import com.msg.model.entity.company.GetCompanyListEntity
+import com.msg.model.entity.government.GetGovernmentEntity
+import com.msg.model.entity.school.GetSchoolListEntity
+import com.msg.model.enumdata.Field
+import com.msg.model.model.school.SchoolModel
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -30,7 +25,9 @@ import kotlin.math.absoluteValue
 internal fun HorizontalInfiniteLoopPager(
     modifier: Modifier = Modifier,
     bannerType: String,
-    list: List<String>
+    list: List<Field>,
+    companyData: GetCompanyListEntity? = null,
+    schoolData: GetSchoolListEntity? = null
 ) {
 
     var initialPage = Int.MAX_VALUE / 2
@@ -52,22 +49,10 @@ internal fun HorizontalInfiniteLoopPager(
         ) {
             when (bannerType) {
                 "Club" -> {
-                    when (list[it % (list.size)]) {
-                        "Future" -> FutureTransportClubBanner()
-                        "Energy" -> EnergyIndustryClubBanner()
-                        "MedicalHealth" -> MedicalHealthClubBanner()
-                        "AI" -> AiFusionAndIntegrationClubBanner()
-                        "CultureIndustry" -> CultureIndustryClubBanner()
-                    }
+                    ClubBanner(data = schoolData ?: GetSchoolListEntity(listOf()), field = list[it % (list.size)])
                 }
                 "Industry" -> {
-                    when (list[it % (list.size)]) {
-                        "Future" -> FutureTransportationBanner()
-                        "Energy" -> EnergyIndustryBanner()
-                        "MedicalHealth" -> MedicalHealthBanner()
-                        "AI" -> AiFusionAndIntegrationBanner()
-                        "CultureIndustry" -> CultureIndustryBanner()
-                    }
+                    IndustryBanner(data = companyData?.getSpecificFieldList(list[it % (list.size)]) ?: listOf(), field = list[it % (list.size)])
                 }
             }
         }
@@ -85,7 +70,8 @@ internal fun HorizontalInfiniteLoopPager(
 @Composable
 fun HorizontalInfiniteBannerLoopPager(
     modifier: Modifier = Modifier,
-    list: List<String>
+    data: GetGovernmentEntity,
+    list: List<Field>
 ) {
 
     val size = 0.2f
@@ -110,7 +96,7 @@ fun HorizontalInfiniteBannerLoopPager(
             contentPadding = PaddingValues(horizontal = 80.dp)
         ) {
             GovernmentBannerItem(
-                modifier
+                modifier = modifier
                     .graphicsLayer {
                         val pageOffset = (
                                 (pagerState.currentPage - it) + pagerState
@@ -124,8 +110,27 @@ fun HorizontalInfiniteBannerLoopPager(
                             fraction = 1f - pageOffset.coerceIn(0f, 1f)
                         )
                     },
+                data = data.getSpecificFieldList(list[it % list.size]),
                 field = list[it % list.size]
             )
         }
     }
 }
+
+fun GetCompanyListEntity.getSpecificFieldList(field: Field): List<String> {
+    return companies.mapNotNull {
+        if (it.field == field.toString()) it.companyName else null
+    }
+}
+
+fun GetGovernmentEntity.getSpecificFieldList(field: Field): List<String> {
+    return governments.mapNotNull {
+        if (it.field == field.toString()) it.governmentName else null
+    }
+}
+
+fun SchoolModel.getSpecificFieldList(field: Field): List<String> {
+    return clubs.mapNotNull {
+        if (it.field == field.toString()) it.clubName else null
+    }
+ }

@@ -20,13 +20,13 @@ internal fun ClubChipView(
             modifier = modifier
                 .border(
                     width = 1.dp,
-                    color = colors.WHITE,
+                    color = colors.P5,
                     shape = RoundedCornerShape(size = 999.dp)
                 )
                 .padding(vertical = 8.dp, horizontal = 16.dp),
             text = clubName,
             style = typography.bodySmall,
-            color = colors.WHITE,
+            color = colors.BLACK,
             maxLines = 1
         )
     }

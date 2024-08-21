@@ -45,4 +45,6 @@ object BitgoeulColor : ColorTheme() {
     override val G9 = Color(0xFFEBEBEB)
     override val WHITE = Color(0xFFFFFFFF)
 
+    override val BACKGROUND_GRAY = Color(0xFFF7F7F8)
+
 }

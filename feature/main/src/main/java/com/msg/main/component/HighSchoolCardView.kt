@@ -13,14 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.msg.design_system.R
 import com.msg.design_system.theme.BitgoeulAndroidTheme
+import com.msg.model.entity.school.GetSchoolListEntity
 import com.msg.model.enumdata.HighSchool
+import com.msg.model.model.school.SchoolModel
 
 @Composable
 internal fun HighSchoolCardView(
     modifier: Modifier,
-    school: HighSchool
+    school: SchoolModel
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Box(
@@ -31,30 +34,16 @@ internal fun HighSchoolCardView(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
+                AsyncImage(
+                    model = school.logoImageUrl,
                     modifier = modifier
                         .width(80.dp)
                         .height(80.dp),
-                    painter = painterResource(id = when (school) {
-                        HighSchool.GWANGJU_SOFTWARE_MEISTER_HIGH_SCHOOL -> R.mipmap.ic_gsm
-                        HighSchool.GWANGJU_TECHNICAL_HIGH_SCHOOL -> R.mipmap.ic_gths
-                        HighSchool.KUMPA_TECHNICAL_HIGH_SCHOOL -> R.mipmap.ic_kths
-                        HighSchool.JEONNAM_TECHNICAL_HIGH_SCHOOL -> R.mipmap.ic_jths
-                        HighSchool.GWANGJU_GIRLS_COMMERCIAL_HIGH_SCHOOL -> R.mipmap.ic_ggchs
-                        HighSchool.JEONNAM_GIRLS_COMMERCIAL_HIGH_SCHOOL -> R.mipmap.ic_jgchs
-                        HighSchool.GWANGJU_NATURAL_SCIENCE_HIGH_SCHOOL -> R.mipmap.ic_gnshs
-                        HighSchool.GWANGJU_ELECTRONIC_TECHNICAL_HIGH_SCHOOL -> R.mipmap.ic_geths
-                        HighSchool.DONGIL_HIGH_SCHOOL_OF_FUTURE_SCIENCE_HIGH_SCHOOL -> R.mipmap.ic_dhsoffshs
-                        HighSchool.SEOJIN_GIRLS_HIGH_SCHOOL -> R.mipmap.ic_sghs
-                        HighSchool.SUNGUI_SCIENCE_TECHNOLOGY_HIGH_SCHOOL -> R.mipmap.ic_ssths
-                        HighSchool.SONGWON_GIRLS_COMMERCIAL_HIGH_SCHOOL -> R.mipmap.ic_sgchs
-                        HighSchool.GWANGJU_AUTOMATIC_EQUIPMENT_TECHNICAL_HIGH_SCHOOL -> R.mipmap.ic_gaths
-                    }),
-                    contentDescription = "Emblem of ${school.name}"
+                    contentDescription = "Emblem of ${school.schoolName}"
                 )
                 Spacer(modifier = modifier.height(8.dp))
                 Text(
-                    text = school.school,
+                    text = school.schoolName,
                     style = typography.labelMedium,
                     color = colors.G2,
                     textAlign = TextAlign.Center
