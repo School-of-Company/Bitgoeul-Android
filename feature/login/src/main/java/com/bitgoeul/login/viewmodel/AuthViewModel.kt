@@ -30,10 +30,16 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
-    private val savedStateHandle: SavedStateHandle,
     private val tokenAccessUseCase: TokenAccessUseCase,
     private val authTokenDataSource: AuthTokenDataSource,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    companion object {
+        private const val EMAIL = "email"
+        private const val PASSWORD = "password"
+    }
+
     private var _refreshToken = MutableStateFlow("")
     var refreshToken: StateFlow<String> = _refreshToken.asStateFlow()
 
@@ -47,20 +53,20 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        private const val EMAIL = "email"
-        private const val PASSWORD = "password"
-    }
+    internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
+    internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
+
     private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
+
     val saveTokenRequest = _saveTokenResponse.asStateFlow()
-
     private val _loginResponse = MutableStateFlow<Event<AuthTokenEntity>>(Event.Loading)
+
     val loginResponse = _loginResponse.asStateFlow()
-
     private val _navigateRoute = MutableStateFlow(loginRoute)
-    val navigateRoute: StateFlow<String> get() = _navigateRoute
 
+    val navigateRoute: StateFlow<String> get() = _navigateRoute
     private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
+
     val navigationEvent = _navigationEvent.asSharedFlow()
 
     sealed class NavigationEvent {
@@ -85,9 +91,6 @@ class AuthViewModel @Inject constructor(
             refreshToken()
         }
     }
-
-    internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
-    internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 
     internal fun login(
         email: String,
