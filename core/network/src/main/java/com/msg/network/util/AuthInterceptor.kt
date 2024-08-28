@@ -29,7 +29,7 @@ class AuthInterceptor @Inject constructor(
 
         run breaking@{
             ignorePath.forEachIndexed { index, s ->
-                if (path.contains(s) && ignoreMethod[index] == method) {
+                if (path.contains(s) && ignoreMethod.contains(method)) {
                     if (ignorePath.subList(4, 6).contains(s) && index == 0) return@breaking
                     return chain.proceed(request)
                 }

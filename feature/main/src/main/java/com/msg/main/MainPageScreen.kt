@@ -1,6 +1,7 @@
 package com.msg.main
 
 import android.app.Activity
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -17,12 +18,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msg.common.event.Event
 import com.msg.design_system.component.dialog.BitgoeulAlertDialog
 import com.msg.design_system.component.icon.GwangjuIcon
@@ -52,12 +56,17 @@ internal fun MainPageScreenRoute(
     viewModel: MainViewModel = hiltViewModel(),
     onLoginClicked: () -> Unit
 ) {
+    val answerValue by viewModel.answer.collectAsStateWithLifecycle()
+    val questionValue by viewModel.question.collectAsStateWithLifecycle()
+
+
     val role = viewModel.role
-    var error: Event<List<GetFAQDetailEntity>> = Event.Loading
+    var error: Event<List<GetFAQDetailEntity>> by remember { mutableStateOf(Event.Loading) }
     var isReLaunched = false
     val activity = LocalContext.current as Activity
 
     viewModel.getFaq()
+    viewModel.getMainData()
     
     LaunchedEffect(true, isReLaunched) {
         getFaqList(
@@ -97,6 +106,10 @@ internal fun MainPageScreenRoute(
     }
 
     MainPageScreen(
+        answer = answerValue,
+        question = questionValue,
+        onAnswerChange = viewModel::onAnswerChange,
+        onQuestionChange = viewModel::onQuestionChange,
         data = viewModel.faqList,
         highSchoolList = viewModel.highSchoolList.value,
         universityList = viewModel.universityList.value,
@@ -201,6 +214,12 @@ private suspend fun getGovernmentList(
 @Composable
 internal fun MainPageScreen(
     modifier: Modifier = Modifier,
+    answer: String,
+    question: String,
+    onAnswerChange: (String) -> Unit,
+    onQuestionChange: (String) -> Unit,
+    scrollState: ScrollState = rememberScrollState(),
+    highSchoolScrollState: ScrollState = rememberScrollState(),
     data: List<GetFAQDetailEntity>,
     highSchoolList: GetSchoolListEntity,
     universityList: GetUniversityEntity,
@@ -211,21 +230,14 @@ internal fun MainPageScreen(
     onAddClicked: (question: String, answer: String) -> Unit,
     onDialogButtonClicked: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
-    val highSchoolScrollState = rememberScrollState()
-
     val highSchoolDoingList = listOf("교육과정_운영", "진로_지도", "학생_관리")
     val collegeDoingList = listOf("기업연계교육", "심화교육", "후학습지원")
     val enterpriseDoingList = listOf("현장맞춤형교육", "현장실습", "고졸채용")
     val governmentDoingList = listOf("산업인력_분석", "특화프로그램_운영", "고졸채용네트워크_구축")
 
-    val questionValue = remember { mutableStateOf("") }
-    val answerValue = remember { mutableStateOf("") }
-
     BitgoeulAndroidTheme { colors, typography ->
         Surface(
-            modifier = modifier
-                .fillMaxSize()
+            modifier = modifier.fillMaxSize()
         ) {
             Column(
                 modifier = modifier
@@ -372,15 +384,11 @@ internal fun MainPageScreen(
                 FaqSection(data = data)
                 if (role == "ROLE_ADMIN") {
                     AddFaqItem(
-                        questionValue = questionValue.value,
-                        onQuestionValueChanged = {
-                            questionValue.value = it
-                        },
-                        answerValue = answerValue.value,
-                        onAnswerValueChanged = {
-                            answerValue.value = it
-                        },
-                        onAddClicked = { onAddClicked(questionValue.value, answerValue.value) }
+                        questionValue = question,
+                        onQuestionValueChanged = onQuestionChange,
+                        answerValue = answer,
+                        onAnswerValueChanged = onAnswerChange,
+                        onAddClicked = { onAddClicked(question, answer) }
                     )
                 }
                 Spacer(modifier = modifier.height(24.dp))
@@ -499,6 +507,10 @@ fun MainPageScreenPre() {
         onAddClicked = {_,_->},
         role = "ROLE_ADMIN",
         event = Event.Success(),
-        onDialogButtonClicked = {}
+        onDialogButtonClicked = {},
+        answer = "",
+        question = "",
+        onAnswerChange = {},
+        onQuestionChange = {}
     )
 }

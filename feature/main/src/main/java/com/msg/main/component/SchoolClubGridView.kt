@@ -126,9 +126,9 @@ private fun List<String>.getActualList(isTag: Boolean): List<List<String>> {
 @Composable
 private fun String.getChipWidth(isTag: Boolean): Dp {
     val width = remember { mutableStateOf(0.dp) }
-    val shouldShowCompose = remember { mutableStateOf(true) }
+    val (shouldShowCompose, setShouldShowCompose) = remember { mutableStateOf(true) }
     val density = LocalDensity.current
-    if (shouldShowCompose.value) {
+    if (shouldShowCompose) {
         if (isTag) {
             TagChipView(
                 tagText = this,
@@ -147,7 +147,7 @@ private fun String.getChipWidth(isTag: Boolean): Dp {
             )
         }
     }
-    shouldShowCompose.value = false
+    setShouldShowCompose(false)
     return width.value
 }
 

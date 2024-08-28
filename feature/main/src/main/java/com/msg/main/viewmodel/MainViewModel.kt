@@ -2,6 +2,7 @@ package com.msg.main.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.common.errorhandling.errorHandling
@@ -35,7 +36,13 @@ class MainViewModel @Inject constructor(
     private val getCompanyListUseCase: GetCompanyListUseCase,
     private val getGovernmentListUseCase: GetGovernmentUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    companion object {
+        private const val ANSWER = "answer"
+        private const val QUESTION = "question"
+    }
 
     val role = getRole().toString()
 
@@ -61,6 +68,10 @@ class MainViewModel @Inject constructor(
         private set
 
     private var errorCode: Int = 200
+
+    internal var answer = savedStateHandle.getStateFlow(key = ANSWER, initialValue = "")
+
+    internal var question = savedStateHandle.getStateFlow(key = QUESTION, initialValue = "")
 
     var highSchoolList = mutableStateOf(
         GetSchoolListEntity(
@@ -125,7 +136,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun getSchoolList() = viewModelScope.launch {
+    private fun getSchoolList() = viewModelScope.launch {
         getSchoolListUseCase().onSuccess {
             it.catch { remoteError ->
                 _getSchoolListResponse.value = remoteError.errorHandling()
@@ -137,7 +148,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun getUniversityList() = viewModelScope.launch {
+    private fun getUniversityList() = viewModelScope.launch {
         getUniversityListUseCase().onSuccess {
             it.catch { remoteError ->
                 _getUniversityListResponse.value = remoteError.errorHandling()
@@ -149,7 +160,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun getCompanyList() = viewModelScope.launch {
+    private fun getCompanyList() = viewModelScope.launch {
         getCompanyListUseCase().onSuccess {
             it.catch { remoteError ->
                 _getCompanyListResponse.value = remoteError.errorHandling()
@@ -161,7 +172,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun getGovernmentList() = viewModelScope.launch {
+    private fun getGovernmentList() = viewModelScope.launch {
         getGovernmentListUseCase().onSuccess {
             it.catch { remoteError ->
                 _getGovernmentListResponse.value = remoteError.errorHandling()
@@ -173,7 +184,18 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    internal fun getMainData() {
+        getSchoolList()
+        getUniversityList()
+        getCompanyList()
+        getGovernmentList()
+    }
+
     private fun getRole() = viewModelScope.launch {
         getAuthorityUseCase()
     }
+
+    internal fun onAnswerChange(value: String) { savedStateHandle[ANSWER] = value }
+
+    internal fun onQuestionChange(value: String) { savedStateHandle[QUESTION] = value }
 }
