@@ -21,8 +21,6 @@ import com.msg.club.navigation.clubRoute
 import com.msg.club.navigation.navigateToClubPage
 import com.msg.lecture.navigation.lectureListRoute
 import com.msg.lecture.navigation.navigateToLecture
-import com.msg.main.navigation.mainPageRoute
-import com.msg.main.navigation.navigateToMainPage
 import com.msg.post.navigation.navigateToPostPage
 import com.msg.post.navigation.postRoute
 import kotlinx.coroutines.CoroutineScope
@@ -60,7 +58,6 @@ class BitgoeulAppState(
         @Composable get() = when (currentDestination?.route) {
             lectureListRoute -> TopLevelDestination.LECTURE
             clubRoute -> TopLevelDestination.CLUB
-            mainPageRoute -> TopLevelDestination.MAIN
             postRoute -> TopLevelDestination.POST
             myPageRoute -> TopLevelDestination.MY_PAGE
             else -> null
@@ -83,7 +80,6 @@ class BitgoeulAppState(
             when (topLevelDestination) {
                 TopLevelDestination.LECTURE -> navController.navigateToLecture(topLevelNavOptions)
                 TopLevelDestination.CLUB -> navController.navigateToClubPage(topLevelNavOptions)
-                TopLevelDestination.MAIN -> navController.navigateToMainPage(topLevelNavOptions)
                 TopLevelDestination.POST -> navController.navigateToPostPage(topLevelNavOptions)
                 TopLevelDestination.MY_PAGE -> navController.navigateToMyPage(topLevelNavOptions)
             }

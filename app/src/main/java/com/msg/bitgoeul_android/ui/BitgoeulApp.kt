@@ -26,7 +26,6 @@ import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.design_system.theme.Typography
 import com.msg.design_system.theme.color.BitgoeulColor
 import com.msg.lecture.navigation.lectureListRoute
-import com.msg.main.navigation.mainPageRoute
 import com.msg.post.navigation.postRoute
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -42,7 +41,6 @@ fun BitgoeulApp(
     val topLevelDestinationRoute = arrayOf(
         lectureListRoute,
         clubRoute,
-        mainPageRoute,
         postRoute,
         myPageRoute
     )
