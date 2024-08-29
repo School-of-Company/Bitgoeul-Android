@@ -1,14 +1,12 @@
 package com.msg.network.datasource.lecture
 
 import com.msg.network.response.lecture.*
-// import com.msg.network.request.lecture.OpenLectureRequest
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface LectureDataSource {
     fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListResponse>
     fun getDetailLecture(id: UUID): Flow<DetailLectureResponse>
-   // fun patchLecture(id: UUID, body: OpenLectureRequest): Flow<Unit>
     fun lectureApplication(id: UUID): Flow<Unit>
     fun lectureApplicationCancel(id: UUID): Flow<Unit>
     fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryResponse>

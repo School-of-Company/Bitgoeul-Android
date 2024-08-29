@@ -1,13 +1,11 @@
 package com.msg.data.repository.lecture
 
 import com.msg.data.mapper.lecture.toEntity
-// import com.msg.data.mapper.lecture.toRequest
 import com.msg.model.entity.lecture.DetailLectureEntity
 import com.msg.model.entity.lecture.DownloadExcelFileEntity
 import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
 import com.msg.model.entity.lecture.GetTakingLectureStudentListEntity
 import com.msg.model.entity.lecture.LectureListEntity
-// import com.msg.model.param.lecture.OpenLectureParam
 import com.msg.network.datasource.lecture.LectureDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -38,13 +36,6 @@ class LectureRepositoryImpl @Inject constructor(
             emit(response.toEntity())
         }
     }
-
-//    override fun patchLecture(id: UUID, body: OpenLectureParam): Flow<Unit> {
-//        return lectureDataSource.patchLecture(
-//            id = id,
-//            body = body.toRequest()
-//        )
-//    }
 
     override fun lectureApplication(id: UUID): Flow<Unit> {
         return lectureDataSource.lectureApplication(

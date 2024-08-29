@@ -12,7 +12,6 @@ import java.util.UUID
 interface LectureRepository {
     fun getLectureList(page: Int, size: Int, type: String?): Flow<LectureListEntity>
     fun getDetailLecture(id: UUID): Flow<DetailLectureEntity>
-    // fun patchLecture(id: UUID, body: OpenLectureParam): Flow<Unit>
     fun lectureApplication(id: UUID): Flow<Unit>
     fun lectureApplicationCancel(id: UUID): Flow<Unit>
     fun getLectureSignUpHistory(studentId: UUID): Flow<GetLectureSignUpHistoryEntity>
