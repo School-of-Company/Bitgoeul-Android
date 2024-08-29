@@ -1,8 +1,6 @@
 package com.msg.lecture.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +12,6 @@ import com.msg.domain.usecase.lecture.*
 import com.msg.model.entity.lecture.*
 import com.msg.model.enumdata.*
 import com.msg.model.model.lecture.*
-import com.msg.model.param.lecture.OpenLectureParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,14 +28,8 @@ import javax.inject.Inject
 class LectureViewModel @Inject constructor(
     private val getLectureListUseCase: GetLectureListUseCase,
     private val getDetailLectureUseCase: GetDetailLectureUseCase,
-    private val openLectureUseCase: OpenLectureUseCase,
     private val lectureApplicationUseCase: LectureApplicationUseCase,
     private val lectureApplicationCancelUseCase: LectureApplicationCancelUseCase,
-    private val searchProfessorUseCase: SearchProfessorUseCase,
-    private val searchLineUseCase: SearchLineUseCase,
-    private val searchDepartmentUseCase: SearchDepartmentUseCase,
-    private val searchDivisionUseCase: SearchDivisionUseCase,
-    private val getLectureSignUpHistoryUseCase: GetLectureSignUpHistoryUseCase,
     private val getTakingLectureStudentListUseCase: GetTakingLectureStudentListUseCase,
     private val editLectureCourseCompletionStatusUseCase: EditLectureCourseCompletionStatusUseCase,
     private val downloadExcelFileUseCase: DownloadExcelFileUseCase,
@@ -53,26 +44,11 @@ class LectureViewModel @Inject constructor(
     private val _getDetailLectureResponse = MutableStateFlow<Event<DetailLectureEntity>>(Event.Loading)
     val getDetailLectureResponse = _getDetailLectureResponse.asStateFlow()
 
-    private val _openLectureResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val openLectureResponse = _openLectureResponse.asStateFlow()
-
     private val _lectureApplicationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val lectureApplicationResponse = _lectureApplicationResponse.asStateFlow()
 
     private val _lectureApplicationCancelResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val lectureApplicationCancelResponse = _lectureApplicationCancelResponse.asStateFlow()
-
-    private val _searchProfessorResponse = MutableStateFlow<Event<SearchProfessorEntity>>(Event.Loading)
-    val searchProfessorResponse = _searchProfessorResponse.asStateFlow()
-
-    private val _searchLineResponse = MutableStateFlow<Event<SearchLineEntity>>(Event.Loading)
-    val searchLineResponse = _searchLineResponse.asStateFlow()
-
-    private val _searchDepartmentResponse = MutableStateFlow<Event<SearchDepartmentEntity>>(Event.Loading)
-    val searchDepartmentResponse = _searchDepartmentResponse.asStateFlow()
-
-    private val _searchDivisionResponse = MutableStateFlow<Event<SearchDivisionEntity>>(Event.Loading)
-    val searchDivisionResponse = _searchDivisionResponse.asStateFlow()
 
     private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
     val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
@@ -173,46 +149,6 @@ class LectureViewModel @Inject constructor(
         )
     )
 
-    var searchProfessorData = mutableStateOf(
-        SearchProfessorEntity(
-            instructors = listOf(
-                Instructors(
-                    id = UUID.randomUUID(),
-                    authority = Authority.ROLE_ADMIN,
-                    name = "",
-                    organization = ""
-                )
-            )
-        )
-    )
-        private set
-
-    var searchLineData = mutableStateOf(
-        SearchLineEntity(
-            lines = listOf(
-                ""
-            )
-        )
-    )
-        private set
-
-    var searchDepartmentData = mutableStateOf(
-        SearchDepartmentEntity(
-            departments = listOf(
-                ""
-            )
-        )
-    )
-        private set
-
-    var searchDivisionData = mutableStateOf(
-        SearchDivisionEntity(
-            divisions = listOf(
-                ""
-            )
-        )
-    )
-
     var lectureDetailData = mutableStateOf(
         DetailLectureEntity(
             name = "",
@@ -253,52 +189,7 @@ class LectureViewModel @Inject constructor(
     var name = mutableStateOf("")
         private set
 
-    var content = mutableStateOf("")
-        private set
-
-    var credit = mutableIntStateOf(1)
-        private set
-
-    var maxRegisteredUser = mutableIntStateOf(0)
-        private set
-
-    var semester = mutableStateOf("")
-        private set
-
-    var division = mutableStateOf("")
-        private set
-
-    var department = mutableStateOf("")
-        private set
-
     var line = mutableStateOf("")
-        private set
-
-    var userId = mutableStateOf(UUID.randomUUID())
-        private set
-
-    var lectureType = mutableStateOf("")
-        private set
-
-    var startDate = mutableStateOf<LocalDateTime?>(null)
-        private set
-
-    var endDate = mutableStateOf<LocalDateTime?>(null)
-        private set
-
-    var completeDate = mutableStateOf<LocalDate?>(null)
-        private set
-
-    var startTime = mutableStateOf<LocalTime?>(null)
-        private set
-
-    var endTime = mutableStateOf<LocalTime?>(null)
-        private set
-
-    var lectureDates = mutableStateListOf<LectureDates>()
-        private set
-
-    var essentialComplete = mutableStateOf(false)
         private set
 
     internal fun getLectureList(
@@ -337,78 +228,6 @@ class LectureViewModel @Inject constructor(
         }
     }
 
-    internal fun openLecture(
-        name: String,
-        content: String,
-        semester: String,
-        division: String,
-        department: String,
-        line: String,
-        userId: UUID,
-        startDate: LocalDateTime,
-        endDate: LocalDateTime,
-        lectureType: String,
-        credit: Int,
-        maxRegisteredUser: Int,
-        essentialComplete: Boolean,
-    ) = viewModelScope.launch {
-        openLectureUseCase(
-            OpenLectureParam(
-                name = name,
-                content = content,
-                semester = semester,
-                division = division,
-                department = department,
-                line = line,
-                userId = userId,
-                startDate = startDate,
-                endDate = endDate,
-                lectureDates = lectureDates,
-                lectureType = lectureType,
-                credit = credit,
-                maxRegisteredUser = maxRegisteredUser,
-                essentialComplete = essentialComplete,
-                address = "",
-                locationDetails = ""
-            )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _openLectureResponse.value = remoteError.errorHandling()
-            }.collect {
-                _openLectureResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _openLectureResponse.value = error.errorHandling()
-        }
-    }
-
-    internal fun addLectureDates() {
-        if (completeDate.value != null || startTime.value != null || endTime.value != null) {
-            lectureDates.add(
-                LectureDates(
-                    completeDate = completeDate.value!!,
-                    startTime = startTime.value!!,
-                    endTime = endTime.value!!
-                )
-            )
-            completeDate.value = null
-            startTime.value = null
-            endTime.value = null
-        }
-    }
-
-    internal fun saveLectureDatesList() {
-        lectureDates.forEachIndexed { index, _ ->
-            if (lectureDates.isEmpty()) lectureDates.removeAt(index)
-        }
-    }
-
-    internal fun removeLectureDates() {
-        if (lectureDates.isNotEmpty()) {
-            lectureDates.removeAt(lectureDates.size - 1)
-        }
-    }
-
     internal fun lectureApplication(
         id: UUID,
     ) = viewModelScope.launch {
@@ -438,89 +257,6 @@ class LectureViewModel @Inject constructor(
             }
         }.onFailure { error ->
             _lectureApplicationCancelResponse.value = error.errorHandling()
-        }
-    }
-
-    internal fun searchProfessor(
-        keyword: String,
-    ) = viewModelScope.launch {
-        searchProfessorUseCase(
-            keyword = keyword
-        ).onSuccess {
-            it.catch { remoteError ->
-                _searchProfessorResponse.value = remoteError.errorHandling()
-            }.collect { response ->
-                _searchProfessorResponse.value = Event.Success(data = response)
-            }
-        }.onFailure { error ->
-            _searchProfessorResponse.value = error.errorHandling()
-        }
-    }
-
-    internal fun searchLine(
-        keyword: String,
-        division: String,
-    ) = viewModelScope.launch {
-        searchLineUseCase(
-            keyword = keyword,
-            division = division
-        ).onSuccess {
-            it.catch { remoteError ->
-                _searchLineResponse.value = remoteError.errorHandling()
-            }.collect { response ->
-                _searchLineResponse.value = Event.Success(data = response)
-            }
-        }.onFailure { error ->
-            _searchLineResponse.value = error.errorHandling()
-
-        }
-    }
-
-    internal fun searchDepartment(
-        keyword: String,
-    ) = viewModelScope.launch {
-        searchDepartmentUseCase(
-            keyword = keyword,
-        ).onSuccess {
-            it.catch { remoteError ->
-                _searchDepartmentResponse.value = remoteError.errorHandling()
-            }.collect { response ->
-                _searchDepartmentResponse.value = Event.Success(data = response)
-            }
-        }.onFailure { error ->
-            _searchDepartmentResponse.value = error.errorHandling()
-        }
-    }
-
-    internal fun searchDivision(
-        keyword: String,
-    ) = viewModelScope.launch {
-        searchDivisionUseCase(
-            keyword = keyword,
-        ).onSuccess {
-            it.catch { remoteError ->
-                _searchDivisionResponse.value = remoteError.errorHandling()
-            }.collect { response ->
-                _searchDivisionResponse.value = Event.Success(data = response)
-            }
-        }.onFailure { error ->
-            _searchDivisionResponse.value = error.errorHandling()
-        }
-    }
-
-    internal fun getLectureSignUpHistory(
-        studentId: UUID,
-    ) = viewModelScope.launch {
-        getLectureSignUpHistoryUseCase(
-            studentId = studentId
-        ).onSuccess {
-            it.catch { remoteError ->
-                _getLectureSignUpHistoryResponse.value = remoteError.errorHandling()
-            }.collect { response ->
-                _getLectureSignUpHistoryResponse.value = Event.Success(data = response)
-            }
-        }.onFailure { error ->
-            _getLectureSignUpHistoryResponse.value = error.errorHandling()
         }
     }
 
