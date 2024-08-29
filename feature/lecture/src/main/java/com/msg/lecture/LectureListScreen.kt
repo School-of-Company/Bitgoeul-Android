@@ -42,7 +42,6 @@ import java.util.UUID
 
 @Composable
 internal fun LectureListRoute(
-    onOpenClicked: () -> Unit,
     onItemClicked: () -> Unit,
     viewModel: LectureViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
@@ -64,7 +63,6 @@ internal fun LectureListRoute(
     }
     LectureListScreen(
         data = viewModel.lectureList.value,
-        onOpenClicked = onOpenClicked,
         onItemClicked = { id ->
             viewModel.selectedLectureId.value = id
             viewModel.getDetailLecture(id)
@@ -132,7 +130,6 @@ private suspend fun getLectureList(
 internal fun LectureListScreen(
     modifier: Modifier = Modifier,
     data: LectureListEntity? = null,
-    onOpenClicked: () -> Unit,
     onItemClicked: (UUID) -> Unit,
     onFilterChanged: (type: String?) -> Unit,
     role: String,
@@ -168,17 +165,6 @@ internal fun LectureListScreen(
                     )
 
                     Spacer(modifier = modifier.weight(1f))
-
-                    if (role == "ROLE_ADMIN") {
-                        IconButton(
-                            onClick = onOpenClicked,
-                            modifier = modifier.padding(top = 4.dp),
-                            content = { PlusIcon() }
-                        )
-
-                        Spacer(modifier = modifier.width(24.dp))
-
-                    }
 
                     FilterIcon(
                         modifier = modifier
@@ -310,7 +296,6 @@ private fun LectureListScreenPre() {
 
     LectureListScreen(
         data = initialLectureList,
-        onOpenClicked = {},
         onItemClicked = {},
         onFilterChanged = { type -> },
         role = "ROLE_ADMIN"
