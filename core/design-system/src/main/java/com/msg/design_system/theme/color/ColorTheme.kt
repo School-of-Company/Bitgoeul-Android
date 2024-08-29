@@ -48,4 +48,5 @@ abstract class ColorTheme {
     abstract val G8: Color
     abstract val G9: Color
     abstract val WHITE: Color
+    abstract val BACKGROUND_GRAY: Color
 }

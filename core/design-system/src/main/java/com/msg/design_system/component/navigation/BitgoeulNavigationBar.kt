@@ -74,14 +74,12 @@ fun BitgoeulNavigationPre() {
     val items = listOf(
         "강의",
         "동아리",
-        "홈",
         "게시판",
         "내 정보"
     )
     val icons = listOf(
         R.drawable.ic_lecture,
         R.drawable.ic_club,
-        R.drawable.ic_home,
         R.drawable.ic_board,
         R.drawable.ic_my
     )
