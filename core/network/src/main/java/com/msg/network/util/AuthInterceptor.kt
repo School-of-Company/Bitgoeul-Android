@@ -22,7 +22,7 @@ class AuthInterceptor @Inject constructor(
         val request = chain.request()
         val builder = request.newBuilder()
         val currentTime = System.currentTimeMillis().toLocalDateTime()
-        val ignorePath = listOf("/auth", "/faq", "/club/name", "/school/name", "/company", "/university", "/government")
+        val ignorePath = listOf("/auth", "/faq", "/club/name", "/school/name", "/company", "/university", "/government", "/school")
         val ignoreMethod = listOf("POST", "GET")
         val path = request.url.encodedPath
         val method = request.method
