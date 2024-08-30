@@ -12,7 +12,6 @@ import com.msg.domain.usecase.post.*
 import com.msg.model.entity.post.GetDetailPostEntity
 import com.msg.model.entity.post.GetPostListEntity
 import com.msg.model.enumdata.FeedType
-import com.msg.model.param.post.WritePostParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,14 +27,9 @@ class PostViewModel @Inject constructor(
     private val editPostUseCase: EditPostUseCase,
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
-    private val sendPostUseCase: SendPostUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    companion object {
-        private const val TITLE = "title"
-        private const val CONTENT = "content"
-    }
 
     val role = getRole().toString()
 
@@ -50,9 +44,6 @@ class PostViewModel @Inject constructor(
 
     private val _getPostListResponse = MutableStateFlow<Event<GetPostListEntity>>(Event.Loading)
     val getPostListResponse = _getPostListResponse.asStateFlow()
-
-    private val _sendPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val sendPostResponse = _sendPostResponse.asStateFlow()
 
     var detailPost = mutableStateOf(
         GetDetailPostEntity(
@@ -76,10 +67,6 @@ class PostViewModel @Inject constructor(
 
     var currentFeedType = mutableStateOf(FeedType.EMPLOYMENT)
         private set
-
-    internal var title = savedStateHandle.getStateFlow(key = TITLE, initialValue = "")
-
-    internal var content = savedStateHandle.getStateFlow(key = CONTENT, initialValue = "")
 
     var selectedId = mutableStateOf<UUID>(UUID.randomUUID())
         private set
@@ -205,9 +192,4 @@ class PostViewModel @Inject constructor(
     }
 
     internal fun clearPostList() { postList.value = GetPostListEntity(posts = emptyList()) }
-
-    internal fun onTitleChange(value: String) { savedStateHandle[TITLE] = value }
-
-    internal fun onContentChange(value: String) { savedStateHandle[CONTENT] = value }
-
 }
