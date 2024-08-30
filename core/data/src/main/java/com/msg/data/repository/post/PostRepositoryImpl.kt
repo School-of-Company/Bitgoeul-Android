@@ -35,12 +35,12 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun editPost(id: UUID, body: WritePostParam): Flow<Unit> {
-        return postDataSource.editPost(
-            id = id,
-            body = body.toRequest()
-        )
-    }
+//    override fun editPost(id: UUID, body: WritePostParam): Flow<Unit> {
+//        return postDataSource.editPost(
+//            id = id,
+//            body = body.toRequest()
+//        )
+//    }
 
     override fun deletePost(id: UUID): Flow<Unit> {
         return postDataSource.deletePost(id = id)
