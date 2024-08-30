@@ -32,12 +32,8 @@ import com.msg.lecture.navigation.lectureTakingStudentListScreen
 import com.msg.lecture.navigation.navigateToLecture
 import com.msg.lecture.navigation.navigateToLectureDetail
 import com.msg.lecture.navigation.navigateToLectureTakingStudentList
-import com.msg.post.navigation.navigateToPostAddPage
 import com.msg.post.navigation.navigateToPostDetailPage
-import com.msg.post.navigation.navigateToPostDetailSettingPage
-import com.msg.post.navigation.postAddScreen
 import com.msg.post.navigation.postDetailScreen
-import com.msg.post.navigation.postDetailSettingScreen
 import com.msg.post.navigation.postScreen
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.sign_up.navigation.navigateToSignUpFinish
@@ -130,20 +126,11 @@ fun BitgoeulNavHost(
         )
         postScreen(
             onItemClick = navController::navigateToPostDetailPage,
-            onAddClicked = navController::navigateToPostAddPage
         )
         postDetailScreen(
-            onEditClicked = navController::navigateToPostAddPage,
+            // onEditClicked = navController::navigateToPostAddPage,
             onDeleteClicked = navController::navigateUp,
             onBackClicked = navController::navigateUp
-        )
-        postAddScreen(
-            onSettingClicked = navController::navigateToPostDetailSettingPage,
-            onBackClicked = navController::navigateUp,
-            onAddClicked = navController::navigateUp
-        )
-        postDetailSettingScreen(
-            onCloseClicked = navController::navigateUp
         )
         clubScreen(
             onItemClicked = navController::navigateToClubDetailPage

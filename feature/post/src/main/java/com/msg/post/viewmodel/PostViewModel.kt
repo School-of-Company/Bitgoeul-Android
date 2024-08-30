@@ -12,7 +12,6 @@ import com.msg.domain.usecase.post.*
 import com.msg.model.entity.post.GetDetailPostEntity
 import com.msg.model.entity.post.GetPostListEntity
 import com.msg.model.enumdata.FeedType
-import com.msg.model.param.post.WritePostParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,17 +24,12 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val deletePostUseCase: DeletePostUseCase,
-    private val editPostUseCase: EditPostUseCase,
+    // private val editPostUseCase: EditPostUseCase,
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
-    private val sendPostUseCase: SendPostUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    companion object {
-        private const val TITLE = "title"
-        private const val CONTENT = "content"
-    }
 
     val role = getRole().toString()
 
@@ -50,9 +44,6 @@ class PostViewModel @Inject constructor(
 
     private val _getPostListResponse = MutableStateFlow<Event<GetPostListEntity>>(Event.Loading)
     val getPostListResponse = _getPostListResponse.asStateFlow()
-
-    private val _sendPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val sendPostResponse = _sendPostResponse.asStateFlow()
 
     var detailPost = mutableStateOf(
         GetDetailPostEntity(
@@ -77,10 +68,6 @@ class PostViewModel @Inject constructor(
     var currentFeedType = mutableStateOf(FeedType.EMPLOYMENT)
         private set
 
-    internal var title = savedStateHandle.getStateFlow(key = TITLE, initialValue = "")
-
-    internal var content = savedStateHandle.getStateFlow(key = CONTENT, initialValue = "")
-
     var selectedId = mutableStateOf<UUID>(UUID.randomUUID())
         private set
 
@@ -101,53 +88,30 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    internal fun editPost(
-        id: UUID,
-        title: String,
-        content: String,
-        feedType: FeedType
-    ) = viewModelScope.launch {
-        editPostUseCase(
-            id = id,
-            body = WritePostParam(
-                title = title,
-                content = content,
-                links = links,
-                feedType = feedType
-            )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _editPostResponse.value = remoteError.errorHandling()
-            }.collect {
-                _editPostResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _editPostResponse.value = error.errorHandling()
-        }
-    }
-
-    internal fun sendPost(
-        title: String,
-        content: String,
-        feedType: FeedType,
-    ) = viewModelScope.launch {
-        sendPostUseCase(
-            body = WritePostParam(
-                title = title,
-                content = content,
-                links = links,
-                feedType = feedType
-            )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _sendPostResponse.value = remoteError.errorHandling()
-            }.collect {
-                _sendPostResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _sendPostResponse.value = error.errorHandling()
-        }
-    }
+//    internal fun editPost(
+//        id: UUID,
+//        title: String,
+//        content: String,
+//        feedType: FeedType
+//    ) = viewModelScope.launch {
+//        editPostUseCase(
+//            id = id,
+//            body = WritePostParam(
+//                title = title,
+//                content = content,
+//                links = links,
+//                feedType = feedType
+//            )
+//        ).onSuccess {
+//            it.catch { remoteError ->
+//                _editPostResponse.value = remoteError.errorHandling()
+//            }.collect {
+//                _editPostResponse.value = Event.Success()
+//            }
+//        }.onFailure { error ->
+//            _editPostResponse.value = error.errorHandling()
+//        }
+//    }
 
     internal fun getPostList(
         type: FeedType
@@ -183,19 +147,9 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    internal fun addLinks() {
-        links.add("")
-    }
-
-    internal fun saveLinkList() {
-        links.forEachIndexed { index, link ->
-            if (link == "") links.removeAt(index)
-        }
-    }
-
     internal fun getFilledEditPage() {
-        onTitleChange(detailPost.value.title)
-        onContentChange(detailPost.value.content)
+        // onTitleChange(detailPost.value.title)
+        // onContentChange(detailPost.value.content)
         links.addAll(detailPost.value.links)
         isEditPage.value = true
     }
@@ -205,9 +159,4 @@ class PostViewModel @Inject constructor(
     }
 
     internal fun clearPostList() { postList.value = GetPostListEntity(posts = emptyList()) }
-
-    internal fun onTitleChange(value: String) { savedStateHandle[TITLE] = value }
-
-    internal fun onContentChange(value: String) { savedStateHandle[CONTENT] = value }
-
 }

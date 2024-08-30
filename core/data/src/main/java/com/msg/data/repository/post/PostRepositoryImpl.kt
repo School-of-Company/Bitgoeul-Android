@@ -1,11 +1,9 @@
 package com.msg.data.repository.post
 
 import com.msg.data.mapper.post.toEntity
-import com.msg.data.mapper.post.toRequest
 import com.msg.model.entity.post.GetDetailPostEntity
 import com.msg.model.entity.post.GetPostListEntity
 import com.msg.model.enumdata.FeedType
-import com.msg.model.param.post.WritePostParam
 import com.msg.network.datasource.post.PostDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -15,12 +13,6 @@ import javax.inject.Inject
 class PostRepositoryImpl @Inject constructor(
     private val postDataSource: PostDataSource,
 ) : PostRepository {
-    override fun sendPost(body: WritePostParam): Flow<Unit> {
-        return postDataSource.sendPost(
-            body = body.toRequest()
-        )
-    }
-
     override fun getPostList(
         type: FeedType,
         size: Int,
@@ -43,12 +35,12 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun editPost(id: UUID, body: WritePostParam): Flow<Unit> {
-        return postDataSource.editPost(
-            id = id,
-            body = body.toRequest()
-        )
-    }
+//    override fun editPost(id: UUID, body: WritePostParam): Flow<Unit> {
+//        return postDataSource.editPost(
+//            id = id,
+//            body = body.toRequest()
+//        )
+//    }
 
     override fun deletePost(id: UUID): Flow<Unit> {
         return postDataSource.deletePost(id = id)

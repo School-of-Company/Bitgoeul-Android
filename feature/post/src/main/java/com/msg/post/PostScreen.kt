@@ -38,7 +38,6 @@ import java.util.UUID
 internal fun PostScreenRoute(
     viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onItemClicked: () -> Unit,
-    onAddClicked: () -> Unit
 ) {
     val role = viewModel.role
     val state = rememberSaveable { mutableStateOf(viewModel.currentFeedType.value) }
@@ -54,10 +53,6 @@ internal fun PostScreenRoute(
 
     PostScreen(
         role = role,
-        onAddClicked = {
-            onAddClicked()
-            viewModel.currentFeedType.value = it
-        },
         onItemClicked = {
             onItemClicked()
             viewModel.selectedId.value = it
@@ -95,7 +90,6 @@ private suspend fun getPostList(
 internal fun PostScreen(
     modifier: Modifier = Modifier,
     role: String,
-    onAddClicked: (feedType: FeedType) -> Unit,
     onItemClicked: (UUID) -> Unit,
     onViewChangeClicked: (type: FeedType) -> Unit,
     data: GetPostListEntity,
@@ -143,13 +137,6 @@ internal fun PostScreen(
                     onClick = {},
                     content = { HelpIcon() }
                 )
-                if (role in roleField) {
-                    IconButton(
-                        modifier = modifier.padding(end = 28.dp),
-                        onClick = { onAddClicked(viewState) },
-                        content = { PlusIcon() }
-                    )
-                }
             }
             Spacer(modifier = modifier.height(40.dp))
             PostList(
@@ -167,7 +154,6 @@ internal fun PostScreen(
 private fun postScreenPreview() {
     PostScreen(
         role = "",
-        onAddClicked = {},
         onItemClicked = {},
         onViewChangeClicked = {},
         data = GetPostListEntity(posts = emptyList()),
