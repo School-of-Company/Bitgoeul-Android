@@ -32,11 +32,11 @@ interface PostAPI {
         @Path("id") id: UUID
     ): GetDetailPostResponse
 
-    @PATCH("post/{id}")
-    suspend fun editPost(
-        @Path("id") id: UUID,
-        @Body body: WritePostRequest
-    )
+//    @PATCH("post/{id}")
+//    suspend fun editPost(
+//        @Path("id") id: UUID,
+//        @Body body: WritePostRequest
+//    )
 
     @DELETE("post/{id}")
     suspend fun deletePost(
