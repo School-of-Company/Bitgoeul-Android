@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val deletePostUseCase: DeletePostUseCase,
-    private val editPostUseCase: EditPostUseCase,
+    // private val editPostUseCase: EditPostUseCase,
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
@@ -88,53 +88,30 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    internal fun editPost(
-        id: UUID,
-        title: String,
-        content: String,
-        feedType: FeedType
-    ) = viewModelScope.launch {
-        editPostUseCase(
-            id = id,
-            body = WritePostParam(
-                title = title,
-                content = content,
-                links = links,
-                feedType = feedType
-            )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _editPostResponse.value = remoteError.errorHandling()
-            }.collect {
-                _editPostResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _editPostResponse.value = error.errorHandling()
-        }
-    }
-
-    internal fun sendPost(
-        title: String,
-        content: String,
-        feedType: FeedType,
-    ) = viewModelScope.launch {
-        sendPostUseCase(
-            body = WritePostParam(
-                title = title,
-                content = content,
-                links = links,
-                feedType = feedType
-            )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _sendPostResponse.value = remoteError.errorHandling()
-            }.collect {
-                _sendPostResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _sendPostResponse.value = error.errorHandling()
-        }
-    }
+//    internal fun editPost(
+//        id: UUID,
+//        title: String,
+//        content: String,
+//        feedType: FeedType
+//    ) = viewModelScope.launch {
+//        editPostUseCase(
+//            id = id,
+//            body = WritePostParam(
+//                title = title,
+//                content = content,
+//                links = links,
+//                feedType = feedType
+//            )
+//        ).onSuccess {
+//            it.catch { remoteError ->
+//                _editPostResponse.value = remoteError.errorHandling()
+//            }.collect {
+//                _editPostResponse.value = Event.Success()
+//            }
+//        }.onFailure { error ->
+//            _editPostResponse.value = error.errorHandling()
+//        }
+//    }
 
     internal fun getPostList(
         type: FeedType
@@ -170,19 +147,9 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    internal fun addLinks() {
-        links.add("")
-    }
-
-    internal fun saveLinkList() {
-        links.forEachIndexed { index, link ->
-            if (link == "") links.removeAt(index)
-        }
-    }
-
     internal fun getFilledEditPage() {
-        onTitleChange(detailPost.value.title)
-        onContentChange(detailPost.value.content)
+        // onTitleChange(detailPost.value.title)
+        // onContentChange(detailPost.value.content)
         links.addAll(detailPost.value.links)
         isEditPage.value = true
     }
