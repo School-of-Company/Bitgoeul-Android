@@ -1,7 +1,6 @@
 package com.msg.network.api
 
 import com.msg.model.enumdata.FeedType
-import com.msg.network.request.post.WritePostRequest
 import com.msg.network.response.post.GetDetailPostResponse
 import com.msg.network.response.post.GetPostListResponse
 import retrofit2.http.Body
@@ -14,12 +13,6 @@ import retrofit2.http.Query
 import java.util.UUID
 
 interface PostAPI {
-
-    @POST("post")
-    suspend fun sendPost(
-        @Body body: WritePostRequest
-    )
-
     @GET("post")
     suspend fun getPostList(
         @Query("type") type: FeedType,
