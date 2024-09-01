@@ -9,6 +9,5 @@ import java.util.UUID
 interface PostDataSource {
     fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListResponse>
     fun getDetailPost(id: UUID): Flow<GetDetailPostResponse>
-    // fun editPost(id: UUID, body: WritePostRequest): Flow<Unit>
     fun deletePost(id: UUID): Flow<Unit>
 }

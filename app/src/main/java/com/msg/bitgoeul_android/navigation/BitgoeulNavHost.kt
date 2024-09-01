@@ -128,7 +128,6 @@ fun BitgoeulNavHost(
             onItemClick = navController::navigateToPostDetailPage,
         )
         postDetailScreen(
-            // onEditClicked = navController::navigateToPostAddPage,
             onDeleteClicked = navController::navigateUp,
             onBackClicked = navController::navigateUp
         )

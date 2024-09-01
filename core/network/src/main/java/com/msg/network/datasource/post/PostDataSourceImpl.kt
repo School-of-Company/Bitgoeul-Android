@@ -17,9 +17,6 @@ class PostDataSourceImpl @Inject constructor(
     override fun getDetailPost(id: UUID): Flow<GetDetailPostResponse> =
         makeRequest { postAPI.getDetailPost(id = id) }
 
-//    override fun editPost(id: UUID, body: WritePostRequest): Flow<Unit> =
-//        makeRequest { postAPI.editPost(id = id, body = body) }
-
     override fun deletePost(id: UUID): Flow<Unit> =
         makeRequest { postAPI.deletePost(id = id) }
 }
