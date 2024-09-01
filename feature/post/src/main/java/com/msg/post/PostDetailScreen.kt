@@ -49,7 +49,6 @@ import java.util.UUID
 @Composable
 internal fun PostDetailScreenRoute(
     viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
-    // onEditClicked: () -> Unit,
     onDeleteClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
@@ -69,10 +68,6 @@ internal fun PostDetailScreenRoute(
             onDeleteClicked()
             viewModel.deletePost(it)
         },
-//        onEditClicked = {
-//             onEditClicked()
-//             viewModel.getFilledEditPage()
-//        },
         onBackClicked = {
             onBackClicked()
             viewModel.selectedId.value = UUID.randomUUID()
@@ -102,7 +97,6 @@ internal fun PostDetailScreen(
     id: UUID,
     role: Authority = Authority.ROLE_USER,
     onDeleteClicked: (UUID) -> Unit,
-    // onEditClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
     val (isDialogShow, setIsDialogShow)  = rememberSaveable { mutableStateOf(false) }
@@ -184,16 +178,6 @@ internal fun PostDetailScreen(
                             setIsDialogShow(true)
                         }
                     }
-                    Row(
-                        modifier = modifier.weight(0.45f)
-                    ) {
-                        BitgoeulButton(
-                            modifier = modifier.fillMaxWidth(),
-                            text = "수정하기"
-                        ) {
-                            // onEditClicked()
-                        }
-                    }
                 }
             }
             NegativeActionDialog(
@@ -224,7 +208,6 @@ fun PostDetailScreenPre() {
         ),
         role = Authority.ROLE_ADMIN,
         onDeleteClicked = {},
-        // onEditClicked = {},
         id = UUID.randomUUID()
     ) {}
 }
