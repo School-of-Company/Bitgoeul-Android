@@ -56,6 +56,7 @@ class LectureViewModel @Inject constructor(
     private val _getTakingLectureStudentListResponse = MutableStateFlow<Event<GetTakingLectureStudentListEntity>>(Event.Loading)
     val getTakingLectureStudentListResponse = _getTakingLectureStudentListResponse.asStateFlow()
 
+    // 네이밍을 editPostResponse에서 editLectureCourseCompletionStatusResponse로 변경해야함
     private val _editPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val editPostResponse = _editPostResponse.asStateFlow()
 
