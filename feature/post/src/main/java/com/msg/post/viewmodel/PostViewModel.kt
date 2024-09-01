@@ -2,7 +2,6 @@ package com.msg.post.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.common.errorhandling.errorHandling
@@ -24,20 +23,15 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val deletePostUseCase: DeletePostUseCase,
-    // private val editPostUseCase: EditPostUseCase,
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
-    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val role = getRole().toString()
 
     private val _deletePostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val deletePostResponse = _deletePostResponse.asStateFlow()
-
-    private val _editPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val editPostResponse = _editPostResponse.asStateFlow()
 
     private val _getDetailPostResponse = MutableStateFlow<Event<GetDetailPostEntity>>(Event.Loading)
     val getDetailPostResponse = _getDetailPostResponse.asStateFlow()
@@ -74,6 +68,7 @@ class PostViewModel @Inject constructor(
     var isEditPage = mutableStateOf(false)
         private set
 
+    // 아래의 삭제 함수를 저번 PR에서 실수로 삭제 못함 바로 삭제해야함
     internal fun deletePost(
         id: UUID
     ) = viewModelScope.launch {
@@ -87,31 +82,6 @@ class PostViewModel @Inject constructor(
             _deletePostResponse.value = error.errorHandling()
         }
     }
-
-//    internal fun editPost(
-//        id: UUID,
-//        title: String,
-//        content: String,
-//        feedType: FeedType
-//    ) = viewModelScope.launch {
-//        editPostUseCase(
-//            id = id,
-//            body = WritePostParam(
-//                title = title,
-//                content = content,
-//                links = links,
-//                feedType = feedType
-//            )
-//        ).onSuccess {
-//            it.catch { remoteError ->
-//                _editPostResponse.value = remoteError.errorHandling()
-//            }.collect {
-//                _editPostResponse.value = Event.Success()
-//            }
-//        }.onFailure { error ->
-//            _editPostResponse.value = error.errorHandling()
-//        }
-//    }
 
     internal fun getPostList(
         type: FeedType
@@ -145,13 +115,6 @@ class PostViewModel @Inject constructor(
         }.onFailure { error ->
             _getDetailPostResponse.value = error.errorHandling()
         }
-    }
-
-    internal fun getFilledEditPage() {
-        // onTitleChange(detailPost.value.title)
-        // onContentChange(detailPost.value.content)
-        links.addAll(detailPost.value.links)
-        isEditPage.value = true
     }
 
     private fun getRole() = viewModelScope.launch {
