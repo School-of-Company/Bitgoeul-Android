@@ -1,6 +1,5 @@
 package com.msg.post
 
-import com.msg.model.enumdata.Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,6 @@ import com.msg.common.event.Event
 import com.msg.design_system.component.icon.ChatIcon
 import com.msg.design_system.component.icon.HelpIcon
 import com.msg.design_system.component.icon.MegaphoneIcon
-import com.msg.design_system.component.icon.PlusIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.entity.post.GetPostListEntity
 import com.msg.model.enumdata.FeedType
@@ -39,7 +37,6 @@ internal fun PostScreenRoute(
     viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onItemClicked: () -> Unit,
 ) {
-    val role = viewModel.role
     val state = rememberSaveable { mutableStateOf(viewModel.currentFeedType.value) }
 
     LaunchedEffect(true, state) {
@@ -52,7 +49,6 @@ internal fun PostScreenRoute(
     }
 
     PostScreen(
-        role = role,
         onItemClicked = {
             onItemClicked()
             viewModel.selectedId.value = it
@@ -89,19 +85,11 @@ private suspend fun getPostList(
 @Composable
 internal fun PostScreen(
     modifier: Modifier = Modifier,
-    role: String,
     onItemClicked: (UUID) -> Unit,
     onViewChangeClicked: (type: FeedType) -> Unit,
     data: GetPostListEntity,
     viewState: FeedType,
 ) {
-    val roleField = setOf(
-        Authority.ROLE_ADMIN,
-        Authority.ROLE_BBOZZAK,
-        Authority.ROLE_PROFESSOR,
-        Authority.ROLE_COMPANY_INSTRUCTOR,
-        Authority.ROLE_GOVERNMENT
-    ).map { it.toString() }
 
     BitgoeulAndroidTheme { colors, typography ->
         Column(
@@ -153,7 +141,6 @@ internal fun PostScreen(
 @Composable
 private fun postScreenPreview() {
     PostScreen(
-        role = "",
         onItemClicked = {},
         onViewChangeClicked = {},
         data = GetPostListEntity(posts = emptyList()),

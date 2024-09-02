@@ -9,5 +9,4 @@ import java.util.UUID
 interface PostRepository {
     fun getPostList(type: FeedType, size: Int, page: Int): Flow<GetPostListEntity>
     fun getDetailPost(id: UUID): Flow<GetDetailPostEntity>
-    fun deletePost(id: UUID): Flow<Unit>
 }

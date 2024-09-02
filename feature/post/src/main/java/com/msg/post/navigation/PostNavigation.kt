@@ -27,12 +27,10 @@ fun NavController.navigateToPostDetailPage(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.postDetailScreen(
-    onDeleteClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
     composable(route = postDetailRoute) {
         PostDetailScreenRoute(
-            onDeleteClicked = onDeleteClicked,
             onBackClicked = onBackClicked
         )
     }

@@ -128,7 +128,6 @@ fun BitgoeulNavHost(
             onItemClick = navController::navigateToPostDetailPage,
         )
         postDetailScreen(
-            onDeleteClicked = navController::navigateUp,
             onBackClicked = navController::navigateUp
         )
         clubScreen(

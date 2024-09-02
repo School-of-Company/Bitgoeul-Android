@@ -22,16 +22,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
-    private val deletePostUseCase: DeletePostUseCase,
     private val getDetailPostUseCase: GetDetailPostUseCase,
     private val getPostListUseCase: GetPostListUseCase,
-    private val getAuthorityUseCase: GetAuthorityUseCase,
 ) : ViewModel() {
-
-    val role = getRole().toString()
-
-    private val _deletePostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val deletePostResponse = _deletePostResponse.asStateFlow()
 
     private val _getDetailPostResponse = MutableStateFlow<Event<GetDetailPostEntity>>(Event.Loading)
     val getDetailPostResponse = _getDetailPostResponse.asStateFlow()
@@ -56,32 +49,11 @@ class PostViewModel @Inject constructor(
     )
         private set
 
-    var links = mutableStateListOf<String>()
-        private set
-
     var currentFeedType = mutableStateOf(FeedType.EMPLOYMENT)
         private set
 
     var selectedId = mutableStateOf<UUID>(UUID.randomUUID())
         private set
-
-    var isEditPage = mutableStateOf(false)
-        private set
-
-    // 아래의 삭제 함수를 저번 PR에서 실수로 삭제 못함 바로 삭제해야함
-    internal fun deletePost(
-        id: UUID
-    ) = viewModelScope.launch {
-        deletePostUseCase(id = id).onSuccess {
-            it.catch { remoteError ->
-                _deletePostResponse.value = remoteError.errorHandling()
-            }.collect {
-                _deletePostResponse.value = Event.Success()
-            }
-        }.onFailure { error ->
-            _deletePostResponse.value = error.errorHandling()
-        }
-    }
 
     internal fun getPostList(
         type: FeedType
@@ -115,10 +87,6 @@ class PostViewModel @Inject constructor(
         }.onFailure { error ->
             _getDetailPostResponse.value = error.errorHandling()
         }
-    }
-
-    private fun getRole() = viewModelScope.launch {
-        getAuthorityUseCase()
     }
 
     internal fun clearPostList() { postList.value = GetPostListEntity(posts = emptyList()) }

@@ -1,16 +1,12 @@
 package com.msg.post
 
-import com.msg.model.enumdata.Authority
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -19,9 +15,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
@@ -32,9 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.common.event.Event
 import com.msg.design_system.R
-import com.msg.design_system.component.button.BitgoeulButton
-import com.msg.design_system.component.button.NegativeBitgoeulButton
-import com.msg.design_system.component.dialog.NegativeActionDialog
 import com.msg.design_system.component.icon.GoBackIcon
 import com.msg.design_system.component.topbar.GoBackTopBar
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -49,7 +39,6 @@ import java.util.UUID
 @Composable
 internal fun PostDetailScreenRoute(
     viewModel: PostViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
-    onDeleteClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
     LaunchedEffect(true) {
@@ -63,11 +52,6 @@ internal fun PostDetailScreenRoute(
 
     PostDetailScreen(
         data = viewModel.detailPost.value,
-        id = viewModel.selectedId.value,
-        onDeleteClicked = {
-            onDeleteClicked()
-            viewModel.deletePost(it)
-        },
         onBackClicked = {
             onBackClicked()
             viewModel.selectedId.value = UUID.randomUUID()
@@ -94,13 +78,8 @@ internal fun PostDetailScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
     data: GetDetailPostEntity,
-    id: UUID,
-    role: Authority = Authority.ROLE_USER,
-    onDeleteClicked: (UUID) -> Unit,
     onBackClicked: () -> Unit
 ) {
-    val (isDialogShow, setIsDialogShow)  = rememberSaveable { mutableStateOf(false) }
-
     BitgoeulAndroidTheme { colors, typography ->
         Box {
             Column(
@@ -162,32 +141,6 @@ internal fun PostDetailScreen(
                     Spacer(modifier = modifier.height(80.dp))
                 }
             }
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 28.dp, vertical = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                if (role == Authority.ROLE_ADMIN) {
-                    Row(modifier = modifier.weight(0.45f)) {
-                        NegativeBitgoeulButton(
-                            modifier = modifier.fillMaxWidth(),
-                            text = "삭제하기"
-                        ) {
-                            setIsDialogShow(true)
-                        }
-                    }
-                }
-            }
-            NegativeActionDialog(
-                title = "게시글을 삭제하시겠습니까?",
-                negativeAction = "삭제",
-                content = data.title,
-                isVisible = isDialogShow,
-                onQuit = { setIsDialogShow(false) },
-                onActionClicked = { onDeleteClicked(id) }
-            )
         }
     }
 }
@@ -206,8 +159,5 @@ fun PostDetailScreenPre() {
                 "https://youtu.be/eMa_cXrnVgw?si=uwKQyhA8vKHeTWu6"
             )
         ),
-        role = Authority.ROLE_ADMIN,
-        onDeleteClicked = {},
-        id = UUID.randomUUID()
     ) {}
 }

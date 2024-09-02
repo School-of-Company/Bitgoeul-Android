@@ -34,8 +34,4 @@ class PostRepositoryImpl @Inject constructor(
             response.toEntity()
         }
     }
-
-    override fun deletePost(id: UUID): Flow<Unit> {
-        return postDataSource.deletePost(id = id)
-    }
 }
