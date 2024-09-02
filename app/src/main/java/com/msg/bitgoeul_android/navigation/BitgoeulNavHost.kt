@@ -27,22 +27,13 @@ import com.msg.club.navigation.clubDetailScreen
 import com.msg.club.navigation.clubScreen
 import com.msg.club.navigation.navigateToClubDetailPage
 import com.msg.lecture.navigation.lectureDetailScreen
-import com.msg.lecture.navigation.lectureDetailSettingScreen
 import com.msg.lecture.navigation.lectureListScreen
-import com.msg.lecture.navigation.lectureOpenScreen
 import com.msg.lecture.navigation.lectureTakingStudentListScreen
+import com.msg.lecture.navigation.navigateToLecture
 import com.msg.lecture.navigation.navigateToLectureDetail
-import com.msg.lecture.navigation.navigateToLectureDetailSetting
-import com.msg.lecture.navigation.navigateToLectureOpen
 import com.msg.lecture.navigation.navigateToLectureTakingStudentList
-import com.msg.main.navigation.mainPageScreen
-import com.msg.main.navigation.navigateToMainPage
-import com.msg.post.navigation.navigateToPostAddPage
 import com.msg.post.navigation.navigateToPostDetailPage
-import com.msg.post.navigation.navigateToPostDetailSettingPage
-import com.msg.post.navigation.postAddScreen
 import com.msg.post.navigation.postDetailScreen
-import com.msg.post.navigation.postDetailSettingScreen
 import com.msg.post.navigation.postScreen
 import com.msg.sign_up.navigation.navigateToSignUp
 import com.msg.sign_up.navigation.navigateToSignUpFinish
@@ -71,7 +62,7 @@ fun BitgoeulNavHost(
         loginScreen(
             onSignUpClicked = navController::navigateToSignUp,
             onFindPasswordClicked = navController::navigateToInputEmail,
-            onLoginClicked = navController::navigateToMainPage
+            onLoginClicked = navController::navigateToLecture
         )
         inputEmailScreen(
             onBackClicked = { navController.navigateWithPopUpToLogin(loginRoute) },
@@ -115,7 +106,6 @@ fun BitgoeulNavHost(
             onApplyClicked = navController::navigateUp
         )
         lectureListScreen(
-            onOpenClicked = navController::navigateToLectureOpen,
             onItemClicked = navController::navigateToLectureDetail,
         )
         lectureDetailScreen(
@@ -124,15 +114,6 @@ fun BitgoeulNavHost(
         )
         lectureTakingStudentListScreen(
             onBackClicked = navController::navigateUp,
-        )
-        lectureOpenScreen(
-            onActionClicked = navController::navigateUp,
-            onSettingClicked = navController::navigateToLectureDetailSetting,
-            onBackClicked = navController::navigateUp,
-        )
-        lectureDetailSettingScreen(
-            onCloseClicked = navController::navigateUp,
-            onApplyClicked = navController::navigateUp,
         )
         myPageScreen(
             onPasswordChangeClicked = navController::navigateToPasswordChange,
@@ -145,30 +126,16 @@ fun BitgoeulNavHost(
         )
         postScreen(
             onItemClick = navController::navigateToPostDetailPage,
-            onAddClicked = navController::navigateToPostAddPage
         )
         postDetailScreen(
-            onEditClicked = navController::navigateToPostAddPage,
-            onDeleteClicked = navController::navigateUp,
             onBackClicked = navController::navigateUp
-        )
-        postAddScreen(
-            onSettingClicked = navController::navigateToPostDetailSettingPage,
-            onBackClicked = navController::navigateUp,
-            onAddClicked = navController::navigateUp
-        )
-        postDetailSettingScreen(
-            onCloseClicked = navController::navigateUp
         )
         clubScreen(
             onItemClicked = navController::navigateToClubDetailPage
         )
         clubDetailScreen(
             onBackClickedByAdmin = navController::navigateUp,
-            onBackClicked = navController::navigateToMainPage
-        )
-        mainPageScreen(
-            onLoginClicked = navController::navigateToLogin
+            onBackClicked = navController::navigateUp
         )
         certificationScreen(
             onHumanClicked = navController::navigateToMyPage,

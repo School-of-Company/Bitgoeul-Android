@@ -1,7 +1,6 @@
 import java.io.FileInputStream
 import java.util.Properties
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("bitgoeul.android.core")
     id("bitgoeul.android.hilt")
@@ -15,6 +14,7 @@ android {
 
     defaultConfig {
         buildConfigField("String", "BASE_URL",  getApiKey("BASE_URL"))
+        buildConfigField("String", "NATIVE_APP_KEY", getApiKey("NATIVE_APP_KEY"))
     }
 
     namespace = "com.msg.network"
@@ -41,5 +41,5 @@ fun getApiKey(propertyKey: String): String {
     val propFile = rootProject.file("./local.properties")
     val properties = Properties()
     properties.load(FileInputStream(propFile))
-    return properties.getProperty(propertyKey)
+    return properties.getProperty(propertyKey) ?: throw IllegalArgumentException("Property $propertyKey not found in local.properties")
 }

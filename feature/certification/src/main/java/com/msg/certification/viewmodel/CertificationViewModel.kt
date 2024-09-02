@@ -35,6 +35,9 @@ class CertificationViewModel @Inject constructor(
     private val getAuthorityUseCase: GetAuthorityUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    companion object {
+        private const val SELECTED_TITLE = "selectedTitle"
+    }
 
     private val role = getRole().toString()
 
@@ -62,8 +65,7 @@ class CertificationViewModel @Inject constructor(
     var selectedCertificationId = mutableStateOf<UUID?>(null)
         private set
 
-    var selectedTitle = mutableStateOf("")
-        private set
+    internal var selectedTitle = savedStateHandle.getStateFlow(key = SELECTED_TITLE, initialValue = "")
 
     var selectedDate = mutableStateOf<LocalDate?>(null)
         private set
@@ -191,4 +193,6 @@ class CertificationViewModel @Inject constructor(
     private fun getRole() = viewModelScope.launch {
         getAuthorityUseCase()
     }
+
+    internal fun onSelectedTitleChange(value: String) { savedStateHandle[SELECTED_TITLE] = value }
 }

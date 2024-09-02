@@ -1,6 +1,7 @@
 package com.msg.data.mapper.lecture
 
 import com.msg.model.entity.lecture.DetailLectureEntity
+import com.msg.model.model.lecture.LectureDates as DomainLectureDates
 import com.msg.network.response.lecture.DetailLectureResponse
 
 fun DetailLectureResponse.toEntity() = DetailLectureEntity(
@@ -13,7 +14,7 @@ fun DetailLectureResponse.toEntity() = DetailLectureEntity(
     createAt = createAt,
     startDate = startDate,
     endDate = endDate,
-    lectureDates = lectureDates,
+    lectureDates = lectureDates.map { it.toDomainLectureDates() },
     lectureType = lectureType,
     lectureStatus = lectureStatus,
     headCount = headCount,
@@ -26,4 +27,10 @@ fun DetailLectureResponse.toEntity() = DetailLectureEntity(
     address = address,
     locationDetails = locationDetails,
     essentialComplete = essentialComplete
+)
+
+fun DetailLectureResponse.LectureDates.toDomainLectureDates() = DomainLectureDates(
+    completeDate = completeDate,
+    startTime = startTime,
+    endTime = endTime
 )

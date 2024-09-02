@@ -4,6 +4,7 @@ import com.msg.model.enumdata.Authority
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.common.errorhandling.errorHandling
@@ -43,9 +44,19 @@ class StudentActivityViewModel @Inject constructor(
     private val rejectStudentActivityInfoUseCase: RejectStudentActivityInfoUseCase,
     private val deleteStudentActivityInfoUseCase: DeleteStudentActivityInfoUseCase,
     private val getAuthorityUseCase: GetAuthorityUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    companion object {
+        private const val WHICH_NEGATIVE = "whichNegative"
+        private const val TITLE = "title"
+        private const val CONTENT = "content"
+    }
 
     val role = getRole().toString()
+
+    internal var title = savedStateHandle.getStateFlow(key = TITLE, initialValue = "")
+
+    internal var content = savedStateHandle.getStateFlow(key = CONTENT, initialValue = "")
 
     private val _getStudentActivityListResponse = MutableStateFlow<Event<GetStudentActivityListEntity>>(Event.Loading)
     val getStudentActivityListResponse = _getStudentActivityListResponse.asStateFlow()
@@ -82,12 +93,6 @@ class StudentActivityViewModel @Inject constructor(
         private set
 
     var selectedActivityId = mutableStateOf<UUID>(UUID.randomUUID())
-        private set
-
-    var title = mutableStateOf("")
-        private set
-
-    var content = mutableStateOf("")
         private set
 
     var credit = mutableIntStateOf(0)
@@ -239,4 +244,10 @@ class StudentActivityViewModel @Inject constructor(
     private fun getRole() = viewModelScope.launch {
         getAuthorityUseCase()
     }
+
+    internal fun onWhichNegativeChange(value: String) { savedStateHandle[WHICH_NEGATIVE] = value }
+
+    internal fun onTitleChange(value: String){ savedStateHandle[TITLE] = value }
+
+    internal fun onContentChange(value: String) { savedStateHandle[CONTENT] = value }
 }

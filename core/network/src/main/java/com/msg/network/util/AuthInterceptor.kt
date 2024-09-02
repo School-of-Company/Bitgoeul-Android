@@ -22,14 +22,14 @@ class AuthInterceptor @Inject constructor(
         val request = chain.request()
         val builder = request.newBuilder()
         val currentTime = System.currentTimeMillis().toLocalDateTime()
-        val ignorePath = listOf("/auth", "/faq", "/club/name", "/school/name", "/company", "/university", "/government")
+        val ignorePath = listOf("/auth", "/faq", "/club/name", "/school/name", "/company", "/university", "/government", "/school")
         val ignoreMethod = listOf("POST", "GET")
         val path = request.url.encodedPath
         val method = request.method
 
         run breaking@{
             ignorePath.forEachIndexed { index, s ->
-                if (path.contains(s) && ignoreMethod[index] == method) {
+                if (path.contains(s) && ignoreMethod.contains(method)) {
                     if (ignorePath.subList(4, 6).contains(s) && index == 0) return@breaking
                     return chain.proceed(request)
                 }
@@ -75,7 +75,6 @@ class AuthInterceptor @Inject constructor(
             if (method == "DELETE") {
                 builder.addHeader("RefreshToken", "Bearer $refreshToken")
             }
-            builder.addHeader("Authorization", "Bearer $accessToken")
         }
         return chain.proceed(builder.build())
     }

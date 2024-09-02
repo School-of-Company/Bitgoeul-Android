@@ -14,10 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bitgoeul.login.viewmodel.AuthViewModel
 import com.msg.common.event.Event
 import com.msg.design_system.R
@@ -51,12 +53,17 @@ internal fun LoginRoute(
     onLoginClicked: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
-    val focusManager = LocalFocusManager.current
+    val emailState by viewModel.email.collectAsStateWithLifecycle()
+    val passwordState by viewModel.password.collectAsStateWithLifecycle()
+
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     LoginScreen(
-        focusManager = focusManager,
+        email = emailState,
+        password = passwordState,
+        onEmailChange = viewModel::onEmailChange,
+        onPasswordChange = viewModel::onPasswordChange,
         onSignUpClicked = onSignUpClicked,
         onFindPasswordClicked = onFindPasswordClicked,
         onLoginClicked = { email, password ->
@@ -101,142 +108,131 @@ private suspend fun getLoginData(
 
 @Composable
 internal fun LoginScreen(
-    focusManager: FocusManager,
+    modifier: Modifier = Modifier,
+    email: String,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    focusManager: FocusManager = LocalFocusManager.current,
     onSignUpClicked: () -> Unit,
     onLoginClicked: (String, String) -> Unit,
     onFindPasswordClicked: () -> Unit,
 ) {
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-    val isEmailErrorStatus = remember { mutableStateOf(false) }
-    val isPasswordErrorStatus = remember { mutableStateOf(false) }
-    val isErrorTextShow = remember { mutableStateOf(false) }
-    var isTextStatus = ""
-    val emailState = remember { mutableStateOf("") }
-    val passwordState = remember { mutableStateOf("") }
+    val (isEmailErrorStatus, setIsEmailErrorStatus) = rememberSaveable { mutableStateOf(false) }
+    val isPasswordErrorStatus by rememberSaveable{ mutableStateOf(false) }
+    val isErrorTextShow by rememberSaveable { mutableStateOf(false) }
 
-    CompositionLocalProvider(LocalFocusManager provides focusManager) {
-        BitgoeulAndroidTheme { color, type ->
-            Surface {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .pointerInput(Unit) {
-                            detectTapGestures {
-                                focusManager.clearFocus()
-                            }
+    BitgoeulAndroidTheme { color, type ->
+        Surface {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            focusManager.clearFocus()
                         }
-                    ,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = modifier.height(48.dp))
+
+                Row(
+                    modifier = modifier.fillMaxWidth()
                 ) {
-                    Spacer(modifier = Modifier.height(48.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Spacer(modifier = Modifier.width(28.dp))
-                        Text(
-                            modifier = Modifier,
-                            text = stringResource(id = R.string.project_name),
-                            color = color.BLACK,
-                            style = type.titleLarge,
-                            fontSize = 30.sp,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(80.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 28.dp),
-                    ) {
-                        DefaultTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(54.dp),
-                            placeholder = stringResource(id = R.string.email),
-                            errorText = stringResource(id = R.string.error_text_email),
-                            onValueChange = {
-                                isTextStatus = it
-                                emailState.value = it
-                            },
-                            isError = isEmailErrorStatus.value,
-                            onButtonClicked = {
-                                isEmailErrorStatus.value = isTextStatus.isNullOrBlank()
-                            },
-                            isLinked = false,
-                            isDisabled = false,
-                            isReadOnly = false,
-                            isReverseTrailingIcon = false
-                        )
-                    }
-
-                    if (isErrorTextShow.value) {
-                        Spacer(modifier = Modifier.height(0.dp))
-                    } else {
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 28.dp),
-                    ) {
-                        PasswordTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(54.dp),
-                            placeholder = stringResource(id = R.string.password),
-                            errorText = stringResource(id = R.string.wrong_password),
-                            onValueChange = {
-                                passwordState.value = it
-                            },
-                            onLinkClicked = {
-                                onFindPasswordClicked()
-                            },
-                            isError = isPasswordErrorStatus.value,
-                            isLinked = true,
-                            linkText = stringResource(id = R.string.find_password),
-                            isDisabled = false,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(180.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 28.dp),
-                    ) {
-                        BitgoeulButton(
-                            text = stringResource(id = R.string.login),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(52.dp),
-                            state = if (emailState.value.checkEmailRegex() && passwordState.value.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
-                            onClicked = {
-                                onLoginClicked(emailState.value, passwordState.value)
-                            }
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
+                    Spacer(modifier = modifier.width(28.dp))
                     Text(
-                        modifier = Modifier,
-                        text = "또는",
-                        style = type.labelMedium,
-                        color = color.G1,
-                        fontSize = 14.sp,
+                        modifier = modifier,
+                        text = stringResource(id = R.string.project_name),
+                        color = color.BLACK,
+                        style = type.titleLarge,
+                        fontSize = 30.sp,
                     )
+                }
 
-                    Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = modifier.height(80.dp))
 
-                    LinkText(
-                        text = stringResource(id = R.string.sign_up)
-                    ) {
-                        onSignUpClicked()
-                    }
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 28.dp),
+                ) {
+                    DefaultTextField(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .height(54.dp),
+                        placeholder = stringResource(id = R.string.email),
+                        errorText = stringResource(id = R.string.error_text_email),
+                        onValueChange = onEmailChange,
+                        isError = isEmailErrorStatus,
+                        onButtonClicked = { setIsEmailErrorStatus(email.isBlank()) },
+                        isLinked = false,
+                        isDisabled = false,
+                        isReadOnly = false,
+                        isReverseTrailingIcon = false
+                    )
+                }
+
+                if (isErrorTextShow) {
+                    Spacer(modifier = modifier.height(0.dp))
+                } else {
+                    Spacer(modifier = modifier.height(16.dp))
+                }
+
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 28.dp),
+                ) {
+                    PasswordTextField(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .height(54.dp),
+                        placeholder = stringResource(id = R.string.password),
+                        errorText = stringResource(id = R.string.wrong_password),
+                        onValueChange = onPasswordChange,
+                        onLinkClicked = onFindPasswordClicked,
+                        isError = isPasswordErrorStatus,
+                        isLinked = true,
+                        linkText = stringResource(id = R.string.find_password),
+                        isDisabled = false,
+                    )
+                }
+
+                Spacer(modifier = modifier.height(180.dp))
+
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 28.dp),
+                ) {
+                    BitgoeulButton(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        text = stringResource(id = R.string.login),
+                        state = if (email.checkEmailRegex() && password.checkPasswordRegex()) ButtonState.Enable else ButtonState.Disable,
+                        onClicked = {
+                            onLoginClicked(email, password)
+                        }
+                    )
+                }
+
+                Spacer(modifier = modifier.height(8.dp))
+
+                Text(
+                    text = "또는",
+                    style = type.labelMedium,
+                    color = color.G1,
+                    fontSize = 14.sp,
+                )
+
+                Spacer(modifier = modifier.height(2.dp))
+
+                LinkText(
+                    text = stringResource(id = R.string.sign_up)
+                ) {
+                    onSignUpClicked()
                 }
             }
         }
@@ -250,6 +246,10 @@ private fun LoginScreenPre() {
         onSignUpClicked = { /*TODO*/ },
         onLoginClicked = { _, _ -> },
         onFindPasswordClicked = { /*TODO*/ },
-        focusManager = LocalFocusManager.current
+        focusManager = LocalFocusManager.current,
+        email = "",
+        password = "",
+        onEmailChange = {},
+        onPasswordChange = {}
     )
 }

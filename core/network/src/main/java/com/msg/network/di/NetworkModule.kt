@@ -18,6 +18,9 @@ import com.msg.network.api.SchoolAPI
 import com.msg.network.api.UniversityAPI
 import com.msg.network.api.UserAPI
 import com.msg.network.util.AuthInterceptor
+import com.msg.network.util.LocalDateAdapter
+import com.msg.network.util.LocalDateTimeAdapter
+import com.msg.network.util.LocalTimeAdapter
 import com.msg.network.util.UUIDAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -29,7 +32,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -59,7 +61,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideMoshiInstance(): Moshi {
-        return Moshi.Builder().add(UUIDAdapter()).add(KotlinJsonAdapterFactory()).build()
+        return Moshi.Builder()
+            .add(UUIDAdapter())
+            .add(LocalDateAdapter())
+            .add(LocalTimeAdapter())
+            .add(LocalDateTimeAdapter())
+            .add(KotlinJsonAdapterFactory()).build()
     }
 
     @Provides

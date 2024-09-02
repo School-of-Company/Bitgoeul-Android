@@ -13,6 +13,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+        maven("https://devrepo.kakao.com/nexus/repository/kakaomap-releases/")
     }
 }
 
@@ -32,7 +33,6 @@ include(":feature:lecture")
 include(":feature:sign-up")
 include(":feature:student-activity")
 include(":feature:my-page")
-include(":feature:main")
 include(":feature:post")
 include(":feature:club")
 include(":feature:email")

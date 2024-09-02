@@ -9,6 +9,14 @@
     <string name="find_password">비밀번호 찾기</string>
     <string name="forgot_password">비밀번호를 잊었나요?</string>
     <string name="wrong_password">잘못된 비밀번호 입니다.</string>
+    <string name="disagree_password">비밀번호가 일치하지 않습니다</string>
+    <string name="change_password">비밀번호 변경</string>
+    <string name="finish_change_password">비밀번호 변경 완료</string>
+    <string name="current_password">현재 비밀번호 입력</string>
+    <string name="new_password">새 비밀번호 입력</string>
+    <string name="check_new_password">새 비밀번호 확인</string>
+    <string name="success_change_password">비밀번호 변경을 성공적으로 완료했습니다.</string>
+    <string name="change">변경하기</string>
     <string name="email_authentication_process">이메일 인증을 진행합니다</string>
     <string name="sign_up">회원가입</string>
     <string name="lecture_list">강의 목록</string>
@@ -74,4 +82,5 @@
     <string name="professor_in_charge_placeholder">학과 이름으로 검색...</string>
     <string name="division_placeholder">강의 구분 검색...</string>
     <string name="entire">전체</string>
+    <string name="student_information">학생정보</string>
 </resources>

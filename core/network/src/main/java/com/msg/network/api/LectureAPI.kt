@@ -1,15 +1,11 @@
 package com.msg.network.api
 
-import com.msg.network.request.lecture.OpenLectureRequest
+// import com.msg.network.request.lecture.OpenLectureRequest
 import com.msg.network.response.lecture.DetailLectureResponse
 import com.msg.network.response.lecture.DownloadExcelFileResponse
 import com.msg.network.response.lecture.GetLectureSignUpHistoryResponse
 import com.msg.network.response.lecture.GetTakingLectureStudentListResponse
 import com.msg.network.response.lecture.LectureListResponse
-import com.msg.network.response.lecture.SearchDepartmentResponse
-import com.msg.network.response.lecture.SearchDivisionResponse
-import com.msg.network.response.lecture.SearchLineResponse
-import com.msg.network.response.lecture.SearchProfessorResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -20,11 +16,6 @@ import retrofit2.http.Query
 import java.util.UUID
 
 interface LectureAPI {
-    @POST("lecture")
-    suspend fun openLecture(
-        @Body body: OpenLectureRequest,
-    )
-
     @GET("lecture")
     suspend fun getLectureList(
         @Query("page") page: Int,
@@ -37,11 +28,11 @@ interface LectureAPI {
         @Path("id") id: UUID,
     ): DetailLectureResponse
 
-    @PATCH("lecture/{id}")
-    suspend fun patchLecture(
-        @Path("id") id: UUID,
-        @Body body: OpenLectureRequest
-    )
+//    @PATCH("lecture/{id}")
+//    suspend fun patchLecture(
+//        @Path("id") id: UUID,
+//        @Body body: OpenLectureRequest
+//    )
 
     @POST("lecture/{id}")
     suspend fun lectureApplication(
@@ -52,28 +43,6 @@ interface LectureAPI {
     suspend fun lectureApplicationCancel(
         @Path("id") id: UUID,
     )
-
-    @GET("lecture/instructor")
-    suspend fun searchProfessor(
-        @Query("keyword") keyword: String,
-    ): SearchProfessorResponse
-
-
-    @GET("lecture/line")
-    suspend fun searchLine(
-        @Query("keyword") keyword: String,
-        @Query("division") division: String,
-    ): SearchLineResponse
-
-    @GET("lecture/department")
-    suspend fun searchDepartment(
-        @Query("keyword") keyword: String,
-    ): SearchDepartmentResponse
-
-    @GET("lecture/division")
-    suspend fun searchDivision(
-        @Query("keyword") keyword: String,
-    ): SearchDivisionResponse
 
     @GET("lecture/{student_id}}/signup")
     suspend fun getLectureSignUpHistory(

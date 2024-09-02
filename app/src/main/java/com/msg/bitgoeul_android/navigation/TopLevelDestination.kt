@@ -14,10 +14,6 @@ enum class TopLevelDestination(
         unselectedIcon = R.drawable.ic_club,
         iconText = "동아리"
     ),
-    MAIN(
-        unselectedIcon = R.drawable.ic_home,
-        iconText = "홈"
-    ),
     POST(
         unselectedIcon = R.drawable.ic_board,
         iconText = "게시판"

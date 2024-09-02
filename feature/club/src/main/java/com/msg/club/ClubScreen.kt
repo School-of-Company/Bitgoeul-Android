@@ -12,13 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -97,8 +96,7 @@ internal fun ClubScreen(
     onSettingClicked: (String) -> Unit,
     onItemClicked: (Long) -> Unit
 ) {
-    val scrollState = rememberScrollState()
-    val isDialogOpened = remember { mutableStateOf(false) }
+    val (isDialogOpened, setIsDialogOpened) = rememberSaveable { mutableStateOf(false) }
     val schoolList = HighSchool.entries.getSchoolNameFromEnum()
 
     BitgoeulAndroidTheme { colors, typography ->  
@@ -125,9 +123,7 @@ internal fun ClubScreen(
                     Spacer(modifier = modifier.weight(1f))
                     IconButton(
                         content = { GreySettingIcon() },
-                        onClick = {
-                            isDialogOpened.value = true
-                        }
+                        onClick = { setIsDialogOpened(true) }
                     )
                 }
                 Spacer(modifier = modifier.height(40.dp))
@@ -157,14 +153,12 @@ internal fun ClubScreen(
             }
         }
             GetClubListDialog(
-                onQuit = {
-                    isDialogOpened.value = it
-                },
+                onQuit = setIsDialogOpened,
                 onItemClicked = {
                     onSettingClicked(it)
                 },
                 list = schoolList,
-                isVisible = isDialogOpened.value
+                isVisible = isDialogOpened
             )
     }
 }
@@ -173,9 +167,7 @@ internal fun ClubScreen(
 @Composable
 fun ClubScreenPre() {
     ClubScreen(
-        data = listOf(
-
-        ),
+        data = listOf(),
         onSettingClicked = {},
         onItemClicked = {}
     )

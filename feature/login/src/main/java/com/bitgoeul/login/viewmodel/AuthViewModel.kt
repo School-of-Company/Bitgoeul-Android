@@ -1,5 +1,6 @@
 package com.bitgoeul.login.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.common.errorhandling.errorHandling
@@ -19,12 +20,21 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    companion object {
+        private const val EMAIL = "email"
+        private const val PASSWORD = "password"
+    }
     private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
     val saveTokenRequest = _saveTokenResponse.asStateFlow()
 
     private val _loginResponse = MutableStateFlow<Event<AuthTokenEntity>>(Event.Loading)
     val loginResponse = _loginResponse.asStateFlow()
+
+    internal var email = savedStateHandle.getStateFlow(key = EMAIL, initialValue = "")
+
+    internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 
     internal fun login(
         email: String,
@@ -58,4 +68,8 @@ class AuthViewModel @Inject constructor(
             _saveTokenResponse.value = it.errorHandling()
         }
     }
+
+    internal fun onEmailChange(value: String) { savedStateHandle[EMAIL] = value }
+
+    internal fun onPasswordChange(value: String) { savedStateHandle[PASSWORD] = value }
 }

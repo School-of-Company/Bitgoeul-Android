@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.msg.certification.component.CertificationSection
@@ -26,6 +27,7 @@ import com.msg.certification.component.FinishedLectureSection
 import com.msg.certification.component.StudentInfoSection
 import com.msg.common.event.Event
 import com.msg.certification.viewmodel.CertificationViewModel
+import com.msg.design_system.R
 import com.msg.design_system.component.icon.HumanIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 import com.msg.model.entity.certification.CertificationListEntity
@@ -74,7 +76,7 @@ internal fun CertificationScreenRoute(
         onHumanIconClicked = onHumanIconClicked,
         onEditClicked = { id, title, date ->
             viewModel.selectedCertificationId.value = id
-            viewModel.selectedTitle.value = title
+            viewModel.onSelectedTitleChange(title)
             viewModel.selectedDate.value = date
             onEditClicked()
         },
@@ -157,7 +159,7 @@ internal fun CertificationScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "학생정보",
+                        text = stringResource(R.string.student_information),
                         style = typography.titleMedium,
                         color = colors.BLACK
                     )
