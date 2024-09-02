@@ -56,9 +56,8 @@ class LectureViewModel @Inject constructor(
     private val _getTakingLectureStudentListResponse = MutableStateFlow<Event<GetTakingLectureStudentListEntity>>(Event.Loading)
     val getTakingLectureStudentListResponse = _getTakingLectureStudentListResponse.asStateFlow()
 
-    // 네이밍을 editPostResponse에서 editLectureCourseCompletionStatusResponse로 변경해야함
-    private val _editPostResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
-    val editPostResponse = _editPostResponse.asStateFlow()
+    private val _editLectureCourseCompletionStatusResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val editPostResponse = _editLectureCourseCompletionStatusResponse.asStateFlow()
 
     private val _downloadExcelFileResponse = MutableStateFlow<Event<DownloadExcelFileEntity>>(Event.Loading)
     val downloadExcelFileResponse = _downloadExcelFileResponse.asStateFlow()
@@ -285,12 +284,12 @@ class LectureViewModel @Inject constructor(
             isComplete = isComplete
         ).onSuccess {
             it.catch { remoteError ->
-                _editPostResponse.value = remoteError.errorHandling()
+                _editLectureCourseCompletionStatusResponse.value = remoteError.errorHandling()
             }.collect {
-                _editPostResponse.value = Event.Success()
+                _editLectureCourseCompletionStatusResponse.value = Event.Success()
             }
         }.onFailure { error ->
-            _editPostResponse.value = error.errorHandling()
+            _editLectureCourseCompletionStatusResponse.value = error.errorHandling()
         }
     }
 
