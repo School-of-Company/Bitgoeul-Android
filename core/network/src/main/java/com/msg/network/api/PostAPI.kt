@@ -21,9 +21,4 @@ interface PostAPI {
     suspend fun getDetailPost(
         @Path("id") id: UUID
     ): GetDetailPostResponse
-
-    @DELETE("post/{id}")
-    suspend fun deletePost(
-        @Path("id") id: UUID
-    )
 }
