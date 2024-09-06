@@ -5,11 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.msg.certification.viewmodel.uistate.GetCertificationListUiState
 import com.msg.common.event.Event
 import com.msg.common.errorhandling.errorHandling
+import com.msg.common.result.Result
+import com.msg.common.result.asResult
 import com.msg.domain.usecase.auth.GetAuthorityUseCase
 import com.msg.domain.usecase.certification.*
-import com.msg.domain.usecase.certification.GetCertificationListForTeacherUseCase
+import com.msg.domain.usecase.certification.GetCertificationListUseCase
 import com.msg.domain.usecase.certification.WriteCertificationUseCase
 import com.msg.domain.usecase.club.GetStudentBelongClubUseCase
 import com.msg.domain.usecase.lecture.GetLectureSignUpHistoryUseCase
@@ -18,16 +21,17 @@ import com.msg.model.entity.club.StudentBelongClubEntity
 import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
 import com.msg.model.param.certification.WriteCertificationParam
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
 
 class CertificationViewModel @Inject constructor(
-    private val getCertificationListForTeacherUseCase: GetCertificationListForTeacherUseCase,
-    private val getCertificationListForStudentUseCase: GetCertificationListForStudentUseCase,
+    private val getCertificationListUseCase: GetCertificationListUseCase,
     private val writeCertificationUseCase: WriteCertificationUseCase,
     private val editCertificationUseCase: EditCertificationUseCase,
     private val getStudentBelongClubUseCase: GetStudentBelongClubUseCase,
@@ -40,6 +44,9 @@ class CertificationViewModel @Inject constructor(
     }
 
     private val role = getRole().toString()
+
+    private val _getCertificationListUiState = MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
+    val getCertificationListUiState: StateFlow<GetCertificationListUiState> = _getCertificationListUiState.asStateFlow()
 
     private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(
         Event.Loading)
@@ -91,29 +98,21 @@ class CertificationViewModel @Inject constructor(
         private set
 
     internal fun getCertificationList() = viewModelScope.launch {
-        if (role == "ROLE_STUDENT") {
-            getCertificationListForStudentUseCase().onSuccess {
-                it.catch { remoteError ->
-                    _getCertificationListResponse.value = remoteError.errorHandling()
-                }.collect { response ->
-                    _getCertificationListResponse.value = Event.Success(data = response)
-                }
-            }.onFailure { error ->
-                _getCertificationListResponse.value = error.errorHandling()
-            }
-        } else {
-            if (studentId != null) {
-                getCertificationListForTeacherUseCase(studentId).onSuccess {
-                    it.catch { remoteError ->
-                        _getCertificationListResponse.value = remoteError.errorHandling()
-                    }.collect { response ->
-                        _getCertificationListResponse.value = Event.Success(data = response)
+        getCertificationListUseCase(role = role, studentId = studentId)
+            .asResult()
+            .collectLatest { result ->
+                when(result) {
+                    is Result.Loading -> { _getCertificationListUiState.value = GetCertificationListUiState.Loading }
+                    is Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            _getCertificationListUiState.value = GetCertificationListUiState.Empty
+                        } else {
+                            _getCertificationListUiState.value = GetCertificationListUiState.Success(result.data)
+                        }
                     }
-                }.onFailure { error ->
-                    _getCertificationListResponse.value = error.errorHandling()
+                    is Result.Error -> { _getCertificationListUiState.value = GetCertificationListUiState.Error }
                 }
             }
-        }
     }
 
     internal fun writeCertification(
