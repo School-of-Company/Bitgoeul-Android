@@ -11,22 +11,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msg.certification.component.CertificationSection
 import com.msg.certification.component.FinishedLectureSection
 import com.msg.certification.component.StudentInfoSection
 import com.msg.common.event.Event
 import com.msg.certification.viewmodel.CertificationViewModel
+import com.msg.certification.viewmodel.uistate.GetCertificationListUiState
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.HumanIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -44,6 +48,8 @@ internal fun CertificationScreenRoute(
     onHumanIconClicked: () -> Unit,
     onEditClicked: () -> Unit
 ) {
+    val getCertificationListUiState by viewModel.getCertificationListUiState.collectAsStateWithLifecycle()
+
     viewModel.getCertificationList()
     viewModel.getStudentBelong()
     viewModel.getLectureSignUpHistory()
@@ -83,7 +89,8 @@ internal fun CertificationScreenRoute(
         onPlusClicked = onEditClicked,
         studentData = viewModel.studentData.value,
         certificationData = viewModel.certificationList,
-        lectureData = viewModel.lectureData.value
+        lectureData = viewModel.lectureData.value,
+        getCertificationListUiState = getCertificationListUiState
     )
 }
 
@@ -135,6 +142,7 @@ private suspend fun getLectureData(
 @Composable
 internal fun CertificationScreen(
     modifier: Modifier = Modifier,
+    getCertificationListUiState: GetCertificationListUiState,
     onHumanIconClicked: () -> Unit,
     onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,
     onPlusClicked: () -> Unit,
@@ -179,13 +187,46 @@ internal fun CertificationScreen(
                     color = colors.G9
                 )
                 Spacer(modifier = modifier.height(24.dp))
-                CertificationSection(
-                    onPlusClicked = onPlusClicked,
-                    onEditClicked =  { id, title, date ->
-                        onEditClicked(id, title, date)
-                    },
-                    data = certificationData
-                )
+                when(getCertificationListUiState) {
+                    is GetCertificationListUiState.Success -> {
+                        CertificationSection(
+                            onPlusClicked = onPlusClicked,
+                            onEditClicked = { id, title, date ->
+                                onEditClicked(id, title, date)
+                            },
+                            data = certificationData
+                        )
+                    }
+
+                    is GetCertificationListUiState.Loading -> {
+                        Box(
+                            modifier = modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = modifier.then(Modifier.size(27.dp)),
+                                color = colors.G2,
+                                strokeWidth = 2.dp
+                            )
+                        }
+                    }
+
+                    is GetCertificationListUiState.Error -> {
+                        Text(
+                            modifier = modifier.align(Alignment.CenterHorizontally),
+                            text = "통신이 원활하지 않습니다..",
+                            style = typography.titleSmall
+                        )
+                    }
+
+                    is GetCertificationListUiState.Empty -> {
+                        Text(
+                            modifier = modifier.align(Alignment.CenterHorizontally),
+                            text = "자격증이 없습니다..",
+                            style = typography.titleSmall
+                        )
+                    }
+                }
                 Spacer(modifier = modifier.height(12.dp))
                 FinishedLectureSection(data = lectureData)
             }
@@ -232,6 +273,7 @@ fun CertificationScreenPre() {
                     isComplete = true
                 )
             )
-        )
+        ),
+        getCertificationListUiState = GetCertificationListUiState.Loading
     )
 }
