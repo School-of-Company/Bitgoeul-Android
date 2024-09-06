@@ -48,8 +48,7 @@ class CertificationViewModel @Inject constructor(
     private val _getCertificationListUiState = MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
     val getCertificationListUiState: StateFlow<GetCertificationListUiState> = _getCertificationListUiState.asStateFlow()
 
-    private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(
-        Event.Loading)
+    private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(Event.Loading)
     val getCertificationListResponse = _getCertificationListResponse.asStateFlow()
 
     private val _writeCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -61,8 +60,7 @@ class CertificationViewModel @Inject constructor(
     private val _getStudentBelongResponse = MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
     val getStudentBelongResponse = _getStudentBelongResponse.asStateFlow()
 
-    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(
-        Event.Loading)
+    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
     val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
 
     private val studentId = UUID.fromString(savedStateHandle.get<String>("studentId"))
