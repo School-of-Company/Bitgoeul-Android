@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.msg.certification.viewmodel.uistate.EditCertificationUiState
 import com.msg.certification.viewmodel.uistate.GetCertificationListUiState
 import com.msg.certification.viewmodel.uistate.GetLectureSignUpHistoryUiState
+import com.msg.certification.viewmodel.uistate.GetStudentBelongClubDetailUiState
 import com.msg.certification.viewmodel.uistate.WriteCertificationUiState
 import com.msg.common.event.Event
 import com.msg.common.errorhandling.errorHandling
@@ -47,16 +49,33 @@ class CertificationViewModel @Inject constructor(
 
     private val role = getRole().toString()
 
-    private val _getCertificationListUiState = MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
-    val getCertificationListUiState: StateFlow<GetCertificationListUiState> = _getCertificationListUiState.asStateFlow()
+    private val _getCertificationListUiState =
+        MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
+    val getCertificationListUiState: StateFlow<GetCertificationListUiState> =
+        _getCertificationListUiState.asStateFlow()
 
-    private val _getLectureSignUpHistoryUiState = MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
-    val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> = _getLectureSignUpHistoryUiState.asStateFlow()
+    private val _getLectureSignUpHistoryUiState =
+        MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
+    val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> =
+        _getLectureSignUpHistoryUiState.asStateFlow()
 
-    private val _writeCertificationUiState = MutableStateFlow<WriteCertificationUiState>(WriteCertificationUiState.Loading)
-    val writeCertificationUiState: StateFlow<WriteCertificationUiState> = _writeCertificationUiState.asStateFlow()
+    private val _writeCertificationUiState =
+        MutableStateFlow<WriteCertificationUiState>(WriteCertificationUiState.Success)
+    val writeCertificationUiState: StateFlow<WriteCertificationUiState> =
+        _writeCertificationUiState.asStateFlow()
 
-    private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(Event.Loading)
+    private val _editCertificationUiState =
+        MutableStateFlow<EditCertificationUiState>(EditCertificationUiState.Success)
+    val editCertificationUiState: StateFlow<EditCertificationUiState> =
+        _editCertificationUiState.asStateFlow()
+
+    private val _getStudentBelongClubDetailUiState =
+        MutableStateFlow<GetStudentBelongClubDetailUiState>(GetStudentBelongClubDetailUiState.Loading)
+    val getStudentBelongClubDetailUiState: StateFlow<GetStudentBelongClubDetailUiState> =
+        _getStudentBelongClubDetailUiState.asStateFlow()
+
+    private val _getCertificationListResponse =
+        MutableStateFlow<Event<List<CertificationListEntity>>>(Event.Loading)
     val getCertificationListResponse = _getCertificationListResponse.asStateFlow()
 
     private val _writeCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -65,10 +84,12 @@ class CertificationViewModel @Inject constructor(
     private val _editCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val editCertificationResponse = _editCertificationResponse.asStateFlow()
 
-    private val _getStudentBelongResponse = MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
+    private val _getStudentBelongResponse =
+        MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
     val getStudentBelongResponse = _getStudentBelongResponse.asStateFlow()
 
-    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
+    private val _getLectureSignUpHistoryResponse =
+        MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
     val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
 
     private val studentId = UUID.fromString(savedStateHandle.get<String>("studentId"))
@@ -78,7 +99,8 @@ class CertificationViewModel @Inject constructor(
     var selectedCertificationId = mutableStateOf<UUID?>(null)
         private set
 
-    internal var selectedTitle = savedStateHandle.getStateFlow(key = SELECTED_TITLE, initialValue = "")
+    internal var selectedTitle =
+        savedStateHandle.getStateFlow(key = SELECTED_TITLE, initialValue = "")
 
     var selectedDate = mutableStateOf<LocalDate?>(null)
         private set
@@ -107,16 +129,23 @@ class CertificationViewModel @Inject constructor(
         getCertificationListUseCase(role = role, studentId = studentId)
             .asResult()
             .collectLatest { result ->
-                when(result) {
-                    is Result.Loading -> { _getCertificationListUiState.value = GetCertificationListUiState.Loading }
+                when (result) {
+                    is Result.Loading -> {
+                        _getCertificationListUiState.value = GetCertificationListUiState.Loading
+                    }
+
                     is Result.Success -> {
                         if (result.data.isEmpty()) {
                             _getCertificationListUiState.value = GetCertificationListUiState.Empty
                         } else {
-                            _getCertificationListUiState.value = GetCertificationListUiState.Success(result.data)
+                            _getCertificationListUiState.value =
+                                GetCertificationListUiState.Success(result.data)
                         }
                     }
-                    is Result.Error -> { _getCertificationListUiState.value = GetCertificationListUiState.Error }
+
+                    is Result.Error -> {
+                        _getCertificationListUiState.value = GetCertificationListUiState.Error
+                    }
                 }
             }
     }
@@ -133,10 +162,17 @@ class CertificationViewModel @Inject constructor(
         )
             .asResult()
             .collectLatest { result ->
-                when(result) {
-                    is Result.Loading -> { _writeCertificationUiState.value = WriteCertificationUiState.Loading }
-                    is Result.Success -> { _writeCertificationUiState.value = WriteCertificationUiState.Success }
-                    is Result.Error -> { _writeCertificationUiState.value = WriteCertificationUiState.Error(result.exception) }
+                when (result) {
+                    is Result.Success -> {
+                        _writeCertificationUiState.value = WriteCertificationUiState.Success
+                    }
+
+                    is Result.Error -> {
+                        _writeCertificationUiState.value =
+                            WriteCertificationUiState.Error(result.exception)
+                    }
+
+                    else -> {}
                 }
             }
     }
@@ -151,15 +187,22 @@ class CertificationViewModel @Inject constructor(
                 name = name,
                 acquisitionDate = acquisitionDate
             )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _editCertificationResponse.value = remoteError.errorHandling()
-            }.collect {
-                _editCertificationResponse.value = Event.Success()
+        )
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Success -> {
+                        _editCertificationUiState.value = EditCertificationUiState.Success
+                    }
+
+                    is Result.Error -> {
+                        _editCertificationUiState.value =
+                            EditCertificationUiState.Error(result.exception)
+                    }
+
+                    else -> {}
+                }
             }
-        }.onFailure { error ->
-            _editCertificationResponse.value = error.errorHandling()
-        }
     }
 
     internal fun getStudentBelong() = viewModelScope.launch {
@@ -167,15 +210,15 @@ class CertificationViewModel @Inject constructor(
             getStudentBelongClubUseCase(
                 id = clubId,
                 studentId = studentId
-            ).onSuccess {
-                it.catch { remoteError ->
-                    _getStudentBelongResponse.value = remoteError.errorHandling()
-                }.collect { response ->
-                    _getStudentBelongResponse.value = Event.Success(data = response)
+            )
+                .asResult()
+                .collectLatest { result ->
+                    when (result) {
+                        is Result.Loading -> { _getStudentBelongClubDetailUiState.value = GetStudentBelongClubDetailUiState.Loading }
+                        is Result.Success -> { _getStudentBelongClubDetailUiState.value = GetStudentBelongClubDetailUiState.Success(result.data) }
+                        is Result.Error -> { _getStudentBelongClubDetailUiState.value = GetStudentBelongClubDetailUiState.Error(result.exception) }
+                    }
                 }
-            }.onFailure { error ->
-                _getStudentBelongResponse.value = error.errorHandling()
-            }
         }
     }
 
@@ -184,10 +227,21 @@ class CertificationViewModel @Inject constructor(
             getLectureSignUpHistoryUseCase(studentId = studentId)
                 .asResult()
                 .collectLatest { result ->
-                    when(result) {
-                        is Result.Loading -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Loading }
-                        is Result.Success -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Success(result.data) }
-                        is Result.Error -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Error }
+                    when (result) {
+                        is Result.Loading -> {
+                            _getLectureSignUpHistoryUiState.value =
+                                GetLectureSignUpHistoryUiState.Loading
+                        }
+
+                        is Result.Success -> {
+                            _getLectureSignUpHistoryUiState.value =
+                                GetLectureSignUpHistoryUiState.Success(result.data)
+                        }
+
+                        is Result.Error -> {
+                            _getLectureSignUpHistoryUiState.value =
+                                GetLectureSignUpHistoryUiState.Error
+                        }
                     }
                 }
         }
@@ -197,5 +251,7 @@ class CertificationViewModel @Inject constructor(
         getAuthorityUseCase()
     }
 
-    internal fun onSelectedTitleChange(value: String) { savedStateHandle[SELECTED_TITLE] = value }
+    internal fun onSelectedTitleChange(value: String) {
+        savedStateHandle[SELECTED_TITLE] = value
+    }
 }
