@@ -1,6 +1,5 @@
 package com.msg.certification.viewmodel.uistate
 
-import android.content.Context
 import com.msg.model.entity.club.StudentBelongClubEntity
 
 sealed interface GetStudentBelongClubDetailUiState {
