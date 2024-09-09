@@ -31,6 +31,7 @@ import com.msg.certification.component.StudentInfoSection
 import com.msg.common.event.Event
 import com.msg.certification.viewmodel.CertificationViewModel
 import com.msg.certification.viewmodel.uistate.GetCertificationListUiState
+import com.msg.certification.viewmodel.uistate.GetLectureSignUpHistoryUiState
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.HumanIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -49,6 +50,7 @@ internal fun CertificationScreenRoute(
     onEditClicked: () -> Unit
 ) {
     val getCertificationListUiState by viewModel.getCertificationListUiState.collectAsStateWithLifecycle()
+    val getLectureSignUpHistoryUiState by viewModel.getLectureSignUpHistoryUiState.collectAsStateWithLifecycle()
 
     viewModel.getCertificationList()
     viewModel.getStudentBelong()
@@ -90,7 +92,8 @@ internal fun CertificationScreenRoute(
         studentData = viewModel.studentData.value,
         certificationData = viewModel.certificationList,
         lectureData = viewModel.lectureData.value,
-        getCertificationListUiState = getCertificationListUiState
+        getCertificationListUiState = getCertificationListUiState,
+        getLectureSignUpHistoryUiState = getLectureSignUpHistoryUiState
     )
 }
 
@@ -143,6 +146,7 @@ private suspend fun getLectureData(
 internal fun CertificationScreen(
     modifier: Modifier = Modifier,
     getCertificationListUiState: GetCertificationListUiState,
+    getLectureSignUpHistoryUiState: GetLectureSignUpHistoryUiState,
     onHumanIconClicked: () -> Unit,
     onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,
     onPlusClicked: () -> Unit,
@@ -215,7 +219,7 @@ internal fun CertificationScreen(
                         Text(
                             modifier = modifier.align(Alignment.CenterHorizontally),
                             text = "통신이 원활하지 않습니다..",
-                            style = typography.titleSmall
+                            style = typography.bodySmall
                         )
                     }
 
@@ -223,12 +227,35 @@ internal fun CertificationScreen(
                         Text(
                             modifier = modifier.align(Alignment.CenterHorizontally),
                             text = "자격증이 없습니다..",
-                            style = typography.titleSmall
+                            style = typography.bodySmall,
+                            color = colors.G4
                         )
                     }
                 }
                 Spacer(modifier = modifier.height(12.dp))
-                FinishedLectureSection(data = lectureData)
+                when(getLectureSignUpHistoryUiState) {
+                    is GetLectureSignUpHistoryUiState.Success -> { FinishedLectureSection(data = lectureData) }
+                    is GetLectureSignUpHistoryUiState.Loading -> {
+                        Box(
+                            modifier = modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = modifier.then(Modifier.size(27.dp)),
+                                color = colors.G2,
+                                strokeWidth = 2.dp
+                            )
+                        }
+                    }
+                    is GetLectureSignUpHistoryUiState.Error -> {
+                        Text(
+                            modifier = modifier.align(Alignment.CenterHorizontally).padding(top = 50.dp),
+                            text = "통신이 원할하지 않습니다..",
+                            style = typography.bodySmall,
+                            color = colors.G4
+                        )
+                    }
+                }
             }
         }
     }
@@ -274,6 +301,7 @@ fun CertificationScreenPre() {
                 )
             )
         ),
-        getCertificationListUiState = GetCertificationListUiState.Loading
+        getCertificationListUiState = GetCertificationListUiState.Empty,
+        getLectureSignUpHistoryUiState = GetLectureSignUpHistoryUiState.Error
     )
 }
