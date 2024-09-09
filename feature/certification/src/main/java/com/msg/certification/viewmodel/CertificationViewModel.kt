@@ -49,15 +49,11 @@ class CertificationViewModel @Inject constructor(
 
     private val role = getRole().toString()
 
-    private val _getCertificationListUiState =
-        MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
-    val getCertificationListUiState: StateFlow<GetCertificationListUiState> =
-        _getCertificationListUiState.asStateFlow()
+    private val _getCertificationListUiState = MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
+    val getCertificationListUiState: StateFlow<GetCertificationListUiState> = _getCertificationListUiState.asStateFlow()
 
-    private val _getLectureSignUpHistoryUiState =
-        MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
-    val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> =
-        _getLectureSignUpHistoryUiState.asStateFlow()
+    private val _getLectureSignUpHistoryUiState = MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
+    val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> = _getLectureSignUpHistoryUiState.asStateFlow()
 
     private val _writeCertificationUiState = MutableStateFlow<WriteCertificationUiState>(WriteCertificationUiState.Success)
     val writeCertificationUiState: StateFlow<WriteCertificationUiState> = _writeCertificationUiState.asStateFlow()
@@ -77,12 +73,10 @@ class CertificationViewModel @Inject constructor(
     private val _editCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val editCertificationResponse = _editCertificationResponse.asStateFlow()
 
-    private val _getStudentBelongResponse =
-        MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
+    private val _getStudentBelongResponse = MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
     val getStudentBelongResponse = _getStudentBelongResponse.asStateFlow()
 
-    private val _getLectureSignUpHistoryResponse =
-        MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
+    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
     val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
 
     private val studentId = UUID.fromString(savedStateHandle.get<String>("studentId"))
