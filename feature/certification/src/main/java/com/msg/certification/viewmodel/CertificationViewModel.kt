@@ -49,33 +49,22 @@ class CertificationViewModel @Inject constructor(
 
     private val role = getRole().toString()
 
-    private val _getCertificationListUiState =
-        MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
-    val getCertificationListUiState: StateFlow<GetCertificationListUiState> =
-        _getCertificationListUiState.asStateFlow()
+    private val _getCertificationListUiState = MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
+    val getCertificationListUiState: StateFlow<GetCertificationListUiState> = _getCertificationListUiState.asStateFlow()
 
-    private val _getLectureSignUpHistoryUiState =
-        MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
-    val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> =
-        _getLectureSignUpHistoryUiState.asStateFlow()
+    private val _getLectureSignUpHistoryUiState = MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
+    val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> = _getLectureSignUpHistoryUiState.asStateFlow()
 
-    private val _writeCertificationUiState =
-        MutableStateFlow<WriteCertificationUiState>(WriteCertificationUiState.Success)
-    val writeCertificationUiState: StateFlow<WriteCertificationUiState> =
-        _writeCertificationUiState.asStateFlow()
+    private val _writeCertificationUiState = MutableStateFlow<WriteCertificationUiState>(WriteCertificationUiState.Success)
+    val writeCertificationUiState: StateFlow<WriteCertificationUiState> = _writeCertificationUiState.asStateFlow()
 
-    private val _editCertificationUiState =
-        MutableStateFlow<EditCertificationUiState>(EditCertificationUiState.Success)
-    val editCertificationUiState: StateFlow<EditCertificationUiState> =
-        _editCertificationUiState.asStateFlow()
+    private val _editCertificationUiState = MutableStateFlow<EditCertificationUiState>(EditCertificationUiState.Success)
+    val editCertificationUiState: StateFlow<EditCertificationUiState> = _editCertificationUiState.asStateFlow()
 
-    private val _getStudentBelongClubDetailUiState =
-        MutableStateFlow<GetStudentBelongClubDetailUiState>(GetStudentBelongClubDetailUiState.Loading)
-    val getStudentBelongClubDetailUiState: StateFlow<GetStudentBelongClubDetailUiState> =
-        _getStudentBelongClubDetailUiState.asStateFlow()
+    private val _getStudentBelongClubDetailUiState = MutableStateFlow<GetStudentBelongClubDetailUiState>(GetStudentBelongClubDetailUiState.Loading)
+    val getStudentBelongClubDetailUiState: StateFlow<GetStudentBelongClubDetailUiState> = _getStudentBelongClubDetailUiState.asStateFlow()
 
-    private val _getCertificationListResponse =
-        MutableStateFlow<Event<List<CertificationListEntity>>>(Event.Loading)
+    private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(Event.Loading)
     val getCertificationListResponse = _getCertificationListResponse.asStateFlow()
 
     private val _writeCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -84,12 +73,10 @@ class CertificationViewModel @Inject constructor(
     private val _editCertificationResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val editCertificationResponse = _editCertificationResponse.asStateFlow()
 
-    private val _getStudentBelongResponse =
-        MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
+    private val _getStudentBelongResponse = MutableStateFlow<Event<StudentBelongClubEntity>>(Event.Loading)
     val getStudentBelongResponse = _getStudentBelongResponse.asStateFlow()
 
-    private val _getLectureSignUpHistoryResponse =
-        MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
+    private val _getLectureSignUpHistoryResponse = MutableStateFlow<Event<GetLectureSignUpHistoryEntity>>(Event.Loading)
     val getLectureSignUpHistoryResponse = _getLectureSignUpHistoryResponse.asStateFlow()
 
     private val studentId = UUID.fromString(savedStateHandle.get<String>("studentId"))
@@ -133,7 +120,6 @@ class CertificationViewModel @Inject constructor(
                     is Result.Loading -> {
                         _getCertificationListUiState.value = GetCertificationListUiState.Loading
                     }
-
                     is Result.Success -> {
                         if (result.data.isEmpty()) {
                             _getCertificationListUiState.value = GetCertificationListUiState.Empty
@@ -209,15 +195,9 @@ class CertificationViewModel @Inject constructor(
                 .asResult()
                 .collectLatest { result ->
                     when (result) {
-                        is Result.Loading -> {
-                            _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Loading
-                        }
-                        is Result.Success -> {
-                            _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Success(result.data)
-                        }
-                        is Result.Error -> {
-                            _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Error(result.exception)
-                        }
+                        is Result.Loading -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Loading }
+                        is Result.Success -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Success(result.data) }
+                        is Result.Error -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Error(result.exception) }
                     }
                 }
         }
