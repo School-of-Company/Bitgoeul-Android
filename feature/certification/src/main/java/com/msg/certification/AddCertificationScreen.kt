@@ -24,6 +24,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.msg.certification.component.AddAcquisitionDateSection
 import com.msg.certification.component.AddCertificationSection
 import com.msg.certification.viewmodel.CertificationViewModel
+import com.msg.certification.viewmodel.uistate.EditCertificationUiState
+import com.msg.certification.viewmodel.uistate.WriteCertificationUiState
+import com.msg.design_system.R
 import com.msg.design_system.component.button.BitgoeulButton
 import com.msg.design_system.component.modifier.padding.paddingHorizontal
 import com.msg.design_system.component.topbar.DetailSettingTopBar
@@ -37,11 +40,17 @@ import java.time.LocalDate
 internal fun AddCertificationScreenRoute(
     viewModel: CertificationViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onBackClicked: () -> Unit,
-    onAddClicked: () -> Unit
+    onAddClicked: () -> Unit,
+    createErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
+    val writeCertificationUiState by viewModel.writeCertificationUiState.collectAsStateWithLifecycle()
+    val editCertificationUiState by viewModel.editCertificationUiState.collectAsStateWithLifecycle()
+
     val selectedTitle by viewModel.selectedTitle.collectAsStateWithLifecycle()
 
     AddCertificationScreen(
+        writeCertificationUiState = writeCertificationUiState,
+        editCertificationUiState = editCertificationUiState,
         selectedName = selectedTitle,
         selectedDate = viewModel.selectedDate.value,
         onSelectedNameChange = viewModel::onSelectedTitleChange,
@@ -51,21 +60,45 @@ internal fun AddCertificationScreenRoute(
                 viewModel.editCertification(name = name, acquisitionDate = acquisitionDate)
             } ?: viewModel.writeCertification(name = name, acquisitionDate = acquisitionDate)
             onAddClicked()
-        }
+        },
+        createErrorToast = createErrorToast
     )
 }
 
 @Composable
 internal fun AddCertificationScreen(
     modifier: Modifier = Modifier,
+    writeCertificationUiState: WriteCertificationUiState,
+    editCertificationUiState: EditCertificationUiState,
     focusManager: FocusManager = LocalFocusManager.current,
     selectedName: String,
     onSelectedNameChange: (String) -> Unit,
     onBackClicked: () -> Unit,
     selectedDate: LocalDate?,
-    onAddClicked: (name: String, acquisitionDate: LocalDate) -> Unit
+    onAddClicked: (name: String, acquisitionDate: LocalDate) -> Unit,
+    createErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
+    val context = LocalContext.current
+
     val (isDate, setIsDate) = rememberSaveable { mutableStateOf(selectedDate) }
+
+    when(writeCertificationUiState) {
+        is WriteCertificationUiState.Success -> {
+            makeToast(context, R.string.success_certification_write.toString())
+        }
+        is WriteCertificationUiState.Error -> {
+            createErrorToast(writeCertificationUiState.exception, R.string.fail_certification_write)
+        }
+    }
+
+    when(editCertificationUiState) {
+        is EditCertificationUiState.Success -> {
+            makeToast(context, R.string.success_certification_edit.toString())
+        }
+        is EditCertificationUiState.Error -> {
+            createErrorToast(editCertificationUiState.exception, R.string.fail_certification_edit)
+        }
+    }
 
     BitgoeulAndroidTheme { colors, _ ->
         Box(
@@ -78,7 +111,6 @@ internal fun AddCertificationScreen(
                     }
                 }
         ) {
-            val context = LocalContext.current
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -131,5 +163,8 @@ fun AddCertificationScreenPre() {
         selectedDate = null,
         focusManager = LocalFocusManager.current,
         onSelectedNameChange = {},
+        writeCertificationUiState = WriteCertificationUiState.Success,
+        editCertificationUiState = EditCertificationUiState.Success,
+        createErrorToast = {_, _ -> }
     )
 }
