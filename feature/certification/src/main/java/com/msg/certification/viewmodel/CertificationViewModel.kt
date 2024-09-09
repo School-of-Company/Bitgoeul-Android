@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.certification.viewmodel.uistate.GetCertificationListUiState
+import com.msg.certification.viewmodel.uistate.GetLectureSignUpHistoryUiState
 import com.msg.common.event.Event
 import com.msg.common.errorhandling.errorHandling
 import com.msg.common.result.Result
@@ -47,6 +48,9 @@ class CertificationViewModel @Inject constructor(
 
     private val _getCertificationListUiState = MutableStateFlow<GetCertificationListUiState>(GetCertificationListUiState.Loading)
     val getCertificationListUiState: StateFlow<GetCertificationListUiState> = _getCertificationListUiState.asStateFlow()
+
+    private val _getLectureSignUpHistoryUiState = MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
+    val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> = _getLectureSignUpHistoryUiState.asStateFlow()
 
     private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(Event.Loading)
     val getCertificationListResponse = _getCertificationListResponse.asStateFlow()
@@ -173,17 +177,15 @@ class CertificationViewModel @Inject constructor(
 
     internal fun getLectureSignUpHistory() = viewModelScope.launch {
         if (studentId != null) {
-            getLectureSignUpHistoryUseCase(
-                studentId = studentId
-            ).onSuccess {
-                it.catch { remoteError ->
-                    _getLectureSignUpHistoryResponse.value = remoteError.errorHandling()
-                }.collect { response ->
-                    _getLectureSignUpHistoryResponse.value = Event.Success(data = response)
+            getLectureSignUpHistoryUseCase(studentId = studentId)
+                .asResult()
+                .collectLatest { result ->
+                    when(result) {
+                        is Result.Loading -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Loading }
+                        is Result.Success -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Success(result.data) }
+                        is Result.Error -> { _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Error }
+                    }
                 }
-            }.onFailure { error ->
-                _getLectureSignUpHistoryResponse.value = error.errorHandling()
-            }
         }
     }
 
