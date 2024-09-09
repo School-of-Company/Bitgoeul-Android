@@ -169,7 +169,8 @@ fun BitgoeulNavHost(
             createErrorToast = createErrorToast
         )
         addCertificationScreen(
-            onBackClicked = navController::navigateUp
+            onBackClicked = navController::navigateUp,
+            createErrorToast = createErrorToast
         )
     }
 }
