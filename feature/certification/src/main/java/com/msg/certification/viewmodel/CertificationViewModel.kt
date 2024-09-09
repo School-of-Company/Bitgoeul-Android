@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msg.certification.viewmodel.uistate.GetCertificationListUiState
 import com.msg.certification.viewmodel.uistate.GetLectureSignUpHistoryUiState
+import com.msg.certification.viewmodel.uistate.WriteCertificationUiState
 import com.msg.common.event.Event
 import com.msg.common.errorhandling.errorHandling
 import com.msg.common.result.Result
@@ -51,6 +52,9 @@ class CertificationViewModel @Inject constructor(
 
     private val _getLectureSignUpHistoryUiState = MutableStateFlow<GetLectureSignUpHistoryUiState>(GetLectureSignUpHistoryUiState.Loading)
     val getLectureSignUpHistoryUiState: StateFlow<GetLectureSignUpHistoryUiState> = _getLectureSignUpHistoryUiState.asStateFlow()
+
+    private val _writeCertificationUiState = MutableStateFlow<WriteCertificationUiState>(WriteCertificationUiState.Loading)
+    val writeCertificationUiState: StateFlow<WriteCertificationUiState> = _writeCertificationUiState.asStateFlow()
 
     private val _getCertificationListResponse = MutableStateFlow<Event<List<CertificationListEntity>>>(Event.Loading)
     val getCertificationListResponse = _getCertificationListResponse.asStateFlow()
@@ -126,15 +130,15 @@ class CertificationViewModel @Inject constructor(
                 name = name,
                 acquisitionDate = acquisitionDate
             )
-        ).onSuccess {
-            it.catch { remoteError ->
-                _writeCertificationResponse.value = remoteError.errorHandling()
-            }.collect {
-                _writeCertificationResponse.value = Event.Success()
+        )
+            .asResult()
+            .collectLatest { result ->
+                when(result) {
+                    is Result.Loading -> { _writeCertificationUiState.value = WriteCertificationUiState.Loading }
+                    is Result.Success -> { _writeCertificationUiState.value = WriteCertificationUiState.Success }
+                    is Result.Error -> { _writeCertificationUiState.value = WriteCertificationUiState.Error(result.exception) }
+                }
             }
-        }.onFailure { error ->
-            _writeCertificationResponse.value = error.errorHandling()
-        }
     }
 
     internal fun editCertification(
