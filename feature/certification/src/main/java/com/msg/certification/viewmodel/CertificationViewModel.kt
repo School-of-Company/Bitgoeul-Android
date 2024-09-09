@@ -138,14 +138,9 @@ class CertificationViewModel @Inject constructor(
                         if (result.data.isEmpty()) {
                             _getCertificationListUiState.value = GetCertificationListUiState.Empty
                         } else {
-                            _getCertificationListUiState.value =
-                                GetCertificationListUiState.Success(result.data)
-                        }
+                            _getCertificationListUiState.value = GetCertificationListUiState.Success(result.data) }
                     }
-
-                    is Result.Error -> {
-                        _getCertificationListUiState.value = GetCertificationListUiState.Error
-                    }
+                    is Result.Error -> { _getCertificationListUiState.value = GetCertificationListUiState.Error(result.exception) }
                 }
             }
     }
@@ -163,15 +158,8 @@ class CertificationViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
                 when (result) {
-                    is Result.Success -> {
-                        _writeCertificationUiState.value = WriteCertificationUiState.Success
-                    }
-
-                    is Result.Error -> {
-                        _writeCertificationUiState.value =
-                            WriteCertificationUiState.Error(result.exception)
-                    }
-
+                    is Result.Success -> { _writeCertificationUiState.value = WriteCertificationUiState.Success }
+                    is Result.Error -> { _writeCertificationUiState.value = WriteCertificationUiState.Error(result.exception) }
                     else -> {}
                 }
             }
@@ -191,15 +179,8 @@ class CertificationViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
                 when (result) {
-                    is Result.Success -> {
-                        _editCertificationUiState.value = EditCertificationUiState.Success
-                    }
-
-                    is Result.Error -> {
-                        _editCertificationUiState.value =
-                            EditCertificationUiState.Error(result.exception)
-                    }
-
+                    is Result.Success -> { _editCertificationUiState.value = EditCertificationUiState.Success }
+                    is Result.Error -> { _editCertificationUiState.value = EditCertificationUiState.Error(result.exception) }
                     else -> {}
                 }
             }
@@ -229,18 +210,13 @@ class CertificationViewModel @Inject constructor(
                 .collectLatest { result ->
                     when (result) {
                         is Result.Loading -> {
-                            _getLectureSignUpHistoryUiState.value =
-                                GetLectureSignUpHistoryUiState.Loading
+                            _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Loading
                         }
-
                         is Result.Success -> {
-                            _getLectureSignUpHistoryUiState.value =
-                                GetLectureSignUpHistoryUiState.Success(result.data)
+                            _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Success(result.data)
                         }
-
                         is Result.Error -> {
-                            _getLectureSignUpHistoryUiState.value =
-                                GetLectureSignUpHistoryUiState.Error
+                            _getLectureSignUpHistoryUiState.value = GetLectureSignUpHistoryUiState.Error(result.exception)
                         }
                     }
                 }
