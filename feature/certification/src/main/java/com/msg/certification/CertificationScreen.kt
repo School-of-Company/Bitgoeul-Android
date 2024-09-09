@@ -32,6 +32,7 @@ import com.msg.common.event.Event
 import com.msg.certification.viewmodel.CertificationViewModel
 import com.msg.certification.viewmodel.uistate.GetCertificationListUiState
 import com.msg.certification.viewmodel.uistate.GetLectureSignUpHistoryUiState
+import com.msg.certification.viewmodel.uistate.GetStudentBelongClubDetailUiState
 import com.msg.design_system.R
 import com.msg.design_system.component.icon.HumanIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
@@ -40,6 +41,7 @@ import com.msg.model.entity.club.StudentBelongClubEntity
 import com.msg.model.entity.lecture.GetLectureSignUpHistoryEntity
 import com.msg.model.entity.lecture.SignUpLectures
 import com.msg.ui.DevicePreviews
+import com.msg.ui.makeToast
 import java.time.LocalDate
 import java.util.UUID
 
@@ -47,10 +49,12 @@ import java.util.UUID
 internal fun CertificationScreenRoute(
     viewModel: CertificationViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     onHumanIconClicked: () -> Unit,
-    onEditClicked: () -> Unit
+    onEditClicked: () -> Unit,
+    createErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
     val getCertificationListUiState by viewModel.getCertificationListUiState.collectAsStateWithLifecycle()
     val getLectureSignUpHistoryUiState by viewModel.getLectureSignUpHistoryUiState.collectAsStateWithLifecycle()
+    val getStudentBelongClubDetailUiState by viewModel.getStudentBelongClubDetailUiState.collectAsStateWithLifecycle()
 
     viewModel.getCertificationList()
     viewModel.getStudentBelong()
@@ -93,7 +97,9 @@ internal fun CertificationScreenRoute(
         certificationData = viewModel.certificationList,
         lectureData = viewModel.lectureData.value,
         getCertificationListUiState = getCertificationListUiState,
-        getLectureSignUpHistoryUiState = getLectureSignUpHistoryUiState
+        getLectureSignUpHistoryUiState = getLectureSignUpHistoryUiState,
+        getStudentBelongClubDetailUiState = getStudentBelongClubDetailUiState,
+        createErrorToast = createErrorToast
     )
 }
 
@@ -145,14 +151,16 @@ private suspend fun getLectureData(
 @Composable
 internal fun CertificationScreen(
     modifier: Modifier = Modifier,
+    createErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     getCertificationListUiState: GetCertificationListUiState,
     getLectureSignUpHistoryUiState: GetLectureSignUpHistoryUiState,
+    getStudentBelongClubDetailUiState: GetStudentBelongClubDetailUiState,
     onHumanIconClicked: () -> Unit,
     onEditClicked: (id: UUID, title: String, date: LocalDate) -> Unit,
     onPlusClicked: () -> Unit,
     studentData: StudentBelongClubEntity,
     certificationData: List<CertificationListEntity>,
-    lectureData: GetLectureSignUpHistoryEntity
+    lectureData: GetLectureSignUpHistoryEntity,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         Box(
@@ -160,6 +168,7 @@ internal fun CertificationScreen(
                 .fillMaxSize()
                 .background(color = colors.WHITE)
         ) {
+            val context = LocalContext.current
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -183,7 +192,24 @@ internal fun CertificationScreen(
                     )
                 }
                 Spacer(modifier = modifier.height(24.dp))
-                StudentInfoSection(data = studentData)
+                when(getStudentBelongClubDetailUiState) {
+                    is GetStudentBelongClubDetailUiState.Success -> { StudentInfoSection(data = studentData) }
+                    is GetStudentBelongClubDetailUiState.Loading -> {
+                        Box(
+                            modifier = modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = modifier.then(Modifier.size(27.dp)),
+                                color = colors.G2,
+                                strokeWidth = 2.dp
+                            )
+                        }
+                    }
+                    is GetStudentBelongClubDetailUiState.Error -> {
+                        createErrorToast(getStudentBelongClubDetailUiState.expectation, R.string.fail_get_student_club_detail)
+                    }
+                }
                 Spacer(modifier = modifier.height(24.dp))
                 HorizontalDivider(
                     modifier = modifier.fillMaxWidth(),
@@ -201,7 +227,6 @@ internal fun CertificationScreen(
                             data = certificationData
                         )
                     }
-
                     is GetCertificationListUiState.Loading -> {
                         Box(
                             modifier = modifier.fillMaxWidth(),
@@ -214,22 +239,11 @@ internal fun CertificationScreen(
                             )
                         }
                     }
-
                     is GetCertificationListUiState.Error -> {
-                        Text(
-                            modifier = modifier.align(Alignment.CenterHorizontally),
-                            text = "통신이 원활하지 않습니다..",
-                            style = typography.bodySmall
-                        )
+                        createErrorToast(getCertificationListUiState.expectation, R.string.fail_get_certification_list)
                     }
-
                     is GetCertificationListUiState.Empty -> {
-                        Text(
-                            modifier = modifier.align(Alignment.CenterHorizontally),
-                            text = "자격증이 없습니다..",
-                            style = typography.bodySmall,
-                            color = colors.G4
-                        )
+                        makeToast(context, R.string.empty_state.toString())
                     }
                 }
                 Spacer(modifier = modifier.height(12.dp))
@@ -248,12 +262,7 @@ internal fun CertificationScreen(
                         }
                     }
                     is GetLectureSignUpHistoryUiState.Error -> {
-                        Text(
-                            modifier = modifier.align(Alignment.CenterHorizontally).padding(top = 50.dp),
-                            text = "통신이 원할하지 않습니다..",
-                            style = typography.bodySmall,
-                            color = colors.G4
-                        )
+                        createErrorToast(getLectureSignUpHistoryUiState.expectation, R.string.fail_get_lecture_list)
                     }
                 }
             }
@@ -302,6 +311,8 @@ fun CertificationScreenPre() {
             )
         ),
         getCertificationListUiState = GetCertificationListUiState.Empty,
-        getLectureSignUpHistoryUiState = GetLectureSignUpHistoryUiState.Error
+        getLectureSignUpHistoryUiState = GetLectureSignUpHistoryUiState.Error(expectation = Throwable("통신이 원할하지 않습니다.")),
+        getStudentBelongClubDetailUiState = GetStudentBelongClubDetailUiState.Error(expectation = Throwable("통신이 원할하지 않습니다.")),
+        createErrorToast = { _, _ -> }
     )
 }
