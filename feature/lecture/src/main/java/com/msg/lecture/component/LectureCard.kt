@@ -187,11 +187,12 @@ fun LectureTakingStudentCard(
             ) {
                 BitGoeulCheckBox(
                     modifier = modifier,
-                    isChecked = isComplete.value
-                ) { isCompleteValue ->
-                    onChangeCompleteState(isCompleteValue, data.id)
-                    isComplete.value = isCompleteValue
-                }
+                    isChecked = isComplete.value,
+                    onCheckedChange = { isCompleteValue ->
+                        onChangeCompleteState(isCompleteValue, data.id)
+                        isComplete.value = isCompleteValue
+                    }
+                )
 
                 Spacer(modifier = modifier.width(24.dp))
 

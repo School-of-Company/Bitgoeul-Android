@@ -362,3 +362,15 @@ fun BigCheckIcon() {
         contentDescription = "Big blue check icon"
     )
 }
+
+@Composable
+fun G2ColorFilterIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        modifier = modifier,
+        painter = painterResource(id = R.drawable.ic_g2_filter),
+        contentDescription = "G2 Color Filter Icon"
+    )
+}
+

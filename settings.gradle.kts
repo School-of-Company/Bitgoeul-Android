@@ -37,4 +37,6 @@ include(":feature:post")
 include(":feature:club")
 include(":feature:email")
 include(":feature:certification")
+include(":feature:inquiry")
+
 gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))

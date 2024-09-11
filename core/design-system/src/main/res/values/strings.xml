@@ -81,6 +81,10 @@
     <string name="department_placeholder">계열 검색 또는 임의로 추가...</string>
     <string name="professor_in_charge_placeholder">학과 이름으로 검색...</string>
     <string name="division_placeholder">강의 구분 검색...</string>
+    <string name="inquiry_search_placeholder">이름으로 검색...</string>
     <string name="entire">전체</string>
     <string name="student_information">학생정보</string>
+    <string name="inquiry">문의사항</string>
+    <string name="answer_complete">답변 됨</string>
+    <string name="waiting_for_answer">답변 대기 중</string>
 </resources>
