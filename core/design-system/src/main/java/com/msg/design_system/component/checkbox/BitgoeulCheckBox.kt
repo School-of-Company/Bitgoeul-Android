@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -15,20 +17,20 @@ import com.msg.design_system.R
 @Composable
 fun BitGoeulCheckBox(
     modifier: Modifier,
-    isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
 ) {
+    val isChecked = remember { mutableStateOf(false) }
     Box(
         modifier = modifier.background(color = Color.White, shape = RoundedCornerShape(8.dp))
     ) {
         Image(
-            painter = if (isChecked) {
+            painter = if (isChecked.value) {
                 painterResource(id = R.drawable.ic_checked_box)
             } else {
                 painterResource(id = R.drawable.ic_unchecked_box)
             },
             contentDescription = null,
-            modifier = modifier.clickable { onCheckedChange(!isChecked) }
+            modifier = modifier.clickable { onCheckedChange(!isChecked.value) }
         )
     }
 }
