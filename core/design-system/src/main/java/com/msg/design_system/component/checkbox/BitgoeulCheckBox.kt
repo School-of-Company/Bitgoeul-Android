@@ -30,7 +30,10 @@ fun BitGoeulCheckBox(
                 painterResource(id = R.drawable.ic_unchecked_box)
             },
             contentDescription = null,
-            modifier = modifier.clickable { onCheckedChange(!isChecked.value) }
+            modifier = modifier.clickable {
+                isChecked.value = !isChecked.value
+                onCheckedChange(!isChecked.value)
+            }
         )
     }
 }
