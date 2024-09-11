@@ -192,6 +192,27 @@ fun ApplicationDoneButton(
     }
 }
 
+@Composable
+fun G2FilterIconButton(
+    modifier: Modifier = Modifier,
+    onClicked: () -> Unit,
+) {
+    BitgoeulAndroidTheme { colors, _ ->
+        OutlinedButton(
+            modifier = modifier,
+            onClick = onClicked,
+            border = BorderStroke(1.dp, color = colors.G2),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = colors.WHITE,
+                contentColor = colors.G2,
+            ),
+            shape = RoundedCornerShape(8.dp),
+        ) {
+            G2ColorFilterIcon()
+        }
+    }
+}
+
 @Preview
 @Composable
 fun BitgoeulButtonPre() {
