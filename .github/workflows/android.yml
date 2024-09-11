@@ -49,7 +49,7 @@ jobs:
       with:
         title: ✅ Bitgouel-Android-CI 성공! ✅
         webhook: ${{ secrets.BITGOUEL_DISCORD_WEBHOOK }}
-        color: 00FF00
+        color: 65280
 
     - name: Bitgouel Android CI Discord Notification
       uses: sarisia/actions-status-discord@v1
@@ -57,4 +57,4 @@ jobs:
       with:
         title: ❗️ Bitgouel-Android-CI 실패! ❗️
         webhook: ${{ secrets.BITGOUEL_DISCORD_WEBHOOK }}
-        color: FF0000
+        color: 16711680
