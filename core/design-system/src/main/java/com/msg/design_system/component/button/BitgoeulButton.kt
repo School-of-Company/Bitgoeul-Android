@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.msg.design_system.component.icon.G2ColorFilterIcon
 import com.msg.design_system.component.icon.MainColorSettingIcon
 import com.msg.design_system.theme.BitgoeulAndroidTheme
 
@@ -98,7 +99,7 @@ fun BitgoeulButton(
 fun DetailSettingButton(
     modifier: Modifier = Modifier,
     type: String,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
         OutlinedButton(
@@ -130,7 +131,7 @@ fun NegativeBitgoeulButton(
     modifier: Modifier = Modifier,
     text: String,
     state: ButtonState = ButtonState.Enable,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
 ) {
     BitgoeulAndroidTheme { colors, typography ->
 
@@ -182,7 +183,6 @@ fun ApplicationDoneButton(
             ),
             shape = RoundedCornerShape(8.dp),
         ) {
-
             Text(
                 text = text,
                 color = colors.E5,
@@ -253,6 +253,13 @@ fun BitgoeulButtonPre() {
                 .height(52.dp),
             onClicked = {},
             text = "수강 신청 취소"
+        )
+
+        G2FilterIconButton(
+            modifier = Modifier
+                .width(319.dp)
+                .height(52.dp),
+            onClicked = {},
         )
     }
 }
