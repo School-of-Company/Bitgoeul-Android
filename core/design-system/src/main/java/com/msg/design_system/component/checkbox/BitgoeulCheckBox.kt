@@ -32,7 +32,7 @@ fun BitGoeulCheckBox(
             contentDescription = null,
             modifier = modifier.clickable {
                 isChecked.value = !isChecked.value
-                onCheckedChange(!isChecked.value)
+                onCheckedChange(isChecked.value)
             }
         )
     }
