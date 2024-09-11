@@ -32,8 +32,9 @@ fun FilterDialog(
     modifier: Modifier = Modifier,
     filterItemList: List<String>,
     isVisible: Boolean,
+    isChecked: List<Boolean>,
     onQuit: (Boolean) -> Unit,
-    onItemClicked: (String) -> Unit,
+    onFilterClicked: (Int) -> Unit,
 ) {
     if (isVisible) {
         BitgoeulAndroidTheme { colors, typography ->
@@ -76,9 +77,10 @@ fun FilterDialog(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 BitGoeulCheckBox(
+                                    isChecked = isChecked[index],
                                     modifier = modifier.wrapContentSize(),
                                     onCheckedChange = {
-                                        onItemClicked(filterItemList[index])
+                                        onFilterClicked(index)
                                     }
                                 )
 
@@ -102,7 +104,8 @@ fun FilterDialogPreview() {
     FilterDialog(
         filterItemList = listOf("학교선택", "학년선택", "학기선택"),
         isVisible = true,
+        isChecked = listOf(false),
         onQuit = {},
-        onItemClicked = {}
+        onFilterClicked = {}
     )
 }

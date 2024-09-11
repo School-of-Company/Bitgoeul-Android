@@ -18,21 +18,20 @@ import com.msg.design_system.R
 fun BitGoeulCheckBox(
     modifier: Modifier,
     onCheckedChange: (Boolean) -> Unit,
+    isChecked: Boolean,
 ) {
-    val isChecked = remember { mutableStateOf(false) }
     Box(
         modifier = modifier.background(color = Color.White, shape = RoundedCornerShape(8.dp))
     ) {
         Image(
-            painter = if (isChecked.value) {
+            painter = if (isChecked) {
                 painterResource(id = R.drawable.ic_checked_box)
             } else {
                 painterResource(id = R.drawable.ic_unchecked_box)
             },
             contentDescription = null,
             modifier = modifier.clickable {
-                isChecked.value = !isChecked.value
-                onCheckedChange(isChecked.value)
+                onCheckedChange(!isChecked)
             }
         )
     }
