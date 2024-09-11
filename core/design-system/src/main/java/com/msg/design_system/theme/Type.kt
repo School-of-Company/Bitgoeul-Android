@@ -24,7 +24,7 @@ val Typography = Typography(
         fontFamily = pretendard,
         fontSize = 26.sp,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 31.sp
+        lineHeight = 32.sp
     ),
     titleSmall = TextStyle(
         fontFamily = pretendard,
@@ -36,7 +36,7 @@ val Typography = Typography(
         fontFamily = pretendard,
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 25.sp
+        lineHeight = 26.sp
     ),
     bodyMedium = TextStyle(
         fontFamily = pretendard,
