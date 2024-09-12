@@ -100,7 +100,4 @@
     <string name="fail_get_certification_list">자격증 정보를 불러오지 못했습니다.</string>
     <string name="empty_state">데이터가 없습니다.</string>
     <string name="fail_get_lecture_list">강의 정보를 불러오지 못했습니다.</string>
-    <string name="inquiry">문의사항</string>
-    <string name="answer_complete">답변 됨</string>
-    <string name="waiting_for_answer">답변 대기 중</string>
 </resources>
