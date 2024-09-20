@@ -1,5 +1,6 @@
 package com.bitgoeul.inquiry
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,14 +32,18 @@ import com.msg.design_system.component.dialog.PositiveActionDialog
 
 @Composable
 fun InquiryDetailRoute() {
-    InquiryDetailScreen()
+    val scrollState = rememberScrollState()
+
+    InquiryDetailScreen(
+        scrollState = scrollState
+    )
 }
 
 @Composable
 fun InquiryDetailScreen(
     modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState(),
 ) {
-    val scrollState = rememberScrollState()
 
     BitgoeulAndroidTheme { colors, typography ->
         Column(
