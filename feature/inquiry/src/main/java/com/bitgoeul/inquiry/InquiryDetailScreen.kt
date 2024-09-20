@@ -32,11 +32,7 @@ import com.msg.design_system.component.dialog.PositiveActionDialog
 
 @Composable
 fun InquiryDetailRoute() {
-    val scrollState = rememberScrollState()
-
-    InquiryDetailScreen(
-        scrollState = scrollState
-    )
+    InquiryDetailScreen()
 }
 
 @Composable
