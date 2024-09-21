@@ -16,7 +16,11 @@ fun NavController.navigateToCertificationPage(navOptions: NavOptions? = null, cl
     this.navigate("$certificationRoute/$clubId/$studentId", navOptions)
 }
 
-fun NavGraphBuilder.certificationScreen(onHumanClicked: () -> Unit, onEditClicked: () -> Unit) {
+fun NavGraphBuilder.certificationScreen(
+    onHumanClicked: () -> Unit,
+    onEditClicked: () -> Unit,
+    createErrorToast: (throwable: Throwable?, message: Int?) -> Unit
+) {
     composable(
         route = "certificationRoute/{clubId}/{studentId}",
         arguments = listOf(
@@ -30,7 +34,8 @@ fun NavGraphBuilder.certificationScreen(onHumanClicked: () -> Unit, onEditClicke
     ) {
         CertificationScreenRoute(
             onHumanIconClicked = onHumanClicked,
-            onEditClicked = onEditClicked
+            onEditClicked = onEditClicked,
+            createErrorToast = createErrorToast
         )
     }
 }
@@ -39,11 +44,15 @@ fun NavController.navigateToAddCertificationPage(navOptions: NavOptions? = null)
     this.navigate(addCertificationRoute, navOptions)
 }
 
-fun NavGraphBuilder.addCertificationScreen(onBackClicked: () -> Unit) {
+fun NavGraphBuilder.addCertificationScreen(
+    onBackClicked: () -> Unit,
+    createErrorToast: (throwable: Throwable?, message: Int?) -> Unit
+) {
     composable(route = addCertificationRoute) {
         AddCertificationScreenRoute(
             onBackClicked = onBackClicked,
-            onAddClicked = onBackClicked
+            onAddClicked = onBackClicked,
+            createErrorToast = createErrorToast
         )
     }
 }
